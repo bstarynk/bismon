@@ -1355,17 +1355,20 @@ check_locale_BM (void)
 
 
 /////
-void show_program_options_BM(FILE*out, int argc, char**argv)
+void
+show_program_options_BM (FILE * out, int argc, char **argv)
 {
   if (!out)
     out = stderr;
-  for (int aix=0; aix<argc; aix++) {
-    if (aix>0) fputc(' ', out);
-    gchar*qa = g_shell_quote ((const gchar*)argv[aix]);
-    fputs((const char*)qa, out);
-    g_free(qa);
-  }
-} /* end show_program_options_BM */
+  for (int aix = 0; aix < argc; aix++)
+    {
+      if (aix > 0)
+        fputc (' ', out);
+      gchar *qa = g_shell_quote ((const gchar *) argv[aix]);
+      fputs ((const char *) qa, out);
+      g_free (qa);
+    }
+}                               /* end show_program_options_BM */
 
 ////////////////////////////////////////////////////////////////
 //// see also https://github.com/dtrebbien/GNOME.supp and
@@ -1467,12 +1470,12 @@ main (int argc, char **argv)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
   if (!batch_bm && !run_onion_BM)
     {
-      fprintf(stderr, "\n@@@ Bad invocation without batch or onion: ");
-      show_program_options_BM(stderr, argc, argv);
-      fputc('\n', stderr);
+      fprintf (stderr, "\n@@@ Bad invocation without batch or onion: ");
+      show_program_options_BM (stderr, argc, argv);
+      fputc ('\n', stderr);
       FATAL_BM
-	("no batch or onion option; please run with --batch or --web;\n"
-	 "... or run: %s --help", argv[0]);
+        ("no batch or onion option; please run with --batch or --web;\n"
+         "... or run: %s --help", argv[0]);
     }
   /// running as root is really unreasonable.
   if (getuid () == 0)
@@ -1499,70 +1502,79 @@ main (int argc, char **argv)
   DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   if (!load_dir_bm)
     load_dir_bm = ".";
-  else if (load_dir_bm[0] == '-') {
-    fprintf(stderr, "\n@@@ Bad invocation for load directory: ");
-    show_program_options_BM(stderr, argc, argv);
-    fputc('\n', stderr);
-    FATAL_BM ("--load directory '%s' cannot start with minus,\n"
-              "... use '--load ./%s' instead", load_dir_bm, load_dir_bm);
-  }
+  else if (load_dir_bm[0] == '-')
+    {
+      fprintf (stderr, "\n@@@ Bad invocation for load directory: ");
+      show_program_options_BM (stderr, argc, argv);
+      fputc ('\n', stderr);
+      FATAL_BM ("--load directory '%s' cannot start with minus,\n"
+                "... use '--load ./%s' instead", load_dir_bm, load_dir_bm);
+    }
   if (!dump_dir_BM)
     dump_dir_BM = realpath (load_dir_bm, NULL);
-  else if (dump_dir_BM[0] == '-') {
-    fprintf(stderr, "\n@@@ Bad invocation for dump directory: ");
-    show_program_options_BM(stderr, argc, argv);
-    fputc('\n', stderr);
-    FATAL_BM ("--dump directory '%s' cannot start with minus,\n"
-              "... use '--dump ./%s' instead", dump_dir_BM, dump_dir_BM);
-  }
-  if (dump_after_load_dir_bm && dump_after_load_dir_bm[0] == '-') {
-    fprintf(stderr, "\n@@@ Bad invocation for dump directory: ");
-    show_program_options_BM(stderr, argc, argv);
-    fputc('\n', stderr);
-    FATAL_BM ("--dump-after-load directory '%s' cannot start with minus,\n"
-              "... use '--dump-after-load ./%s' instead",
-              dump_after_load_dir_bm, dump_after_load_dir_bm);
-  }
-  if (contributors_filepath_BM && contributors_filepath_BM[0] == '-') {
-    fprintf(stderr, "\n@@@ Bad invocation for contributors file: ");
-    show_program_options_BM(stderr, argc, argv);
-    fputc('\n', stderr);
-    FATAL_BM ("--contributors-file path '%s' cannot start with minus,\n"
-              "... use '--contributors-file ./%s' instead",
-              contributors_filepath_BM, contributors_filepath_BM);
-  }
-  if (passwords_filepath_BM && passwords_filepath_BM[0] == '-') {
-    fprintf(stderr, "\n@@@ Bad invocation for passwords file: ");
-    show_program_options_BM(stderr, argc, argv);
-    fputc('\n', stderr);
-    FATAL_BM ("--passwords-file path '%s' cannot start with minus,\n"
-              "... use '--passwords-file ./%s' instead",
-              passwords_filepath_BM, passwords_filepath_BM);
-  }
-  if (contact_filepath_BM && contact_filepath_BM[0] == '-') {
-    fprintf(stderr, "\n@@@ Bad invocation for contact file: ");
-    show_program_options_BM(stderr, argc, argv);
-    fputc('\n', stderr);
-    FATAL_BM ("--contact-file path '%s' cannot start with minus,\n"
-              "... use '--contact-file ./%s' instead",
-              contact_filepath_BM, contact_filepath_BM);
-  }
-  if (pid_filepath_bm && pid_filepath_bm[0] == '-') {
-    fprintf(stderr, "\n@@@ Bad invocation for pid file: ");
-    show_program_options_BM(stderr, argc, argv);
-    fputc('\n', stderr);
-    FATAL_BM ("--pid-file path '%s' cannot start with minus,\n"
-              "... use '--pid-file ./%s' instead",
-              pid_filepath_bm, pid_filepath_bm);
-  }
-  if (chdir_after_load_bm && chdir_after_load_bm[0] == '-') {
-    fprintf(stderr, "\n@@@ Bad invocation for chdir-after-load directory: ");
-    show_program_options_BM(stderr, argc, argv);
-    fputc('\n', stderr);
-    FATAL_BM ("--chdir-after-load directory '%s' cannot start with minus,\n"
-              "... use '--chdir-after-load ./%s' instead",
-              chdir_after_load_bm, chdir_after_load_bm);
-  }
+  else if (dump_dir_BM[0] == '-')
+    {
+      fprintf (stderr, "\n@@@ Bad invocation for dump directory: ");
+      show_program_options_BM (stderr, argc, argv);
+      fputc ('\n', stderr);
+      FATAL_BM ("--dump directory '%s' cannot start with minus,\n"
+                "... use '--dump ./%s' instead", dump_dir_BM, dump_dir_BM);
+    }
+  if (dump_after_load_dir_bm && dump_after_load_dir_bm[0] == '-')
+    {
+      fprintf (stderr, "\n@@@ Bad invocation for dump directory: ");
+      show_program_options_BM (stderr, argc, argv);
+      fputc ('\n', stderr);
+      FATAL_BM ("--dump-after-load directory '%s' cannot start with minus,\n"
+                "... use '--dump-after-load ./%s' instead",
+                dump_after_load_dir_bm, dump_after_load_dir_bm);
+    }
+  if (contributors_filepath_BM && contributors_filepath_BM[0] == '-')
+    {
+      fprintf (stderr, "\n@@@ Bad invocation for contributors file: ");
+      show_program_options_BM (stderr, argc, argv);
+      fputc ('\n', stderr);
+      FATAL_BM ("--contributors-file path '%s' cannot start with minus,\n"
+                "... use '--contributors-file ./%s' instead",
+                contributors_filepath_BM, contributors_filepath_BM);
+    }
+  if (passwords_filepath_BM && passwords_filepath_BM[0] == '-')
+    {
+      fprintf (stderr, "\n@@@ Bad invocation for passwords file: ");
+      show_program_options_BM (stderr, argc, argv);
+      fputc ('\n', stderr);
+      FATAL_BM ("--passwords-file path '%s' cannot start with minus,\n"
+                "... use '--passwords-file ./%s' instead",
+                passwords_filepath_BM, passwords_filepath_BM);
+    }
+  if (contact_filepath_BM && contact_filepath_BM[0] == '-')
+    {
+      fprintf (stderr, "\n@@@ Bad invocation for contact file: ");
+      show_program_options_BM (stderr, argc, argv);
+      fputc ('\n', stderr);
+      FATAL_BM ("--contact-file path '%s' cannot start with minus,\n"
+                "... use '--contact-file ./%s' instead",
+                contact_filepath_BM, contact_filepath_BM);
+    }
+  if (pid_filepath_bm && pid_filepath_bm[0] == '-')
+    {
+      fprintf (stderr, "\n@@@ Bad invocation for pid file: ");
+      show_program_options_BM (stderr, argc, argv);
+      fputc ('\n', stderr);
+      FATAL_BM ("--pid-file path '%s' cannot start with minus,\n"
+                "... use '--pid-file ./%s' instead",
+                pid_filepath_bm, pid_filepath_bm);
+    }
+  if (chdir_after_load_bm && chdir_after_load_bm[0] == '-')
+    {
+      fprintf (stderr,
+               "\n@@@ Bad invocation for chdir-after-load directory: ");
+      show_program_options_BM (stderr, argc, argv);
+      fputc ('\n', stderr);
+      FATAL_BM ("--chdir-after-load directory '%s' cannot start with minus,\n"
+                "... use '--chdir-after-load ./%s' instead",
+                chdir_after_load_bm, chdir_after_load_bm);
+    }
   INFOPRINTF_BM ("bismon should load directory %s - git commit: %s",
                  load_dir_bm, bismon_lastgitcommit);
   load_initial_BM (load_dir_bm);
@@ -1662,9 +1674,15 @@ main (int argc, char **argv)
               INFOPRINTF_BM ("wrote pid %d in pid-file %s",
                              (int) getpid (), pid_filepath_bm);
             }
-          INFOPRINTF_BM
-            ("running ONION web interface for %d jobs or working pthreads",
-             nbworkjobs_BM);
+          {
+            char cwdbuf[128];
+            memset (cwdbuf, 0, sizeof (cwdbuf));
+            (void) getcwd (cwdbuf, sizeof (cwdbuf) - 1);
+            INFOPRINTF_BM
+              ("running ONION web interface for %d jobs or pthreads in %s - pid %d (git %s) - web-base %s",
+               nbworkjobs_BM, cwdbuf, (int) getpid (), bismon_shortgitid,
+               onion_web_base_BM);
+          }
           run_onionweb_BM (nbworkjobs_BM);
         }
     }
@@ -2074,7 +2092,9 @@ void
 parse_values_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob; value_tyBM parsedval;);
+                 objectval_tyBM * parsob;
+                 value_tyBM parsedval;
+    );
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("parsing %d values after load %s using parsob %s\n",
                  nb_parsed_values_after_load_bm, load_dir_bm,
@@ -2112,7 +2132,8 @@ run_testplugins_after_load_BM (void)
   double startcputime = cputime_BM ();
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM pluginamv;  //
-                 objectval_tyBM * pluginob;);
+                 objectval_tyBM * pluginob;
+    );
   // check sanity of test plugins
   static char cwdbuf[200];
   if (!getcwd (cwdbuf, sizeof (cwdbuf) - 1))
@@ -2228,8 +2249,9 @@ void
 init_afterload_bm ()
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob;
-                 value_tyBM parsedval; value_tyBM resval;);
+                 objectval_tyBM * parsob; value_tyBM parsedval;
+                 value_tyBM resval;
+    );
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("doing %d closures after load %s using parsob %s\n",
                  count_init_afterload_bm, load_dir_bm,
@@ -2276,7 +2298,8 @@ void
 add_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * userob;);
+                 objectval_tyBM * userob;
+    );
   ASSERT_BM (count_added_contributors_bm > 0);
   ASSERT_BM (added_contributors_arr_bm != NULL);
   INFOPRINTF_BM ("adding %d contributors after load",
@@ -2311,7 +2334,8 @@ void
 remove_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * oldcontribob;);
+                 objectval_tyBM * oldcontribob;
+    );
   ASSERT_BM (count_removed_contributors_bm > 0);
   INFOPRINTF_BM ("removing %d contributors after load",
                  count_removed_contributors_bm);
@@ -2346,7 +2370,8 @@ void
 add_passwords_from_file_BM (const char *addedpasspath)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * contribob;);
+                 objectval_tyBM * contribob;
+    );
   ASSERT_BM (addedpasspath != NULL);
   DBGPRINTF_BM ("add_passwords_from_file start addedpasspath %s",
                 addedpasspath);
@@ -2452,7 +2477,8 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM funv;       //
                  objectval_tyBM * funob;        //
-                 value_tyBM arg1v, arg2v, arg3v; value_tyBM resappv;    //
+                 value_tyBM arg1v, arg2v, arg3v;
+                 value_tyBM resappv;    //
                  value_tyBM failres;    //
                  value_tyBM failplace;  //
     );
@@ -2538,7 +2564,9 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
                                value_tyBM arg3)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obsel; value_tyBM recva, arg1v, arg2v, arg3v; value_tyBM failres;     //
+                 objectval_tyBM * obsel;
+                 value_tyBM recva, arg1v, arg2v, arg3v;
+                 value_tyBM failres;    //
                  value_tyBM failplace;  //
     );
   _.recva = recv;
