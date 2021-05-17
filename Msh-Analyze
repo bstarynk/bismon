@@ -126,8 +126,8 @@ if [ ! -f gccplugins/gcc10_metaplugin_BMGCC.cc ]; then
     exit 1
 fi
 
-if [ ! -f gccplugins/gcc10_metaplugin.hh ]; then
-    echo  "$0:" missing gccplugins/gcc10_metaplugin.hh in $(pwd) > /dev/stderr
+if [ ! -f gccplugins/gcc10_metaplugin_BMGCC.hh ]; then
+    echo  "$0:" missing gccplugins/gcc10_metaplugin_BMGCC.hh in $(pwd) > /dev/stderr
     exit 1
 fi
 
