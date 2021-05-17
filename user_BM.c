@@ -4,7 +4,7 @@
 /***
     BISMON 
 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et
     aux énergies alternatives)
 
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
@@ -246,34 +246,43 @@ valid_email_BM (const char *email, bool checkdns, char **perrmsg)
   if (!email)
     {
       if (perrmsg)
-        asprintf (perrmsg, "no email");
-      return false;
+        {
+          if (asprintf (perrmsg, "no email") < 0)
+            FATAL_BM ("asprintf failure for email - %m");
+          return false;
+        }
     }
   const char *end = NULL;
   if (!g_utf8_validate (email, -1, &end) && end && *end)
     {
       if (perrmsg)
-        asprintf (perrmsg, "invalid utf8 email %s", email);
+        if (asprintf (perrmsg, "invalid utf8 email %s", email) < 0)
+          FATAL_BM ("asprintf failure for utf8 email - %m");
       return false;
     }
   if (!isalpha (email[0]))
     {
       if (perrmsg)
-        asprintf (perrmsg, "mail address %s don't start with letter", email);
+        if (asprintf
+            (perrmsg, "mail address %s don't start with letter", email) < 0)
+          FATAL_BM ("asprintf failure for mail non-letter - %m");
       return false;
     }
   const char *at = strchr (email, '@');
   if (!at || !at[1])
     {
       if (perrmsg)
-        asprintf (perrmsg, "mail address %s don't have at-sign", email);
+        if (asprintf (perrmsg, "mail address %s don't have at-sign", email) <
+            0)
+          FATAL_BM ("asprintf failure for mail without at - %m");
       return false;
     }
   if (strchr (at + 1, '@'))
     {
       if (perrmsg)
-        asprintf (perrmsg, "mail address %s has more than one at-sign",
-                  email);
+        if (asprintf (perrmsg, "mail address %s has more than one at-sign",
+                      email) < 0)
+          FATAL_BM ("asprintf failure for bad mail - %m");;
       return false;
     }
   for (const char *pc = email; pc < at; pc++)
@@ -285,18 +294,21 @@ valid_email_BM (const char *email, bool checkdns, char **perrmsg)
           if (!isalnum (pc[-1]) || !isalnum (pc[1]))
             {
               if (perrmsg)
-                asprintf (perrmsg,
-                          "mail address %s with bad . + - or _ occurrences before at-sign",
-                          email);
+                if (asprintf (perrmsg,
+                              "mail address %s with bad . + - or _ occurrences before at-sign",
+                              email) < 0)
+                  FATAL_BM ("asprintf fail for bad punctuation in email");
               return false;
             }
           else
             continue;
         }
       if (perrmsg)
-        asprintf (perrmsg,
-                  "mail address %s with unexpected characters before at-sign\n",
-                  email);
+        if (asprintf (perrmsg,
+                      "mail address %s with unexpected characters before at-sign\n",
+                      email) < 0)
+          FATAL_BM
+            ("asprintf failure for unexpected characters before at-sign in email %m");
       return false;
     }
   for (const char *pc = at + 1; pc < at; pc++)
@@ -308,18 +320,22 @@ valid_email_BM (const char *email, bool checkdns, char **perrmsg)
           if (!isalnum (pc[-1]) || !isalnum (pc[1]))
             {
               if (perrmsg)
-                asprintf (perrmsg,
-                          "mail address %s with bad . + - or _ occurrences after at-sign",
-                          email);
+                if (asprintf (perrmsg,
+                              "mail address %s with bad . + - or _ occurrences after at-sign",
+                              email) < 0)
+                  FATAL_BM
+                    ("asprintf failure for bad punctuation in email - %m");
               return false;
             }
           else
             continue;
         }
       if (perrmsg)
-        asprintf (perrmsg,
-                  "mail address %s with unexpected characters after at-sign",
-                  email);
+        if (asprintf (perrmsg,
+                      "mail address %s with unexpected characters after at-sign",
+                      email) < 0)
+          FATAL_BM
+            ("asprintf failure for unexpected characters after at-sign in email - %m");
       return false;
     }
   if (!strcmp (at + 1, "fake.email") || !strcmp (at + 1, "localhost"))
@@ -331,9 +347,10 @@ valid_email_BM (const char *email, bool checkdns, char **perrmsg)
       if (err)
         {
           if (perrmsg)
-            asprintf (perrmsg,
-                      "mail address %s domain %s failed on getaddrinfo: %s",
-                      email, at + 1, gai_strerror (err));
+            if (asprintf (perrmsg,
+                          "mail address %s domain %s failed on getaddrinfo: %s",
+                          email, at + 1, gai_strerror (err)) < 0)
+              FATAL_BM ("asprintf failure on mail address - %m");
           return false;
         }
       if (res)
@@ -341,8 +358,10 @@ valid_email_BM (const char *email, bool checkdns, char **perrmsg)
       else
         {
           if (perrmsg)
-            asprintf (perrmsg,
-                      "mail address %s domain %s invalid\n", email, at + 1);
+            if (asprintf (perrmsg,
+                          "mail address %s domain %s invalid\n", email,
+                          at + 1) < 0)
+              FATAL_BM ("asprintf failure for invalid mail & domain - %m");
           return false;
         }
     }
@@ -357,14 +376,17 @@ valid_contributor_name_BM (const char *name, char **perrmsg)
   if (!name)
     {
       if (perrmsg)
-        asprintf (perrmsg, "no contributor name");
+        if (asprintf (perrmsg, "no contributor name") < 0)
+          FATAL_BM ("asprintf failure for no contributor name - %m");
       return false;
     }
   const char *end = NULL;
   if (!g_utf8_validate (name, -1, &end) && end && *end)
     {
       if (perrmsg)
-        asprintf (perrmsg, "invalid utf8 contributor name %s", name);
+        if (asprintf (perrmsg, "invalid utf8 contributor name %s", name) < 0)
+          FATAL_BM
+            ("asprintf failure for invalid utf8 contributor name - %m");
       return false;
     }
   // validate the name:
@@ -383,7 +405,8 @@ valid_contributor_name_BM (const char *name, char **perrmsg)
             && g_unichar_isalnum (prevuc) && *g_utf8_next_char (p))
         continue;
       if (perrmsg)
-        asprintf (perrmsg, "invalid contributor name '%s'", name);
+        if (asprintf (perrmsg, "invalid contributor name '%s'", name) < 0)
+          FATAL_BM ("asprintf failure for invalid contributor name - %m");
       return false;
     }
   return true;
@@ -1184,28 +1207,34 @@ add_contributor_user_BM (const char *str,
   if (!str[0])
     {
       if (perrmsg)
-        asprintf (perrmsg, "empty user string");
+        if (asprintf (perrmsg, "empty user string") < 0)
+          FATAL_BM ("asprintf failure for empty user string - %m");
       return NULL;
     }
   const char *end = NULL;
   if (!g_utf8_validate (str, -1, &end) && end && *end)
     {
       if (perrmsg)
-        asprintf (perrmsg, "invalid utf8 string %s", str);
+        if (asprintf (perrmsg, "invalid utf8 string %s", str) < 0)
+          FATAL_BM ("asprintf failure for invalid utf8 - %m");
       return false;
     }
   if (isspace (str[0]))
     {
       if (perrmsg)
-        asprintf (perrmsg, "user string '%s' cannot start with a space", str);
+        if (asprintf
+            (perrmsg, "user string '%s' cannot start with a space", str) < 0)
+          FATAL_BM ("asprintf failure for space in user string %m");
       return NULL;
     }
   if (isdigit (str[0]) || str[0] == '_')
     {
       if (perrmsg)
-        asprintf (perrmsg,
-                  "user string '%s' cannot start with a digit or underscore\n",
-                  str);
+        if (asprintf (perrmsg,
+                      "user string '%s' cannot start with a digit or underscore\n",
+                      str) < 0)
+          FATAL_BM
+            ("asprintf failure for user with digit or underscore - %m");
       return NULL;
     }
   for (const char *pc = str; *pc; pc++)
@@ -1214,9 +1243,10 @@ add_contributor_user_BM (const char *str,
         || (*pc != ' ' && (isspace (*pc) || iscntrl (*pc))))
       {
         if (perrmsg)
-          asprintf (perrmsg,
-                    "user string '%s' cannot contain control or tab, return or weird space characters",
-                    str);
+          if (asprintf (perrmsg,
+                        "user string '%s' cannot contain control or tab, return or weird space characters",
+                        str) < 0)
+            FATAL_BM ("asprintf failure for invalid user string - %m");
         return NULL;
       }
   const char *endstr = str + strlen (str);
@@ -1307,11 +1337,12 @@ add_contributor_user_BM (const char *str,
       LOCALRETURN_BM (_.userob);
     }
   if (perrmsg)
-    asprintf (perrmsg,
-              "invalid user string '%s',\n"
-              "... expecting 'First Lastname <email@example.com>'\n"
-              "... or 'First Lastname;email@example.com;aliasmail@example.org'\n",
-              str);
+    if (asprintf (perrmsg,
+                  "invalid user string '%s',\n"
+                  "... expecting 'First Lastname <email@example.com>'\n"
+                  "... or 'First Lastname;email@example.com;aliasmail@example.org'\n",
+                  str) < 0)
+      FATAL_BM ("asprintf failure for invalid user string -%m");
   LOCALRETURN_BM (NULL);
 }                               /* end add_contributor_user_BM */
 
@@ -1587,8 +1618,9 @@ valid_password_BM (const char *passwd, char **perrmsg)
   if (!g_utf8_validate (passwd, -1, &end) && end && *end)
     {
       if (perrmsg)
-        asprintf (perrmsg, "password is not valid UTF8 at byte offset %d",
-                  (int) (end - passwd));
+        if (asprintf (perrmsg, "password is not valid UTF8 at byte offset %d",
+                      (int) (end - passwd)) < 0)
+          FATAL_BM ("asprintf failure on invalid password - %m");
       return false;
     }
   int nbdigits = 0, nbalphas = 0, nbpunct = 0;
@@ -1599,9 +1631,11 @@ valid_password_BM (const char *passwd, char **perrmsg)
       if (!g_unichar_isprint (uc))
         {
           if (perrmsg)
-            asprintf (perrmsg,
-                      "password contain unprintable character of Unicode #%d",
-                      uc);
+            if (asprintf (perrmsg,
+                          "password contain unprintable character of Unicode #%d",
+                          uc) < 0)
+              FATAL_BM
+                ("asprintf failure on password with unprintable character - %m");
           return false;
         }
       if (g_unichar_isalpha (uc))
