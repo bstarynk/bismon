@@ -3,7 +3,7 @@
 ##### this shell script could be invoked from Msh-Analyze
 ##
 ## BISMON related GCC10 metaplugin builder
-## file gccplugins/build-gcc10-metaplugin.sh
+## file gccplugins/build-gcc10_metaplugin.sh
 ## See https://github.com/bstarynk/bismon/
 ## Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 ################################################################
@@ -35,8 +35,8 @@ TARGETPLUGINDIR=$($TARGETGCC -print-file-name=plugin)
 
 TARGETGENGTYPE=$TARGETPLUGINDIR/gengtype
 $TARGETGENGTYPE --read-state $TARGETPLUGINDIR/gtype.state \
-		--plugin _gcc10-metaplugin-gty.h \
-		gcc10-metaplugin_BMGCC.cc gcc10-metaplugin.hh
+		--plugin _gcc10_metaplugin_BMGCC-gty.h \
+		gcc10_metaplugin_BMGCC.cc gcc10_metaplugin_BMGCC.hh
 
 SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 
@@ -55,9 +55,9 @@ $PLUGINGXX -Wall -Wextra -O1 -g3 \
 	   -I $($TARGETGCC -print-file-name=plugin)/include/ \
 	   -shared -fno-rtti -fPIC -rdynamic \
 	   -DPLUGINGITID=\"$SHORTGITID\" \
-	   gcc10-metaplugin_BMGCC.cc \
+	   gcc10_metaplugin_BMGCC.cc \
            $(pkg-config --cflags --libs jsoncpp curlpp) \
-	   -o gcc10-metaplugin_BMGCC.so
+	   -o gcc10_metaplugin_BMGCC.so
 
 ##FIXME: GCC documentation suggests linking with -shared
 ## -Wl,export-all-symbols which seems to not work above...

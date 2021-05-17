@@ -1,6 +1,6 @@
 
 /**
-    BISMON related GCC10 metaplugin gcc10-metaplugin_BMGCC.cc
+    BISMON related GCC10 metaplugin gcc10_metaplugin_BMGCC.cc
     See https://github.com/bstarynk/bismon/
     Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch and Franck Védrine
@@ -23,7 +23,7 @@
 
 //// the conventional prefix or suffix in names is BMP - for BisMon Plugin
 
-#include "gcc10-metaplugin.hh"
+#include "gcc10_metaplugin_BMGCC.hh"
 
 int plugin_is_GPL_compatible;
 
@@ -273,7 +273,7 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
 /****************
  **                           for Emacs...
  ** Local Variables: ;;
- ** compile-command: "./build-gcc10-metaplugin.sh" ;;
+ ** compile-command: "./build-gcc10_metaplugin.sh" ;;
  ** End: ;;
  ****************/
-////// end of file bismon/gccplugins/gcc10-metaplugin_BMGCC.cc
+////// end of file bismon/gccplugins/gcc10_metaplugin_BMGCC.cc

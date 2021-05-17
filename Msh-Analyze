@@ -55,7 +55,7 @@ if [ ! -d "$BISMON_MSH_SOURCE" ]; then
 fi
 
 if [ -z "$BISMON_GCC_PLUGIN" ]; then
-    export BISMON_GCC_PLUGIN=$(realpath gccplugins/gcc10-metaplugin_BMGCC.so)
+    export BISMON_GCC_PLUGIN=$(realpath gccplugins/gcc10_metaplugin_BMGCC.so)
 fi
 
 if [ ! -f "$BISMON_MSH_SOURCE/src/builtins.c" ]; then
@@ -121,23 +121,23 @@ if [ ! -d gccplugins/ ]; then
     exit 1
 fi
 
-if [ ! -f gccplugins/gcc10-metaplugin_BMGCC.cc ]; then
-    echo  "$0:" missing gccplugins/gcc10-metaplugin_BMGCC.cc in $(pwd) > /dev/stderr
+if [ ! -f gccplugins/gcc10_metaplugin_BMGCC.cc ]; then
+    echo  "$0:" missing gccplugins/gcc10_metaplugin_BMGCC.cc in $(pwd) > /dev/stderr
     exit 1
 fi
 
-if [ ! -f gccplugins/gcc10-metaplugin.hh ]; then
-    echo  "$0:" missing gccplugins/gcc10-metaplugin.hh in $(pwd) > /dev/stderr
+if [ ! -f gccplugins/gcc10_metaplugin.hh ]; then
+    echo  "$0:" missing gccplugins/gcc10_metaplugin.hh in $(pwd) > /dev/stderr
     exit 1
 fi
 
-if [ ! -x gccplugins/build-gcc10-metaplugin.sh ]; then
-    echo  "$0:" missing or bad gccplugins/build-gcc10-metaplugin.sh script in $(pwd) > /dev/stderr
+if [ ! -x gccplugins/build-gcc10_metaplugin.sh ]; then
+    echo  "$0:" missing or bad gccplugins/build-gcc10_metaplugin.sh script in $(pwd) > /dev/stderr
     exit 1
 fi
 
 pushd gccplugins
-./build-gcc10-metaplugin.sh
+./build-gcc10_metaplugin.sh
 popd 
 
 if [ ! -f "$BISMON_GCC_PLUGIN" ]; then
@@ -158,7 +158,7 @@ sleep 0.8
 
 
 for src in $BISMON_MSH_SOURCE/src/*.c ; do
-    sleep 0.1
+    sleep 0.2
     printf "\n\n%s: **** compiling %s ****\n" $0 $src
     ## plugin arguments should be passed with -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-<argname>
     echo "#§ " $BISMON_GCC -fplugin="$BISMON_GCC_PLUGIN" \
@@ -169,6 +169,8 @@ for src in $BISMON_MSH_SOURCE/src/*.c ; do
 	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-url=$BISMON_WEB_BASE \
 	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-project=$BISMON_MSH_PROJECT \
 	 -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
+    echo
+    sleep 0.1
 done
 
 kill -TERM $(cat /tmp/_bismon_msh.pid)

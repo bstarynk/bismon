@@ -1,6 +1,6 @@
 
 /**
-    BISMON related GCC10 metaplugin header gcc10-metaplugin.hh
+    BISMON related GCC10 metaplugin header gcc10_metaplugin_BMGCC.hh
     See https://github.com/bstarynk/bismon/
 
     Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
@@ -144,12 +144,12 @@ class GTY((user)) BMP_set_of_functions {
 };				// end class BMP_set_of_functions
 
 #warning we may need types with Gty annotations here, and extern variables...
-/* see comments in file build-gcc10-metaplugin.sh */
+/* see comments in file build-gcc10_metaplugin.sh */
 #endif /*GCC10_METAPLUGIN_BISMON_INCLUDED_*/
 /****************
  **                           for Emacs...
  ** Local Variables: ;;
- ** compile-command: "./build-gcc10-metaplugin.sh" ;;
+ ** compile-command: "./build-gcc10_metaplugin.sh" ;;
  ** End: ;;
  ****************/
-/* end of header file gcc10-metaplugin.hh */
+/* end of header file gcc10_metaplugin_BMGCC.hh */
