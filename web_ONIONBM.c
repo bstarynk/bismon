@@ -3678,7 +3678,7 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
   DBGBACKTRACEPRINTF_BM ("web_plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",      //
                          sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
-  INFOPRINTF_BM ("start loop of web_plain_event_loop_BM");
+  INFOPRINTF_BM ("start loop of web_plain_event_loop_BM for %s", onion_web_base_BM);
   while (atomic_load (&onionlooprunning_BM))
     {
       loopcnt++;
