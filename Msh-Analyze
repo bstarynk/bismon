@@ -151,6 +151,7 @@ export BISMON_GCC_NAME_PLUGIN=$(basename "$BISMON_GCC_PLUGIN" .so)
 pkill bismon || true
 
 printf "\n\n\n ==== %s: starting Bismon ======\n\n" "$0"
+echo '#° ./bismon' $bismon_msh_args
 ## start a fresh bismon
 ./bismon $bismon_msh_args &
 
