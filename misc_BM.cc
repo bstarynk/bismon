@@ -461,15 +461,24 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   struct stat srcmodstat = {};
   struct stat binmodstat = {};
   if (::stat(srcmodpath.c_str(), &srcmodstat))
-  {
-    WARNPRINTF_BM("missing module source %s (%m)\n", srcmodpath.c_str());
-    return false;
-  }
-  if (::stat(binmodpath.c_str(), &binmodstat)
-      || srcmodstat.st_mtime > binmodstat.st_mtime)
-  {
-    WARNPRINTF_BM("missing or old module binary %s (%m) related to module source %s\n",
-                  binmodpath.c_str(), srcmodpath.c_str());
+    {
+      WARNPRINTF_BM("missing module source %s (%m)\n", srcmodpath.c_str());
+      return false;
+    }
+  bool shouldrebuild = false;
+  if (::stat(binmodpath.c_str(), &binmodstat))
+    {
+      WARNPRINTF_BM("missing module binary %s (%m) related to module source %s\n",
+		    binmodpath.c_str(), srcmodpath.c_str());
+      shouldrebuild = true;
+    };
+  if (srcmodstat.st_mtime > binmodstat.st_mtime)
+    {
+      WARNPRINTF_BM("too old module binary %s (%m) related to module source %s\n",
+		    binmodpath.c_str(), srcmodpath.c_str());
+      shouldrebuild = true;
+    };
+  if (shouldrebuild) {
     INFOPRINTF_BM("before running %s/persistent-module-build-bismon.sh %s",
                   bismon_directory, modidbuf);
     fflush(nullptr);
@@ -492,37 +501,37 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       FATAL_BM("unexpected stat failure of %s (%m) after module build", binmodpath.c_str());
   }
   if (modulemap_BM.find(modid) != modulemap_BM.end())
-  {
-    // module already loaded
-    DBGPRINTF_BM("open_module_for_loader modid %s already loaded",
-                 modidbuf);
-    return true;
-  }
+    {
+      // module already loaded
+      DBGPRINTF_BM("open_module_for_loader modid %s already loaded",
+		   modidbuf);
+      return true;
+    }
   DBGBACKTRACEPRINTF_BM("open_module_for_loader before dlopen %s",
                         binmodpath.c_str());
   void*dlh = dlopen(binmodpath.c_str(), RTLD_NOW | RTLD_GLOBAL);
   if (!dlh)
-  {
-    WARNPRINTF_BM("module dlopen failure %s\n", dlerror());
-    return false;
-  }
+    {
+      WARNPRINTF_BM("module dlopen failure %s\n", dlerror());
+      return false;
+    }
   DBGPRINTF_BM("open_module_for_loader dlsym-ing module_id_BM in dlh@%p for %s",
                dlh, binmodpath.c_str());
   const char*modidad = (const char*)dlsym(dlh,"module_id_BM");
   if (!modidad || strcmp(modidad,modidbuf))
-  {
-    WARNPRINTF_BM("bad module_id_BM in %s : %s\n",
-                  binmodpath.c_str(), (modidad?"modid mismatch":dlerror()));
-    dlclose(dlh);
-    return false;
-  }
+    {
+      WARNPRINTF_BM("bad module_id_BM in %s : %s\n",
+		    binmodpath.c_str(), (modidad?"modid mismatch":dlerror()));
+      dlclose(dlh);
+      return false;
+    }
   objectval_tyBM* objmod = makeobjofid_BM(modid);
   if (!objmod)
-  {
-    WARNPRINTF_BM("no object for module %s\n", modidbuf);
-    dlclose(dlh);
-    return false;
-  }
+    {
+      WARNPRINTF_BM("no object for module %s\n", modidbuf);
+      dlclose(dlh);
+      return false;
+    }
   _.modulob = objmod;
   {
     char cwdbuf[128];
