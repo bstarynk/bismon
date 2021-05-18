@@ -444,7 +444,7 @@ objectcast_BM (const value_tyBM v)
 hash_tyBM
 objecthash_BM (const objectval_tyBM * pob)
 {
-  if (!isobject_BM ((const value_tyBM) pob))
+  if (!isobject_BM ((value_tyBM) pob))
     return 0;
   hash_tyBM h = ((typedhead_tyBM *) pob)->hash;
   ASSERT_BM (h > 0);

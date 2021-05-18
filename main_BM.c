@@ -343,6 +343,7 @@ set_project_name_bm (const gchar * optname __attribute__((unused)),     //
     }
   project_name_BM = g_strdup (val);
   INFOPRINTF_BM ("using Bismon project name %s", project_name_BM);
+  return TRUE;
 }                               /* end set_project_name_bm */
 
 
@@ -1438,7 +1439,7 @@ main (int argc, char **argv)
   initialize_predefined_objects_BM ();
   initialize_predefined_names_BM ();
   initialize_agenda_BM ();
-  GError *opterr = NULL;
+  // GError *opterr = NULL;
   DBGPRINTF_BM ("run_onion is %s (argc=%d)",
                 run_onion_BM ? "true" : "false", argc);
   ////
@@ -1677,7 +1678,8 @@ main (int argc, char **argv)
           {
             char cwdbuf[128];
             memset (cwdbuf, 0, sizeof (cwdbuf));
-            (void) getcwd (cwdbuf, sizeof (cwdbuf) - 1);
+            if (!getcwd (cwdbuf, sizeof (cwdbuf) - 1))
+              FATAL_BM ("getcwd failure - %m");
             INFOPRINTF_BM
               ("running ONION web interface for %d jobs or pthreads in %s - pid %d (git %s) - web-base %s",
                nbworkjobs_BM, cwdbuf, (int) getpid (), bismon_shortgitid,
@@ -1828,7 +1830,7 @@ initialize_contributors_path_BM (void)
   if (!contributors_filepath_BM)
     {
       char *path = NULL;
-      char *homepath = NULL;
+      const char *homepath = NULL;
       if (!access (CONTRIBUTORS_FILE_BM, R_OK))
         contributors_filepath_BM = CONTRIBUTORS_FILE_BM;
       else if ((homepath = bismon_home_BM ()) != NULL
@@ -1886,7 +1888,7 @@ initialize_passwords_path_BM (void)
   if (!passwords_filepath_BM)   // no --passwords-file program option
     {
       char *path = NULL;
-      char *homepath = NULL;
+      const char *homepath = NULL;
       if (!access (PASSWORDS_FILE_BM, R_OK))
         passwords_filepath_BM = PASSWORDS_FILE_BM;
       else if ((homepath = bismon_home_BM ()) != NULL
@@ -2092,9 +2094,7 @@ void
 parse_values_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob;
-                 value_tyBM parsedval;
-    );
+                 objectval_tyBM * parsob; value_tyBM parsedval;);
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("parsing %d values after load %s using parsob %s\n",
                  nb_parsed_values_after_load_bm, load_dir_bm,
@@ -2132,8 +2132,7 @@ run_testplugins_after_load_BM (void)
   double startcputime = cputime_BM ();
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM pluginamv;  //
-                 objectval_tyBM * pluginob;
-    );
+                 objectval_tyBM * pluginob;);
   // check sanity of test plugins
   static char cwdbuf[200];
   if (!getcwd (cwdbuf, sizeof (cwdbuf) - 1))
@@ -2249,9 +2248,8 @@ void
 init_afterload_bm ()
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob; value_tyBM parsedval;
-                 value_tyBM resval;
-    );
+                 objectval_tyBM * parsob;
+                 value_tyBM parsedval; value_tyBM resval;);
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("doing %d closures after load %s using parsob %s\n",
                  count_init_afterload_bm, load_dir_bm,
@@ -2298,8 +2296,7 @@ void
 add_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * userob;
-    );
+                 objectval_tyBM * userob;);
   ASSERT_BM (count_added_contributors_bm > 0);
   ASSERT_BM (added_contributors_arr_bm != NULL);
   INFOPRINTF_BM ("adding %d contributors after load",
@@ -2334,8 +2331,7 @@ void
 remove_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * oldcontribob;
-    );
+                 objectval_tyBM * oldcontribob;);
   ASSERT_BM (count_removed_contributors_bm > 0);
   INFOPRINTF_BM ("removing %d contributors after load",
                  count_removed_contributors_bm);
@@ -2370,8 +2366,7 @@ void
 add_passwords_from_file_BM (const char *addedpasspath)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * contribob;
-    );
+                 objectval_tyBM * contribob;);
   ASSERT_BM (addedpasspath != NULL);
   DBGPRINTF_BM ("add_passwords_from_file start addedpasspath %s",
                 addedpasspath);
@@ -2477,8 +2472,7 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM funv;       //
                  objectval_tyBM * funob;        //
-                 value_tyBM arg1v, arg2v, arg3v;
-                 value_tyBM resappv;    //
+                 value_tyBM arg1v, arg2v, arg3v; value_tyBM resappv;    //
                  value_tyBM failres;    //
                  value_tyBM failplace;  //
     );
@@ -2564,9 +2558,7 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
                                value_tyBM arg3)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obsel;
-                 value_tyBM recva, arg1v, arg2v, arg3v;
-                 value_tyBM failres;    //
+                 objectval_tyBM * obsel; value_tyBM recva, arg1v, arg2v, arg3v; value_tyBM failres;     //
                  value_tyBM failplace;  //
     );
   _.recva = recv;
@@ -2630,7 +2622,7 @@ do_test_mailhtml_bm (void)
   {
     rawid_tyBM contid = { 0, 0 };
     char *errmsg = NULL;
-    char *endc = NULL;
+    const char *endc = NULL;
     _.contribob = NULL;
     if (mailhtml_contributor_bm[0] == '_'
         &&
@@ -2670,8 +2662,10 @@ do_test_mailhtml_bm (void)
               objectdbg_BM (_.contribob));
   char *linbuf = NULL;
   char *dyncontrib = NULL;
-  asprintf (&dyncontrib, "%s (%s)", bytstring_BM (_.contnamev),
-            objectdbg_BM (_.contribob));
+  if (asprintf (&dyncontrib, "%s (%s)", bytstring_BM (_.contnamev),
+                objectdbg_BM (_.contribob)) < 0)
+    FATAL_BM ("asprintf failure for contributor %s - %m",
+              mailhtml_contributor_bm);
   size_t linsiz = 0;
   do
     {
