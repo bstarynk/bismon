@@ -107,9 +107,11 @@ plugin_init (struct plugin_name_args *plugin_info,
   inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin built " __DATE__ " on " __TIME__ " process %d"
 #ifdef PLUGINGITID
          " (gitid " PLUGINGITID ")"
+#else
+	 " without PLUGINGITID"
 #endif
-         " (l@%d)",
-         (int) getpid(), __LINE__);
+         " (%s:%d)",
+         (int) getpid(), __FILE__, __LINE__);
 
 
   return 0;
