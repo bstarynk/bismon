@@ -220,26 +220,59 @@ jansjson_add_to_json_object_bm (json_t * objs, value_tyBM val, value_tyBM src,
 json_t *
 jansjsonifyobject_BM (objectval_tyBM * obj, struct stackframe_stBM *stkf)
 {
-}
+  ASSERT_BM(stkf != NULL);
+  WARNPRINTF_BM("unimplemented jansjsonifyobject_BM for obj %s",
+		objectdbg_BM(obj));
+  return NULL;
+#warning unimplemented jansjsonifyobject_BM
+} /* end jansjsonifyobject_BM */
 
 json_t *
 jansjsonifyvalue_BM (value_tyBM val, value_tyBM src,
                      value_tyBM ctx, int depth, struct stackframe_stBM *stkf)
 {
-}
+  ASSERT_BM(stkf != NULL);
+  LOCALFRAME_BM(stkf, /*descr:*/NULL,
+		);
+  WARNPRINTF_BM("unimplemented jansjsonifyvalue_BM for val: %s src: %s ctx: %s depth#%d",
+		OUTSTRVALUE_BM(val),//
+		OUTSTRVALUE_BM(src),//
+		OUTSTRVALUE_BM(ctx),//
+		depth);
+  return NULL;
+#warning unimplemented jansjsonifyvalue_BM
+} /* end jansjsonifyvalue_BM*/
 
 json_t *
 jansjsonifynode_BM (value_tyBM val, value_tyBM src,
                     value_tyBM ctx, int depth, struct stackframe_stBM *stkf)
 {
-}
+  LOCALFRAME_BM(stkf, /*descr:*/NULL,
+		);
+  WARNPRINTF_BM("unimplemented jansjsonifynode_BM for val: %s src: %s ctx: %s depth#%d",
+		OUTSTRVALUE_BM(val),//
+		OUTSTRVALUE_BM(src),//
+		OUTSTRVALUE_BM(ctx),//
+		depth);
+  return NULL;
+#warning unimplemented jansjsonifynode_BM
+} /* end jansjsonifynode_BM */
 
 json_t *
 jansjsonifyclosure_BM (value_tyBM val, value_tyBM src,
                        value_tyBM ctx, int depth,
                        struct stackframe_stBM *stkf)
 {
-}
+  LOCALFRAME_BM(stkf, /*descr:*/NULL,
+		);
+  WARNPRINTF_BM("unimplemented jansjsonifyclosure_BM for val: %s src: %s ctx: %s depth#%d",
+		OUTSTRVALUE_BM(val),//
+		OUTSTRVALUE_BM(src),//
+		OUTSTRVALUE_BM(ctx),//
+		depth);
+  return NULL;
+#warning unimplemented jansjsonifyclosure_BM
+} /* end jansjsonifyclosure_BM*/
 
 #define MAXDEPTHJSON_BM 96
 json_t *
