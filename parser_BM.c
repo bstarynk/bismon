@@ -324,8 +324,7 @@ parsererrorprintf_BM (struct parser_stBM *pars, struct stackframe_stBM *stkf,
   va_list args;
   char *buf = NULL;
   va_start (args, fmt);
-  vasprintf (&buf, fmt, args);
-  if (!buf)
+  if (vasprintf (&buf, fmt, args) < 0 || !buf)
     FATAL_BM ("vasprintf failed format %s", fmt);
   va_end (args);
   const struct parserops_stBM *parsops = pars->pars_ops;
@@ -349,8 +348,7 @@ objparserrorprintf_BM (objectval_tyBM * obpars, struct stackframe_stBM *stkf,
   va_list args;
   char *buf = NULL;
   va_start (args, fmt);
-  vasprintf (&buf, fmt, args);
-  if (!buf)
+  if (vasprintf (&buf, fmt, args) < 0 || !buf)
     FATAL_BM ("vasprintf failed format %s", fmt);
   va_end (args);
   struct parser_stBM *pars = objparserpayload_BM (obpars);
