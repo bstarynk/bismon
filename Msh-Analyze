@@ -171,10 +171,12 @@ for src in $BISMON_MSH_SOURCE/src/*.c ; do
     ## plugin arguments should be passed with -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-<argname>
     echo "#§ " $BISMON_GCC -v -fplugin="$BISMON_GCC_PLUGIN" \
 	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-url=$BISMON_WEB_BASE \
+	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-pid=$BISMON_PID \
 	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-project=$BISMON_MSH_PROJECT \
 	 -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
     time $BISMON_GCC -v -fplugin="$BISMON_GCC_PLUGIN" \
 	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-url=$BISMON_WEB_BASE \
+	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-pid=$BISMON_PID \
 	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-project=$BISMON_MSH_PROJECT \
 	 -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
     echo
