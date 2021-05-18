@@ -497,7 +497,7 @@ objnbcomps_BM (const objectval_tyBM * obj)
 value_tyBM *
 objcompdata_BM (const objectval_tyBM * obj)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return NULL;
   if (!obj->ob_compvec)
     return NULL;
@@ -508,7 +508,7 @@ objcompdata_BM (const objectval_tyBM * obj)
 const setval_tyBM *
 objsetattrs_BM (const objectval_tyBM * obj)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return NULL;
   if (!obj->ob_attrassoc)
     return NULL;
@@ -519,7 +519,7 @@ objsetattrs_BM (const objectval_tyBM * obj)
 value_tyBM
 objgetcomp_BM (const objectval_tyBM * obj, int rk)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return NULL;
   if (!obj->ob_compvec)
     return NULL;
@@ -529,7 +529,7 @@ objgetcomp_BM (const objectval_tyBM * obj, int rk)
 value_tyBM
 objlastcomp_BM (const objectval_tyBM * obj)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return NULL;
   if (!obj->ob_compvec)
     return NULL;
@@ -539,7 +539,7 @@ objlastcomp_BM (const objectval_tyBM * obj)
 void
 objputcomp_BM (objectval_tyBM * obj, int rk, const value_tyBM valcomp)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return;
   if (!obj->ob_compvec)
     return;
@@ -551,7 +551,7 @@ objputcomp_BM (objectval_tyBM * obj, int rk, const value_tyBM valcomp)
 void
 objpoplastcomp_BM (objectval_tyBM * obj)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return;
   if (!obj->ob_compvec)
     return;
@@ -561,7 +561,7 @@ objpoplastcomp_BM (objectval_tyBM * obj)
 void
 objreservecomps_BM (objectval_tyBM * obj, unsigned gap)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return;
   obj->ob_compvec = datavect_reserve_BM (obj->ob_compvec, gap);
 }                               /* end objreservecomps_BM */
@@ -569,7 +569,7 @@ objreservecomps_BM (objectval_tyBM * obj, unsigned gap)
 void
 objremoveonecomp_BM (objectval_tyBM * obj, int rk)
 {
-  if (!isobject_BM ((const value_tyBM) obj) || !obj->ob_compvec)
+  if (!isobject_BM ((value_tyBM) obj) || !obj->ob_compvec)
     return;
   obj->ob_compvec = datavect_removeone_BM (obj->ob_compvec, rk);
 }                               /* end objremoveonecomp_BM */
@@ -577,7 +577,7 @@ objremoveonecomp_BM (objectval_tyBM * obj, int rk)
 void
 objinsertonecomp_BM (objectval_tyBM * obj, int rk, const value_tyBM compval)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return;
   obj->ob_compvec = datavect_insertone_BM (obj->ob_compvec, rk, compval);
 }                               /* end objinsertonecomp_BM */
@@ -585,7 +585,7 @@ objinsertonecomp_BM (objectval_tyBM * obj, int rk, const value_tyBM compval)
 void
 objresetcomps_BM (objectval_tyBM * obj, unsigned len)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return;
   obj->ob_compvec = datavect_reserve_BM (NULL, len);
 }                               /* end objresetcomps_BM */
@@ -594,7 +594,7 @@ objresetcomps_BM (objectval_tyBM * obj, unsigned len)
 void
 objappendcomp_BM (objectval_tyBM * obj, value_tyBM compval)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return;
   if (compval && !isgenuineval_BM (compval))
     return;
@@ -605,7 +605,7 @@ objappendcomp_BM (objectval_tyBM * obj, value_tyBM compval)
 void
 objgrowcomps_BM (objectval_tyBM * obj, unsigned gap)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return;
   obj->ob_compvec = datavect_grow_BM (obj->ob_compvec, gap);
 }                               /* end objgrowcomps_BM */
@@ -613,7 +613,7 @@ objgrowcomps_BM (objectval_tyBM * obj, unsigned gap)
 extendedval_tyBM
 objpayload_BM (const objectval_tyBM * obj)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return NULL;
   return obj->ob_payl;
 }                               /* end objpayload_BM */
@@ -622,7 +622,7 @@ objpayload_BM (const objectval_tyBM * obj)
 void
 objclearpayload_BM (objectval_tyBM * obj)
 {
-  if (!isobject_BM ((const value_tyBM) obj) || obj == BMP_contributors)
+  if (!isobject_BM ((value_tyBM) obj) || obj == BMP_contributors)
     return;
   extendedval_tyBM payl = obj->ob_payl;
   if (!payl)
@@ -634,7 +634,7 @@ objclearpayload_BM (objectval_tyBM * obj)
 void
 objputpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
 {
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return;
   extendedval_tyBM oldpayl = obj->ob_payl;
   if (oldpayl == payl)
@@ -651,7 +651,7 @@ objhasclassinfo_BM (const objectval_tyBM * obj)
   extendedval_tyBM payl = objpayload_BM (obj);
   if (!payl)
     return false;
-  return (valtype_BM ((const value_tyBM) payl) == typayl_classinfo_BM);
+  return (valtype_BM ((value_tyBM) payl) == typayl_classinfo_BM);
 }                               /* end objhasclassinfo_BM */
 
 objectval_tyBM *
@@ -661,9 +661,9 @@ objgetclassinfosuperclass_BM (const objectval_tyBM * obj)
     return NULL;
   struct classinfo_stBM *clinf =        //
     (struct classinfo_stBM *) (obj->ob_payl);
-  ASSERT_BM (valtype_BM ((const value_tyBM) clinf) == typayl_classinfo_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) clinf) == typayl_classinfo_BM);
   objectval_tyBM *superob = clinf->clinf_superclass;
-  ASSERT_BM (!superob || isobject_BM ((const value_tyBM) superob));
+  ASSERT_BM (!superob || isobject_BM ((value_tyBM) superob));
   return superob;
 }                               /* end objgetclassinfosuperclass_BM */
 
@@ -673,7 +673,7 @@ objectisinstance_BM (const objectval_tyBM * obj,
 {
   if (!objhasclassinfo_BM (obclass))
     return false;
-  if (!isobject_BM ((const value_tyBM) obj))
+  if (!isobject_BM ((value_tyBM) obj))
     return false;
   return objclassinfoissubclass_BM (objclass_BM (obj), obclass);
 }                               /* end objectisinstance_BM */
@@ -684,15 +684,15 @@ objgetclassinfomethod_BM (const objectval_tyBM * obj,
 {
   if (!objhasclassinfo_BM (obj))
     return NULL;
-  if (!isobject_BM ((const value_tyBM) obselector))
+  if (!isobject_BM ((value_tyBM) obselector))
     return NULL;
   struct classinfo_stBM *clinf =        //
     (struct classinfo_stBM *) (obj->ob_payl);
-  ASSERT_BM (valtype_BM ((const value_tyBM) clinf) == typayl_classinfo_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) clinf) == typayl_classinfo_BM);
   const closure_tyBM *clos = (const closure_tyBM *)     //
     assoc_getattr_BM (clinf->clinf_dictmeth,
                       obselector);
-  ASSERT_BM (!clos || isclosure_BM ((const value_tyBM) clos));
+  ASSERT_BM (!clos || isclosure_BM ((value_tyBM) clos));
   return clos;
 }                               /* end objgetclassinfomethod_BM */
 
@@ -703,10 +703,10 @@ objgetclassinfosetofselectors_BM (const objectval_tyBM * obj)
     return NULL;
   struct classinfo_stBM *clinf =        //
     (struct classinfo_stBM *) (obj->ob_payl);
-  ASSERT_BM (valtype_BM ((const value_tyBM) clinf) == typayl_classinfo_BM);
+  ASSERT_BM (valtype_BM ((value_tyBM) clinf) == typayl_classinfo_BM);
   const setval_tyBM *set =      //
     assoc_setattrs_BM (clinf->clinf_dictmeth);
-  ASSERT_BM (!set || valtype_BM ((const value_tyBM) set) == tySet_BM);
+  ASSERT_BM (!set || valtype_BM ((value_tyBM) set) == tySet_BM);
   return set;
 }                               /* end objgetclassinfosetofselectors_BM */
 
@@ -717,7 +717,7 @@ objhasstrbufferpayl_BM (const objectval_tyBM * obj)
   extendedval_tyBM payl = objpayload_BM (obj);
   if (!payl)
     return false;
-  int pt = valtype_BM ((const value_tyBM) payl);
+  int pt = valtype_BM ((value_tyBM) payl);
   return (pt == typayl_strbuffer_BM || pt == typayl_webexchange_BM);
 }                               /* end objhasstrbuffer_BM */
 
@@ -729,7 +729,7 @@ objgetstrbufferpayl_BM (objectval_tyBM * obj)
   extendedval_tyBM payl = objpayload_BM (obj);
   if (!payl)
     return NULL;
-  int pt = valtype_BM ((const value_tyBM) payl);
+  int pt = valtype_BM ((value_tyBM) payl);
   if (pt == typayl_strbuffer_BM || pt == typayl_webexchange_BM)
     return (struct strbuffer_stBM *) payl;
   return NULL;
@@ -768,8 +768,8 @@ objectnamedcmp_BM (const objectval_tyBM * ob1, const objectval_tyBM * ob2)
     return -1;
   if (!ob2)
     return +1;
-  ASSERT_BM (isobject_BM ((const value_tyBM) ob1));
-  ASSERT_BM (isobject_BM ((const value_tyBM) ob2));
+  ASSERT_BM (isobject_BM ((value_tyBM) ob1));
+  ASSERT_BM (isobject_BM ((value_tyBM) ob2));
   const char *n1 = findobjectname_BM (ob1);
   const char *n2 = findobjectname_BM (ob2);
   if (n1 && n2)
@@ -904,7 +904,7 @@ objassocreorganizepayl_BM (objectval_tyBM * obj, unsigned gap)
 unsigned
 datavectlen_BM (const struct datavectval_stBM *dvec)
 {
-  if (valtype_BM ((const value_tyBM) dvec) != typayl_vectval_BM)
+  if (valtype_BM ((value_tyBM) dvec) != typayl_vectval_BM)
     return 0;
   return ((typedsize_tyBM *) dvec)->size;
 }                               /* end datavectlen_BM */
@@ -912,7 +912,7 @@ datavectlen_BM (const struct datavectval_stBM *dvec)
 const value_tyBM *
 datavectdata_BM (const struct datavectval_stBM *dvec)
 {
-  if (valtype_BM ((const value_tyBM) dvec) != typayl_vectval_BM)
+  if (valtype_BM ((value_tyBM) dvec) != typayl_vectval_BM)
     return NULL;
   return dvec->vec_data;
 }                               /* end datavectdata_BM */
@@ -1117,7 +1117,7 @@ objdatavecttotuplepayl_BM (objectval_tyBM * obj)
 unsigned
 decayedvectlen_BM (const struct decayedvectpayl_stBM *dvec)
 {
-  if (valtype_BM ((const value_tyBM) dvec) != typayl_decayed_BM)
+  if (valtype_BM ((value_tyBM) dvec) != typayl_decayed_BM)
     return 0;
   if (dvec->decayp_limitime < elapsedtime_BM ())
     return 0;
@@ -1127,7 +1127,7 @@ decayedvectlen_BM (const struct decayedvectpayl_stBM *dvec)
 unsigned
 decayedvectallocsize_BM (const struct decayedvectpayl_stBM *dvec)
 {
-  if (valtype_BM ((const value_tyBM) dvec) != typayl_decayed_BM)
+  if (valtype_BM ((value_tyBM) dvec) != typayl_decayed_BM)
     return 0;
   return DECAYEDVECTOR_ASIZ_bm (dvec);
 }                               /* end decayedvectallocsize_BM */
@@ -1142,7 +1142,7 @@ isdecayedvect_BM (const value_tyBM v)
 const value_tyBM *
 decayedvectdata_BM (const struct decayedvectpayl_stBM *dvec)
 {
-  if (valtype_BM ((const value_tyBM) dvec) != typayl_decayed_BM)
+  if (valtype_BM ((value_tyBM) dvec) != typayl_decayed_BM)
     return NULL;
   if (dvec->decayp_limitime < elapsedtime_BM ())
     return NULL;
@@ -1152,7 +1152,7 @@ decayedvectdata_BM (const struct decayedvectpayl_stBM *dvec)
 double
 decayedvectlimitime_BM (const struct decayedvectpayl_stBM *dvec)
 {
-  if (valtype_BM ((const value_tyBM) dvec) != typayl_decayed_BM)
+  if (valtype_BM ((value_tyBM) dvec) != typayl_decayed_BM)
     return 0;
   return dvec->decayp_limitime;
 }                               /* end decayedvectlimitime_BM */
@@ -1333,9 +1333,9 @@ setcast_BM (const value_tyBM v)
 bool
 setcontains_BM (const setval_tyBM * setv, const objectval_tyBM * obelem)
 {
-  if (!isset_BM ((const value_tyBM) setv))
+  if (!isset_BM ((value_tyBM) setv))
     return false;
-  if (!isobject_BM ((const value_tyBM) obelem))
+  if (!isobject_BM ((value_tyBM) obelem))
     return false;
   return setelemindex_BM (setv, obelem) >= 0;
 }                               /* end setcontains_BM */
@@ -1403,7 +1403,7 @@ getdouble_BM (const value_tyBM v)
 struct hashsetobj_stBM *
 hashsetobjcast_BM (const value_tyBM v)
 {
-  if (valtype_BM ((const value_tyBM) v) != typayl_hashsetobj_BM)
+  if (valtype_BM ((value_tyBM) v) != typayl_hashsetobj_BM)
     return NULL;
   return (struct hashsetobj_stBM *) v;
 }                               /* end hashsetobjcast_BM */
@@ -1411,7 +1411,7 @@ hashsetobjcast_BM (const value_tyBM v)
 unsigned
 hashsetobj_cardinal_BM (struct hashsetobj_stBM *hset)
 {
-  if (valtype_BM ((const value_tyBM) hset) != typayl_hashsetobj_BM)
+  if (valtype_BM ((value_tyBM) hset) != typayl_hashsetobj_BM)
     return 0;
   return ((typedsize_tyBM *) hset)->size;
 }                               /* end hashsetobj_cardinal_BM */
@@ -1561,7 +1561,7 @@ islist_BM (const value_tyBM v)
 value_tyBM
 listfirst_BM (const struct listtop_stBM *lis)
 {
-  if (!islist_BM ((const value_tyBM) lis))
+  if (!islist_BM ((value_tyBM) lis))
     return NULL;
   struct listlink_stBM *firstl = lis->list_first;
   if (!firstl)
@@ -1579,7 +1579,7 @@ listfirst_BM (const struct listtop_stBM *lis)
 value_tyBM
 listlast_BM (const struct listtop_stBM *lis)
 {
-  if (!islist_BM ((const value_tyBM) lis))
+  if (!islist_BM ((value_tyBM) lis))
     return NULL;
   struct listlink_stBM *lastl = lis->list_last;
   if (!lastl)
@@ -2036,7 +2036,7 @@ objparserpayload_BM (objectval_tyBM * obj)
 unsigned
 parserlineno_BM (const struct parser_stBM *pars)
 {
-  if (isparser_BM ((const value_tyBM) pars))
+  if (isparser_BM ((value_tyBM) pars))
     return pars->pars_lineno;
   return 0;
 }                               /* end parserlineno_BM */
@@ -2044,7 +2044,7 @@ parserlineno_BM (const struct parser_stBM *pars)
 unsigned
 parsercolpos_BM (const struct parser_stBM *pars)
 {
-  if (isparser_BM ((const value_tyBM) pars))
+  if (isparser_BM ((value_tyBM) pars))
     return pars->pars_colpos;
   return 0;
 }                               /* end parsercolpos_BM */
@@ -2052,7 +2052,7 @@ parsercolpos_BM (const struct parser_stBM *pars)
 const char *
 parserrestline_BM (const struct parser_stBM *pars)
 {
-  if (!isparser_BM ((const value_tyBM) pars))
+  if (!isparser_BM ((value_tyBM) pars))
     return NULL;
   if (!pars->pars_linebuf)
     return NULL;
@@ -2069,7 +2069,7 @@ parserrestline_BM (const struct parser_stBM *pars)
 gunichar
 parserunichar_BM (const struct parser_stBM *pars)
 {
-  if (!isparser_BM ((const value_tyBM) pars))
+  if (!isparser_BM ((value_tyBM) pars))
     return 0;
   if (!pars->pars_linebuf)
     return 0;
@@ -2083,7 +2083,7 @@ parserunichar_BM (const struct parser_stBM *pars)
 bool
 parsereol_BM (const struct parser_stBM *pars)
 {
-  if (!isparser_BM ((const value_tyBM) pars))
+  if (!isparser_BM ((value_tyBM) pars))
     return false;
   if (!pars->pars_linebuf)
     return true;
