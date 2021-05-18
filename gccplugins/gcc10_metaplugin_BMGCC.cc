@@ -27,6 +27,7 @@
 
 int plugin_is_GPL_compatible;
 
+pid_t bismon_pid_BMPCC;
 
 const pass_data BMP_gimple_pass_data =
 {
@@ -129,6 +130,7 @@ std::string bismon_cookie_file_BMPCC;
 static void handle_bismon_url_arg_BMPCC(const char*);
 static void handle_bismon_project_arg_BMPCC(const char*);
 static void handle_bismon_cookie_file_BMPCC(const char*);
+static void handle_bismon_pid_BMPCC(const char*);
 
 const pluginarg_handler_BMPCC
 pluginargsarr_BMPCC[] =
@@ -151,6 +153,12 @@ pluginargsarr_BMPCC[] =
     .parg_handler= handle_bismon_cookie_file_BMPCC,
     .parg_help="gives some HTTP cookie file written by Bismon"
   },
+  /// bismon-pid= <some-pid> # e.g. bismon-cookie-file=/tmp/bismoncookie
+  {
+    .parg_name="bismon-pid",
+    .parg_handler= handle_bismon_pid_BMPCC,
+    .parg_help="gives the pid of the process running Bismon"
+  },
   ///
   { .parg_name=nullptr, .parg_handler=nullptr, .parg_help=nullptr }
 };
@@ -164,6 +172,24 @@ handle_bismon_url_arg_BMPCC(const char*argval) {
   if (argval)
     bismon_url_prefix_BMPCC.assign(argval);
 } // end handle_bismon_url_arg_BMPCC
+
+void
+handle_bismon_pid_BMPCC(const char*argval) {
+  if (!bismon_pid_BMPCC > 0 && argval) {
+    error("bismon-pid plugin argument given twice: %d and %s",
+          (int) bismon_pid_BMPCC, argval);
+  }
+  if (argval) {
+    int pi = atoi(argval);
+    if (pi>1) {
+      if (kill((pid_t)pi, 0))
+	error("bismon-pid plugin argument %d is not running (%s)", pi, strerror(errno));
+      bismon_pid_BMPCC = pi;
+    }
+    else
+      error("invalid bismon-pid plugin argument: %qs", argval);
+  };
+} // end handle_bismon_pid_BMPCC
 
 void
 handle_bismon_project_arg_BMPCC(const char*argval) {
@@ -245,7 +271,12 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
     char thishostname[80];
     memset (thishostname, 0, sizeof(thishostname));
     gethostname(thishostname, sizeof(thishostname)-1);
-    inform(UNKNOWN_LOCATION, "Bismon plugin %qs initialized (%s:%d) - version %qs pid %d on %s", plugin_name, __FILE__, __LINE__,
+    if (bismon_pid_BMPCC>0)
+      inform(UNKNOWN_LOCATION, "Bismon plugin %qs (%s:%d) with Bismon pid %d",
+	     plugin_name, __FILE__, __LINE__, (int)bismon_pid_BMPCC);
+    inform(UNKNOWN_LOCATION,
+	   "Bismon plugin %qs initialized (%s:%d) - version %qs pid %d on %s",
+	   plugin_name, __FILE__, __LINE__,
 	   versbuf, (int)getpid(), thishostname);
   }
   /// register some GCC plugin events
@@ -273,7 +304,7 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
 /****************
  **                           for Emacs...
  ** Local Variables: ;;
- ** compile-command: "./build-gcc10_metaplugin.sh" ;;
+ ** compile-command: "./build-gcc10-metaplugin.sh" ;;
  ** End: ;;
  ****************/
 ////// end of file bismon/gccplugins/gcc10_metaplugin_BMGCC.cc

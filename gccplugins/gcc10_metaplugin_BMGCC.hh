@@ -87,7 +87,7 @@ extern "C" int plugin_is_GPL_compatible;
 extern "C" std::string bismon_url_prefix_BMPCC;
 extern "C" std::string bismon_project_BMPCC;
 extern "C" std::string bismon_cookie_file_BMPCC;
-
+extern "C" pid_t bismon_pid_BMPCC;
 
 
 extern "C" const pass_data BMP_gimple_pass_data;
