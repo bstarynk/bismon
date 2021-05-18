@@ -155,8 +155,15 @@ echo '#° ./bismon' $bismon_msh_args
 ## start a fresh bismon
 ./bismon $bismon_msh_args &
 
+export BISMON_PID=$!
+
 sleep 0.8
 
+printf "\n%s: Bismon pid is %s\n" $0 $BISMON_PID
+
+ps $BISMON_PID
+
+sleep 0.2
 
 for src in $BISMON_MSH_SOURCE/src/*.c ; do
     sleep 0.2
@@ -174,7 +181,7 @@ for src in $BISMON_MSH_SOURCE/src/*.c ; do
     sleep 0.1
 done
 
-kill -TERM $(cat /tmp/_bismon_msh.pid)
+kill -TERM $BISMON_PID
 
 sleep 0.5
 
