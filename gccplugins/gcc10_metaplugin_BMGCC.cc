@@ -177,7 +177,7 @@ handle_bismon_url_arg_BMPCC(const char*argval) {
 
 void
 handle_bismon_pid_BMPCC(const char*argval) {
-  if (!bismon_pid_BMPCC > 0 && argval) {
+  if (bismon_pid_BMPCC > 0 && argval) {
     error("bismon-pid plugin argument given twice: %d and %s",
           (int) bismon_pid_BMPCC, argval);
   }
