@@ -1,5 +1,5 @@
 #!/bin/bash
-## FIXME: this should probably becaome a GNU guile script
+## FIXME: this should probably become a GNU guile script
 
 ##   BISMON  ---- simple analysis of the Msh shell
 ##   Copyright ©  2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
@@ -179,6 +179,10 @@ for src in $BISMON_MSH_SOURCE/src/*.c ; do
 	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-pid=$BISMON_PID \
 	 -fplugin-arg-$BISMON_GCC_NAME_PLUGIN-bismon-project=$BISMON_MSH_PROJECT \
 	 -Wall -Wextra  -std=gnu11 -g -O -c -c -I$BISMON_MSH_SOURCE  $src
+    if [ $? -gt 0 ]; then
+	printf "\n%s: failed to compile %s with BISMON_GCC=%s\n" $0 $src $BISMON_GCC > /dev/stderr
+	exit 1
+    fi
     echo
     sleep 0.1
 done
