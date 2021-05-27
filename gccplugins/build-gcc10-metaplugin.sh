@@ -61,7 +61,7 @@ if [ -n "$BISMON_PLUGIN_ASMOUT" ]; then
 	       -DPLUGINGITID=\"$SHORTGITID\" \
 	       gcc10_metaplugin_BMGCC.cc \
                $(pkg-config --cflags --libs jsoncpp curlpp) \
-	       -S -fverbose-asm -o $BISMON_PLUGIN_ASMOUT
+	       -S -fverbose-asm -o "$BISMON_PLUGIN_ASMOUT"
 fi
 
 $PLUGINGXX -Wall -Wextra -O1 -g3 \
