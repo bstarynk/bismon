@@ -185,7 +185,7 @@ handle_bismon_pid_BMPCC(const char*argval) {
     int pi = atoi(argval);
     if (pi>1) {
       if (kill((pid_t)pi, 0))
-	error("bismon-pid plugin argument %d is not running (%s)", pi, strerror(errno));
+	error("bismon-pid plugin argument %d is not running (%s)", pi, xstrerror(errno));
       bismon_pid_BMPCC = pi;
     }
     else
