@@ -51,6 +51,19 @@ SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 ### C++ code for collecting the gimples
 ### document the JSONCPP protocols between GCC & Bismon
 ### finish event to interact with Bismon
+
+
+### in rare cases, we also want the assembler file of the plugin (e.g. to debug some dlerror in it)
+if [ -n "$BISMON_PLUGIN_ASMOUT" ]; then
+    $PLUGINGXX -Wall -Wextra -O1 -g3 \
+	       -I $TARGETPLUGINDIR/include/ \
+	       -shared -fno-rtti -fPIC -rdynamic \
+	       -DPLUGINGITID=\"$SHORTGITID\" \
+	       gcc10_metaplugin_BMGCC.cc \
+               $(pkg-config --cflags --libs jsoncpp curlpp) \
+	       -S -fverbose-asm -o $BISMON_PLUGIN_ASMOUT
+fi
+
 $PLUGINGXX -Wall -Wextra -O1 -g3 \
 	   -I $TARGETPLUGINDIR/include/ \
 	   -shared -fno-rtti -fPIC -rdynamic \
