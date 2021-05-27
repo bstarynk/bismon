@@ -52,7 +52,7 @@ SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 ### document the JSONCPP protocols between GCC & Bismon
 ### finish event to interact with Bismon
 $PLUGINGXX -Wall -Wextra -O1 -g3 \
-	   -I $($TARGETGCC -print-file-name=plugin)/include/ \
+	   -I $TARGETPLUGINDIR/include/ \
 	   -shared -fno-rtti -fPIC -rdynamic \
 	   -DPLUGINGITID=\"$SHORTGITID\" \
 	   gcc10_metaplugin_BMGCC.cc \
