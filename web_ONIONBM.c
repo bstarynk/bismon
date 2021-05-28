@@ -3638,6 +3638,7 @@ initialize_webonion_BM (void)
   sigemptyset (&mysigset);
   sigaddset (&mysigset, SIGTERM);
   sigaddset (&mysigset, SIGQUIT);
+  sigaddset (&mysigset, SIGINT);
   sigaddset (&mysigset, SIGCHLD);
   if (sigprocmask (SIG_BLOCK, &mysigset, NULL) == -1)
     FATAL_BM ("initialize_webonion: sigprocmask mysigset failure");
@@ -3843,8 +3844,9 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
   switch (siginf.ssi_signo)
     {
     case SIGTERM:
+    case SIGINT:
       {
-        DBGPRINTF_BM ("read_sigfd_BM got SIGTERM");
+        DBGPRINTF_BM ("read_sigfd_BM got %s", strsignal(siginf.ssi_signo));
         stop_agenda_work_threads_BM ();
         /// forcibly remove the payload of the_web_sessions. Its payload
         /// should not be dumped, because of its class, but anyway...
@@ -3855,8 +3857,10 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
         }
         char *rp = realpath (dump_dir_BM ? : ".", NULL);
         INFOPRINTF_BM
-          ("before dumping final state into %s (really %s) after SIGTERM to process %d, elapsed %.3f s",
-           dump_dir_BM, rp, (int) getpid (), elapsedtime_BM ());
+          ("before dumping final state into %s (really %s) after signal %s to process %d, elapsed %.3f s",
+           dump_dir_BM, rp,
+	   strsignal(siginf.ssi_signo), 
+	   (int) getpid (), elapsedtime_BM ());
         free (rp), rp = NULL;
         struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
         INFOPRINTF_BM
