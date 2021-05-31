@@ -1499,10 +1499,13 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
     LOCALRETURN_BM (_.stmtob);
   else
     {
-      DBGPRINTF_BM
-        ("miniscan_stmt°basiclo_assign stmtob=%s type mismatch srctypob=%s vartypob=%s",
+      WARNPRINTF_BM
+        ("miniscan_stmt°basiclo_assign stmtob=%s type mismatch srctypob=%s vartypob=%s\n... destob=%s srcexpv=%s fromblockob=%s",
          objectdbg_BM (_.stmtob), objectdbg1_BM (_.srctypob),
-         objectdbg2_BM (_.vartypob));
+         objectdbg2_BM (_.vartypob),
+	 objectdbg3_BM (_.destob),
+	 debug_outstr_value_BM (_.srcexpv, CURFRAME_BM, 0),
+	 objectdbg4_BM(_.fromblockob));
 
       _.failv = (value_tyBM)
         makenode4_BM (k_miniscan_stmt, k_failure_type_error, _.stmtob,
