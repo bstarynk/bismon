@@ -1505,7 +1505,7 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
          objectdbg2_BM (_.vartypob),
 	 objectdbg3_BM (_.destob),
 	 debug_outstr_value_BM (_.srcexpv, CURFRAME_BM, 0),
-	 objectdbg4_BM(_.fromblockob), objectdbg5_BM(_f.routprepob));
+	 objectdbg4_BM(_.fromblockob), objectdbg5_BM(_.routprepob));
 
       _.failv = (value_tyBM)
         makenode4_BM (k_miniscan_stmt, k_failure_type_error, _.stmtob,
