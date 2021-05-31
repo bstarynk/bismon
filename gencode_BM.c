@@ -1500,12 +1500,12 @@ ROUTINEOBJNAME_BM (_7LNRlilrowp_0GG6ZLUFovu)    //miniscan_stmt°basiclo_assign
   else
     {
       WARNPRINTF_BM
-        ("miniscan_stmt°basiclo_assign stmtob=%s type mismatch srctypob=%s vartypob=%s\n... destob=%s srcexpv=%s fromblockob=%s",
+        ("miniscan_stmt°basiclo_assign stmtob=%s type mismatch srctypob=%s vartypob=%s\n... destob=%s srcexpv=%s fromblockob=%s routprepob=%s",
          objectdbg_BM (_.stmtob), objectdbg1_BM (_.srctypob),
          objectdbg2_BM (_.vartypob),
 	 objectdbg3_BM (_.destob),
 	 debug_outstr_value_BM (_.srcexpv, CURFRAME_BM, 0),
-	 objectdbg4_BM(_.fromblockob));
+	 objectdbg4_BM(_.fromblockob), objectdbg5_BM(_f.routprepob));
 
       _.failv = (value_tyBM)
         makenode4_BM (k_miniscan_stmt, k_failure_type_error, _.stmtob,
