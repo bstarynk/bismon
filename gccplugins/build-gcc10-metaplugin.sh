@@ -55,6 +55,9 @@ SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 
 ### in rare cases, we also want the assembler file of the plugin (e.g. to debug some dlerror in it)
 if [ -n "$BISMON_PLUGIN_ASMOUT" ]; then
+    if [ -f "$BISMON_PLUGIN_ASMOUT" ]; then
+	/bin/mv  "$BISMON_PLUGIN_ASMOUT"  "$BISMON_PLUGIN_ASMOUT"~
+    fi
     $PLUGINGXX -Wall -Wextra -O1 -g3 \
 	       -I $TARGETPLUGINDIR/include/ \
 	       -shared -fno-rtti -fPIC -rdynamic \
