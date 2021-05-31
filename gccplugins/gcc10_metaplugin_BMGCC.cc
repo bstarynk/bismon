@@ -296,7 +296,7 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
  {
 #warning BMP_start_unit_handler is uncomplete
    assert(userdata == nullptr);
-   warning(UNKNOWN_LOCATION, "incomplete handling of PLUGIN_START_UNIT in %s:%d", __FILE__, __LINE__);
+   warning(UNKNOWN_LOCATION, "incomplete handling of °Plugin_Start_Unit event in %s:%d", __FILE__, __LINE__);
    /****
     * TODO: code some curlpp request to Bismon
     ****/
