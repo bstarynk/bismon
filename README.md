@@ -167,8 +167,9 @@ interface](https://en.wikipedia.org/wiki/Command-line_interface), and
 [unix shells](https://en.wikipedia.org/wiki/Unix_shell) such as [GNU
 bash](https://www.gnu.org/software/bash/) or
 [zsh](http://zsh.org/). You should be able and allowed to compile [GCC
-10](https://gcc.gnu.org/gcc-10/) from its [source
-code](https://en.wikipedia.org/wiki/Source_code) and familiar with
+10](https://gcc.gnu.org/gcc-10/) or preferably even 
+[GCC 11](https://gcc.gnu.org/gcc-11/) from its 
+[source code](https://en.wikipedia.org/wiki/Source_code) and familiar with
 source code editors such as [GNU
 emacs](https://www.gnu.org/software/emacs/), [vim](https://vim.org/),
 [geany](https://www.geany.org/) etc... You enjoyed reading
@@ -178,15 +179,32 @@ See also the [dependencies](dependencies/) subdirectory and its
 [README-dependencies](dependencies//README-dependencies.md) - perhaps
 not updated.
 
-* recent [GCC](http://gcc.gnu.org/) (so [GCC
-9](https://gcc.gnu.org/gcc-9/) or *preferably* [GCC
-10](https://gcc.gnu.org/gcc-10/) ...), with C and C++ and JIT support
+* recent [GCC](http://gcc.gnu.org/) (so [GCC 10](https://gcc.gnu.org/gcc-10/)
+or *preferably* [GCC 11](https://gcc.gnu.org/gcc-11/) ...), with C and C++ and JIT support
 and plugins enabled (check with `gcc -v`; if your system `gcc` and
 `g++` lack support for plugins and
 [libgccjit](https://gcc.gnu.org/onlinedocs/jit/), you should build and
 [install](https://gcc.gnu.org/install/) a recent GCC release from its
 source code, and configure it to provide them.). **An old GCC**
-(e.g. version 8 or earlier) **cannot be used.**
+(e.g. version 9 or earlier) **cannot be used.**
+
+	* If you compile GCC from its source code, consider using a
+      configuration command inspired by :
+      `'/usr/src/Lang/gcc-11.1.0/configure' '-v' '--prefix=/usr/local' \
+      '--with-gcc-major-version-only' '--program-suffix=-11' \
+      '--enable-shared' '--enable-linker-build-id' '--enable-nls' \
+      '--enable-bootstrap' '--enable-clocale=gnu' \
+      '--enable-libstdcxx-debug' '--enable-libstdcxx-time=yes' \
+      '--with-default-libstdcxx-abi=new' '--enable-gnu-unique-object' \
+      '--disable-vtable-verify' '--enable-plugin' \
+      '--enable-default-pie' '--with-system-zlib' \
+      '--enable-libphobos-checking=release' \
+      '--with-target-system-zlib=auto' '--enable-objc-gc=auto' \
+      '--enable-multiarch' '--disable-werror' '--with-arch-32=i686' \
+      '--with-abi=m64' '--with-multilib-list=m32,m64,mx32' \
+      '--enable-multilib' '--with-tune=native' \ 
+      'CFLAGS=-O2 -g' 'CXXFLAGS=-O2 -g' '--enable-host-shared'
+      '--enable-languages=c,c++,d,go,jit,lto'` ....
 
 * a recent [Python 3](http://python.org/) with
   [pip](https://pypi.org/project/pip/) installed.
