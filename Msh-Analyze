@@ -136,6 +136,10 @@ if [ ! -x gccplugins/build-gcc10-metaplugin.sh ]; then
     exit 1
 fi
 
+
+### notice that the ./build-gcc10-metaplugin.sh may use the
+### BISMON_PLUGIN_ASMOUT environment variable. For example, set it
+### with export BISMON_PLUGIN_ASMOUT=/tmp/gcc10_metaplugin_BMGCC.s
 pushd gccplugins
 ./build-gcc10-metaplugin.sh
 popd 
