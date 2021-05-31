@@ -152,7 +152,7 @@ fi
 export BISMON_GCC_NAME_PLUGIN=$(basename "$BISMON_GCC_PLUGIN" .so)
 
 ## kill any running bismon
-pkill bismon || true
+pkill -e --signal=SIGTERM bismon || true
 
 printf "\n\n\n ==== %s: starting Bismon ======\n\n" "$0"
 echo '#° ./bismon' $bismon_msh_args
@@ -191,9 +191,13 @@ for src in $BISMON_MSH_SOURCE/src/*.c ; do
     sleep 0.1
 done
 
+sleep 0.3
+
+ps -l -p $BISMON_PID
+
 kill -TERM $BISMON_PID
 
-sleep 0.5
+sleep 0.1
 
 printf "\n%s: *** ended successfully ***\n\n" $0 
 ########################################
