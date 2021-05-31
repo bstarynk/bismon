@@ -140,6 +140,8 @@ fi
 ### notice that the ./build-gcc10-metaplugin.sh may use the
 ### BISMON_PLUGIN_ASMOUT environment variable. For example, set it
 ### with export BISMON_PLUGIN_ASMOUT=/tmp/gcc10_metaplugin_BMGCC.s
+
+### on some Debian, there is a bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=980609
 pushd gccplugins
 ./build-gcc10-metaplugin.sh
 popd 
