@@ -493,9 +493,9 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
                 << cmdstr << std::endl
                 << "####---------------------------------------- " << compcmd <<std::endl);
       BMC_DEBUG("bmc_check_target_compiler gccversion_major=" << gccversion_major << ", gccversion_minor=" << gccversion_minor);
-      if (gccversion_major != 10)
+      if (gccversion_major != 10 && gccversion_major != 11)
         {
-          std::cerr << progname << ": BISMON requires a GCC 10 compiler." << std::endl ;
+          std::cerr << progname << ": BISMON requires a GCC 10 or 11 compiler." << std::endl ;
           if (gccversion_major > 0)
             std::cerr << "But " << compiler << " is a GCC " << gccversion_major << "." << gccversion_minor
                       << " compiler." << std::endl;
@@ -1293,9 +1293,9 @@ bmc_ask_missing_configuration(const char*progname)
   /// ask about target GCC compilers for C and for C++
   while (bmc_target_gcc.empty())
     {
-      std::cout << "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10."
+      std::cout << "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10, preferably GCC 11."
 		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
-      std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-10 ..." << std::endl;
+      std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-11 ..." << std::endl;
       std::cout << "... but that cross-C-compiler could be some script." << std::endl;
       if (!access("/usr/bin/gcc-10", X_OK) && isatty(STDOUT_FILENO)) {
 	std::cout << "... Found some /usr/bin/gcc-10)" << std::endl;
