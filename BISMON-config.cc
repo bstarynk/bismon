@@ -187,7 +187,7 @@ const char bismon_config_label[] =
 // typical usage could be BMC_NLDEBUG("something bad x=" << x)
 #define BMC_NLDEBUG_AT_BIS(Fil,Lin,...) do {			\
   if (bmc_debug_flag) {						\
-    std::clog << std:endl					\
+    std::clog << std::endl					\
               << "¿" /* U+00BF INVERTED QUESTION MARK */	\
 	      << (Fil) << ":" << Lin << ":: "			\
 	      << __VA_ARGS__ << std::endl; } } while(0)
@@ -1311,11 +1311,12 @@ bmc_readline(const char*progname, const char*prompt)
 void
 bmc_ask_missing_configuration(const char*progname)
 {
-  BMC_DEBUG("bmc_ask_missing_configuration start progname=" << progname);
+  BMC_NLDEBUG("bmc_ask_missing_configuration start progname=" << progname);
   assert (!bmc_batch_flag);
   using_history();
   /// ask about host C compiler user to compile Bismon source code
   while (bmc_host_cc.empty() || !access(bmc_host_cc.c_str(), X_OK)) {
+    BMC_NLDEBUG("bmc_host_cc is '" << bmc_host_cc << "'");
     const char*host_c_comp = nullptr;
     std::cout << std::endl
 	      << "Host Bismon C compiler for hand-written or generated C code."<< std::endl
@@ -1361,6 +1362,7 @@ bmc_ask_missing_configuration(const char*progname)
   ///
   /// ask about host C++ compiler user to compile Bismon source code
   while (bmc_host_cxx.empty() || !access(bmc_host_cxx.c_str(), X_OK)) {
+    BMC_NLDEBUG("bmc_host_cxx is '" << bmc_host_cxx << "'");
     const char*host_cxx_comp = nullptr;
     std::cout << std::endl
 	      << "Host Bismon C++ compiler for hand-written or generated C++ code."<< std::endl
@@ -1408,6 +1410,7 @@ bmc_ask_missing_configuration(const char*progname)
   /// ask about target GCC compilers for C and for C++
   while (bmc_target_gcc.empty())
     {
+      BMC_NLDEBUG("bmc_target_gcc is '" << bmc_target_gcc << "'");
       std::cout << std::endl
 		<< "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10, preferably GCC 11."
 		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
@@ -1435,8 +1438,10 @@ bmc_ask_missing_configuration(const char*progname)
         }
     } // end while bmc_target_gcc.empty()
   std::cout << ")" << std::endl<< std::endl;
+  BMC_DEBUG("Now bmc_target_gcc is '" << bmc_target_gcc << "'" << std::endl);
   while (bmc_target_gxx.empty())
     {
+      BMC_NLDEBUG("bmc_target_gxx is '" << bmc_target_gxx << "'");
       std::cout << std::endl
 		<< "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10."
 		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
@@ -1461,6 +1466,7 @@ bmc_ask_missing_configuration(const char*progname)
         }
     }
   std::cout << std::endl;
+  BMC_DEBUG("Now bmc_target_gxx is '" << bmc_target_gxx << "'" << std::endl);
   //////////////////////////////
   /// ask about the libonion - see www.coralbits.com/libonion/ and github.com/davidmoreno/onion
   /// libonion include header - with onion/onion.h
@@ -1530,7 +1536,7 @@ bmc_ask_missing_configuration(const char*progname)
 	      << std::endl;
     if (!access("/usr/local/lib/libonion.so", R_OK) && isatty(STDOUT_FILENO)) {
       std::cout << "... Found /usr/local/lib/libonion.so" << std::endl;
-      BMC_DEBUG("defaulting libonion library directory to /usr/local/lib/");
+      BMC_NLDEBUG("defaulting libonion library directory to /usr/local/lib/");
       bmc_set_readline_buffer("/usr/local/lib/");
     }
     else if (!access("/usr/lib/libonion.so", R_OK) && isatty(STDOUT_FILENO)) {
@@ -1554,6 +1560,7 @@ bmc_ask_missing_configuration(const char*progname)
 		  << std::endl;
     }
   } // end while bmc_onion_libdir.empty()
+  BMC_DEBUG("now bmc_onion_libdir is:" << bmc_onion_libdir << std::endl);
   ////////////////////////
   /// ask about the output directory, into which files would be written
   char cwdbuf[256];
@@ -1599,6 +1606,7 @@ bmc_ask_missing_configuration(const char*progname)
       free ((void*)outdir), outdir = nullptr;
     }
   std::cout << std::endl;
+  BMC_DEBUG("now bmc_out_directory is:" << bmc_out_directory << std::endl << std::endl);
   clear_history();
 } // end bmc_ask_missing_configuration
 
@@ -1606,7 +1614,7 @@ bmc_ask_missing_configuration(const char*progname)
 void
 bmc_scan_for_const_dependencies(const char*progname, std::ostream& output, const std::string&filnam, int rk)
 {
-  BMC_DEBUG("bmc_scan_for_const_dependencies start " << filnam << " #" << rk);
+  BMC_NLDEBUG("bmc_scan_for_const_dependencies start " << filnam << " #" << rk);
   int curlineno = 0;
   std::string objfilnam = filnam;
   int filnamlen = filnam.size();
@@ -1658,7 +1666,7 @@ bmc_scan_for_const_dependencies(const char*progname, std::ostream& output, const
 void
 bmc_print_const_dependencies(const char*progname)
 {
-  BMC_DEBUG("bmc_print_const_dependencies start progname=" << progname << " ESHELL=" << (getenv("ESHELL")?:"**none**")
+  BMC_NLDEBUG("bmc_print_const_dependencies start progname=" << progname << " ESHELL=" << (getenv("ESHELL")?:"**none**")
             << " " << bmc_constdep_files.size() << " files"
 	    << std::endl << " ... constdep path='" << bmc_emit_constdep_path << "'");
   if (!access(bmc_emit_constdep_path.c_str(), R_OK))
@@ -1699,6 +1707,7 @@ int
 bmc_initialize_global_variables(const char*progname)
 {
   int nbinit=0;
+  BMC_NLDEBUG("start bmc_initialize_global_variables " << progname);
   if (bismon_make && bismon_make[0]) {
     bmc_make = std::string(bismon_make);
     BMC_DEBUG("bmc_make initialized to " << bmc_make);
@@ -1765,6 +1774,7 @@ main (int argc, char**argv)
       usleep (1024*8);
     }
   gethostname(bmc_hostname, sizeof(bmc_hostname)-1);
+  BMC_DEBUG("bmc_hostname:" << bmc_hostname);
   {
     bmc_start_time = time(nullptr);
     char timbuf[64];
