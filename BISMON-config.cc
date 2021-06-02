@@ -1306,18 +1306,19 @@ bmc_ask_missing_configuration(const char*progname)
 	BMC_DEBUG("defaulting host C compiler to /usr/bin/gcc-10");
 	bmc_set_readline_buffer("/usr/bin/gcc-10");
       }
-      else if (!access("/usr/bin/gcc", X_OK) && isatty(STDOUT_FILENO)) {
-	std::cout << "... Found some /usr/bin/gcc " << std::endl;
-	BMC_DEBUG("defaulting host C compiler to /usr/bin/gcc");
-	bmc_set_readline_buffer("/usr/bin/gcc");
-      }
       else if (!access("/usr/bin/clang", X_OK) && isatty(STDOUT_FILENO)) {
 	std::cout << "... Found some /usr/bin/clang " << std::endl;
 	BMC_DEBUG("defaulting host C compiler to /usr/bin/clang");
 	bmc_set_readline_buffer("/usr/bin/clang");
       }
+      else if (!access("/usr/bin/gcc", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/gcc " << std::endl;
+	BMC_DEBUG("defaulting host C compiler to /usr/bin/gcc");
+	bmc_set_readline_buffer("/usr/bin/gcc");
+      }
       host_c_comp = bmc_readline(progname, "BISMON host C compiler? ");
       if (host_c_comp && host_c_comp[0]) {
+	BMC_DEBUG("Got host C compiler: '" << host_c_comp << "'");
 	if (access(host_c_comp, X_OK))
 	  std::cerr << progname << ": WARNING Host Bismon C compiler " << host_c_comp
 		    << " is not executable:" << strerror(errno) << std::endl;
@@ -1332,7 +1333,54 @@ bmc_ask_missing_configuration(const char*progname)
 	std::cerr << std::endl
 		  <<  progname << ": WARNING Host Bismon C compiler missing." << std::endl;
   } // end while bmc_host_cc.empty....
-  
+  BMC_DEBUG("Now bmc_host_cc is: " << bmc_host_cc << std::endl);
+  ///
+  /// ask about host C++ compiler user to compile Bismon source code
+  while (bmc_host_cxx.empty() || !access(bmc_host_cxx.c_str(), X_OK)) {
+    const char*host_cxx_comp = nullptr;
+    std::cout << std::endl
+	      << "Host Bismon C++ compiler for hand-written or generated C++ code."<< std::endl
+	      << " (Preferably some GCC 10 or GCC 11 or recent Clang. See gcc.gnu.org or clang.llvm.org)" << std::endl;
+      if (!access("/usr/bin/g++-11", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/g++-11 " << std::endl;
+	BMC_DEBUG("defaulting Bismon host C++ compiler to /usr/bin/g++-11");
+	bmc_set_readline_buffer("/usr/bin/g++-11");
+      }
+      else if (!access("/usr/bin/g++-10", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/g++-10 " << std::endl;
+	BMC_DEBUG("defaulting host C++ compiler to /usr/bin/g++-10");
+	bmc_set_readline_buffer("/usr/bin/g++-10");
+      }
+      else if (!access("/usr/bin/clang++", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/clang++ " << std::endl;
+	BMC_DEBUG("defaulting host C++ compiler to /usr/bin/clang++");
+	bmc_set_readline_buffer("/usr/bin/clang++");
+      }
+      else if (!access("/usr/bin/g++", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/g++ " << std::endl;
+	BMC_DEBUG("defaulting host C++ compiler to /usr/bin/g++");
+	bmc_set_readline_buffer("/usr/bin/g++");
+      }
+      host_cxx_comp = bmc_readline(progname, "BISMON host C++ compiler? ");
+      if (host_cxx_comp && host_cxx_comp[0]) {
+	BMC_DEBUG("Got host C++ compiler: '" << host_cxx_comp << "'");
+	if (access(host_cxx_comp, X_OK))
+	  std::cerr << progname << ": WARNING Host Bismon C++ compiler " << host_cxx_comp
+		    << " is not executable:" << strerror(errno) << std::endl;
+	else
+	    {
+	      bmc_host_cxx.assign(host_cxx_comp);
+	      add_history(host_cxx_comp);
+	      free ((void*)host_cxx_comp), host_cxx_comp = nullptr;
+	    }
+      }
+      else
+	std::cerr << std::endl
+		  <<  progname << ": WARNING Host Bismon C++ compiler missing." << std::endl;
+  } // end while bmc_host_cxx.empty....
+  BMC_DEBUG("Now bmc_host_cxx is: '" << bmc_host_cxx << "'" << std::endl);
+  ///
+  ///
   /// ask about target GCC compilers for C and for C++
   while (bmc_target_gcc.empty())
     {
