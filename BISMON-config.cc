@@ -1292,7 +1292,9 @@ bmc_ask_missing_configuration(const char*progname)
   using_history();
   /// ask about host C compiler user to compile Bismon source code
   while (bmc_host_cc.empty() || !access(bmc_host_cc.c_str(), X_OK)) {
-    std::cout << "Host Bismon C compiler for hand-written or generated C code."<< std::endl
+    const char*host_c_comp = nullptr;
+    std::cout << std::endl
+	      << "Host Bismon C compiler for hand-written or generated C code."<< std::endl
 	      << " (Preferably some GCC 10 or GCC 11 or recent Clang. See gcc.gnu.org or clang.llvm.org)" << std::endl;
       if (!access("/usr/bin/gcc-11", X_OK) && isatty(STDOUT_FILENO)) {
 	std::cout << "... Found some /usr/bin/gcc-11 " << std::endl;
@@ -1314,8 +1316,8 @@ bmc_ask_missing_configuration(const char*progname)
 	BMC_DEBUG("defaulting host C compiler to /usr/bin/clang");
 	bmc_set_readline_buffer("/usr/bin/clang");
       }
-      const char*host_c_comp = bmc_readline(progname, "BISMON host C compiler? ");
-      if (host_c_comp) {
+      host_c_comp = bmc_readline(progname, "BISMON host C compiler? ");
+      if (host_c_comp && host_c_comp[0]) {
 	if (access(host_c_comp, X_OK))
 	  std::cerr << progname << ": WARNING Host Bismon C compiler " << host_c_comp
 		    << " is not executable:" << strerror(errno) << std::endl;
@@ -1327,13 +1329,15 @@ bmc_ask_missing_configuration(const char*progname)
 	    }	  
       }
       else
-	std::cerr <<  progname << ": WARNING Host Bismon C compiler missing." << std::endl;
+	std::cerr << std::endl
+		  <<  progname << ": WARNING Host Bismon C compiler missing." << std::endl;
   } // end while bmc_host_cc.empty....
   
   /// ask about target GCC compilers for C and for C++
   while (bmc_target_gcc.empty())
     {
-      std::cout << "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10, preferably GCC 11."
+      std::cout << std::endl
+		<< "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10, preferably GCC 11."
 		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
       std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-11 ..." << std::endl;
       std::cout << "... but that cross-C-compiler could be some script." << std::endl;
@@ -1361,7 +1365,8 @@ bmc_ask_missing_configuration(const char*progname)
   std::cout << ")" << std::endl<< std::endl;
   while (bmc_target_gxx.empty())
     {
-      std::cout << "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10."
+      std::cout << std::endl
+		<< "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10."
 		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
       std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-10 ..." << std::endl;
       std::cerr << "... but that cross C++ compiler could be some script." << std::endl;
