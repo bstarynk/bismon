@@ -61,6 +61,11 @@ else
 fi
 
 
+if [ "$1" == "--dry" -a -x BISMON-config ]; then
+    printf "%s: dry configuration, did build BISMON-config but do not run it in %s\n" "$0" $(pwd)
+    exit 0
+fi
+
 exec ./BISMON-config "$@"
 
 
