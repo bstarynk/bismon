@@ -165,6 +165,9 @@ const char bismon_config_label[] =
   BISMON_CONFIG_LABEL ":" __FILE__ " compiled at " __DATE__
   " git " BISMON_SHORTGIT;
 
+/********************* debugging facilities *********************/
+
+////////////////////////////////////////////////////////////////
 // typical usage could be BMC_DEBUG("something bad x=" << x)
 #define BMC_DEBUG_AT_BIS(Fil,Lin,...) do {			\
   if (bmc_debug_flag) {						\
@@ -178,6 +181,27 @@ const char bismon_config_label[] =
 #define BMC_DEBUG(...) BMC_DEBUG_AT(__FILE__,__LINE__,##__VA_ARGS__)
 
 
+
+////////////////////////////////////////////////////////////////
+//// debug output with prior newline
+// typical usage could be BMC_NLDEBUG("something bad x=" << x)
+#define BMC_NLDEBUG_AT_BIS(Fil,Lin,...) do {			\
+  if (bmc_debug_flag) {						\
+    std::clog << std:endl					\
+              << "¿" /* U+00BF INVERTED QUESTION MARK */	\
+	      << (Fil) << ":" << Lin << ":: "			\
+	      << __VA_ARGS__ << std::endl; } } while(0)
+
+#define BMC_NLDEBUG_AT(Fil,Lin,...) BMC_NLDEBUG_AT_BIS(Fil,Lin,##__VA_ARGS__)
+
+// typical usage would be BMC_NLDEBUG("annoying x=" << x)
+#define BMC_NLDEBUG(...) BMC_NLDEBUG_AT(__FILE__,__LINE__,##__VA_ARGS__)
+
+
+
+
+////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////
 static char**bmc_main_argv;
 static int bmc_main_argc;
 
