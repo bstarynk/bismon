@@ -33,31 +33,44 @@ if [ -z "$BISMON_MSH_SOURCE" ]; then
     export BISMON_MSH_SOURCE=/usr/src/Shell/msh/
 fi
 
+
+## BISMON_GCC is the GCC compiler compiling Bismon
 if [ -z "$BISMON_GCC" ]; then
     export BISMON_GCC=/usr/bin/gcc-10
 fi
 
+## BISMON_WEB_BASE is for the URL interfacing Bismon while it is running
 if [ -z "$BISMON_WEB_BASE" ]; then
     export BISMON_WEB_BASE=localhost:8086
 fi
 
+## BISMON_MSH_PROJECT is the name of the project for Msh, as known to Bismon
+## and to GCC metaplugins
 if [ -z "$BISMON_MSH_PROJECT" ]; then
     export BISMON_MSH_PROJECT=msh_bismon_project
 fi
 
+
+## if given, BISMON_COOKIE_FILE would contain the HTTP cookie
 if [ -z "$BISMON_COOKIE_FILE" ]; then
     export BISMON_COOKIE_FILE=/tmp/bismon_msh_{$$}_cookie
 fi
 
+## BISMON_MSH_SOURCE should contain a git clone of
+## git@github.com:nerith/msh.git
 if [ ! -d "$BISMON_MSH_SOURCE" ]; then
     printf "%s: invalid MSH source directory for Bismon %s\n" "$0" "$BISMON_MSH_SOURCE" > /dev/stderr
     exit 1
 fi
 
+## BISMON_GCC_PLUGIN is the shared object for our plugin
 if [ -z "$BISMON_GCC_PLUGIN" ]; then
     export BISMON_GCC_PLUGIN=$(realpath gccplugins/gcc10_metaplugin_BMGCC.so)
 fi
 
+
+################################################################
+### checking that BISMON_MSH_SOURCE is valid.....
 if [ ! -f "$BISMON_MSH_SOURCE/src/builtins.c" ]; then
     printf "%s: invalid MSH source for Bismon %s without src/builtins.c\n" "$0" "$BISMON_MSH_SOURCE" > /dev/stderr
     exit 1
@@ -75,6 +88,9 @@ if [ ! -f "$BISMON_MSH_SOURCE/include/shellFunctions.h" ]; then
 fi
 
 
+################################################################
+### build bismon if it does not exist, and check that it was built and
+### newer than source files
 if [ ! -x bismon ]; then
     ./Build
 fi
