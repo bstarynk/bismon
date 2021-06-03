@@ -1315,7 +1315,7 @@ bmc_ask_missing_configuration(const char*progname)
   assert (!bmc_batch_flag);
   using_history();
   /// ask about host C compiler user to compile Bismon source code
-  while (bmc_host_cc.empty() || !access(bmc_host_cc.c_str(), X_OK)) {
+  while (bmc_host_cc.empty() || access(bmc_host_cc.c_str(), X_OK)) {
     BMC_NLDEBUG("bmc_host_cc is '" << bmc_host_cc << "'");
     const char*host_c_comp = nullptr;
     std::cout << std::endl
@@ -1361,7 +1361,7 @@ bmc_ask_missing_configuration(const char*progname)
   BMC_DEBUG("Now bmc_host_cc is: " << bmc_host_cc << std::endl);
   ///
   /// ask about host C++ compiler user to compile Bismon source code
-  while (bmc_host_cxx.empty() || !access(bmc_host_cxx.c_str(), X_OK)) {
+  while (bmc_host_cxx.empty() || access(bmc_host_cxx.c_str(), X_OK)) {
     BMC_NLDEBUG("bmc_host_cxx is '" << bmc_host_cxx << "'");
     const char*host_cxx_comp = nullptr;
     std::cout << std::endl
@@ -1408,7 +1408,7 @@ bmc_ask_missing_configuration(const char*progname)
   ///
   ///
   /// ask about target GCC compilers for C and for C++
-  while (bmc_target_gcc.empty())
+  while (bmc_target_gcc.empty() || access(bmc_target_gcc.c_str(), X_OK))
     {
       BMC_NLDEBUG("bmc_target_gcc is '" << bmc_target_gcc << "'");
       std::cout << std::endl
@@ -1439,7 +1439,7 @@ bmc_ask_missing_configuration(const char*progname)
     } // end while bmc_target_gcc.empty()
   std::cout << ")" << std::endl<< std::endl;
   BMC_DEBUG("Now bmc_target_gcc is '" << bmc_target_gcc << "'" << std::endl);
-  while (bmc_target_gxx.empty())
+  while (bmc_target_gxx.empty() || access(bmc_target_gxx.c_str(), X_OK))
     {
       BMC_NLDEBUG("bmc_target_gxx is '" << bmc_target_gxx << "'");
       std::cout << std::endl
