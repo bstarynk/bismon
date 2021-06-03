@@ -1427,8 +1427,8 @@ bmc_ask_missing_configuration(const char*progname)
       if (gcctarget)
         {
           if (access(gcctarget, R_OK))
-            std::cerr << progname << ": WARNING: target GCC " << gcctarget
-                      << " is not accessible: " << strerror(errno) << std::endl;
+            std::cerr << progname << ": WARNING: target GCC '" << gcctarget
+                      << "' is not accessible: " << strerror(errno) << std::endl;
 	  else
 	    {
 	      bmc_target_gcc.assign(gcctarget);
@@ -1458,8 +1458,8 @@ bmc_ask_missing_configuration(const char*progname)
       if (gxxtarget)
         {
           if (access(gxxtarget, R_OK))
-            std::cerr << progname << ": WARNING: target GXX " << gxxtarget
-                      << " is not accessible: " << strerror(errno) << std::endl;
+            std::cerr << progname << ": WARNING: target GXX '" << gxxtarget
+                      << "' is not accessible: " << strerror(errno) << std::endl;
           bmc_target_gxx.assign(gxxtarget);
           add_history(gxxtarget);
           free ((void*)gxxtarget), gxxtarget = nullptr;
