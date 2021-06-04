@@ -82,4 +82,4 @@ $BISMON_MAKE --jobs=$[$nbproc/2 + 1] objects || (
     exit 1
 )
 
-exec make bismon
+exec $BISMON_MAKE bismon
