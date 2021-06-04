@@ -111,11 +111,11 @@ CXX=g++
 endif
 
 ifndef BISMON_CFLAGS
-BISMON_CFLAGS= -O -g -Wall -Wextra
+BISMON_CFLAGS= -O -g -Wall -Wextra -std=gnu11
 endif
 
 ifndef BISMON_CXXFLAGS
-BISMON_CXXFLAGS= -O -g -Wall -Wextra -std=c++14
+BISMON_CXXFLAGS= -O -g -Wall -Wextra -std=gnu++14
 endif
 
 clean:
