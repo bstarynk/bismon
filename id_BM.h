@@ -148,13 +148,13 @@ hash_tyBM hashid_BM (rawid_tyBM id)
 }                             /* end hashid_BM */
 
 
-bool equalid_BM (rawid_tyBM id1, rawid_tyBM id2)
+bool equalid_BM (const rawid_tyBM id1, const rawid_tyBM id2)
 {
   return id1.id_hi == id2.id_hi && id1.id_lo == id2.id_lo;
 }                             /* end equalid_BM */
 
 
-int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2)
+int cmpid_BM (const rawid_tyBM id1, const rawid_tyBM id2)
 {
   if (id1.id_hi == id2.id_hi)
     {
@@ -178,7 +178,7 @@ struct IdLess_BM
 {
   inline bool                 //
   operator ()             //
-  (const rawid_tyBM & id1, const rawid_tyBM & id2)
+  (const rawid_tyBM & id1, const rawid_tyBM & id2) const
   {
     return cmpid_BM (id1, id2) < 0;
   };
