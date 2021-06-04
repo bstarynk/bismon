@@ -27,6 +27,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <ostream>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
