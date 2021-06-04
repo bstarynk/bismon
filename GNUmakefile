@@ -201,11 +201,13 @@ objects:  $(BISMONMK_OBJECTS)
 bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c $(wildcard _genbm_*.h)
 	$(MAKE) $(BISMONMK_OBJECTS) _bismon-constants.o __timestamp.o
 ifdef BISMONMK_HOST_CXX
+	@echo linking $@ with BISMONMK_HOST_CXX= $(BISMONMK_HOST_CXX)
 	$(BISMONMK_HOST_CXX)  $(BISMONMK_OBJECTS) _bismon-constants.o  __timestamp.o \
                     -L$(BISMONMK_ONION_LIBDIR) -lonion \
                     $(shell pkg-config --libs $(BISMONMK_PACKAGES)) \
                     -lbacktrace -lcrypt -lpthread -ldl -rdynamic -o $@
 else
+	@echo linking $@ with CXX= $(CXX)
 	$(CXX)  $(BISMONMK_OBJECTS) _bismon-constants.o  __timestamp.o \
                     -L$(BISMONMK_ONION_LIBDIR) -lonion \
                     $(shell pkg-config --libs $(BISMONMK_PACKAGES)) \
