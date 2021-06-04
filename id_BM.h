@@ -61,6 +61,8 @@ struct rawid_stBM
   
 #if __cplusplus
 
+  /// see also https://stackoverflow.com/q/51235355
+
   inline bool operator < (const rawid_tyBM&r) const {
     return id_hi<r.id_hi || (id_hi==r.id_hi && id_lo<r.id_lo);
   }
@@ -101,42 +103,42 @@ static inline unsigned bucknumserial63_BM (serial63_tyBM s);
 
 extern rawid_tyBM parse_rawid_BM (const char *buf, const char **pend);
 extern rawid_tyBM randomid_BM (void);
-static inline bool validid_BM (rawid_tyBM id);
-static inline hash_tyBM hashid_BM (rawid_tyBM id);
-static inline int cmpid_BM (rawid_tyBM id1, rawid_tyBM id2);
-static inline bool equalid_BM (rawid_tyBM id1, rawid_tyBM id2);
+static inline bool validid_BM (const rawid_tyBM id);
+static inline hash_tyBM hashid_BM (const rawid_tyBM id);
+static inline int cmpid_BM (const rawid_tyBM id1, const rawid_tyBM id2);
+static inline bool equalid_BM (const rawid_tyBM id1, const rawid_tyBM id2);
 #if __cplusplus
-extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[]);
+extern "C" int idtocbuf32_BM (const rawid_tyBM id, char cbuf[]);
 #else
-extern int idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32]);
+  extern int idtocbuf32_BM (const rawid_tyBM id, char cbuf[static 32]);
 #endif
 // to be called from debugger
 // actually the objectdbg* functions use some static thread-local buffer
-extern const char *iddbg_BM (rawid_tyBM id);  // non reentrant!
+extern const char *iddbg_BM (const rawid_tyBM id);  // non reentrant!
 
-extern const char *iddbg1_BM (rawid_tyBM id); // non reentrant!
+extern const char *iddbg1_BM (const rawid_tyBM id); // non reentrant!
 
-extern const char *iddbg2_BM (rawid_tyBM id); // non reentrant!
+extern const char *iddbg2_BM (const rawid_tyBM id); // non reentrant!
 
 
-bool validserial63_BM (serial63_tyBM s)
+bool validserial63_BM (const serial63_tyBM s)
 {
   return (s > MINSERIAL_BM && s < MAXSERIAL_BM);
 }                             /* end validserial63_BM */
 
 
-unsigned bucknumserial63_BM (serial63_tyBM s)
+unsigned bucknumserial63_BM (const serial63_tyBM s)
 {
   return s / (DELTASERIAL_BM / MAXBUCKETS_BM);
 }
 
-bool validid_BM (rawid_tyBM id)
+bool validid_BM (const rawid_tyBM id)
 {
   return (validserial63_BM (id.id_hi) && validserial63_BM (id.id_lo));
 }                             /* end validid_BM */
 
 
-hash_tyBM hashid_BM (rawid_tyBM id)
+hash_tyBM hashid_BM (const rawid_tyBM id)
 {
   if (!validid_BM (id))
     return 0;
