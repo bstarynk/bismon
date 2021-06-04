@@ -54,6 +54,8 @@ if [ ! -f _bm_config.h ]; then
 fi
 
 
+
+### to use remake, you need to export BISMON_MAKE=remake
 ### some GNU make 4, or perhaps a variant of remake
 ###
 if [ -z $BISMON_MAKE ]; then
