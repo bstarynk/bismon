@@ -115,7 +115,7 @@ BISMON_CFLAGS= -O -g -Wall -Wextra
 endif
 
 ifndef BISMON_CXXFLAGS
-BISMON_CXXFLAGS= -O -g -Wall -Wextra
+BISMON_CXXFLAGS= -O -g -Wall -Wextra -std=c++14
 endif
 
 clean:
