@@ -134,7 +134,8 @@ BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
 
 BM_makeconst: BM_makeconst.o id_BM.o
-	$(LINK.cc) -g -O -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+	@echo building $@ with CXX= $(CXX)
+	$(CXX) -g -O -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
 
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
 	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
