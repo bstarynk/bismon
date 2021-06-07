@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -40,7 +40,7 @@ randomserial63_BM (void)
 
 // return the number of bytes written into cbuf
 int
-serial63tocbuf16_BM (serial63_tyBM s, char cbuf[/*static 16*/])
+serial63tocbuf16_BM (serial63_tyBM s, char cbuf[static 16])
 {
   memset (cbuf, 0, 16);
   if (s == 0)
@@ -126,7 +126,7 @@ randomid_BM (void)
 
 // return the number of bytes written into cbuf
 int
-idtocbuf32_BM (rawid_tyBM id, char cbuf[/*static 32*/])
+idtocbuf32_BM (rawid_tyBM id, char cbuf[static 32])
 {
   memset (cbuf, 0, 32);
   if (!validid_BM (id))
