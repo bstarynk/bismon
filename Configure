@@ -1,6 +1,6 @@
 #!/bin/bash -x
 ##
-##   BISMON  ---- its Configure script
+##   BISMON  ---- its Configure script ---- see github.com/bstarynk/bismon/
 ##   Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 ##   contributed by Basile Starynkevitch (working at CEA, LIST, France)
 ##   <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
@@ -24,8 +24,13 @@
 ########################################
 
 # the C++ and C compilers; some GCC (see http://gcc.gnu.org/ ...)
-CXX=g++
-CC=gcc
+if [ -z "$CXX" ]; then
+    CXX=g++
+fi
+
+if [ -z "$CC" ]; then
+    CC=gcc
+fi
 
 # the short git id.... 
 BISMONCONF_SHGIT1=$(git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
@@ -46,6 +51,14 @@ $BISMON_CONFIGURE_DIR/timestamp-emit.sh __timestampconf.c
 if [ -f BISMON-config ]; then
     /bin/mv -vf BISMON-config BISMON-config~
 fi
+
+printf "%s: our compiler for C is %s\n" $0 $CC
+$CC --version || exit 1
+echo
+
+printf "%s: our compiler for C++ is %s\n" $0 $CXX
+$CXX --version || exit 1
+echo
 
 $CC -O -Wall -c __timestampconf.c || (printf "%s failed to compile __timestampconf.c\n" > /dev/stderr; exit 1)
 
@@ -69,4 +82,4 @@ fi
 exec ./BISMON-config "$@"
 
 
-### incomplete
+### end of Configure script in github.com/bstarynk/bismon/
