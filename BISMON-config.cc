@@ -1342,7 +1342,7 @@ bmc_ask_missing_configuration(const char*progname)
 	bmc_set_readline_buffer("/usr/bin/gcc");
       }
       host_c_comp = bmc_readline(progname, "BISMON host C compiler? ");
-      if (host_c_comp && host_c_comp[0]) {
+      if (host_c_comp && host_c_comp[0] && !access(host_c_comp, F_OK)) {
 	BMC_DEBUG("Got host C compiler: '" << host_c_comp << "'");
 	if (access(host_c_comp, X_OK))
 	  std::cerr << progname << ": WARNING Host Bismon C compiler "
@@ -1358,7 +1358,8 @@ bmc_ask_missing_configuration(const char*progname)
       }
       else
 	std::cerr << std::endl
-		  <<  progname << ": WARNING Host Bismon C compiler missing." << std::endl
+		  <<  progname << ": WARNING Host Bismon C compiler "
+		  << host_c_comp << " is missing or bad: " << strerror(errno) << std::endl
 		  << " (... from " << __FILE__ ":" << __LINE__ << ")" << std::endl;;
   } // end while bmc_host_cc.empty....
   BMC_DEBUG("Now bmc_host_cc is: " << bmc_host_cc << std::endl);
