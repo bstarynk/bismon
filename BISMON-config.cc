@@ -1345,8 +1345,10 @@ bmc_ask_missing_configuration(const char*progname)
       if (host_c_comp && host_c_comp[0]) {
 	BMC_DEBUG("Got host C compiler: '" << host_c_comp << "'");
 	if (access(host_c_comp, X_OK))
-	  std::cerr << progname << ": WARNING Host Bismon C compiler " << host_c_comp
-		    << " is not executable:" << strerror(errno) << std::endl;
+	  std::cerr << progname << ": WARNING Host Bismon C compiler "
+		    << host_c_comp
+		    << " is not executable:" << strerror(errno) << std::endl
+		    << " (... from " << __FILE__ ":" << __LINE__ << ")" << std::endl;
 	else
 	    {
 	      bmc_host_cc.assign(host_c_comp);
@@ -1356,7 +1358,8 @@ bmc_ask_missing_configuration(const char*progname)
       }
       else
 	std::cerr << std::endl
-		  <<  progname << ": WARNING Host Bismon C compiler missing." << std::endl;
+		  <<  progname << ": WARNING Host Bismon C compiler missing." << std::endl
+		  << " (... from " << __FILE__ ":" << __LINE__ << ")" << std::endl;;
   } // end while bmc_host_cc.empty....
   BMC_DEBUG("Now bmc_host_cc is: " << bmc_host_cc << std::endl);
   ///
@@ -1392,7 +1395,8 @@ bmc_ask_missing_configuration(const char*progname)
 	BMC_DEBUG("Got host C++ compiler: '" << host_cxx_comp << "'");
 	if (access(host_cxx_comp, X_OK))
 	  std::cerr << progname << ": WARNING Host Bismon C++ compiler " << host_cxx_comp
-		    << " is not executable:" << strerror(errno) << std::endl;
+		    << " is not executable:" << strerror(errno) << std::endl
+		    << " (from " << __FILE__ ":" << __LINE__ << ")" << std::endl;
 	else
 	    {
 	      bmc_host_cxx.assign(host_cxx_comp);
@@ -1402,7 +1406,8 @@ bmc_ask_missing_configuration(const char*progname)
       }
       else
 	std::cerr << std::endl
-		  <<  progname << ": WARNING Host Bismon C++ compiler missing." << std::endl;
+		  <<  progname << ": WARNING Host Bismon C++ compiler missing." << std::endl
+		  << " (from " << __FILE__ ":" << __LINE__ << ")" << std::endl;
   } // end while bmc_host_cxx.empty....
   BMC_DEBUG("Now bmc_host_cxx is: '" << bmc_host_cxx << "'" << std::endl);
   ///
@@ -1428,7 +1433,8 @@ bmc_ask_missing_configuration(const char*progname)
         {
           if (access(gcctarget, R_OK))
             std::cerr << progname << ": WARNING: target GCC '" << gcctarget
-                      << "' is not accessible: " << strerror(errno) << std::endl;
+                      << "' is not accessible: " << strerror(errno) << std::endl
+		      << " (from " << __FILE__ ":" << __LINE__ << ")" << std::endl;
 	  else
 	    {
 	      bmc_target_gcc.assign(gcctarget);
@@ -1459,7 +1465,8 @@ bmc_ask_missing_configuration(const char*progname)
         {
           if (access(gxxtarget, R_OK))
             std::cerr << progname << ": WARNING: target GXX '" << gxxtarget
-                      << "' is not accessible: " << strerror(errno) << std::endl;
+                      << "' is not accessible: " << strerror(errno) << std::endl
+		      << " (from " << __FILE__ ":" << __LINE__ << ")" << std::endl;
           bmc_target_gxx.assign(gxxtarget);
           add_history(gxxtarget);
           free ((void*)gxxtarget), gxxtarget = nullptr;
@@ -1525,7 +1532,8 @@ bmc_ask_missing_configuration(const char*progname)
 	bmc_onion_includedir = stronionincl;
 	BMC_DEBUG("setting bmc_onion_includedir to " << stronionincl);
       } else
-	std::cerr << "Wrong libonion include dir " << stronionincl << " since " << onionh << " cannot be read."
+	std::cerr << "WARNING: Wrong libonion include dir " << stronionincl << " since " << onionh << " cannot be read." << std::endl
+		  << " (from " << __FILE__ ":" << __LINE__ << ")" << std::endl
 		  << std::endl;
     }
   } // end while bmc_onion_includedir.empty()
@@ -1555,9 +1563,10 @@ bmc_ask_missing_configuration(const char*progname)
 	bmc_onion_libdir = stronionlib;
 	BMC_DEBUG("setting bmc_onion_libdir to " << stronionlib);
       } else
-	std::cerr << "Wrong libonion shared library directory " << stronionlib
+	std::cerr << "WARNING: Wrong libonion shared library directory " << stronionlib
 		  << " since " << onionlib << " cannot be read."
-		  << std::endl;
+		  << std::endl
+		  << " (... from " << __FILE__ ":" << __LINE__ << ")" << std::endl;
     }
   } // end while bmc_onion_libdir.empty()
   BMC_DEBUG("now bmc_onion_libdir is:" << bmc_onion_libdir << std::endl);
@@ -1598,7 +1607,8 @@ bmc_ask_missing_configuration(const char*progname)
             closedir(outdirhdl);
           else
             std::cerr << progname << ": WARNING: cannot opendir " << outdir
-                      << " : " << strerror(errno) << std::endl;
+                      << " : " << strerror(errno) << std::endl
+		    << " (... from " << __FILE__ ":" << __LINE__ << ")" << std::endl;
           bmc_out_directory.assign(outdir);
         }
       else
