@@ -131,43 +131,43 @@ _bm_config.h _bm_config.c:
 
 
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
-	$(CXX) -g -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+	$(CXX) -g -Wall  -DBISMON_MAKING_$@ $^  $(shell pkg-config --libs glib-2.0) -o $@
 
 BM_makeconst: BM_makeconst.o id_BM.o
 	@echo building $@ with CXX= $(CXX)
-	$(CXX) -g -O -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+	$(CXX) -g -O -DBISMON_MAKING_$@ -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
 
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
-	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	$(COMPILE.cc) -DBISMON_MAKING_BM_makeconst_g  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 
 BM_makeconst.o: BM_makeconst.cc id_BM.h
-	$(COMPILE.cc)  $(shell pkg-config --cflags glib-2.0) -g -O -Wall -c $< -o $@
+	$(COMPILE.cc)  -DBISMON_MAKING_BM_makeconst $(shell pkg-config --cflags glib-2.0) -g -O -Wall -c $< -o $@
 
 -include _bismon-makedep.mk
 
 id_BM.o: id_BM.c id_BM.h
-	$(COMPILE.c) $(BISMON_CFLAGS)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
+	$(COMPILE.c) -DBISMON_MAKING_id_BM $(BISMON_CFLAGS)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
 id_BM-g.o: id_BM.c id_BM.h
-	$(COMPILE.c)  $(BISMON_CFLAGS) -g $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	$(COMPILE.c)   -DBISMON_MAKING_id_BM_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h
-	$(COMPILE.c)  $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  $< -o $@
+	$(COMPILE.c)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h
-	$(COMPILE.c)  $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall $< -o $@
+	$(COMPILE.c)  -DBISMON_MAKING_C_$*_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall $< -o $@
 
 %_BM.o: %_BM.cc bismon.h
-	$(COMPILE.cc)  $(BISMON_CXXFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall $< -o $@
+	$(COMPILE.cc)  -DBISMON_MAKING_CPP_$* $(BISMON_CXXFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall $< -o $@
 
 %_BM-g.o: %_BM.cc bismon.h
-	$(COMPILE.cc)  $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
+	$(COMPILE.cc)  -DBISMON_MAKING_CPP_$*_g $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
 
 %_ONIONBM.o: %_ONIONBM.c bismon.h
 	@printf "for $@ BISMON_SHORT_GIT is '%s'\n" '$(BISMON_SHORT_GIT)'
-	$(COMPILE.c) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  $< -o $@
+	$(COMPILE.c) -DBISMON_MAKING_ONIONC_$* -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  $< -o $@
 
 %_ONIONBM-g.o: %_ONIONBM.c bismon.h
-	$(COMPILE.c) $(BISMON_CFLAGS) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $-g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
+	$(COMPILE.c) -DBISMON_MAKING_ONIONC_$*_g $(BISMON_CFLAGS) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $-g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
 
 web_ONIONBM.o: web_ONIONBM.c _login_ONIONBM.h _changepasswd_ONIONBM.h
 
@@ -222,5 +222,5 @@ redump: bismon $(wildcard store*.bmon)
 	./bismon --batch --dump-after-load=.
 
 modubin/modbm_%.so: modules/modbm_%.c | bismon _bismon-config.mk _bm_config.h
-	$(LINK.c)  $(BISMON_CFLAGS) -shared -DBISMON_MODID=\"$(BISMON_MODULE_ID)\" -DBISMON_MODMD5=\"$(BISMON_MODULE_MD5SUM)\" -fPIC -I. $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -rdynamic -Wall  $< -o $@
+	$(LINK.c) $(BISMON_CFLAGS) -shared -DBISMON_MODID=\"$(BISMON_MODULE_ID)\" -DBISMON_MODMD5=\"$(BISMON_MODULE_MD5SUM)\" -fPIC -I. $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -rdynamic -Wall  $< -o $@
 ## _bm_predef.h is obsolete since renamed _genbm_predef.h
