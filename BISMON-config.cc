@@ -1407,7 +1407,8 @@ bmc_ask_missing_configuration(const char*progname)
       }
       else
 	std::cerr << std::endl
-		  <<  progname << ": WARNING Host Bismon C++ compiler missing." << std::endl
+		  <<  progname << ": WARNING Host Bismon C++ compiler "
+		  << " missing ..." << std::endl
 		  << " (from " << __FILE__ ":" << __LINE__ << ")" << std::endl;
   } // end while bmc_host_cxx.empty....
   BMC_DEBUG("Now bmc_host_cxx is: '" << bmc_host_cxx << "'" << std::endl);
