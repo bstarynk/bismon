@@ -1305,8 +1305,26 @@ bmc_readline(const char*progname, const char*prompt)
 		<< " pid " << getpid() << std::endl;
       BMC_FAILURE ("readline failure");
     }
+  ////
+  /***
+   * For some reason, in june 2021, we prefer or may need to clear the
+   * last byte, if it is a space.  I (Basile) have no idea if it is a
+   * bug of GNU readline 8 or mine ...  Practically speaking,
+   * bmc_readline is used to read file paths, and conventionally these
+   * should not even contain a space...  We are aware that some weird
+   * Linux distributions could allow spaces in file paths... Then this
+   * bmc_readline function would need to be improved...
+   ***/
+  if (ans && ans[0]) {
+    size_t ansnbytes = strlen(ans);
+    if (ansnbytes > 0 && isspace(ans[ansnbytes-1]))
+      ans[ansnbytes-1] = (char)0;
+    if (strchr(ans, ' '))
+      std::cerr << progname << ": WARNING (for " << prompt << ") - unexpected space...." << std::endl;
+  }
   return ans;
 } // end bmc_readline
+
 
 void
 bmc_ask_missing_configuration(const char*progname)
