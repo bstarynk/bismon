@@ -130,44 +130,51 @@ _bm_config.h _bm_config.c:
 	exit 1
 
 
+## FIXME: for some reason, near commit 70c004037af4cb4a on 10 june 2021, it
+## seems that $(COMPILE.cc) don't work and we need to use $(CXX)
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
 	$(CXX) -g -Wall  -DBISMON_MAKING_$@ $^  $(shell pkg-config --libs glib-2.0) -o $@
 
 BM_makeconst: BM_makeconst.o id_BM.o
 	@echo building $@ with CXX= $(CXX)
 	$(CXX) -g -O -DBISMON_MAKING_$@ -Wall  $^  $(shell pkg-config --libs glib-2.0) -o $@
+	@echo did build $@ with CXX= $(CXX)
 
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
-	$(COMPILE.cc) -DBISMON_MAKING_BM_makeconst_g  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	@echo building $@ with CXX= $(CXX)
+	$(CXX) -DBISMON_MAKING_BM_makeconst_g  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	@echo did build $@ with CXX= $(CXX)
 
 BM_makeconst.o: BM_makeconst.cc id_BM.h
-	$(COMPILE.cc)  -DBISMON_MAKING_BM_makeconst $(shell pkg-config --cflags glib-2.0) -g -O -Wall -c $< -o $@
+	@echo building $@ with CXX= $(CXX)
+	$(CXX)  -DBISMON_MAKING_BM_makeconst $(shell pkg-config --cflags glib-2.0) -g -O -Wall -c $< -o $@
+	@echo did build $@ with CXX= $(CXX)
 
 -include _bismon-makedep.mk
 
 id_BM.o: id_BM.c id_BM.h
-	$(COMPILE.c) -DBISMON_MAKING_id_BM $(BISMON_CFLAGS)  $(shell pkg-config --cflags glib-2.0)  -Wall -c $< -o $@
+	$(CC) -DBISMON_MAKING_id_BM $(BISMON_CFLAGS)  $(shell pkg-config --cflags glib-2.0)  -Wall -Wextra -c $< -o $@
 id_BM-g.o: id_BM.c id_BM.h
-	$(COMPILE.c)   -DBISMON_MAKING_id_BM_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	$(CC)   -DBISMON_MAKING_id_BM_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags glib-2.0) -g -Wall  -Wextra -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h
-	$(COMPILE.c)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  $< -o $@
+	$(CC)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra  $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h
-	$(COMPILE.c)  -DBISMON_MAKING_C_$*_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall $< -o $@
+	$(CC)  -DBISMON_MAKING_C_$*_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall $< -o $@
 
 %_BM.o: %_BM.cc bismon.h
-	$(COMPILE.cc)  -DBISMON_MAKING_CPP_$* $(BISMON_CXXFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall $< -o $@
+	$(CXX)  -DBISMON_MAKING_CPP_$* $(BISMON_CXXFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall $< -o $@
 
 %_BM-g.o: %_BM.cc bismon.h
-	$(COMPILE.cc)  -DBISMON_MAKING_CPP_$*_g $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
+	$(CXX)  -DBISMON_MAKING_CPP_$*_g $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
 
 %_ONIONBM.o: %_ONIONBM.c bismon.h
 	@printf "for $@ BISMON_SHORT_GIT is '%s'\n" '$(BISMON_SHORT_GIT)'
-	$(COMPILE.c) -DBISMON_MAKING_ONIONC_$* -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  $< -o $@
+	$(CC) -DBISMON_MAKING_ONIONC_$* -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall -Wextra  $< -o $@
 
 %_ONIONBM-g.o: %_ONIONBM.c bismon.h
-	$(COMPILE.c) -DBISMON_MAKING_ONIONC_$*_g $(BISMON_CFLAGS) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $-g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
+	$(CC) -DBISMON_MAKING_ONIONC_$*_g $(BISMON_CFLAGS) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $-g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall -Wextra $< -o $@
 
 web_ONIONBM.o: web_ONIONBM.c _login_ONIONBM.h _changepasswd_ONIONBM.h
 
