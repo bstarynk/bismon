@@ -1358,8 +1358,8 @@ bmc_ask_missing_configuration(const char*progname)
       }
       else
 	std::cerr << std::endl
-		  <<  progname << ": WARNING Host Bismon C compiler "
-		  << host_c_comp << " is missing or bad: " << strerror(errno) << std::endl
+		  <<  progname << ": WARNING Host Bismon C compiler '"
+		  << host_c_comp << "' is missing or bad: " << strerror(errno) << std::endl
 		  << " (... from " << __FILE__ ":" << __LINE__ << ")" << std::endl;;
   } // end while bmc_host_cc.empty....
   BMC_DEBUG("Now bmc_host_cc is: " << bmc_host_cc << std::endl);
@@ -1395,8 +1395,8 @@ bmc_ask_missing_configuration(const char*progname)
       if (host_cxx_comp && host_cxx_comp[0]) {
 	BMC_DEBUG("Got host C++ compiler: '" << host_cxx_comp << "'");
 	if (access(host_cxx_comp, X_OK))
-	  std::cerr << progname << ": WARNING Host Bismon C++ compiler " << host_cxx_comp
-		    << " is not executable:" << strerror(errno) << std::endl
+	  std::cerr << progname << ": WARNING Host Bismon C++ compiler '" << host_cxx_comp
+		    << "' is not executable:" << strerror(errno) << std::endl
 		    << " (from " << __FILE__ ":" << __LINE__ << ")" << std::endl;
 	else
 	    {
@@ -1433,6 +1433,7 @@ bmc_ask_missing_configuration(const char*progname)
       const char*gcctarget = bmc_readline(progname, "BISMON target GCC? ");
       if (gcctarget)
         {
+	  BMC_DEBUG("got gcctarget: '" << gcctarget << "'");
           if (access(gcctarget, R_OK))
             std::cerr << progname << ": WARNING: target GCC '" << gcctarget
                       << "' is not accessible: " << strerror(errno) << std::endl
