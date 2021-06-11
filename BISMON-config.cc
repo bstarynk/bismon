@@ -871,6 +871,8 @@ bmc_print_config_make(const char*progname)
     makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS) $(BM_ONION_OBJECTS)"
              << std::endl;
   errno = 0;
+  makeoutf << std::endl
+	   << "##: BISMONMK_HOST_CC from " << __FILE__ ":" << __LINE__ << std::endl;
   if (!bmc_host_cc.empty() && !access(bmc_host_cc.c_str(), X_OK))
     makeoutf << "BISMONMK_HOST_CC=" << bmc_host_cc << std::endl;
   else if (!access("/usr/bin/gcc", X_OK))
@@ -892,8 +894,10 @@ bmc_print_config_make(const char*progname)
     makeoutf << std::endl;
   }
   errno = 0;
+  makeoutf << std::endl
+	   << "##: BISMONMK_HOST_CXX from " << __FILE__ ":" << __LINE__ << std::endl;
   if (!bmc_host_cxx.empty() && !access(bmc_host_cxx.c_str(), X_OK))
-    makeoutf << "BISMONMK_HOST_CXX=" << bmc_host_cc << std::endl;
+    makeoutf << "BISMONMK_HOST_CXX=" << bmc_host_cxx << std::endl;
   else if (!access("/usr/bin/g++", X_OK))
   {
     makeoutf << "#guessed BISMONMK_HOST_CXX - GCC - from " __FILE__ ":" << __LINE__ << std::endl
@@ -913,6 +917,8 @@ bmc_print_config_make(const char*progname)
     makeoutf << std::endl;
   }
   makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson readline" << std::endl;
+  makeoutf << std::endl
+	   << "##: BISMONMK_ONION_* stuff from " << __FILE__ ":" << __LINE__ << std::endl;
   if (!bmc_onion_includedir.empty())
     makeoutf << "BISMONMK_ONION_INCLUDEDIR=" << bmc_onion_includedir << std::endl;
   else
@@ -921,24 +927,37 @@ bmc_print_config_make(const char*progname)
     makeoutf << "BISMONMK_ONION_LIBDIR=" << bmc_onion_libdir << std::endl;
   else
     makeoutf << "#without BISMONMK_ONION_LIBDIR" << std::endl;
+  makeoutf << std::endl
+	   << "##: BISMONMK_EXECUTABLE stuff from " << __FILE__ ":" << __LINE__ << std::endl;
   makeoutf << "BISMONMK_EXECUTABLE= bismon" << std::endl;
+  makeoutf << std::endl
+	   << "##: BISMONMK_TARGET_GCC from " << __FILE__ ":" << __LINE__ << std::endl;
   if (!bmc_target_gcc.empty())
     makeoutf << "BISMONMK_TARGET_GCC=" << bmc_target_gcc << std::endl;
   else
     makeoutf << "#no BISMONMK_TARGET_GCC" << std::endl;
+  makeoutf << std::endl
+	   << "##: BISMONMK_TARGET_GXX from " << __FILE__ ":" << __LINE__ << std::endl;
   if (!bmc_target_gxx.empty())
     makeoutf << "BISMONMK_TARGET_GXX=" << bmc_target_gxx << std::endl;
   else
     makeoutf << "#no BISMONMK_TARGET_GXX" << std::endl;
+  makeoutf << std::endl
+	   << "##: BISMONMK_OUT_DIRECTORY from " << __FILE__ ":" << __LINE__ << std::endl;
   if (!bmc_out_directory.empty())
     makeoutf << "BISMONMK_OUT_DIRECTORY=" << bmc_out_directory << std::endl;
   else
     makeoutf << "#no BISMONMK_OUT_DIRECTORY" << std::endl;
+  makeoutf << std::endl
+	   << "##: BISMONMK_DEBUG from " << __FILE__ ":" << __LINE__ << std::endl;
   if (bmc_debug_flag)
     makeoutf << "BISMONMK_DEBUG=1" << std::endl;
   else
     makeoutf << "#no BISMONMK_DEBUG" << std::endl;
+  makeoutf << std::endl
+	   << "##: BISMONMK_CONFIGPATH from " << __FILE__ ":" << __LINE__ << std::endl;
   makeoutf << "BISMONMK_CONFIGPATH=" << makepath << std::endl;
+  makeoutf << std::endl;
   makeoutf << "### end of Bismon generated file for GNU make " << makepath << " (by " << __FILE__ << ")"
            << std::endl << std::flush;
   BMC_DEBUG("bmc_print_config_make ending makepath=" << makepath);
