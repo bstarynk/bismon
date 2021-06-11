@@ -105,8 +105,10 @@ CC=gcc
 endif
 
 ifdef BISMONMK_HOST_CXX
+#? CXX=$(BISMONMK_HOST_CXX) $(warning CXX from BISMONMK_HOST_CXX)
 CXX=$(BISMONMK_HOST_CXX)
 else
+#? CXX=g++ $(warning CXX plain g++)
 CXX=g++
 endif
 
