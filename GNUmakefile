@@ -90,7 +90,7 @@ BISMON_SHGIT2:= $(shell if git status | grep -q 'nothing to commit'; then echo; 
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count executable clean runconfig objects redump
+.PHONY: all config count executable clean runconfig objects indent redump
 
 .DEFAULTS: all
 
@@ -228,10 +228,14 @@ _bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash
 	./emit-make-dependencies.bash $(BM_C_SOURCES) $(BM_CXX_SOURCES) $(BM_C_ONION_SOURCES)
 
 redump: bismon $(wildcard store*.bmon)
+	./bismon --version
 	./bismon --batch --dump-after-load=.
 
 modubin/modbm_%.so: modules/modbm_%.c | bismon _bismon-config.mk _bm_config.h
 	$(LINK.c) -DBISMON_MODULE_$(notdir $(basename $@)) $(BISMON_CFLAGS) -shared -DBISMON_MODID=\"$(BISMON_MODULE_ID)\" -DBISMON_MODMD5=\"$(BISMON_MODULE_MD5SUM)\" -fPIC -I. $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -rdynamic -Wall  $< -o $@
 ## _bm_predef.h is obsolete since renamed _genbm_predef.h
 
+indent:
+	/bin/bash -cx 'for csrcfile in  $(BM_C_SOURCES) ; do /bin/ls -l $$csrcfile ; $(INDENT) $(INDENTFLAGS) $$csrcfile ; done'
+	/bin/bash -cx 'for cppsrcfile in $(BM_CXX_SOURCES) ; do /bin/ls -l $$cppsrcfile ; $(ASTYLE) $(ASTYLEFLAGS) $$cppsrcfile ; done'
 ##### end of file bismon/GNUmakefile
