@@ -2751,6 +2751,14 @@ do_test_mailhtml_bm (void)
 }                               /* end do_test_mailhtml_bm */
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+  const char*onion_version(void);
+  const char* jansson_version_str(void);
+#ifdef __cplusplus
+};
+#endif //__cplusplus
 
 ////////////////////////////////////////////////////////////////
 void
@@ -2764,6 +2772,12 @@ give_prog_version_BM (const char *progname)
   printf ("\t source checksum: %s\n", bismon_checksum);
   printf ("\t source dir: %s\n", bismon_directory);
   printf ("\t GNUmakefile: %s\n", bismon_gnumakefile);
+  printf ("\t Glib (see developer.gnome.org/glib) version: %u.%u.%u\n",
+	  glib_major_version, glib_minor_version, glib_micro_version);
+  printf ("\t Libonion - see github.com/davidmoreno/onion - version: %s\n",
+	  onion_version());
+  printf ("\t libjansson - see digip.org/jansson/ - version: %s\n",
+	  jansson_version_str());
   printf ("########\n");
   printf ("run\n" "\t   %s --help\n" "to get help.\n", progname);
   exit (EXIT_SUCCESS);
