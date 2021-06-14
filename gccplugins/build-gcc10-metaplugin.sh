@@ -53,6 +53,8 @@ SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 ### finish event to interact with Bismon
 
 
+#### see also Debian bug #983436
+
 ### in rare cases, we also want the assembler file of the plugin (e.g. to debug some dlerror in it)
 if [ -n "$BISMON_PLUGIN_ASMOUT" ]; then
     if [ -f "$BISMON_PLUGIN_ASMOUT" ]; then
