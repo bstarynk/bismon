@@ -778,6 +778,7 @@ canonjsonifyvalue_BM (value_tyBM valarg,
         break;
       case tyUnspecified_BM:
         jres = json_false ();
+	break;
       case tySet_BM:
       case tyTuple_BM:
         {
