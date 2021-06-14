@@ -38,13 +38,11 @@
 #include <chrono>
 #include <functional>
 #include <cmath>
-extern "C" {
 #ifdef BISMONGTK
 #include <gtk/gtk.h>
 #endif /*BISMONGTK*/
 #include <glib.h>
 #include "bismon.h"
-};
 
 static_assert (sizeof(std::atomic<objectval_tyBM*>) == sizeof(objectval_tyBM*), "pointer to objects have same size as their atomic");
 

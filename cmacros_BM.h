@@ -211,7 +211,11 @@
 #define PARSERMEMOLINERATIO_BM 16
 #define PARSOPMAGIC_BM 3144351953       /*0xbb6b00d1 */
 // only used by FATAL_BM macro
-extern void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
+extern
+#ifdef __cplusplus
+  "C"
+#endif /*__cplusplus*/
+void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 #define FATAL_AT_BIS_BM(Fil,Lin,Fmt,...) do {                   \
     fprintf(stderr, "BM FATAL:%s:%d: <%s>\n " Fmt "\n\n",       \
             Fil, Lin, __func__, ##__VA_ARGS__);                 \
@@ -453,8 +457,11 @@ extern void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
   LOCAL_FAILURE_HANDLE_AT_BM(__FILE__,__LINE__,Lockset,Flabel,FcodVar,ReasonVar,PlaceVar)
 
 // weak assert dont abort
-extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
-                                    int lin);
+extern
+#ifdef __cplusplus
+  "C"
+#endif /*__cplusplus*/
+void weakassertfailureat_BM (const char *condmsg, const char *fil, int lin);
 #ifndef NDEBUG
 #define WEAKASSERT_BM(Cond) do { if(!(Cond)) \
       { weakassertfailureat_BM(#Cond,__FILE__,__LINE__); return 0; }} \
@@ -491,8 +498,4 @@ extern void weakassertfailureat_BM (const char *condmsg, const char *fil,
 #define MINDELAY_DECAYED_MILLISECOND_BM 125
 /// the command run to show network information
 #define SHOW_NET_COMMAND_BM "echo Bismon SHOW_NET_COMMAND pid $$ && ip addr"
-
-
-
-
 #endif /*CMACROS_BM_INCLUDED */

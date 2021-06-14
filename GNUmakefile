@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-## the Bismon GNUmakefile - for GNU make 4
+## the Bsmon GNUmakefile - for GNU make 4
 ## SPDX-License-Identifier: GPL-3.0-or-later
 ## GPLv3+ licensed, from http://github.com/bstarynk/bismon
 # 
@@ -160,23 +160,23 @@ id_BM-g.o: id_BM.c id_BM.h
 	$(CC)   -DBISMON_MAKING_id_BM_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags glib-2.0) -g -Wall  -Wextra -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h
-	$(CC)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra  $< -o $@
+	$(CC)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra -c  $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h
-	$(CC)  -DBISMON_MAKING_C_$*_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall $< -o $@
+	$(CC)  -DBISMON_MAKING_C_$*_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall-Wextra -c $< -o $@
 
 %_BM.o: %_BM.cc bismon.h
-	$(CXX)  -DBISMON_MAKING_CPP_$* $(BISMON_CXXFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall $< -o $@
+	$(CXX) -c  -DBISMON_MAKING_CPP_$* $(BISMON_CXXFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall -Wextra $< -o $@
 
 %_BM-g.o: %_BM.cc bismon.h
-	$(CXX)  -DBISMON_MAKING_CPP_$*_g $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
+	$(CXX) -c -DBISMON_MAKING_CPP_$*_g $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
 
 %_ONIONBM.o: %_ONIONBM.c bismon.h
 	@printf "for $@ BISMON_SHORT_GIT is '%s'\n" '$(BISMON_SHORT_GIT)'
-	$(CC) -DBISMON_MAKING_ONIONC_$* -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall -Wextra  $< -o $@
+	$(CC) -c -DBISMON_MAKING_ONIONC_$* -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall -Wextra  $< -o $@
 
 %_ONIONBM-g.o: %_ONIONBM.c bismon.h
-	$(CC) -DBISMON_MAKING_ONIONC_$*_g $(BISMON_CFLAGS) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $-g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall -Wextra $< -o $@
+	$(CC) -c -DBISMON_MAKING_ONIONC_$*_g $(BISMON_CFLAGS) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $-g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall -Wextra $< -o $@
 
 web_ONIONBM.o: web_ONIONBM.c _login_ONIONBM.h _changepasswd_ONIONBM.h
 

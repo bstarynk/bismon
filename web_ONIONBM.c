@@ -32,7 +32,7 @@ const char webonion_timestamp_BM[] =
   __FILE__ " compiled at " __DATE__ " on " __TIME__
 #ifdef BISMON_GITID
   " git " BISMON_GITID
-#endif /*BISMON_GITID*/
+#endif /*BISMON_GITID */
   ;
 
 // expiration delay for user session, in seconds (more than an hour,
@@ -550,8 +550,9 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
       /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
       /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
-      INFOPRINTF_BM ("run_onionweb_BM runs web_plain_event_loop, timestamped %s",
-		     webonion_timestamp_BM);
+      INFOPRINTF_BM
+        ("run_onionweb_BM runs web_plain_event_loop, timestamped %s",
+         webonion_timestamp_BM);
       web_is_running_BM = true;
       web_plain_event_loop_BM ();
       web_is_running_BM = false;
@@ -911,7 +912,8 @@ custom_onion_handler_BM (void *clientdata,
   objectval_tyBM *k_custom_onion_handler = BMK_5C5Dfd8eVkR_3306NWk09Bn;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_custom_onion_handler,
-                 objectval_tyBM * sessionob;);
+                 objectval_tyBM * sessionob;
+    );
   while (agenda_need_gc_BM ())
     {
       DBGPRINTF_BM ("custom_onion_handler need GC");
@@ -1349,7 +1351,8 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       _.themenamev = (value_tyBM)
         stringcast_BM (objgetattr_BM (_.webthemeob, k_name));
       if (isstring_BM (_.themenamev))
-        jsonthemename = json_string (bytstring_BM (_.themenamev));
+        jsonthemename = json_string (bytstring_BM
+                                     ((const stringval_tyBM *) _.themenamev));
       objunlock_BM (_.webthemeob);
       DBGPRINTF_BM
         ("bismon_settings_json_handler_BM contribob %s, themenamev=%s",
@@ -1550,7 +1553,8 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
 {
   objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
-                 objectval_tyBM * contribob;);
+                 objectval_tyBM * contribob;
+    );
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
@@ -1730,7 +1734,8 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
                  objectval_tyBM * decayforgotob;        //
                  value_tyBM contribnamv;        //
                  value_tyBM contribemailv;      //
-                 value_tyBM closv;);
+                 value_tyBM closv;
+    );
   _.contribob = contribobarg;
   _.decayforgotob = decayforgotobarg;
   DBGPRINTF_BM
@@ -1881,21 +1886,22 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
         FATAL_BM
           ("failed to append into decayforgotob %s the null for otherrandix",
            objectdbg_BM (_.decayforgotob));
-      DBGPRINTF_BM
-        ("make_onion_dict_forgotten_email_BM contribob %s filled-empty-decay\n"
-         "decayforgotob %s (len%u,asiz%u) with [contrib: %s, closure: %s, random: %s]\n"
-         " filled %u, rn %u", //
-	 objectdbg_BM (_.contribob),
-         objectdbg1_BM (_.decayforgotob),
-         objdecayedvectlenpayl_BM (_.decayforgotob),
-         objdecayedvectallocsizepayl_BM (_.decayforgotob),
-         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM
-                         (_.decayforgotob, DECAYFORGOTTENCONTRIBIX_bm)),
-         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM
-                         (_.decayforgotob, DECAYFORGOTTENCLOSUREIX_bm)),
-         OUTSTRVALUE_BM (objdecayedvectornthpayl_BM
-                         (_.decayforgotob, DECAYFORGOTTENRANDOMIX_bm)),
-         objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn);
+      DBGPRINTF_BM ("make_onion_dict_forgotten_email_BM contribob %s filled-empty-decay\n" "decayforgotob %s (len%u,asiz%u) with [contrib: %s, closure: %s, random: %s]\n" " filled %u, rn %u", //
+                    objectdbg_BM (_.contribob),
+                    objectdbg1_BM (_.decayforgotob),
+                    objdecayedvectlenpayl_BM (_.decayforgotob),
+                    objdecayedvectallocsizepayl_BM (_.decayforgotob),
+                    OUTSTRVALUE_BM (objdecayedvectornthpayl_BM
+                                    (_.decayforgotob,
+                                     DECAYFORGOTTENCONTRIBIX_bm)),
+                    OUTSTRVALUE_BM (objdecayedvectornthpayl_BM
+                                    (_.decayforgotob,
+                                     DECAYFORGOTTENCLOSUREIX_bm)),
+                    OUTSTRVALUE_BM (objdecayedvectornthpayl_BM
+                                    (_.decayforgotob,
+                                     DECAYFORGOTTENRANDOMIX_bm)),
+                    objdecayedvectallocsizepayl_BM (_.decayforgotob),
+                    (unsigned) rn);
     };
   DBGBACKTRACEPRINTF_BM
     ("ending make_onion_dict_forgotten_email_BM contribob %s\n"
@@ -2093,8 +2099,7 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  objectval_tyBM * contribob;    //
                  objectval_tyBM * sessionob;    //
-                 value_tyBM cookiestrv;
-    );
+                 value_tyBM cookiestrv;);
   ASSERT_BM (isobject_BM (contribobarg));
   _.contribob = contribobarg;
   DBGPRINTF_BM
@@ -2744,8 +2749,7 @@ create_anonymous_web_session_BM (void)
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * sessionob;    //
-                 value_tyBM cookiestrv;
-    );
+                 value_tyBM cookiestrv;);
   DBGPRINTF_BM
     ("create_anonymous_web_session start onionanonwebsession '%s'",
      onion_anon_web_session_BM);
@@ -2824,9 +2828,8 @@ objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * objarg,
                                        struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * websessob; value_tyBM jsonv;
-                 value_tyBM ctxv;
-    );
+                 objectval_tyBM * websessob;
+                 value_tyBM jsonv; value_tyBM ctxv;);
   _.websessob = objarg;
   _.jsonv = jsonarg;
   _.ctxv = ctxtarg;
@@ -3672,14 +3675,14 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
 {
   //  objectval_tyBM *k_web_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * bufob;
-    );
+                 objectval_tyBM * bufob;);
   atomic_init (&onionlooprunning_BM, true);
 
   DBGBACKTRACEPRINTF_BM ("web_plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",      //
                          sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
-  INFOPRINTF_BM ("start loop of web_plain_event_loop_BM for %s", onion_web_base_BM);
+  INFOPRINTF_BM ("start loop of web_plain_event_loop_BM for %s",
+                 onion_web_base_BM);
   while (atomic_load (&onionlooprunning_BM))
     {
       loopcnt++;
@@ -3779,10 +3782,10 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
                                 WARNPRINTF_BM
                                   ("unexpected null byte from process pid#%d command node %s in %s",
                                    (int) onionrunprocarr_BM[runix].rp_pid,
-                                   OUTSTRVALUE_BM ((value_tyBM) onproc->
-                                                   rp_cmdnodv),
-                                   bytstring_BM (onproc->
-                                                 rp_dirstrv) ? : "./");
+                                   OUTSTRVALUE_BM ((value_tyBM)
+                                                   onproc->rp_cmdnodv),
+                                   bytstring_BM (onproc->rp_dirstrv) ? :
+                                   "./");
                                 if (kill (onproc->rp_pid, SIGTERM) == 0)
                                   WARNPRINTF_BM ("sent SIGTERM to pid#%d",
                                                  onproc->rp_pid);
@@ -3846,7 +3849,7 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
     case SIGTERM:
     case SIGINT:
       {
-        DBGPRINTF_BM ("read_sigfd_BM got %s", strsignal(siginf.ssi_signo));
+        DBGPRINTF_BM ("read_sigfd_BM got %s", strsignal (siginf.ssi_signo));
         stop_agenda_work_threads_BM ();
         /// forcibly remove the payload of the_web_sessions. Its payload
         /// should not be dumped, because of its class, but anyway...
@@ -3859,8 +3862,7 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
         INFOPRINTF_BM
           ("before dumping final state into %s (really %s) after signal %s to process %d, elapsed %.3f s",
            dump_dir_BM, rp,
-	   strsignal(siginf.ssi_signo), 
-	   (int) getpid (), elapsedtime_BM ());
+           strsignal (siginf.ssi_signo), (int) getpid (), elapsedtime_BM ());
         free (rp), rp = NULL;
         struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
         INFOPRINTF_BM
