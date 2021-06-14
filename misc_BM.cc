@@ -107,10 +107,10 @@ struct failurelockset_stBM
   ~failurelockset_stBM ()
   {
     for (objectval_tyBM* ob : flhobjset)
-    {
-      ASSERT_BM (valtype_BM(ob) == tyObject_BM);
-      pthread_mutex_unlock(&ob->ob_mutex);
-    }
+      {
+        ASSERT_BM (valtype_BM(ob) == tyObject_BM);
+        pthread_mutex_unlock(&ob->ob_mutex);
+      }
   }
   friend void initialize_failurelockset_BM(struct failurelockset_stBM *, size_t);
   friend void destroy_failurelockset_BM(struct failurelockset_stBM *);
@@ -138,20 +138,20 @@ validname_BM (const char *nam)
     return false;
   const char *pc = nam;
   for (; *pc; pc++)
-  {
-    if (isalnum (*pc))
-      continue;
-    else if (*pc == '_')
     {
-      if (!isalnum (pc[1]))
+      if (isalnum (*pc))
+        continue;
+      else if (*pc == '_')
+        {
+          if (!isalnum (pc[1]))
+            return false;
+          if (!isalnum (pc[-1]))
+            return false;
+          continue;
+        }
+      else
         return false;
-      if (!isalnum (pc[-1]))
-        return false;
-      continue;
     }
-    else
-      return false;
-  }
   return true;
 }                               /* end validname_BM */
 
@@ -271,11 +271,11 @@ setofnamedobjects_BM (void)
   std::vector<const objectval_tyBM *> vectobj;
   vectobj.reserve(namemap_BM.size());
   for (auto itn: namemap_BM)
-  {
-    const objectval_tyBM* ob = itn.second;
-    ASSERT_BM (isobject_BM((const value_tyBM)ob));
-    vectobj.push_back(ob);
-  };
+    {
+      const objectval_tyBM* ob = itn.second;
+      ASSERT_BM (isobject_BM((const value_tyBM)ob));
+      vectobj.push_back(ob);
+    };
   return makeset_BM(vectobj.data(), vectobj.size());
 } // end setofnamedobjects_BM
 
@@ -289,13 +289,13 @@ setofprefixednamedobjects_BM (const char*prefix)
   vectobj.reserve(2*TINYSIZE_BM);
   for (auto itn = namemap_BM.lower_bound(prefix);
        itn != namemap_BM.end(); itn++)
-  {
-    int cmp = strncmp(itn->first, prefix, prefixlen);
-    if (cmp) break;
-    const objectval_tyBM* ob = itn->second;
-    ASSERT_BM (isobject_BM((const value_tyBM)ob));
-    vectobj.push_back(ob);
-  }
+    {
+      int cmp = strncmp(itn->first, prefix, prefixlen);
+      if (cmp) break;
+      const objectval_tyBM* ob = itn->second;
+      ASSERT_BM (isobject_BM((const value_tyBM)ob));
+      vectobj.push_back(ob);
+    }
   return makeset_BM(vectobj.data(), vectobj.size());
 } // end setofprefixednamedobjects_BM
 
@@ -308,14 +308,14 @@ setofmatchednamedobjects_BM(const char*fnmatcher)
   vectobj.reserve(namemap_BM.size()/16+10);
   bool allcases = (fnmatcher[0] == '~');
   for (auto itn : namemap_BM)
-  {
-    const objectval_tyBM* ob = itn.second;
-    ASSERT_BM (isobject_BM((const value_tyBM)ob));
-    if (!fnmatch(allcases?(fnmatcher+1):fnmatcher, itn.first,
-                 allcases ? (FNM_EXTMATCH | FNM_CASEFOLD)
-                 : FNM_EXTMATCH))
-      vectobj.push_back(ob);
-  }
+    {
+      const objectval_tyBM* ob = itn.second;
+      ASSERT_BM (isobject_BM((const value_tyBM)ob));
+      if (!fnmatch(allcases?(fnmatcher+1):fnmatcher, itn.first,
+                   allcases ? (FNM_EXTMATCH | FNM_CASEFOLD)
+                   : FNM_EXTMATCH))
+        vectobj.push_back(ob);
+    }
   return makeset_BM(vectobj.data(), vectobj.size());
 } // end setofmatchednamedobjects_BM
 
@@ -323,11 +323,11 @@ const char*
 findnameafter_BM(const char*prefix)
 {
   if (!prefix || prefix[0]==(char)0)
-  {
-    if (namemap_BM.empty()) return nullptr;
-    auto firstn = namemap_BM.begin();
-    return firstn->first;
-  }
+    {
+      if (namemap_BM.empty()) return nullptr;
+      auto firstn = namemap_BM.begin();
+      return firstn->first;
+    }
   auto itn = namemap_BM.upper_bound(prefix);
   if (itn != namemap_BM.end())
     return itn->first;
@@ -339,11 +339,11 @@ const char*
 findnamesameorafter_BM(const char*prefix)
 {
   if (!prefix || prefix[0]==(char)0)
-  {
-    if (namemap_BM.empty()) return nullptr;
-    auto firstn = namemap_BM.begin();
-    return firstn->first;
-  }
+    {
+      if (namemap_BM.empty()) return nullptr;
+      auto firstn = namemap_BM.begin();
+      return firstn->first;
+    }
   auto itn = namemap_BM.lower_bound(prefix);
   if (itn != namemap_BM.end())
     return itn->first;
@@ -355,13 +355,13 @@ const char*
 findnamebefore_BM(const char*prefix)
 {
   if (!prefix || prefix[0]==(char)0)
-  {
-    if (namemap_BM.empty())
-      return nullptr;
-    auto lastn = namemap_BM.end();
-    lastn--;
-    return lastn->first;
-  }
+    {
+      if (namemap_BM.empty())
+        return nullptr;
+      auto lastn = namemap_BM.end();
+      lastn--;
+      return lastn->first;
+    }
   auto itn = namemap_BM.lower_bound(prefix);
   if (itn != namemap_BM.begin())
     itn--;
@@ -406,10 +406,10 @@ nodeglobalnames_BM (const objectval_tyBM * connob)
   std::vector<value_tyBM> vecstr;
   vecstr.reserve(mapglobals_BM.size());
   for (auto it: mapglobals_BM)
-  {
-    const std::string& curname = it.first;
-    vecstr.push_back((value_tyBM)makestring_BM(curname.c_str()));
-  }
+    {
+      const std::string& curname = it.first;
+      vecstr.push_back((value_tyBM)makestring_BM(curname.c_str()));
+    }
   return makenode_BM (connob, vecstr.size(), vecstr.data());
 } // end nodeglobalnames_BM
 
@@ -421,13 +421,13 @@ setglobalobjects_BM(void)
   std::set<objectval_tyBM*,ObjectLess_BM> setobj;
   vecobj.reserve(mapglobals_BM.size());
   for (auto it: mapglobals_BM)
-  {
-    objectval_tyBM* curob = *(it.second);
-    if (!curob || valtype_BM((const value_tyBM)curob) != tyObject_BM)
-      continue;
-    if (setobj.find (curob) != setobj.end()) continue;
-    vecobj.push_back(curob);
-  };
+    {
+      objectval_tyBM* curob = *(it.second);
+      if (!curob || valtype_BM((const value_tyBM)curob) != tyObject_BM)
+        continue;
+      if (setobj.find (curob) != setobj.end()) continue;
+      vecobj.push_back(curob);
+    };
   return makeset_BM((const objectval_tyBM**)(vecobj.data()), vecobj.size());
 } // end setglobalobjects_BM
 
@@ -467,42 +467,44 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   if (::stat(binmodpath.c_str(), &binmodstat))
     {
       WARNPRINTF_BM("missing module binary %s (%m) related to module source %s\n",
-		    binmodpath.c_str(), srcmodpath.c_str());
+                    binmodpath.c_str(), srcmodpath.c_str());
       shouldrebuild = true;
     };
   if (srcmodstat.st_mtime > binmodstat.st_mtime)
     {
       WARNPRINTF_BM("too old module binary %s (%m) related to module source %s\n",
-		    binmodpath.c_str(), srcmodpath.c_str());
+                    binmodpath.c_str(), srcmodpath.c_str());
       shouldrebuild = true;
     };
-  if (shouldrebuild) {
-    INFOPRINTF_BM("before running %s/persistent-module-build-bismon.sh %s",
-                  bismon_directory, modidbuf);
-    fflush(nullptr);
-    usleep (32768);
-    std::string buildcmd{bismon_directory};
-    buildcmd += "/persistent-module-build-bismon.sh ";
-    buildcmd += modidbuf;
-    int buildret = system(buildcmd.c_str());
-    if (buildret) {
-      WARNPRINTF_BM("module build %s failed with %d",
-                    buildcmd.c_str(), buildret);
-      return false;
+  if (shouldrebuild)
+    {
+      INFOPRINTF_BM("before running %s/persistent-module-build-bismon.sh %s",
+                    bismon_directory, modidbuf);
+      fflush(nullptr);
+      usleep (32768);
+      std::string buildcmd{bismon_directory};
+      buildcmd += "/persistent-module-build-bismon.sh ";
+      buildcmd += modidbuf;
+      int buildret = system(buildcmd.c_str());
+      if (buildret)
+        {
+          WARNPRINTF_BM("module build %s failed with %d",
+                        buildcmd.c_str(), buildret);
+          return false;
+        }
+      else if (!access(binmodpath.c_str(), R_OK))
+        INFOPRINTF_BM("module of id %s was successfully compiled to binary %s",
+                      modidbuf, binmodpath.c_str());
+      else
+        FATAL_BM("unexpected failure of %s to build %s", buildcmd.c_str(), binmodpath.c_str());
+      if (::stat(binmodpath.c_str(), &binmodstat))
+        FATAL_BM("unexpected stat failure of %s (%m) after module build", binmodpath.c_str());
     }
-    else if (!access(binmodpath.c_str(), R_OK))
-      INFOPRINTF_BM("module of id %s was successfully compiled to binary %s",
-                    modidbuf, binmodpath.c_str());
-    else
-      FATAL_BM("unexpected failure of %s to build %s", buildcmd.c_str(), binmodpath.c_str());
-    if (::stat(binmodpath.c_str(), &binmodstat))
-      FATAL_BM("unexpected stat failure of %s (%m) after module build", binmodpath.c_str());
-  }
   if (modulemap_BM.find(modid) != modulemap_BM.end())
     {
       // module already loaded
       DBGPRINTF_BM("open_module_for_loader modid %s already loaded",
-		   modidbuf);
+                   modidbuf);
       return true;
     }
   DBGBACKTRACEPRINTF_BM("open_module_for_loader before dlopen %s",
@@ -519,7 +521,7 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   if (!modidad || strcmp(modidad,modidbuf))
     {
       WARNPRINTF_BM("bad module_id_BM in %s : %s\n",
-		    binmodpath.c_str(), (modidad?"modid mismatch":dlerror()));
+                    binmodpath.c_str(), (modidad?"modid mismatch":dlerror()));
       dlclose(dlh);
       return false;
     }
@@ -694,10 +696,10 @@ void gcmarkmodules_BM(struct garbcoll_stBM*gc)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   for (auto it: modulemap_BM)
-  {
-    gcobjmark_BM(gc, it.second.mod_obj);
-    VALUEGCPROC_BM(gc, it.second.mod_data, 0);
-  }
+    {
+      gcobjmark_BM(gc, it.second.mod_obj);
+      VALUEGCPROC_BM(gc, it.second.mod_data, 0);
+    }
 } // end gcmarkmodules_BM
 ////////////////////////////////////////////////////////////////
 
@@ -728,10 +730,10 @@ dictgcmark_BM(struct garbcoll_stBM *gc, struct dict_stBM*dict,
   ((typedhead_tyBM *)dict)->hgc = MARKGC_BM;
   auto& dicm = *(dictmap_claBM*)dict->dict_data;
   for (auto& it : dicm)
-  {
-    VALUEGCPROC_BM(gc, *(void**) &it.first, depth+1);
-    VALUEGCPROC_BM(gc, *(void**) &it.second, depth+1);
-  }
+    {
+      VALUEGCPROC_BM(gc, *(void**) &it.first, depth+1);
+      VALUEGCPROC_BM(gc, *(void**) &it.second, depth+1);
+    }
 } // end dictgcmark_BM
 
 
@@ -892,9 +894,9 @@ dictnodeofkeys_BM(struct dict_stBM* dict, const objectval_tyBM*obj)
   if (!arr) FATAL_BM("calloc failure for %u keys", (unsigned) dicm.size());
   int cnt = 0;
   for (auto it : dicm)
-  {
-    arr[cnt++] = (value_tyBM)it.first;
-  }
+    {
+      arr[cnt++] = (value_tyBM)it.first;
+    }
   const node_tyBM* nodv = makenode_BM(obj, cnt, arr);
   free (arr);
   return nodv;
@@ -908,11 +910,12 @@ int doublecmp_BM(double x, double y)
   if (std::isnan(x) || std::isnan(y) || std::isunordered(x,y))
     FATAL_BM("doublecmp_BM with Not-a-number x=%g y=%g", x,y);
   /// IEEE 754 distinguishes +0.0 from -0.0, but they compare equal
-  if (x==y) {
-    bool signx = std::signbit(x), signy = std::signbit(y);
-    if (signx != signy) return signx ? -1 /* x <= 0 && y >= 0 */ : +1;
-    return 0;
-  };
+  if (x==y)
+    {
+      bool signx = std::signbit(x), signy = std::signbit(y);
+      if (signx != signy) return signx ? -1 /* x <= 0 && y >= 0 */ : +1;
+      return 0;
+    };
   if (x<y) return -1;
   if (x>y) return +1;
   // this should never be reached
@@ -923,11 +926,12 @@ hash_tyBM doublehash_BM (double x)
 {
   std::size_t hs = std::hash<double> {}(x);
   hash_tyBM h = (hash_tyBM) hs;
-  if (h == 0) {
-    h = hs % 12001057;
-    if (h == 0)
-      h = 1051079;
-  }
+  if (h == 0)
+    {
+      h = hs % 12001057;
+      if (h == 0)
+        h = 1051079;
+    }
   return h;
 } // end doublehash_BM
 
@@ -978,12 +982,12 @@ cmd_find_enclosing_parens_BM(int off)
   if (it == cmd_closemap_BM.end())
     return nullptr;
   do
-  {
-    struct parenoffset_stBM*po = &it->second;
-    if (parens_surrounds_BM(po, off))
-      return po;
-    it--;
-  }
+    {
+      struct parenoffset_stBM*po = &it->second;
+      if (parens_surrounds_BM(po, off))
+        return po;
+      it--;
+    }
   while (it != cmd_closemap_BM.begin());
   return nullptr;
 } // end cmd_find_enclosing_parens_BM
@@ -1012,21 +1016,21 @@ gcmarkdefer_BM(struct garbcoll_stBM*gc)
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
   std::lock_guard<std::mutex> _g(deferqmtx_BM);
   for (auto itd : deferdeque_BM)
-  {
-    if (itd.defer_recv)
     {
-      VALUEGCPROC_BM (gc, itd.defer_fun, 0);
-      gcobjmark_BM(gc, itd.defer_obsel);
+      if (itd.defer_recv)
+        {
+          VALUEGCPROC_BM (gc, itd.defer_fun, 0);
+          gcobjmark_BM(gc, itd.defer_obsel);
+        }
+      else
+        VALUEGCPROC_BM (gc, itd.defer_fun, 0);
+      if (itd.defer_arg1)
+        VALUEGCPROC_BM (gc, itd.defer_arg1, 0);
+      if (itd.defer_arg2)
+        VALUEGCPROC_BM (gc, itd.defer_arg2, 0);
+      if (itd.defer_arg3)
+        VALUEGCPROC_BM (gc, itd.defer_arg3, 0);
     }
-    else
-      VALUEGCPROC_BM (gc, itd.defer_fun, 0);
-    if (itd.defer_arg1)
-      VALUEGCPROC_BM (gc, itd.defer_arg1, 0);
-    if (itd.defer_arg2)
-      VALUEGCPROC_BM (gc, itd.defer_arg2, 0);
-    if (itd.defer_arg3)
-      VALUEGCPROC_BM (gc, itd.defer_arg3, 0);
-  }
 } // end gcmarkdefer_BM
 
 
@@ -1053,22 +1057,22 @@ did_deferred_BM (void)
   {
     std::lock_guard<std::mutex> _g(deferqmtx_BM);
     if (deferdeque_BM.empty())
-    {
-      NONPRINTF_BM("did_deferred_BM empty tid#%ld",
-                   (long)gettid_BM());
-      return false;
-    }
+      {
+        NONPRINTF_BM("did_deferred_BM empty tid#%ld",
+                     (long)gettid_BM());
+        return false;
+      }
     auto f = deferdeque_BM.front();
     if (f.defer_recv)
-    {
-      drecv = f.defer_recv;
-      dobsel = f.defer_obsel;
-    }
+      {
+        drecv = f.defer_recv;
+        dobsel = f.defer_obsel;
+      }
     else
-    {
-      dfunv = f.defer_fun;
-      drecv = nullptr;
-    };
+      {
+        dfunv = f.defer_fun;
+        drecv = nullptr;
+      };
     darg1v = f.defer_arg1;
     darg2v = f.defer_arg2;
     darg3v = f.defer_arg3;
@@ -1126,14 +1130,14 @@ do_main_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, valu
                         OUTSTRVALUE_BM (_.arg3) //
                        );
   if (!isclosure_BM(funv) && !isobject_BM(funv))
-  {
-    WARNPRINTF_BM("do_main_defer_apply bad funv %s, arg1=%s, arg2=%s, arg3=%s",
-                  OUTSTRVALUE_BM (_.funv),
-                  OUTSTRVALUE_BM (_.arg1),
-                  OUTSTRVALUE_BM (_.arg2),
-                  OUTSTRVALUE_BM (_.arg3));
-    return;
-  }
+    {
+      WARNPRINTF_BM("do_main_defer_apply bad funv %s, arg1=%s, arg2=%s, arg3=%s",
+                    OUTSTRVALUE_BM (_.funv),
+                    OUTSTRVALUE_BM (_.arg1),
+                    OUTSTRVALUE_BM (_.arg2),
+                    OUTSTRVALUE_BM (_.arg3));
+      return;
+    }
   {
     std::lock_guard<std::mutex> _g(deferqmtx_BM);
     struct deferdoappl_stBM dap = {};
@@ -1237,30 +1241,33 @@ final_miscdata_cleanup_BM (void)
   {
     std::vector<std::pair<void*, rawid_tyBM>> vecmodu;
     vecmodu.reserve(modulemap_BM.size());
-    for (auto modit : modulemap_BM) {
-      rawid_tyBM modid = modit.first;
-      ModuleData_BM& modata = modit.second;
-      ASSERT_BM(equalid_BM(modid, modata.mod_id));
-      void*modlh = modata.mod_dlh;
-      if (modlh) vecmodu.push_back({modlh,modid});
-      modata.mod_dlh = nullptr;
-      modata.mod_obj = nullptr;
-      modata.mod_data = nullptr;
-    }
+    for (auto modit : modulemap_BM)
+      {
+        rawid_tyBM modid = modit.first;
+        ModuleData_BM& modata = modit.second;
+        ASSERT_BM(equalid_BM(modid, modata.mod_id));
+        void*modlh = modata.mod_dlh;
+        if (modlh) vecmodu.push_back({modlh,modid});
+        modata.mod_dlh = nullptr;
+        modata.mod_obj = nullptr;
+        modata.mod_data = nullptr;
+      }
     modulemap_BM.clear();
     modulemap_BM = typeof(modulemap_BM) {};
     int modcnt = 0;
-    for (auto it: vecmodu) {
-      void* dlh = it.first;
-      rawid_tyBM modit = it.second;
-      if (dlclose(dlh)) {
-        char modidbuf[32];
-        memset (modidbuf, 0, sizeof(modidbuf));
-        idtocbuf32_BM(modit, modidbuf);
-        WARNPRINTF_BM("dlclose of %p (module %s) failed: %s", dlh, modidbuf, dlerror());
+    for (auto it: vecmodu)
+      {
+        void* dlh = it.first;
+        rawid_tyBM modit = it.second;
+        if (dlclose(dlh))
+          {
+            char modidbuf[32];
+            memset (modidbuf, 0, sizeof(modidbuf));
+            idtocbuf32_BM(modit, modidbuf);
+            WARNPRINTF_BM("dlclose of %p (module %s) failed: %s", dlh, modidbuf, dlerror());
+          }
+        else modcnt++;
       }
-      else modcnt++;
-    }
     INFOPRINTF_BM("dlclosed %d modules", modcnt);
   }
 } // end final_miscdata_cleanup_BM

@@ -939,7 +939,7 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   fprintf (fil, "-------\n\n");
   fflush (fil);
   last_gctime_BM = clocktime_BM (CLOCK_REALTIME);
-    DBGPRINTF_BM
+  DBGPRINTF_BM
     ("full_garbage_collection_BM before agenda_run_deferred_after_gc_BM");
   agenda_run_deferred_after_gc_BM ();
   if (nbj > 0)

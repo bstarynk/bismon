@@ -1730,13 +1730,13 @@ const quasinode_tyBM * restargs __attribute__((unused)))
     time_t nowtim = 0;
     time (&nowtim);
     char nowtimbuf[64];
-    memset (nowtimbuf, 0, sizeof(nowtimbuf));
-    struct tm nowtm = {};
-    gmtime_r(&nowtim, &nowtm);
-    strftime(nowtimbuf, sizeof(nowtimbuf), "%Y, %b, %d", &nowtm);
+    memset (nowtimbuf, 0, sizeof (nowtimbuf));
+    struct tm nowtm = { };
+    gmtime_r (&nowtim, &nowtm);
+    strftime (nowtimbuf, sizeof (nowtimbuf), "%Y, %b, %d", &nowtm);
     if (nowtimbuf[0])
       objstrbufferprintfpayl_BM (_.prsbufob,
-				 "// generated in %s\n", nowtimbuf);
+                                 "// generated in %s\n", nowtimbuf);
   }
   objstrbufferprintfpayl_BM (_.prsbufob,
                              "#ifndef HAS_GLOBAL_BM\n"

@@ -432,7 +432,7 @@ start_agenda_work_threads_BM (int nbjobs)
       ti_array_BM[ix].ti_thstartelapsedtime = 0.0;
       ti_array_BM[ix].ti_thstartcputime = 0.0;
     };
-  usleep (2000+100*nbjobs);
+  usleep (2000 + 100 * nbjobs);
   for (int ix = 1; ix <= nbjobs; ix++)
     {
       usleep (333);
@@ -1211,7 +1211,7 @@ enqueue_postpone_bm (struct agenda_postpone_stBM *apo,
              && agpostpone_first_BM->agpo_magic == POSTPONE_MAGIC_BM);
   double nextimstamp = agpostpone_first_BM->agpo_timestamp;
   pthread_mutex_unlock (&ti_agendamtx_BM);
-    if (web_is_running_BM)
+  if (web_is_running_BM)
     register_web_postponed_BM (nextimstamp);
   pthread_cond_broadcast (&ti_agendacond_BM);
 }                               /* end enqueue_postpone_bm */

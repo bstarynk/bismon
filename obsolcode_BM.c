@@ -36,8 +36,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_01zabIzVKNR_8AGQGMBkSd7)   //commandhandler#,insert 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // object
- const value_tyBM arg2_ __attribute__((unused)),         // rank 
- const value_tyBM arg3_ __attribute__((unused)),         // value
+ const value_tyBM arg2_ __attribute__((unused)),        // rank 
+ const value_tyBM arg3_ __attribute__((unused)),        // value
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -55,9 +55,9 @@ value_tyBM
 OBSOLETEROUTINE_BM (_09DxyieS5Wz_7pkad4F88FA)   // gtk_browse_data°class
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
- const value_tyBM arg3_ __attribute__((unused)), //
- const value_tyBM arg4_ __attribute__((unused)), //
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -76,7 +76,7 @@ value_tyBM
 OBSOLETEROUTINE_BM (_0f1S28bCE26_3X6Vpz9lG4A)   //gtk_browse_data°assoc_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
- const value_tyBM arg2_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
  const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
@@ -95,7 +95,7 @@ value_tyBM
 OBSOLETEROUTINE_BM (_0zf6nSKwSlU_6Cv3LMh1MmV)   //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the attr or index
+ const value_tyBM arg2_ __attribute__((unused)),        // the attr or index
  const value_tyBM arg3_ __attribute__((unused)),        // 
  const value_tyBM arg4_ __attribute__((unused)),        // 
  const quasinode_tyBM * restargs __attribute__((unused)))
@@ -115,8 +115,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_0B1PYH9bN34_3RZdP24AVyt)   // gtk_browse_value°tuple
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
- const value_tyBM arg3_ __attribute__((unused)),         // the current depth
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        // the current depth
  const value_tyBM arg4_ __attribute__((unused)),
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -126,7 +126,7 @@ OBSOLETEROUTINE_BM (_0B1PYH9bN34_3RZdP24AVyt)   // gtk_browse_value°tuple
   _.tupbrows = (const tupleval_tyBM *) arg1;
   FATAL_BM
     ("°°obsolete gtk_browse_value for tuple _0f1S28bCE26_3X6Vpz9lG4A recv %s",
-     OUTSTRVALUE_BM ((value_tyBM)_.tupbrows));
+     OUTSTRVALUE_BM ((value_tyBM) _.tupbrows));
 }                               /* endobsol  gtk_browse_value for tuple-s _0B1PYH9bN34_3RZdP24AVyt */
 
 /// method to gtk_browse_value for object-s
@@ -135,8 +135,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_0BAnB0xjs23_0WEOCOi5Nbe)   // gtk_browse_value°object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
- const value_tyBM arg3_ __attribute__((unused)),         // the current depth
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        // the current depth
  const value_tyBM arg4_ __attribute__((unused)),
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
@@ -158,8 +158,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_0FdMKAvShgD_7itPSCL8D6P)   // command_handler#find_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // criterv
- const value_tyBM arg2_ __attribute__((unused)),         // moreobjv
- const value_tyBM arg3_ __attribute__((unused)),         // predskipv
+ const value_tyBM arg2_ __attribute__((unused)),        // moreobjv
+ const value_tyBM arg3_ __attribute__((unused)),        // predskipv
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -179,8 +179,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)   // gtk_browse_value°int
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
- const value_tyBM arg3_ __attribute__((unused)),         // the current depth
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        // the current depth
  const value_tyBM arg4 __attribute__((unused)), //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
@@ -197,7 +197,7 @@ value_tyBM
 OBSOLETEROUTINE_BM (_0M2jApBzFAy_8H8cpCjGpTi)   //gtk_browse_data°hashmapval_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // object
- const value_tyBM arg2_ __attribute__((unused)),         // depth
+ const value_tyBM arg2_ __attribute__((unused)),        // depth
  const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
@@ -220,7 +220,7 @@ value_tyBM
 OBSOLETEROUTINE_BM (_1eQ1a8KHixZ_1XDNH5iTQ0I)   //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // object
- const value_tyBM arg2_ __attribute__((unused)),         // depth
+ const value_tyBM arg2_ __attribute__((unused)),        // depth
  const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
@@ -241,7 +241,7 @@ value_tyBM
 OBSOLETEROUTINE_BM (_1tcgbIFhbTu_9WdGaq8NHWp)   //
 (struct stackframe_stBM * stkf, // //
  const value_tyBM arg1,         // object
- const value_tyBM arg2_ __attribute__((unused)),         // depth
+ const value_tyBM arg2_ __attribute__((unused)),        // depth
  const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
@@ -261,7 +261,7 @@ value_tyBM
 OBSOLETEROUTINE_BM (_1Xc5XJ7S5r7_3nYIzlf2XAw)   // ,put commandhandler
 (struct stackframe_stBM * stkf, // //
  const value_tyBM arg1,         // object
- const value_tyBM arg2_ __attribute__((unused)),         // depth
+ const value_tyBM arg2_ __attribute__((unused)),        // depth
  const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
@@ -281,7 +281,7 @@ value_tyBM
 OBSOLETEROUTINE_BM (_23ViGouPnAg_15P5mpG9x3d)   //gtk_browse_in_object°object
 (struct stackframe_stBM * stkf, // //
  const value_tyBM arg1,         // object
- const value_tyBM arg2_ __attribute__((unused)),         // depth
+ const value_tyBM arg2_ __attribute__((unused)),        // depth
  const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
@@ -303,8 +303,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_2bzzB0nZuUO_2xfj3rDb3DN)   // emit_module#command_handler
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // modulob
- const value_tyBM arg2_ __attribute__((unused)),         //
- const value_tyBM arg3_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -324,8 +324,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_2EtVNhr2mHz_8CsOQJdYeCE)   // gtk_browse_data°list_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
- const value_tyBM arg2_ __attribute__((unused)),         //
- const value_tyBM arg3_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -346,8 +346,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_2SwBWHiHN6V_64WhvTifJL4)   // gtk_browse_data°json_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
- const value_tyBM arg2_ __attribute__((unused)),         //
- const value_tyBM arg3_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -367,8 +367,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_2WuloCaOgGk_9oQOcW9c5Je)   //  command_handler#transient
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
- const value_tyBM arg2_ __attribute__((unused)),         //
- const value_tyBM arg3_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -378,7 +378,7 @@ OBSOLETEROUTINE_BM (_2WuloCaOgGk_9oQOcW9c5Je)   //  command_handler#transient
   _.recv = arg1;
   FATAL_BM
     ("°°obsolete command_handler#transient _2WuloCaOgGk_9oQOcW9c5Je recv %s",
-     OUTSTRVALUE_BM ((value_tyBM)_.recv));
+     OUTSTRVALUE_BM ((value_tyBM) _.recv));
 }                               /* endobsol  command_handler#transient _2WuloCaOgGk_9oQOcW9c5Je  */
 
 /// method to gtk_browse_value for set-s
@@ -387,8 +387,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_3rne4qbpnV9_0pywzeJp3Qr)   //gtk_browse_value°set
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
- const value_tyBM arg2_ __attribute__((unused)),         //
- const value_tyBM arg3_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -398,7 +398,7 @@ OBSOLETEROUTINE_BM (_3rne4qbpnV9_0pywzeJp3Qr)   //gtk_browse_value°set
   _.recv = arg1;
   FATAL_BM
     ("°°obsolete gtk_browse_value°set _3rne4qbpnV9_0pywzeJp3Qr recv %s",
-     OUTSTRVALUE_BM ((value_tyBM)_.recv));
+     OUTSTRVALUE_BM ((value_tyBM) _.recv));
 }                               /* endobsol  gtk_browse_value°set _3rne4qbpnV9_0pywzeJp3Qr  */
 
 
@@ -408,8 +408,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_4IshjBIv6ol_5korHKUIjeK)   // gtk_browse_data°hset_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
- const value_tyBM arg2_ __attribute__((unused)),         //
- const value_tyBM arg3_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -449,8 +449,8 @@ value_tyBM                      //
 OBSOLETEROUTINE_BM (_5v5ChlG1IYh_1Pv87MZJFPl)   //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
- const value_tyBM arg2_ __attribute__((unused)),         //
- const value_tyBM arg3_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -471,8 +471,8 @@ value_tyBM                      //
 OBSOLETEROUTINE_BM (_5W7KY9crMlv_1Q6deHedMZ5)   // gtk_browse_data°decaying_vector_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
- const value_tyBM arg2_ __attribute__((unused)),         //
- const value_tyBM arg3_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -493,8 +493,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_6KYa0K6vqt5_00xCqyfhJhY)   // gtk_browse_value°double_float
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
- const value_tyBM arg3_ __attribute__((unused)),         // the current depth
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        // the current depth
  const value_tyBM arg4 __attribute__((unused)), //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
@@ -514,9 +514,9 @@ value_tyBM
 OBSOLETEROUTINE_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)   // gtk_browse_value°string
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
- const value_tyBM arg3_ __attribute__((unused)),         // the current depth
- const value_tyBM arg4_ __attribute__((unused)), //
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        // the current depth
+ const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -535,7 +535,7 @@ value_tyBM
 OBSOLETEROUTINE_BM (_6xPQJolJkUw_2jCiJ3IOKXE)   //gtk_browse_data°dict_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
  const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
@@ -555,7 +555,7 @@ value_tyBM
 OBSOLETEROUTINE_BM (_797zacMjvvt_3I2uxNJRfdq)   //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the superclass
+ const value_tyBM arg2_ __attribute__((unused)),        // the superclass
  const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        // 
  const quasinode_tyBM * restargs __attribute__((unused)))
@@ -575,8 +575,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_7fJKfG4SN0U_1QTu5J832xg)   // gtk_browse_value°node
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
- const value_tyBM arg3_ __attribute__((unused)),         // the current depth
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        // the current depth
  const value_tyBM arg4 __attribute__((unused)), // 
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
@@ -587,7 +587,7 @@ OBSOLETEROUTINE_BM (_7fJKfG4SN0U_1QTu5J832xg)   // gtk_browse_value°node
   _.nodbrows = arg1;
   FATAL_BM
     ("°°obsolete gtk_browse_value for node _7fJKfG4SN0U_1QTu5J832xg recv %s",
-     OUTSTRVALUE_BM ((value_tyBM)_.nodbrows));
+     OUTSTRVALUE_BM ((value_tyBM) _.nodbrows));
 }                               /* endobsol  gtk_browse_value for node-s _7fJKfG4SN0U_1QTu5J832xg */
 
 //  test_agenda-log _7rRjqfXs3QI_4Nwk2Lfm569
@@ -597,8 +597,8 @@ value_tyBM
 OBSOLETEROUTINE_BM (_7rRjqfXs3QI_4Nwk2Lfm569)   //test_agenda-log
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // taskob
- const value_tyBM arg2_ __attribute__((unused)),         // rank
- const value_tyBM arg3_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        // rank
+ const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
@@ -621,7 +621,7 @@ value_tyBM
 OBSOLETEROUTINE_BM (_7xwUcosBMjj_3Sa2de3sCGO)   // gtk_browse_data°contributor_class 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
- const value_tyBM arg2_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
  const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
@@ -639,11 +639,11 @@ OBSOLETEROUTINE_BM (_7xwUcosBMjj_3Sa2de3sCGO)   // gtk_browse_data°contributor_
 /// obsolete method to gtk_browse_value for closure-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac);
 value_tyBM
-OBSOLETEROUTINE_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // gtk_browse_value°closure
+OBSOLETEROUTINE_BM (_7CohjJ9tkfZ_4UMAIZCgwac)   // gtk_browse_value°closure
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
- const value_tyBM arg3_ __attribute__((unused)),         // the current depth
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
+ const value_tyBM arg3_ __attribute__((unused)),        // the current depth
  const value_tyBM arg4 __attribute__((unused)), //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
@@ -654,15 +654,15 @@ OBSOLETEROUTINE_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // gtk_browse_value°closure
   _.clobrows = arg1;
   FATAL_BM
     ("°°obsolete gtk_browse_value for closure _7CohjJ9tkfZ_4UMAIZCgwac recv %s",
-     OUTSTRVALUE_BM ((value_tyBM)_.clobrows));
-} /*endobsol  method to gtk_browse_value for closure-s _7CohjJ9tkfZ_4UMAIZCgwac */
+     OUTSTRVALUE_BM ((value_tyBM) _.clobrows));
+}                               /*endobsol  method to gtk_browse_value for closure-s _7CohjJ9tkfZ_4UMAIZCgwac */
 
 // obsolete final function -the todo added into the findrun_object _7EgSAlg8UbA_6x0iNxUOrYE
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7EgSAlg8UbA_6x0iNxUOrYE);
 
 value_tyBM
-OBSOLETEROUTINE_BM (_7EgSAlg8UbA_6x0iNxUOrYE)    // final-find_object
+OBSOLETEROUTINE_BM (_7EgSAlg8UbA_6x0iNxUOrYE)   // final-find_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1_ __attribute__((unused)),        //
  const value_tyBM arg2_ __attribute__((unused)),        //
@@ -675,7 +675,7 @@ OBSOLETEROUTINE_BM (_7EgSAlg8UbA_6x0iNxUOrYE)    // final-find_object
     );
   FATAL_BM
     ("°°obsolete final function -the todo  _7EgSAlg8UbA_6x0iNxUOrYE");
-} /* end obsolete final function -the todo added */
+}                               /* end obsolete final function -the todo added */
 
 //////
 // gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX
@@ -683,10 +683,10 @@ OBSOLETEROUTINE_BM (_7EgSAlg8UbA_6x0iNxUOrYE)    // final-find_object
 extern objrout_sigBM ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX);
 
 value_tyBM
-OBSOLETEROUTINE_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object 
+OBSOLETEROUTINE_BM (_8L6mTIICJRt_4RccFDlgACX)   // gtk_browse_data°sbuf_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
  const value_tyBM arg3_ __attribute__((unused)),        //
  const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
@@ -699,8 +699,8 @@ OBSOLETEROUTINE_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object
   FATAL_BM
     ("°°obsolete gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX recv %s",
      objectdbg_BM (_.objbrows));
-} /* endobsol  gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX */
-  
+}                               /* endobsol  gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX */
+
 /////
 // gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe);
@@ -708,34 +708,34 @@ extern objrout_sigBM ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe);
 
 
 value_tyBM
-OBSOLETEROUTINE_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //gtk_browse_data°hashsetval_object 
+OBSOLETEROUTINE_BM (_9dKLCRPRn9Z_1tczFz5weBe)   //gtk_browse_data°hashsetval_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
- const value_tyBM arg2_ __attribute__((unused)),         //
- const value_tyBM arg3_ __attribute__((unused)),         //
- const value_tyBM arg4_ __attribute__((unused)),         //
+ const value_tyBM arg2_ __attribute__((unused)),        //
+ const value_tyBM arg3_ __attribute__((unused)),        //
+ const value_tyBM arg4_ __attribute__((unused)),        //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ NULL,
                  value_tyBM resultv; const objectval_tyBM * objbrows;
                  value_tyBM nodv; value_tyBM cursonv;
-    ); 
+    );
   _.objbrows = (const objectval_tyBM *) arg1;
   FATAL_BM
     ("°°obsolete gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe recv %s",
-     objectdbg_BM (_.objbrows));  
-} /* endobsol gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe*/
+     objectdbg_BM (_.objbrows));
+}                               /* endobsol gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe */
 
 
 /// method to gtk_browse_data for basiclo_function-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA);
 value_tyBM
-OBSOLETEROUTINE_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    // gtk_browse_data°basiclo_function
+OBSOLETEROUTINE_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)   // gtk_browse_data°basiclo_function
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the browse maxdepth
+ const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
  const value_tyBM arg3 __attribute__((unused)), //
- const value_tyBM arg4 __attribute__((unused)),  //
+ const value_tyBM arg4 __attribute__((unused)), //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
@@ -744,17 +744,17 @@ OBSOLETEROUTINE_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    // gtk_browse_data°basiclo_fun
   _.objbrows = (const objectval_tyBM *) arg1;
   FATAL_BM
     ("°°obsolete gtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA recv %s",
-     objectdbg_BM (_.objbrows));   
-} /* endobsol gtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA */
+     objectdbg_BM (_.objbrows));
+}                               /* endobsol gtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA */
 
 /// command handler for ,put_method
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX);
 value_tyBM
-OBSOLETEROUTINE_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
+OBSOLETEROUTINE_BM (_9QuovXgtk9K_17pMbAD0XmX)   //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
- const value_tyBM arg2_ __attribute__((unused)),         // the selector
- const value_tyBM arg3_ __attribute__((unused)),         // the closure
+ const value_tyBM arg2_ __attribute__((unused)),        // the selector
+ const value_tyBM arg3_ __attribute__((unused)),        // the closure
  const value_tyBM arg4_ __attribute__((unused)),        // 
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
@@ -765,8 +765,8 @@ OBSOLETEROUTINE_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
   _.recv = (objectval_tyBM *) arg1;
   FATAL_BM
     ("°°obsolete command handler for ,put_method recv %s",
-     objectdbg_BM (_.recv));  
-} /* endobsol    command handler for ,put_method _9QuovXgtk9K_17pMbAD0XmX */
+     objectdbg_BM (_.recv));
+}                               /* endobsol    command handler for ,put_method _9QuovXgtk9K_17pMbAD0XmX */
 
 /*** TODO: more obsolete routines should be added by running ./Build
  * then make redump ; if it fails with a ./bismon: undefined symbol:

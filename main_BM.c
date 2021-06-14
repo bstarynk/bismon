@@ -2411,8 +2411,9 @@ add_passwords_from_file_BM (const char *addedpasspath)
       {
         char *errmsg = NULL;
         if (!valid_password_BM (passwdstr, &errmsg))
-          FATAL_BM ("add_passwords_from_file line#%d of %s : password is invalid: %s",
-                    lincnt, addedpasspath, errmsg);
+          FATAL_BM
+            ("add_passwords_from_file line#%d of %s : password is invalid: %s",
+             lincnt, addedpasspath, errmsg);
       }
       DBGPRINTF_BM ("add_passwords_from_file  line#%d contributorstr '%s'"
                     "  passwdstr '%s' contribob %s",

@@ -4589,7 +4589,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                  srcpathstr, objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob),      //
                  debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));
   fflush (stderr);
-    if (srcdirstr)
+  if (srcdirstr)
     INFOPRINTF_BM ("*!* ended emitting %s module %s/%s in %s *!*\n",
                    modulistemporary ? "temporary" : "persistent",
                    objectdbg_BM (_.modulob), modulidbuf, srcdirstr);
