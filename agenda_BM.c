@@ -1074,7 +1074,7 @@ do_postpone_defer_apply3_BM (int delayms, value_tyBM closarg,
          delayms, OUTSTRVALUE_BM (_.closv), OUTSTRVALUE_BM (_.arg1v),
          OUTSTRVALUE_BM (_.arg2v), OUTSTRVALUE_BM (_.arg3v));
       WEAKASSERTWARN_BM ("do_postpone_defer_apply3 bad closure" && false);
-      LOCALRETURN_BM (NULL);
+      return;
     }
   struct agenda_postpone_stBM *apo =
     calloc (sizeof (struct agenda_postpone_stBM), 1);
@@ -1129,10 +1129,10 @@ do_postpone_defer_send3_BM (int delayms, value_tyBM recvarg,
          OUTSTRVALUE_BM (_.arg1v), OUTSTRVALUE_BM (_.arg2v),
          OUTSTRVALUE_BM (_.arg3v));
       WEAKASSERTWARN_BM ("do_postpone_defer_send3 wrongly called" && false);
-      LOCALRETURN_BM (NULL);
+      return;
     }
-  FATAL_BM
-    ("unimplemented do_postpone_defer_send3_BM delayms#%d recv=%s obsel=%s arg1v=%s arg2v=%s arg3v=%s",
+  WARNPRINTF_BM
+    ("maybe unimplemented do_postpone_defer_send3_BM delayms#%d recv=%s obsel=%s arg1v=%s arg2v=%s arg3v=%s",
      delayms, OUTSTRVALUE_BM (_.recv), objectdbg_BM (_.obsel),
      OUTSTRVALUE_BM (_.arg1v), OUTSTRVALUE_BM (_.arg2v),
      OUTSTRVALUE_BM (_.arg3v));
