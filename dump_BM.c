@@ -242,7 +242,9 @@ struct dumpinfo_stBM
 dump_BM (const char *dirname, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * duobj; const stringval_tyBM * dudirv;);
+                 objectval_tyBM * duobj;
+                 const stringval_tyBM * dudirv;
+    );
   if (!dirname || dirname[0] == (char) 0)
     dirname = ".";
   DBGPRINTF_BM ("dump_BM dirname %s start tid#%ld",
@@ -297,7 +299,8 @@ void
 dump_run_todo_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * curclo;);
+                 const closure_tyBM * curclo;
+    );
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
   while (listlength_BM (du->dump_todolist) > 0)
     {
@@ -323,7 +326,9 @@ dump_scan_object_content_BM (struct dumper_stBM *du,
                  objectval_tyBM * obdump;       //
                  objectval_tyBM * curobj;       //
                  const setval_tyBM * setattrs;  //
-                 const objectval_tyBM * curattrobj; value_tyBM curval;);
+                 const objectval_tyBM * curattrobj;
+                 value_tyBM curval;
+    );
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
   ASSERT_BM (valtype_BM ((const value_tyBM) objarg) == tyObject_BM);
   _.obdump = du->dump_object;
@@ -381,7 +386,9 @@ dump_scan_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const setval_tyBM * predefset; //
                  const setval_tyBM * globalset; //
-                 const objectval_tyBM * curobj; objectval_tyBM * obdump;);
+                 const objectval_tyBM * curobj;
+                 objectval_tyBM * obdump;
+    );
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
   _.obdump = du->dump_object;
   _.predefset = setpredefinedobjects_BM ();
@@ -417,7 +424,8 @@ dump_emit_pass_BM (struct dumper_stBM *du, struct stackframe_stBM *stkf)
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * curobj; //
                  objectval_tyBM * curhsetob;
-                 objectval_tyBM * hsetspacob[LASTSPACE__BM];);
+                 objectval_tyBM * hsetspacob[LASTSPACE__BM];
+    );
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
   for (unsigned spix = PredefSp_BM; spix < LASTSPACE__BM; spix++)
     {
@@ -479,9 +487,16 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
   ASSERT_BM ((spix >= PredefSp_BM && spix < LASTSPACE__BM)
              || (spix == ProjectSp_BM));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * modhsetob; objectval_tyBM * hspob; const setval_tyBM * setobjs; const stringval_tyBM * pathv; const stringval_tyBM * backupv; const stringval_tyBM * tempathv; objectval_tyBM * curobj;       //
+                 objectval_tyBM * modhsetob;
+                 objectval_tyBM * hspob;
+                 const setval_tyBM * setobjs;
+                 const stringval_tyBM * pathv;
+                 const stringval_tyBM * backupv;
+                 const stringval_tyBM * tempathv;
+                 objectval_tyBM * curobj;       //
                  const objectval_tyBM * modobj; //
-                 const setval_tyBM * setmodules;);
+                 const setval_tyBM * setmodules;
+    );
   FILE *spfil = NULL;
   _.hspob = hspob;
   _.setobjs = objhashsettosetpayl_BM (hspob);
@@ -642,7 +657,8 @@ dump_emit_object_BM (struct dumper_stBM *du, const objectval_tyBM * curobj,
                  objectval_tyBM * classob;      //
                  const objectval_tyBM * curattr;        //
                  value_tyBM curval;     //
-                 const setval_tyBM * attrset; objectval_tyBM * bufob;   //
+                 const setval_tyBM * attrset;
+                 objectval_tyBM * bufob;        //
                  value_tyBM dumpres;    //
     );
   _.dumpob = du->dump_object;
@@ -792,7 +808,9 @@ debug_outstr_value_BM (const value_tyBM val, struct stackframe_stBM *stkf,
                        int curdepth)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM valv; objectval_tyBM * bufob;);
+                 value_tyBM valv;
+                 objectval_tyBM * bufob;
+    );
   _.valv = val;
   if (!val)
     return "__";

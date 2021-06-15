@@ -2094,7 +2094,9 @@ void
 parse_values_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob; value_tyBM parsedval;);
+                 objectval_tyBM * parsob;
+                 value_tyBM parsedval;
+    );
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("parsing %d values after load %s using parsob %s\n",
                  nb_parsed_values_after_load_bm, load_dir_bm,
@@ -2132,7 +2134,8 @@ run_testplugins_after_load_BM (void)
   double startcputime = cputime_BM ();
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM pluginamv;  //
-                 objectval_tyBM * pluginob;);
+                 objectval_tyBM * pluginob;
+    );
   // check sanity of test plugins
   static char cwdbuf[200];
   if (!getcwd (cwdbuf, sizeof (cwdbuf) - 1))
@@ -2248,8 +2251,9 @@ void
 init_afterload_bm ()
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob;
-                 value_tyBM parsedval; value_tyBM resval;);
+                 objectval_tyBM * parsob; value_tyBM parsedval;
+                 value_tyBM resval;
+    );
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("doing %d closures after load %s using parsob %s\n",
                  count_init_afterload_bm, load_dir_bm,
@@ -2296,7 +2300,8 @@ void
 add_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * userob;);
+                 objectval_tyBM * userob;
+    );
   ASSERT_BM (count_added_contributors_bm > 0);
   ASSERT_BM (added_contributors_arr_bm != NULL);
   INFOPRINTF_BM ("adding %d contributors after load",
@@ -2331,7 +2336,8 @@ void
 remove_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * oldcontribob;);
+                 objectval_tyBM * oldcontribob;
+    );
   ASSERT_BM (count_removed_contributors_bm > 0);
   INFOPRINTF_BM ("removing %d contributors after load",
                  count_removed_contributors_bm);
@@ -2366,7 +2372,8 @@ void
 add_passwords_from_file_BM (const char *addedpasspath)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * contribob;);
+                 objectval_tyBM * contribob;
+    );
   ASSERT_BM (addedpasspath != NULL);
   DBGPRINTF_BM ("add_passwords_from_file start addedpasspath %s",
                 addedpasspath);
@@ -2473,7 +2480,8 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM funv;       //
                  objectval_tyBM * funob;        //
-                 value_tyBM arg1v, arg2v, arg3v; value_tyBM resappv;    //
+                 value_tyBM arg1v, arg2v, arg3v;
+                 value_tyBM resappv;    //
                  value_tyBM failres;    //
                  value_tyBM failplace;  //
     );
@@ -2559,7 +2567,9 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
                                value_tyBM arg3)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obsel; value_tyBM recva, arg1v, arg2v, arg3v; value_tyBM failres;     //
+                 objectval_tyBM * obsel;
+                 value_tyBM recva, arg1v, arg2v, arg3v;
+                 value_tyBM failres;    //
                  value_tyBM failplace;  //
     );
   _.recva = recv;
@@ -2752,10 +2762,11 @@ do_test_mailhtml_bm (void)
 
 
 #ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-  const char*onion_version(void);
-  const char* jansson_version_str(void);
+extern "C"
+{
+#endif                          // __cplusplus
+  const char *onion_version (void);
+  const char *jansson_version_str (void);
 #ifdef __cplusplus
 };
 #endif //__cplusplus
@@ -2773,11 +2784,11 @@ give_prog_version_BM (const char *progname)
   printf ("\t source dir: %s\n", bismon_directory);
   printf ("\t GNUmakefile: %s\n", bismon_gnumakefile);
   printf ("\t Glib (see developer.gnome.org/glib) version: %u.%u.%u\n",
-	  glib_major_version, glib_minor_version, glib_micro_version);
+          glib_major_version, glib_minor_version, glib_micro_version);
   printf ("\t Libonion - see github.com/davidmoreno/onion - version: %s\n",
-	  onion_version());
+          onion_version ());
   printf ("\t libjansson - see digip.org/jansson/ - version: %s\n",
-	  jansson_version_str());
+          jansson_version_str ());
   printf ("########\n");
   printf ("run\n" "\t   %s --help\n" "to get help.\n", progname);
   exit (EXIT_SUCCESS);

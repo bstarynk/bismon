@@ -1869,8 +1869,7 @@ put_contributor_password_BM (objectval_tyBM * contribobarg,
                  objectval_tyBM * assocob;      //
                  value_tyBM keysetv;    //
                  value_tyBM curpasstrv; //
-                 value_tyBM curnamev;
-    );
+                 value_tyBM curnamev;);
   _.contribob = contribobarg;
   FILE *passfil = NULL;
   bool ok = false;
@@ -2035,8 +2034,7 @@ read_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
                  objectval_tyBM * assocob;      //
                  value_tyBM keysetv;    //
                  value_tyBM curpasstrv; //
-                 value_tyBM curnamev;
-    );
+                 value_tyBM curnamev;);
   _.assocob = assocobarg;
   ASSERT_BM (isobject_BM (_.assocob));
   ASSERT_BM (objhasassocpayl_BM (_.assocob));
@@ -2136,8 +2134,7 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
                  objectval_tyBM * assocob;      //
                  value_tyBM keysetv;    //
                  value_tyBM curpasstrv; //
-                 value_tyBM curnamev;
-    );
+                 value_tyBM curnamev;);
   _.assocob = assocobarg;
   ASSERT_BM (isobject_BM (_.assocob));
   ASSERT_BM (objhasassocpayl_BM (_.assocob));
