@@ -26,6 +26,7 @@
 #include "web_ONIONBM.const.h"
 #include "_login_ONIONBM.h"
 #include "_changepasswd_ONIONBM.h"
+#include "_forgotwebpage_ONIONBM.h"
 
 
 const char webonion_timestamp_BM[] =
@@ -4007,7 +4008,7 @@ handle_sigchld_BM (pid_t pid)
           if (ln > 0)
             {
               pidbuf[ln] = (char) 0;
-              for (int ix = 0; ix < ln; ix++)
+              for (int ix = 0; ix < (int) ln; ix++)
                 if (pidbuf[ix] == 0)
                   pidbuf[ix] = ' ';
             }
@@ -4017,9 +4018,11 @@ handle_sigchld_BM (pid_t pid)
         }
       else
         {
+	  char exepidbuf[32];
           memset (pidbuf, 0, sizeof (pidbuf));
-          snprintf (pidbuf, sizeof (pidbuf), "/proc/%d/exe", (int) pid);
-          readlink (pidbuf, pidbuf, sizeof (pidbuf));
+	  memset (exepidbuf, 0, sizeof(exepidbuf));
+          snprintf (exepidbuf, sizeof (exepidbuf), "/proc/%u/exe", (unsigned) pid);
+          readlink (exepidbuf, pidbuf, sizeof (pidbuf));
         }
       WARNPRINTF_BM
         ("handle_sigchld_BM waitpid failure pid#%d '%s' status#%d", pid,
