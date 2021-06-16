@@ -470,10 +470,11 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
                     binmodpath.c_str(), srcmodpath.c_str());
       shouldrebuild = true;
     };
-  if (srcmodstat.st_mtime > binmodstat.st_mtime)
+  else if (srcmodstat.st_mtime > binmodstat.st_mtime)
     {
-      WARNPRINTF_BM("too old module binary %s (%m) related to module source %s\n",
-                    binmodpath.c_str(), srcmodpath.c_str());
+      WARNPRINTF_BM("Bismon module binary %s is older than module source %s by %ld seconds\n",
+                    binmodpath.c_str(), srcmodpath.c_str(),
+                    (unsigned long)(srcmodstat.st_mtime - binmodstat.st_mtime));
       shouldrebuild = true;
     };
   if (shouldrebuild)

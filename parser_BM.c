@@ -1476,14 +1476,13 @@ parsergetvalue_BM (struct parser_stBM *pars,
 #define TINYARGSNUM_BM 8
   LOCALFRAME_BM                 //
     (prevstkf, NULL,            //
-     value_tyBM resval;
-     value_tyBM macroval;
-     objectval_tyBM * connobj; objectval_tyBM * parsob; union
+     value_tyBM resval; value_tyBM macroval; objectval_tyBM * connobj;
+     objectval_tyBM * parsob;
+     union
      {
-     objectval_tyBM * elemobj;
-     objectval_tyBM * compobj;
-     value_tyBM sonval;};
-     objectval_tyBM * vecobj; value_tyBM tinyargsarr[TINYARGSNUM_BM]);
+     objectval_tyBM * elemobj; objectval_tyBM * compobj; value_tyBM sonval;
+     }; objectval_tyBM * vecobj;
+     value_tyBM tinyargsarr[TINYARGSNUM_BM]);
   _.parsob = checkedparserowner_BM (pars);
   parserskipspaces_BM (pars, CURFRAME_BM);
   unsigned lineno = parserlineno_BM (pars);
@@ -2375,7 +2374,9 @@ parsergetchunk_BM (struct parser_stBM *pars,
      struct datavectval_stBM *chunkvec; //
      const objectval_tyBM * obj;        //
      objectval_tyBM * parsob;   //     
-     value_tyBM compv; value_tyBM subv;);
+     value_tyBM compv;
+     value_tyBM subv;
+    );
   _.chunkvec = nobuild ? NULL : datavect_reserve_BM (NULL, 5);
   _.parsob = checkedparserowner_BM (pars);
   const char *end = NULL;
