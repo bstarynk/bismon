@@ -31,7 +31,7 @@
   
   <p class='tinyinfo_cl'>If you login, you accept this personal data processing.</p>
   <form action="/_login" method="post">
-    <input type='hidden' name='origpath' value='{{origpath}}'/>
+    <input type='hidden' name='origpath_login' value='{{origpath_login}}'/>
     <b>user:</b> <input type='text' name='user'/>&nbsp;
     <label for='user' class='expl_cl'>(enter your user or email)</label><br/>
     <b>password:</b><input type='password' name='password'/>&nbsp;

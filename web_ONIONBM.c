@@ -1113,8 +1113,8 @@ custom_onion_handler_BM (void *clientdata,
               free (querystr), querystr = NULL;
               if (!locstr)
                 FATAL_BM ("custom_onion_handle asprintf querydict failed");
-              onion_dict_add (ctxdic, "origpath", locstr, OD_DUP_VALUE);
-              DBGPRINTF_BM ("custom_onion_handle locstr=%s", locstr);
+              onion_dict_add (ctxdic, "origpath_login", locstr, OD_DUP_VALUE);
+              DBGPRINTF_BM ("custom_onion_handle origpath_login locstr=%s", locstr);
               free (locstr), locstr = NULL;
             }
           else
@@ -1574,13 +1574,13 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
   if (reqmeth == OR_POST)
     {
       // see the login form in login_ONIONBM.thtml template
-      const char *formorigpath = onion_request_get_post (req, "origpath");
+      const char *formorigpath = onion_request_get_post (req, "origpath_login");
       const char *formuser = onion_request_get_post (req, "user");
       const char *formpassword = onion_request_get_post (req, "password");
       const char *formdologin = onion_request_get_post (req, "dologin");
       const char *formdoforgot = onion_request_get_post (req, "doforgot");
       bool good = false;
-      DBGPRINTF_BM ("login_onion_handler POST form origpath %s,"
+      DBGPRINTF_BM ("login_onion_handler POST form origpath_login %s,"
                     " user %s, password %s, dologin %s, doforgot %s",
                     formorigpath ? : "*no-origpath*",
                     formuser ? : "*no-user*",
@@ -1638,8 +1638,11 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
                   {
                     if (formorigpath)
                       origpath = formorigpath;
+		    onion_dict_add (ctxdic, "origpath_login", origpath, OD_DUP_VALUE);
                   }
-                onion_dict_add (ctxdic, "origpath", origpath, OD_DUP_VALUE);
+		else
+		  onion_dict_add (ctxdic, "origpath_login", origpath, OD_DUP_VALUE);
+		DBGPRINTF_BM("login_onion_handler origpath=%s", origpath);
               }
               onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
               onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
@@ -1700,6 +1703,7 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
     memset (nowbuf, 0, sizeof (nowbuf));
     strftime (nowbuf, sizeof (nowbuf) - 1, "%c", &nowtm);
     fprintf (fresp, "generated on <i>%s</i>\n", nowbuf);
+    DBGPRINTF_BM("login_onion_handler_BM nowbuf %s", nowbuf);
   }
   fprintf (fresp, "</p>\n</body>\n</html>\n");
   fflush (fresp);
@@ -4350,6 +4354,7 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
   if (level == O_DEBUG0)
     return;
   switch(level) {
+  case O_DEBUG0: // won't happen
   case O_DEBUG:
     levmsg="ONION DEBUG";
     break;
