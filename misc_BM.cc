@@ -469,7 +469,7 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       WARNPRINTF_BM("missing module binary %s (%m) related to module source %s\n",
                     binmodpath.c_str(), srcmodpath.c_str());
       shouldrebuild = true;
-    };
+    }
   else if (srcmodstat.st_mtime > binmodstat.st_mtime)
     {
       WARNPRINTF_BM("Bismon module binary %s is older than module source %s by %ld seconds\n",
