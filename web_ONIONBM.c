@@ -4365,7 +4365,8 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
   }
   pthread_mutex_lock(&onion_log_mtx_bm);
   memset (onion_log_buffer_bm, 0, sizeof(onion_log_buffer_bm));
-  snprintf(onion_log_buffer_bm, sizeof(onion_log_buffer_bm), "%s:%d:%s:", filename, lineno,levmsg);
+  snprintf(onion_log_buffer_bm, sizeof(onion_log_buffer_bm)/2,
+	   "%s:%d:%s:", basename_BM(filename), lineno, levmsg);
   {
     va_list ap;
     va_start (ap, fmt);
