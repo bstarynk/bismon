@@ -22,6 +22,7 @@
 #define _GNU_SOURCE 1
 #include <stdio.h>
 #include <stdarg.h>
+#include <syslog.h>
 #include <onion/onion.h>
 #include "bismon.h"
 #include "web_ONIONBM.const.h"
@@ -72,6 +73,8 @@ extern void onion_log_begin_message_BM (void);
 extern void onion_log_end_message_BM (void);
 extern void onion_log_object_message_BM (const objectval_tyBM * obj);
 
+
+/// improved variant for onion_log pointer function
 extern void onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lineno,
 					const char *fmt, ...);
 
@@ -488,6 +491,7 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
   int webport = 0;
   int pos = -1;
   int colonpos = -1;
+  onion_log = onion_log_with_backtrace_BM;
   if (nbjobs < MINNBWORKJOBS_BM)
     nbjobs = MINNBWORKJOBS_BM;
   else if (nbjobs > MAXNBWORKJOBS_BM)
@@ -4346,10 +4350,18 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
   if (level == O_DEBUG0)
     return;
   switch(level) {
-  case O_DEBUG: levmsg="ONION DEBUG"; break;
-  case O_INFO: levmsg="ONION INFO"; break;
-  case O_WARNING: levmsg="ONION WARNING";break;
-  case O_ERROR: levmsg="ONION ERROR"; break;
+  case O_DEBUG:
+    levmsg="ONION DEBUG";
+    break;
+  case O_INFO:
+    levmsg="ONION INFO";
+    break;
+  case O_WARNING:
+    levmsg="ONION WARNING";
+    break;
+  case O_ERROR:
+    levmsg="ONION ERROR";
+    break;
   }
   pthread_mutex_lock(&onion_log_mtx_bm);
   memset (onion_log_buffer_bm, 0, sizeof(onion_log_buffer_bm));
