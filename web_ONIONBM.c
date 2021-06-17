@@ -21,6 +21,7 @@
 ***/
 #define _GNU_SOURCE 1
 #include <stdio.h>
+#include <stdarg.h>
 #include <onion/onion.h>
 #include "bismon.h"
 #include "web_ONIONBM.const.h"
@@ -70,6 +71,9 @@ extern void onion_log_puts_message_BM (const char *msg);
 extern void onion_log_begin_message_BM (void);
 extern void onion_log_end_message_BM (void);
 extern void onion_log_object_message_BM (const objectval_tyBM * obj);
+
+extern void onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lineno,
+					const char *fmt, ...);
 
 //////////////////////////////////////////////////////////////////////////
 /// For process queue running processes; similar to gtkrunprocarr_BM
@@ -4323,5 +4327,55 @@ gcmarkwebonion_BM (struct garbcoll_stBM *gc)
     }
   pthread_mutex_unlock (&onionstack_mtx_bm);
 }                               /* end gcmarkwebonion_BM */
+
+
+
+
+
+////////////////////////////////////////////////////////////////
+static pthread_mutex_t onion_log_mtx_bm = PTHREAD_MUTEX_INITIALIZER;
+static char onion_log_buffer_bm[1024];
+void
+onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lineno,
+			    const char *fmt, ...)
+{
+  const char pri[] = { LOG_DEBUG, LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERR };
+  const char*levmsg="??";
+  if (level >= sizeof(pri))
+    return;
+  if (level == O_DEBUG0)
+    return;
+  switch(level) {
+  case O_DEBUG: levmsg="ONION DEBUG"; break;
+  case O_INFO: levmsg="ONION INFO"; break;
+  case O_WARNING: levmsg="ONION WARNING";break;
+  case O_ERROR: levmsg="ONION ERROR"; break;
+  }
+  pthread_mutex_lock(&onion_log_mtx_bm);
+  memset (onion_log_buffer_bm, 0, sizeof(onion_log_buffer_bm));
+  snprintf(onion_log_buffer_bm, sizeof(onion_log_buffer_bm), "%s:%d:%s:", filename, lineno,levmsg);
+  {
+    va_list ap;
+    va_start (fmt, ap);
+    vsnprintf(onion_log_buffer_bm + strlen(onion_log_buffer_bm),
+	      sizeof(onion_log_buffer_bm) - strlen(onion_log_buffer_bm)-1,
+	      fmt,
+	      ap);
+    va_end(ap);
+  }
+  if (debugmsg_BM) {
+    fprintf(stderr, "%s\n°°°°°°° onionlogbacktrace\n", onion_log_buffer_bm);
+  }
+  else if (level >= O_WARNING) {
+    fprintf(stderr, "%s\n¤¤¤¤¤¤ onionlogbacktrace\n", onion_log_buffer_bm);
+      backtrace_print_BM					
+	((struct backtrace_state *) backtracestate_BM, 0,	
+	 stderr);						
+      fprintf(stderr, "%s:%d: **** end-onionlogbacktrace ***\n\n",		
+	     basename_BM((filename)), (lineno));
+  }			
+  fflush(stderr);
+  pthread_mutex_unlock(&onion_log_mtx_bm);
+} /* end onion_log_with_backtrace_BM */
 
 //// end of file web_ONIONBM.c 
