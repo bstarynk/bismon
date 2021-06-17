@@ -4368,7 +4368,7 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
   snprintf(onion_log_buffer_bm, sizeof(onion_log_buffer_bm), "%s:%d:%s:", filename, lineno,levmsg);
   {
     va_list ap;
-    va_start (fmt, ap);
+    va_start (ap, fmt);
     vsnprintf(onion_log_buffer_bm + strlen(onion_log_buffer_bm),
 	      sizeof(onion_log_buffer_bm) - strlen(onion_log_buffer_bm)-1,
 	      fmt,
