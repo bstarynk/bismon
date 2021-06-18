@@ -115,6 +115,7 @@ for f in "$@"; do
     case "$f" in
 	--bismon*) bismon_msh_args=($bismon_msh_args $f);;
 	--msh-source=*) export BISMON_MSH_SOURCE=$(echo $f | /bin/sed -e s/--msh-source=//);;
+	--asm) export BISMON_PLUGIN_ASMOUT=/tmp/10_metaplugin_BMGCC.s;;
 	--gcc=*) export BISMON_GCC=$(echo $f | /bin/sed -e s/--gcc=//);;
     esac
 done
@@ -159,6 +160,7 @@ fi
 
 ### on some Debian, there is a bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=980609
 pushd gccplugins
+### Notice: the build-gcc10-metaplugin.sh script cares about a BISMON_PLUGIN_ASMOUT shell variable...
 ./build-gcc10-metaplugin.sh
 popd 
 
