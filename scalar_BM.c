@@ -1967,8 +1967,8 @@ objstrbufferwritetofilepayl_BM (objectval_tyBM * obj, const char *filepath)
   else
     {
       char *backpath = NULL;
-      asprintf (&backpath, "%s~", filepath);
-      if (!backpath)
+      if (asprintf (&backpath, "%s~", filepath) <0
+	  || !backpath)
         FATAL_BM ("asprintf failure for backpath %s", filepath);
       (void) rename (filepath, backpath);
       free (backpath), backpath = NULL;
