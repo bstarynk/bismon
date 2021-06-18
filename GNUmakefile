@@ -122,6 +122,7 @@ endif
 
 clean:
 	$(RM) *.o BISMON-config bismon   modubin/*.so modubin/*.o *~ *% *.cc.orig
+	$(RM) gccplugins/*.so gccplugins/*~ gccplugins/*%
 
 _bismon-config.mk:
 	@echo you should run the Configure script in $(pwd) for $@ > /dev/stderr
