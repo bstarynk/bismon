@@ -172,7 +172,7 @@ fi
 export BISMON_GCC_NAME_PLUGIN=$(basename "$BISMON_GCC_PLUGIN" .so)
 
 ## kill any running bismon
-pkill -e --signal=SIGTERM bismon || true
+pkill --exact --full --signal=SIGTERM bismon || true
 
 printf "\n\n\n ==== %s: starting Bismon ======\n\n" "$0"
 echo '#° ./bismon' $bismon_msh_args
