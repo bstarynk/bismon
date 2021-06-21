@@ -42,8 +42,8 @@
     <label for='doforgot' class='expl_cl'>(get an email if you forgot your password)</label>
   </form>
 
-  {% if extra %}
-  <p id='explainextra_id' class='explain_cl'>{{extra}}</p>
+  {% if extra_login %}
+  <p id='explainextra_id' class='explain_cl'>{{extra_login}}</p>
   {% endif %}
   
   <p>If you login, you have agreed for

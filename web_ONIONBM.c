@@ -1127,7 +1127,7 @@ custom_onion_handler_BM (void *clientdata,
           onion_dict_add (ctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "extra", "initial login", OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "extra_login", "initial login", OD_DUP_VALUE);
           onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
                           OD_DUP_VALUE);
           onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
@@ -1646,7 +1646,8 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
               }
               onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
               onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
-              onion_dict_add (ctxdic, "extra", "Invalid user or password.",
+#warning we should improve web_ONION to handle differently an invalid user and a bad password
+              onion_dict_add (ctxdic, "extra_login", "Invalid user or password.",
                               OD_DUP_VALUE);
               onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
                               OD_DUP_VALUE);
@@ -2083,7 +2084,7 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       }
       onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
       onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
-      onion_dict_add (ctxdic, "extra", "Invalid user.", OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "extra_login", "Invalid user.", OD_DUP_VALUE);
       onion_dict_add (ctxdic, "buildtime", bismon_timestamp, OD_DUP_VALUE);
       onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
                       OD_DUP_VALUE);
@@ -2613,7 +2614,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                                           (_.contribob))) < 0 || !extramsg)
                 FATAL_BM ("failed to make extramsg for %s - %m",
                           objectdbg_BM (_.contribob));
-              onion_dict_add (loginctxdic, "extra", extramsg, OD_DUP_VALUE);
+              onion_dict_add (loginctxdic, "extra_login", extramsg, OD_DUP_VALUE);
               login_ONIONBM_thtml (loginctxdic, resp);
               free (extramsg), extramsg = NULL;
               onion_dict_free (loginctxdic);
