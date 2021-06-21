@@ -83,6 +83,7 @@ gt_ggc_mx (BMP_set_of_functions *setfun)
   setfun->check_magic();
   for (function* f: setfun->set_funptr) {
     gcc_assert(f);
+#warning this gt_ggc_mx is probably wrong in gt_ggc_mx (BMP_set_of_functions *setfun)
     gt_ggc_mx(*f);
   };
 } // end gt_ggc_mx (BMP_set_of_functions *setfun)
