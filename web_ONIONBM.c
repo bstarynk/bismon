@@ -1082,6 +1082,7 @@ custom_onion_handler_BM (void *clientdata,
     if (!goodcookie)
       _.sessionob = false;
   }
+#warning custom_onion_handler_BM onion_dict_add here should adopt coding conventions in sync with *.thtml files
   DBGPRINTF_BM ("custom_onion_handle sessionob %s reqpath '%s'",
                 objectdbg_BM (_.sessionob), reqpath);
   if (!_.sessionob)

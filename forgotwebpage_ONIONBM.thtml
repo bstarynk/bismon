@@ -23,7 +23,7 @@ and contains a temporary link to reset your password. That temporary
 hyperlink is valid for fifteen minutes. Please visit it quickly to
 change your password.</p>
 
-
+<!-- see also coding conventions in web_ONIONBM.c -->
   <p class='tinyinfo_cl'><i>This particular</i> <tt>Bismon</tt> server process of pid  {{bismon_pid}} on <tt>{{bismon_host}}</tt>, 
   is managed by {{contact_name}}, who can be contacted by email
   to <a class='contact_cl'
