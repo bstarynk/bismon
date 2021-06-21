@@ -475,8 +475,8 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       WARNPRINTF_BM("Bismon module binary %s is older than module source %s by %ld seconds\n",
                     binmodpath.c_str(), srcmodpath.c_str(),
                     (unsigned long)(srcmodstat.st_mtime - binmodstat.st_mtime));
-      /// run a safe ls -l command...
-      std::string lscmdstr = "/bin/ls -l ";
+      /// run a safe ls -l command,assume GNU coreutils ls(1)...
+      std::string lscmdstr = "/bin/ls -lst --time-style=long-iso ";
       gchar* quotbinmodcstr = g_shell_quote(binmodpath.c_str());
       lscmdstr += std::string(quotbinmodcstr);
       lscmdstr += " ";
