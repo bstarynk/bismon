@@ -115,7 +115,7 @@ for f in "$@"; do
     case "$f" in
 	--bismon*) bismon_msh_args=($bismon_msh_args $f);;
 	--msh-source=*) export BISMON_MSH_SOURCE=$(echo $f | /bin/sed -e s/--msh-source=//);;
-	--asm) export BISMON_PLUGIN_ASMOUT=/tmp/10_metaplugin_BMGCC.s;;
+	--asm) export BISMON_PLUGIN_ASMOUT=/tmp/gcc10_metaplugin_BMGCC.s;;
 	--gcc=*) export BISMON_GCC=$(echo $f | /bin/sed -e s/--gcc=//);;
     esac
 done
