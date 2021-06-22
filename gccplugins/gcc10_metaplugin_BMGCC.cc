@@ -49,7 +49,7 @@ BMP_gimple_pass::clone() {
 } // end BMP_gimple_pass::clone
 
 bool
-BMP_gimple_pass::gate(function* func) {
+BMP_gimple_pass::gate(BMPCC_gcc_function* func) {
   if (!func)
     return false;
   if (!func->decl)
@@ -60,7 +60,7 @@ BMP_gimple_pass::gate(function* func) {
 } // end BMP_gimple_pass::gate
 
 unsigned int
-BMP_gimple_pass::execute(function* func) {
+BMP_gimple_pass::execute(BMPCC_gcc_function* func) {
   if (!func)
     return 0;
   if (!func->decl)
@@ -81,7 +81,7 @@ gt_ggc_mx (BMP_set_of_functions *setfun)
 {
   gcc_assert(setfun);
   setfun->check_magic();
-  for (function* f: setfun->set_funptr) {
+  for (BMPCC_gcc_function* f: setfun->set_funptr) {
     gcc_assert(f);
 #warning this gt_ggc_mx is probably wrong in gt_ggc_mx (BMP_set_of_functions *setfun)
     gt_ggc_mx(*f);

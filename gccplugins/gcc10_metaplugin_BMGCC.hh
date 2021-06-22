@@ -30,6 +30,39 @@
 #define _GNU_SOURCE
 #endif
 
+
+#include "gcc-plugin.h"
+#include "config.h"
+#include "system.h"
+#include "coretypes.h"
+#include "tm.h"
+#include "tree.h"
+#include "stringpool.h"
+#include "toplev.h"
+#include "basic-block.h"
+#include "hash-table.h"
+#include "vec.h"
+#include "ggc.h"
+#include "tree-ssa-alias.h"
+#include "internal-fn.h"
+#include "gimple-fold.h"
+#include "tree-eh.h"
+#include "gimple-expr.h"
+#include "is-a.h"
+#include "gimple.h"
+#include "gimple-iterator.h"
+#include "tree.h"
+#include "tree-pass.h"
+#include "toplev.h"
+#include "intl.h"
+#include "plugin-version.h"
+#include "diagnostic.h"
+#include "context.h"
+#include "attribs.h"
+
+
+typedef function BMPCC_gcc_function;
+
 #include <iostream>
 #include <unordered_map>
 #include <unordered_set>
@@ -49,37 +82,6 @@
 
 
 #include <curlpp/Easy.hpp>
-
-
-#include "gcc-plugin.h"
-#include "config.h"
-#include "system.h"
-#include "coretypes.h"
-#include "tm.h"
-#include "tree.h"
-#include "stringpool.h"
-#include "toplev.h"
-#include "basic-block.h"
-#include "hash-table.h"
-#include "vec.h"
-#include "ggc.h"
-#include "basic-block.h"
-#include "tree-ssa-alias.h"
-#include "internal-fn.h"
-#include "gimple-fold.h"
-#include "tree-eh.h"
-#include "gimple-expr.h"
-#include "is-a.h"
-#include "gimple.h"
-#include "gimple-iterator.h"
-#include "tree.h"
-#include "tree-pass.h"
-#include "toplev.h"
-#include "intl.h"
-#include "plugin-version.h"
-#include "diagnostic.h"
-#include "context.h"
-#include "attribs.h"
 
 
 extern "C" int plugin_is_GPL_compatible;
@@ -107,12 +109,12 @@ public:
 
 extern void gt_ggc_mx (class BMP_set_of_functions *setfun);
 
-extern void gt_ggc_mx (function& f);
+extern void gt_ggc_mx (BMPCC_gcc_function& f);
 
 class GTY((user)) BMP_set_of_functions {
   static constexpr unsigned setfun_required_magic = 135889017; /*0x8198079*/
   unsigned set_magic;
-  std::set<function*> set_funptr;
+  std::set<BMPCC_gcc_function*> set_funptr;
   friend void gt_ggc_mx (BMP_set_of_functions *setfun);
  public:
   typedef void do_functionptr_plain_t(function*);
@@ -125,18 +127,18 @@ class GTY((user)) BMP_set_of_functions {
     if (set_magic != setfun_required_magic)
       fatal_error(UNKNOWN_LOCATION, "corrupted bismon set of functions");
   };
-  void add_funptr(function*func) {
+  void add_funptr(BMPCC_gcc_function*func) {
     gcc_assert(func != nullptr);
     set_funptr.insert(func);
   };
   void every_funptr_do(do_functionptr_plain_t*do_f) {
-    for (function* funptr : set_funptr) {
+    for (BMPCC_gcc_function* funptr : set_funptr) {
       gcc_assert(funptr != nullptr);
       (*do_f)(funptr);
     }
   }; 
-  void every_funptr_do_lambda(std::function<void(function*)> do_it) {
-    for (function* funptr : set_funptr) {
+  void every_funptr_do_lambda(std::function<void(BMPCC_gcc_function*)> do_it) {
+    for (BMPCC_gcc_function* funptr : set_funptr) {
       gcc_assert(funptr != nullptr);
       do_it(funptr);
     }
