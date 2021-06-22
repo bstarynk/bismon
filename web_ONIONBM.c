@@ -1114,7 +1114,7 @@ custom_onion_handler_BM (void *clientdata,
               free (querystr), querystr = NULL;
               if (!locstr)
                 FATAL_BM ("custom_onion_handle asprintf querydict failed");
-              onion_dict_add (ctxdic, "origpath_login", locstr, OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "bismonweb_origpath_login", locstr, OD_DUP_VALUE);
               DBGPRINTF_BM ("custom_onion_handle origpath_login locstr=%s", locstr);
               free (locstr), locstr = NULL;
             }
@@ -1123,21 +1123,20 @@ custom_onion_handler_BM (void *clientdata,
               char pidbuf[40];
               memset (pidbuf, 0, sizeof (pidbuf));
               snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
-              onion_dict_add (ctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
             }
-          onion_dict_add (ctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "extra_login", "initial login", OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
+          onion_dict_add (ctxdic, "bismonweb_host", myhostname_BM, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "bismonweb_extra_login", "initial login", OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "bismonweb_buildtime", bismon_timestamp,
                           OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
+          onion_dict_add (ctxdic, "bismonweb_lastgitcommit", bismon_lastgitcommit,
                           OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "checksum", bismon_checksum, OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "gentime", nowbuf, OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "contact_name", contact_name_BM,
+          onion_dict_add (ctxdic, "bismonweb_checksum", bismon_checksum, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "bismonweb_gentime", nowbuf, OD_DUP_VALUE);
+          onion_dict_add (ctxdic, "bismonweb_contact_name", contact_name_BM,
                           OD_DUP_VALUE);
-          onion_dict_add (ctxdic, "contact_email", contact_email_BM,
+          onion_dict_add (ctxdic, "bismonweb_contact_email", contact_email_BM,
                           OD_DUP_VALUE);
           login_ONIONBM_thtml (ctxdic, resp);
           onion_dict_free (ctxdic);
@@ -1639,27 +1638,27 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
                   {
                     if (formorigpath)
                       origpath = formorigpath;
-		    onion_dict_add (ctxdic, "origpath_login", origpath, OD_DUP_VALUE);
+		    onion_dict_add (ctxdic, "bismonweb_origpath_login", origpath, OD_DUP_VALUE);
                   }
 		else
-		  onion_dict_add (ctxdic, "origpath_login", origpath, OD_DUP_VALUE);
+		  onion_dict_add (ctxdic, "bismonweb_origpath_login", origpath, OD_DUP_VALUE);
 		DBGPRINTF_BM("login_onion_handler origpath=%s", origpath);
               }
-              onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
-              onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "bismonweb_host", myhostname_BM, OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
 #warning we should improve web_ONION to handle differently an invalid user and a bad password
-              onion_dict_add (ctxdic, "extra_login", "Invalid user or password.",
+              onion_dict_add (ctxdic, "bismonweb_extra_login", "Invalid user or password.",
                               OD_DUP_VALUE);
-              onion_dict_add (ctxdic, "buildtime", bismon_timestamp,
+              onion_dict_add (ctxdic, "bismonweb_buildtime", bismon_timestamp,
                               OD_DUP_VALUE);
-              onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
+              onion_dict_add (ctxdic, "bismonweb_lastgitcommit", bismon_lastgitcommit,
                               OD_DUP_VALUE);
-              onion_dict_add (ctxdic, "gentime", nowbuf, OD_DUP_VALUE);
-              onion_dict_add (ctxdic, "checksum", bismon_checksum,
+              onion_dict_add (ctxdic, "bismonweb_gentime", nowbuf, OD_DUP_VALUE);
+              onion_dict_add (ctxdic, "bismonweb_checksum", bismon_checksum,
                               OD_DUP_VALUE);
-              onion_dict_add (ctxdic, "contact_name", contact_name_BM,
+              onion_dict_add (ctxdic, "bismonweb_contact_name", contact_name_BM,
                               OD_DUP_VALUE);
-              onion_dict_add (ctxdic, "contact_email", contact_email_BM,
+              onion_dict_add (ctxdic, "bismonweb_contact_email", contact_email_BM,
                               OD_DUP_VALUE);
               onion_response_set_code (resp, HTTP_UNAUTHORIZED);
               DBGPRINTF_BM ("login_onion_handler POST unauthorized");
@@ -1765,15 +1764,15 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
   ASSERT_BM (isstring_BM (_.contribnamv));
   ASSERT_BM (isstring_BM (_.contribemailv));
   mailctxdic = onion_dict_new ();
-  onion_dict_add (mailctxdic, "contributor_name",
+  onion_dict_add (mailctxdic, "bismonweb_contributor_name",
                   bytstring_BM (_.contribnamv), OD_DUP_VALUE);
-  onion_dict_add (mailctxdic, "contributor_email",
+  onion_dict_add (mailctxdic, "bismonweb_contributor_email",
                   bytstring_BM (_.contribemailv), OD_DUP_VALUE);
   {
     char contribidbuf[32];
     memset (contribidbuf, 0, sizeof (contribidbuf));
     idtocbuf32_BM (objid_BM (_.contribob), contribidbuf);
-    onion_dict_add (mailctxdic, "contributor_oid",
+    onion_dict_add (mailctxdic, "bismonweb_contributor_oid",
                     contribidbuf, OD_DUP_VALUE);
     DBGPRINTF_BM ("make_onion_dict_forfgotten_email_BM %s\n"
                   ".. contributor_name '%s'\n"
@@ -1787,12 +1786,12 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
     char pidbuf[40];
     memset (pidbuf, 0, sizeof (pidbuf));
     snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
-    onion_dict_add (mailctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
-    onion_dict_add (mailctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
-    onion_dict_add (mailctxdic, "bismon_gitid", bismon_gitid, OD_DUP_VALUE);
-    onion_dict_add (mailctxdic, "contact_name", contact_name_BM,
+    onion_dict_add (mailctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
+    onion_dict_add (mailctxdic, "bismonweb_host", myhostname_BM, OD_DUP_VALUE);
+    onion_dict_add (mailctxdic, "bismonweb_gitid", bismon_gitid, OD_DUP_VALUE);
+    onion_dict_add (mailctxdic, "bismonweb_contact_name", contact_name_BM,
                     OD_DUP_VALUE);
-    onion_dict_add (mailctxdic, "contact_email", contact_email_BM,
+    onion_dict_add (mailctxdic, "bismonweb_contact_email", contact_email_BM,
                     OD_DUP_VALUE);
     DBGPRINTF_BM ("make_onion_dict_forgotten_email_BM %s\n"
                   ".. bismon_pid '%s'\n" ".. bismon_host '%s'\n"
@@ -1815,7 +1814,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
                 decayforgotidbuf, (int) rn);
       DBGPRINTF_BM ("make_onion_dict_forgotten_email_BM reseturlbuf %s",
                     reseturlbuf);
-      onion_dict_add (mailctxdic, "bismon_forgot_email_url", reseturlbuf,
+      onion_dict_add (mailctxdic, "bismonweb_forgot_email_url", reseturlbuf,
                       OD_DUP_VALUE);
     }
   {
@@ -1827,7 +1826,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
     memset (timbuf, 0, sizeof (timbuf));
     localtime_r (&nowt, &locnowtm);
     strftime (timbuf, sizeof (timbuf), "%c", &locnowtm);
-    onion_dict_add (mailctxdic, "forgot_timestamp", timbuf, OD_DUP_VALUE);
+    onion_dict_add (mailctxdic, "bismonweb_forgot_timestamp", timbuf, OD_DUP_VALUE);
     DBGPRINTF_BM
       ("make_onion_dict_forgotten_email_BM contribob %s forgotimstamp '%s'",
        objectdbg_BM (_.contribob), timbuf);
@@ -1841,7 +1840,7 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
       FATAL_BM
         ("failed asprintf for forgotten Bismon password on %s for %s (%m)",
          myhostname_BM, bytstring_BM (_.contribnamv));
-    onion_dict_add (mailctxdic, "email_subject", dbuf, OD_DUP_VALUE);
+    onion_dict_add (mailctxdic, "bismonweb_email_subject", dbuf, OD_DUP_VALUE);
     DBGPRINTF_BM
       ("make_onion_dict_forgotten_email_BM contribob %s emailsubj '%s'",
        objectdbg_BM (_.contribob), dbuf);
@@ -2081,16 +2080,16 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       onion_dict *ctxdic = onion_dict_new ();
       {
         const char *origpath = (reqpath && reqpath[0]) ? reqpath : "/";
-        onion_dict_add (ctxdic, "origpath", origpath, OD_DUP_VALUE);
+        onion_dict_add (ctxdic, "bismonweb_origpath", origpath, OD_DUP_VALUE);
       }
-      onion_dict_add (ctxdic, "host", myhostname_BM, OD_DUP_VALUE);
-      onion_dict_add (ctxdic, "pid", pidbuf, OD_DUP_VALUE);
-      onion_dict_add (ctxdic, "extra_login", "Invalid user.", OD_DUP_VALUE);
-      onion_dict_add (ctxdic, "buildtime", bismon_timestamp, OD_DUP_VALUE);
-      onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
+      onion_dict_add (ctxdic, "bismonweb_host", myhostname_BM, OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "bismonweb_extra_login", "Invalid user.", OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "bismonweb_buildtime", bismon_timestamp, OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "bismonweb_lastgitcommit", bismon_lastgitcommit,
                       OD_DUP_VALUE);
-      onion_dict_add (ctxdic, "gentime", nowbuf, OD_DUP_VALUE);
-      onion_dict_add (ctxdic, "checksum", bismon_checksum, OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "bismonweb_gentime", nowbuf, OD_DUP_VALUE);
+      onion_dict_add (ctxdic, "bismonweb_checksum", bismon_checksum, OD_DUP_VALUE);
       onion_response_set_code (resp, HTTP_UNAUTHORIZED);
       DBGPRINTF_BM ("login_onion_handler POST unauthorized");
       login_ONIONBM_thtml (ctxdic, resp);
@@ -2313,15 +2312,15 @@ forgotpasswd_ctxdic_bm (objectval_tyBM * decayobarg,
     char pidbuf[40];
     memset (pidbuf, 0, sizeof (pidbuf));
     snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
-    onion_dict_add (ctxdic, "bismon_pid", pidbuf, OD_DUP_VALUE);
+    onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
   }
-  onion_dict_add (ctxdic, "bismon_host", myhostname_BM, OD_DUP_VALUE);
-  onion_dict_add (ctxdic, "buildtime", bismon_timestamp, OD_DUP_VALUE);
-  onion_dict_add (ctxdic, "lastgitcommit", bismon_lastgitcommit,
+  onion_dict_add (ctxdic, "bismonweb_host", myhostname_BM, OD_DUP_VALUE);
+  onion_dict_add (ctxdic, "bismonweb_buildtime", bismon_timestamp, OD_DUP_VALUE);
+  onion_dict_add (ctxdic, "bismonweb_lastgitcommit", bismon_lastgitcommit,
                   OD_DUP_VALUE);
-  onion_dict_add (ctxdic, "contributor_name",
+  onion_dict_add (ctxdic, "bismonweb_contributor_name",
                   bytstring_BM (_.contribnamv), OD_DUP_VALUE);
-  onion_dict_add (ctxdic, "contributor_email",
+  onion_dict_add (ctxdic, "bismonweb_contributor_email",
                   bytstring_BM (_.contribemailv), OD_DUP_VALUE);
   // the change passwd time is now
   {
@@ -2334,7 +2333,7 @@ forgotpasswd_ctxdic_bm (objectval_tyBM * decayobarg,
     memset (nowbuf, 0, sizeof (nowbuf));
     strftime (nowbuf, sizeof (nowbuf) - 1, "%c", &nowtm);
     DBGPRINTF_BM ("forgotpasswd_ctxdic_bm nowbuf=%s", nowbuf);
-    onion_dict_add (ctxdic, "changepasswd_time", nowbuf, OD_DUP_VALUE);
+    onion_dict_add (ctxdic, "bismonweb_changepasswd_time", nowbuf, OD_DUP_VALUE);
   }
   // the POST URL
   {
@@ -2347,22 +2346,22 @@ forgotpasswd_ctxdic_bm (objectval_tyBM * decayobarg,
       snprintf (posturl, sizeof (posturl) - 1,
                 "http://%s/_forgotpasswd/", onion_web_base_BM);
     DBGPRINTF_BM ("forgotpasswd_ctxdic_bm posturl=%s", posturl);
-    onion_dict_add (ctxdic, "changepasswd_url", posturl, OD_DUP_VALUE);
+    onion_dict_add (ctxdic, "bismonweb_changepasswd_url", posturl, OD_DUP_VALUE);
   }
   /// the decayob
   {
     char decaybuf[32];
     memset (decaybuf, 0, sizeof (decaybuf));
     idtocbuf32_BM (objid_BM (_.decayob), decaybuf);
-    onion_dict_add (ctxdic, "changepasswd_decayob", decaybuf, OD_DUP_VALUE);
+    onion_dict_add (ctxdic, "bismonweb_changepasswd_decayob", decaybuf, OD_DUP_VALUE);
   }
-  onion_dict_add (ctxdic, "contact_name", contact_name_BM, OD_DUP_VALUE);
-  onion_dict_add (ctxdic, "contact_email", contact_email_BM, OD_DUP_VALUE);
+  onion_dict_add (ctxdic, "bismonweb_contact_name", contact_name_BM, OD_DUP_VALUE);
+  onion_dict_add (ctxdic, "bismonweb_contact_email", contact_email_BM, OD_DUP_VALUE);
   {
     char randbuf[32];
     memset (randbuf, 0, sizeof (randbuf));
     snprintf (randbuf, sizeof (randbuf) - 1, "%u", randnum);
-    onion_dict_add (ctxdic, "changepasswd_random", randbuf, OD_DUP_VALUE);
+    onion_dict_add (ctxdic, "bismonweb_changepasswd_random", randbuf, OD_DUP_VALUE);
     DBGPRINTF_BM ("forgotpasswd_ctxdic_bm randum %u", randnum);
   }
   uint32_t otherandnum = 10 + (g_random_int () % 100000000);
@@ -2375,7 +2374,7 @@ forgotpasswd_ctxdic_bm (objectval_tyBM * decayobarg,
       // this should never happen
       FATAL_BM ("failed to put other random in decayob %s",
                 objectdbg_BM (_.decayob));
-    onion_dict_add (ctxdic, "changepasswd_otherand", otherbuf, OD_DUP_VALUE);
+    onion_dict_add (ctxdic, "bismonweb_changepasswd_otherand", otherbuf, OD_DUP_VALUE);
     DBGPRINTF_BM
       ("forgotpasswd_ctxdic_bm otherandnum %u updated decayob %s",
        otherandnum, objectdbg_BM (_.decayob));
@@ -2615,7 +2614,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
                                           (_.contribob))) < 0 || !extramsg)
                 FATAL_BM ("failed to make extramsg for %s - %m",
                           objectdbg_BM (_.contribob));
-              onion_dict_add (loginctxdic, "extra_login", extramsg, OD_DUP_VALUE);
+              onion_dict_add (loginctxdic, "bismonweb_extra_login", extramsg, OD_DUP_VALUE);
               login_ONIONBM_thtml (loginctxdic, resp);
               free (extramsg), extramsg = NULL;
               onion_dict_free (loginctxdic);
@@ -2640,7 +2639,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
               onion_dict *uglyctxdic =
                 forgotpasswd_ctxdic_bm (_.decayob, CURFRAME_BM);
               ASSERT_BM (uglyctxdic != NULL);
-              onion_dict_add (uglyctxdic, "changepasswd_extramessage",
+              onion_dict_add (uglyctxdic, "bismonweb_changepasswd_extramessage",
                               "invalid or incompatible password",
                               OD_DUP_VALUE);
               changepasswd_ONIONBM_thtml (uglyctxdic, resp);
@@ -2729,7 +2728,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
           onion_dict *ctxdic =
             forgotpasswd_ctxdic_bm (_.decayob, CURFRAME_BM);
           //// @@@@TODO: complete
-          onion_dict_add (ctxdic, "changepasswd_extramessage",
+          onion_dict_add (ctxdic, "bismonweb_changepasswd_extramessage",
                           "?changepasswdextramessage?", OD_DUP_VALUE);
 #warning some missing code for changepasswd_* things in forgotpasswd_onion_handler_BM
           WARNPRINTF_BM

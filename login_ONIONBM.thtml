@@ -23,7 +23,7 @@
     addresses.<br/>
     <small>That data (with all of <tt>Bismon</tt>'s persistent state)
     could be later shared or published -by the person in charge of
-    this particular <tt>Bismon</tt> running on <tt>{{host}}</tt> pid {{pid}}.</small>
+    this particular <tt>Bismon</tt> running on <tt>{{bismonweb_host}}</tt> pid {{bismonweb_pid}}.</small>
     <br/>
     <i>Do not login if you disagree</i> <small>(be aware that
     completely removing your personal data from the persistent state
@@ -31,7 +31,7 @@
   
   <p class='tinyinfo_cl'>If you login, you accept this personal data processing.</p>
   <form action="/_login" method="post">
-    <input type='hidden' name='origpath_login' value='{{origpath_login}}'/>
+    <input type='hidden' name='origpath_login' value='{{bismonweb_origpath_login}}'/>
     <b>user:</b> <input type='text' name='user'/>&nbsp;
     <label for='user' class='expl_cl'>(enter your user or email)</label><br/>
     <b>password:</b><input type='password' name='password'/>&nbsp;
@@ -43,14 +43,14 @@
   </form>
 
   {% if extra_login %}
-  <p id='explainextra_id' class='explain_cl'>{{extra_login}}</p>
+  <p id='explainextra_id' class='explain_cl'>{{bismonweb_extra_login}}</p>
   {% endif %}
   
   <p>If you login, you have agreed for
   our <a href='https://en.wikipedia.org/wiki/HTTP_cookie'>web
   cookie</a>, and for <i>this particular</i> <tt>Bismon</tt> server <span class='smallspan_cl'>(running
-    on <tt>{{host}}</tt> pid {{pid}}, built at {{buildtime}}, commit <tt>{{lastgitcommit}}</tt>
-    checksum <tt>{{checksum}}</tt>, under Linux)</span> to keep some personal data about
+    on <tt>{{bismonweb_host}}</tt> pid {{bismonweb_pid}}, built at {{bismonweb_buildtime}}, commit <tt>{{bismonweb_lastgitcommit}}</tt>
+    checksum <tt>{{bismonweb_checksum}}</tt>, under Linux)</span> to keep some personal data about
     you, and run this session (which stays temporary).</p>
 
   <p class='tinyinfo_cl'>You need a <i>recent</i> HTML5 conforming web
@@ -59,11 +59,13 @@
   or better, or <a href='https://www.google.com/chrome'>Chrome</a> 90
   or better) to use <tt>Bismon</tt> (and you should enable JavaScript and WebSockets in that browser).</p>
 
-    <p class='tinyinfo_cl'>After a successful login, you'll be redirected to <tt>{{origpath}}</tt></p>
+    <p class='tinyinfo_cl'>After a successful login, you'll be redirected to <tt>{{bismonweb_origpath}}</tt></p>
 
-  <p class='tinyinfo_cl'>Login form generated at {{gentime}}.</p>
+  <p class='tinyinfo_cl'>Login form generated at {{bismonweb_gentime}}.</p>
 
-  <p class='tinyinfo_cl'><i>This particular</i> <tt>Bismon</tt> server is managed by {{contact_name}}, who can be contacted by email to <a class='contact_cl' href='mailto:{{contact_email}}'>{{contact_email}}</a>, notably for any <a href='https://en.wikipedia.org/wiki/General_Data_Protection_Regulation'>GDPR</a>
+  <p class='tinyinfo_cl'><i>This particular</i> <tt>Bismon</tt> server is managed by {{bismonweb_contact_name}},
+    who can be contacted by email
+    to <a class='contact_cl' href='mailto:{{bismonweb_contact_email}}'>{{bismonweb_contact_email}}</a>, notably for any <a href='https://en.wikipedia.org/wiki/General_Data_Protection_Regulation'>GDPR</a>
   related topics.</p>
 
   <p  class='explain_cl'>Please contact <a class='contact_cl' href='mailto:basile@starynkevitch.net'>Basile Starynkevitch <i>by email</i></a> for hopefully constructive suggestions.</p>
