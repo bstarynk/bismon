@@ -1695,8 +1695,8 @@ main (int argc, char **argv)
                         };
                     }
                 }
-              if (killedold) // probably a previous Bismon process is
-			     // still running
+              if (killedold)    // probably a previous Bismon process is
+                // still running
                 {
                   /* We sleep for one second, to give the old Bismon
                      server enough time to dump its state

@@ -457,8 +457,8 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   std::string binmodpath =  //
     std::string{bismon_directory} + "/" + MODULEBINDIR_BM + "/" + MODULEPREFIX_BM + modidbuf   + ".so";
   DBGPRINTF_BM("open_module_for_loader_BM modidbuf:%s srcmodpath:%s binmodpath:%s",
-	       modidbuf, srcmodpath.c_str(),
-	       binmodpath.c_str());
+               modidbuf, srcmodpath.c_str(),
+               binmodpath.c_str());
   struct stat srcmodstat = {};
   struct stat binmodstat = {};
   if (::stat(srcmodpath.c_str(), &srcmodstat))
