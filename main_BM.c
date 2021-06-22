@@ -597,7 +597,9 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &pid_filepath_bm,
    .description = "use PATH as the pid file;\n"
-   "\t .. default is _bismon.pid",
+   "\t .. default is _bismon.pid;\n"
+   "\t (if the file exists and mentions a valid pid, its process\n"
+   "\t  gets a SIGQUIT signal, and has one second to dump its state)",
    .arg_description = "PATH"},
   //
   {.long_name = "run-command",.short_name = (char) 0,
@@ -1693,7 +1695,8 @@ main (int argc, char **argv)
                         };
                     }
                 }
-              if (killedold)
+              if (killedold) // probably a previous Bismon process is
+			     // still running
                 {
                   /* We sleep for one second, to give the old Bismon
                      server enough time to dump its state
