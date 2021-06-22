@@ -61,6 +61,7 @@
 #include "attribs.h"
 
 
+/// FIXME: perhaps BMPCC_gcc_function should be a trivial subclass of function from GCC?
 typedef function BMPCC_gcc_function;
 
 #include <iostream>
