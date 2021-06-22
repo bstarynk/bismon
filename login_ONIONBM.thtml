@@ -2,7 +2,8 @@
 <html>{# file login_ONIONBM.thtml #}
 {# a template file for libOnion's template system #}
 <head>
-<title>Login to Bismon</title>
+  <title>Login to Bismon</title>
+  <!-- original file is login_ONIONBM.thtml -->
 <meta charset="utf-8">
 <style>
   body { background-color: lightcyan; }

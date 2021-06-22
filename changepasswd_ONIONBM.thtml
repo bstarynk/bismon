@@ -4,6 +4,7 @@
 <head>
 <title>Change Password to Bismon</title>
 <meta charset="utf-8">
+<!-- original file is changepasswd_ONIONBML.thtml -->
 <style>
   body { background-color: lightcyan; }
   p.tinyinfo_cl { background-color: azure; font-size: 80% }
