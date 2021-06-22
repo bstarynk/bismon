@@ -1667,6 +1667,40 @@ main (int argc, char **argv)
           if (pid_filepath_bm && pid_filepath_bm[0]
               && strcmp (pid_filepath_bm, "-"))
             {
+              int oldpid = -1;
+              FILE *oldpidfile = fopen (pid_filepath_bm, "r");
+              bool killedold = false;
+              if (oldpidfile)
+                {
+                  if (fscanf (oldpidfile, "%d", &oldpid) > 0 && oldpid > 0
+                      && !kill (oldpid, 0))
+                    {
+                      INFOPRINTF_BM ("quitting old Bismon process of pid %d",
+                                     oldpid);
+                      killedold = 0 == kill (oldpid, SIGQUIT);
+                    }
+                  fclose (oldpidfile);
+                  char backuppidpath[256];
+                  memset (backuppidpath, 0, sizeof (backuppidpath));
+                  if (strlen (pid_filepath_bm) < sizeof (backuppidpath) - 4)
+                    {
+                      if (snprintf (backuppidpath, sizeof (backuppidpath),
+                                    "%s~", pid_filepath_bm) > 0)
+                        {
+                          if (!rename (pid_filepath_bm, backuppidpath))
+                            INFOPRINTF_BM ("backed up pid file path %s -> %s",
+                                           pid_filepath_bm, backuppidpath);
+                        };
+                    }
+                }
+              if (killedold)
+                {
+                  /* We sleep for one second, to give the old Bismon
+                     server enough time to dump its state
+                     properly. This is a bit messy, but could usually be
+                     helpful. */
+                  sleep (1);
+                };
               FILE *pidfile = fopen (pid_filepath_bm, "w");
               if (!pidfile)
                 FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
