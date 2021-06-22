@@ -43,7 +43,8 @@
     <label for='doforgot' class='expl_cl'>(get an email if you forgot your password)</label>
   </form>
 
-  {% if extra_login %}
+  {% if bimonweb_extra_login %}
+  <!-- when bismonweb_extra_login in login_ONIONBM.thtml  -->
   <p id='explainextra_id' class='explain_cl'>{{bismonweb_extra_login}}</p>
   {% endif %}
   
@@ -90,4 +91,5 @@ programme, <a href='http://decoder-project.eu'>DECODER</a> project
   <p class='tinyinfo_cl'><b>PS:</b> to customize this, edit the <tt>login_ONIONBM.thtml</tt> file.</p>
 
 </body>
+<!-- end, generated from login_ONIONBM.thtml -->
 </html>

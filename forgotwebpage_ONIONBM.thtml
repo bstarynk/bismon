@@ -36,5 +36,6 @@ change your password.</p>
   <hr/>
   <p class='tinyinfo_cl'><b>PS:</b> to customize this message, edit
   the <tt>forgotwebpage_ONIONBM.thtml</tt> source file. gitid <tt>{{bismonweb_gitid}}</tt>. </p>
-  </body>
+</body>
+<!-- end, generated from forgotwebpage_ONIONBM.thtml -->
 </html>

@@ -4,7 +4,7 @@
 <head>
 <title>Change Password to Bismon</title>
 <meta charset="utf-8">
-<!-- original file is changepasswd_ONIONBML.thtml -->
+<!-- original file is changepasswd_ONIONBM.thtml -->
 <style>
   body { background-color: lightcyan; }
   p.tinyinfo_cl { background-color: azure; font-size: 80% }
@@ -44,10 +44,12 @@ the <a href='https://github.com/bstarynk/bismon'>bismon</a> process
   <a href='mailto:{{bismonweb_contact_email}}'>{{bismonweb_contact_email}}</a> for help.
 
   {% if bismonweb_changepasswd_extramessage %}
+  <!-- when bismonweb_changepasswd_extramessage in changepasswd_ONIONBM.thtml -->
   <p class='tinyinfo_cl'>{{bismonweb_changepasswd_extramessage}}</p>
   {% endif %}
   
   <p class='tinyinfo_cl'><b>PS:</b> to customize this, edit the <tt>changepasswd_ONIONBM.thtml</tt> file.</p>
 
 </body>
+<!-- end, generated from changepasswd_ONIONBM.thtml -->
 </html>
