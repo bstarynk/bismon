@@ -25,6 +25,12 @@
 
 #include "gcc10_metaplugin_BMGCC.hh"
 
+//// include generated GTY support by gengtype
+//// See e.g. https://gcc.gnu.org/onlinedocs/gccint/Type-Information.html
+#include "_gcc10_metaplugin_BMGCC-gty.h"
+
+
+
 int plugin_is_GPL_compatible;
 
 pid_t bismon_pid_BMPCC;
