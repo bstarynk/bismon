@@ -1365,6 +1365,8 @@ show_program_options_BM (FILE * out, int argc, char **argv)
     out = stderr;
   for (int aix = 0; aix < argc; aix++)
     {
+      if (argv[aix] == NULL)
+        break;
       if (aix > 0)
         fputc (' ', out);
       gchar *qa = g_shell_quote ((const gchar *) argv[aix]);
