@@ -496,7 +496,7 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
     nbjobs = MINNBWORKJOBS_BM;
   else if (nbjobs > MAXNBWORKJOBS_BM)
     nbjobs = MAXNBWORKJOBS_BM;
-  if (!onion_web_base_BM)
+  if (!onion_web_base_BM || !strcmp(onion_web_base_BM, "_"))
     onion_web_base_BM = "localhost:8086";
   if (sscanf
       (onion_web_base_BM, "%m[.a-zA-Z0-9+-]%n:%d%n", &webhost, &colonpos,

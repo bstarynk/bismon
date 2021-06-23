@@ -797,7 +797,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &onion_web_base_BM,
    .description =
-   "A string like <host>:<port>, default is localhost:8086, describing the base of web URLs served by bismon",
+   "A string like <host>:<port>, default (also when given as _)\n"
+   " is localhost:8086, describing the base of web URLs served by bismon",
    .arg_description = "WEB_BASE"},
   {.long_name = "anon-web-cookie",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -1087,7 +1088,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &onion_web_base_BM,
    .description =
-   "A string like <host>:<port>, default is localhost:8086, describing the base of web URLs served by bismon",
+   "A string like <host>:<port>, default (also when given as _)\n"
+   " is localhost:8086, describing the base of web URLs served by bismon",
    .arg_description = "WEB_BASE"},
   {.long_name = "bismon-anon-web-cookie",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
