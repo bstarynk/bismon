@@ -1477,7 +1477,7 @@ main (int argc, char **argv)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
   if (!batch_bm && !run_onion_BM)
     {
-      fprintf (stderr, "\n@@@ Bad invocation without batch or onion: ");
+      fprintf (stderr, "\n@@@ Bad invocation without batch or onion (argc=%d): ", argc);
       show_program_options_BM (stderr, argc, argv);
       fputc ('\n', stderr);
       FATAL_BM
