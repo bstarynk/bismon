@@ -1477,14 +1477,14 @@ main (int argc, char **argv)
     nbworkjobs_BM = MINNBWORKJOBS_BM + 1;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
-  if (!batch_bm && !run_onion_BM)
+  if (!batch_bm && (!run_onion_BM || !onion_web_base_BM))
     {
       fprintf (stderr, "\n@@@ Bad invocation without batch or onion (argc=%d): ", argc);
       show_program_options_BM (stderr, argc, argv);
       fputc ('\n', stderr);
-      FATAL_BM
-        ("no batch or onion option; please run with --batch or --web;\n"
-         "... or run: %s --help", argv[0]);
+      FATAL_BM ("no batch or web option (parent pid %ld);\n"
+		"... please run with --batch or --web-base=URL;\n"
+		"... or run: %s --help", (long) getppid(), argv[0]);
     }
   /// running as root is really unreasonable.
   if (getuid () == 0)
@@ -3142,8 +3142,8 @@ parse_program_options_BM (int argc, char **argv)
   if (onion_web_base_BM && *onion_web_base_BM)
     {
       INFOPRINTF_BM
-        ("%s: will run web service with onion web base %s (pid #%d, host %s)",
-         argv[0], onion_web_base_BM, (int) getpid (), myhostname_BM);
+        ("%s: will run web service with onion web base %s (pid #%d, parent pid #%d, host %s)",
+         argv[0], onion_web_base_BM, (int) getpid (), (int) getppid(), myhostname_BM);
       run_onion_BM = true;
     };
   ///
