@@ -1367,13 +1367,15 @@ show_program_options_BM (FILE * out, int argc, char **argv)
     out = stderr;
   for (int aix = 0; aix < argc; aix++)
     {
-      if (argv[aix] == NULL)
-        break;
       if (aix > 0)
         fputc (' ', out);
-      gchar *qa = g_shell_quote ((const gchar *) argv[aix]);
-      fputs ((const char *) qa, out);
-      g_free (qa);
+      if (argv[aix] == NULL)
+        fprintf(out, "#?arg%d_null?#", aix);
+      else {
+	gchar *qa = g_shell_quote ((const gchar *) argv[aix]);
+	fputs ((const char *) qa, out);
+	g_free (qa);
+      }
     }
 }                               /* end show_program_options_BM */
 
