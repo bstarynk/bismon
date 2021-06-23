@@ -59,6 +59,7 @@
 #include "diagnostic.h"
 #include "context.h"
 #include "attribs.h"
+#include "errors.h"
 
 
 /// FIXME: perhaps BMPCC_gcc_function should be a trivial subclass of function from GCC?
@@ -108,16 +109,19 @@ public:
   virtual unsigned int execute(function*);
 };				// end BMP_gimple_pass
 
-extern void gt_ggc_mx (class BMP_set_of_functions *setfun);
-
-extern void gt_ggc_mx (BMPCC_gcc_function& f);
+class BMP_set_of_functions;
+extern void gt_ggc_mx(BMP_set_of_functions*);
+extern void gt_pch_nx(BMP_set_of_functions*);
+extern void gt_pcx_nx(BMP_set_of_functions*, gt_pointer_operator op, void*cookie);
 
 class GTY((user)) BMP_set_of_functions {
   static constexpr unsigned setfun_required_magic = 135889017; /*0x8198079*/
   unsigned set_magic;
   std::set<BMPCC_gcc_function*> set_funptr;
-  friend void gt_ggc_mx (BMP_set_of_functions *setfun);
- public:
+  friend void gt_ggc_mx(BMP_set_of_functions*);
+  friend void gt_pch_nx(BMP_set_of_functions*);
+  friend void gt_pcx_nx(BMP_set_of_functions*, gt_pointer_operator op, void*cookie);
+public:
   typedef void do_functionptr_plain_t(function*);
   BMP_set_of_functions() : set_magic(setfun_required_magic), set_funptr() {};
   ~BMP_set_of_functions() {
@@ -137,7 +141,7 @@ class GTY((user)) BMP_set_of_functions {
       gcc_assert(funptr != nullptr);
       (*do_f)(funptr);
     }
-  }; 
+  };
   void every_funptr_do_lambda(std::function<void(BMPCC_gcc_function*)> do_it) {
     for (BMPCC_gcc_function* funptr : set_funptr) {
       gcc_assert(funptr != nullptr);

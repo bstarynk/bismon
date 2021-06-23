@@ -1,4 +1,3 @@
-
 /**
     BISMON related GCC10 metaplugin gcc10_metaplugin_BMGCC.cc
     See https://github.com/bstarynk/bismon/
@@ -81,7 +80,8 @@ BMP_gimple_pass::execute(BMPCC_gcc_function* func) {
 
 
 ////////////////////////////////////////////////////////////////
-//// Gty user support for class BMP_set_of_functions
+//// GTY user support for class BMP_set_of_functions
+//// marking routine
 void
 gt_ggc_mx (BMP_set_of_functions *setfun)
 {
@@ -89,10 +89,38 @@ gt_ggc_mx (BMP_set_of_functions *setfun)
   setfun->check_magic();
   for (BMPCC_gcc_function* f: setfun->set_funptr) {
     gcc_assert(f);
-#warning this gt_ggc_mx is probably wrong in gt_ggc_mx (BMP_set_of_functions *setfun)
-    gt_ggc_mx(*f);
+    /// the below gt_ggc_mx_function is probably implemented in the generated _gcc10_metaplugin_BMGCC-gty.h file
+    gt_ggc_mx_function(*f);
   };
 } // end gt_ggc_mx (BMP_set_of_functions *setfun)
+
+//// FIXME: GTY user support for class BMP_set_of_functions
+//// precompiled header marking routine
+void
+gt_pch_nx (BMP_set_of_functions* setfun)
+{
+  warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: precompiled header marking gt_pch_nx for BMP_set_of_functions probably wrong");
+#warning precompiled header marking gt_pch_nx for BMP_set_of_functions probably wrong
+  gcc_assert(setfun);
+  setfun->check_magic();
+  for (BMPCC_gcc_function* f: setfun->set_funptr) {
+    gcc_assert(f);
+    gt_pch_nx (f);
+  };
+} // end gt_pch_nx (BMP_set_of_functions* setfun)
+
+//// FIXME: GTY user support for class BMP_set_of_functions
+//// precompiled header pointer walker routine
+void
+gt_pch_nx(BMP_set_of_functions* setfun, gt_pointer_operator op, void*cookie)
+{
+  warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: precompiled header walker gt_pch_nx for BMP_set_of_functions probably wrong");
+#warning gt_pch_nx precompiled header walker for BMP_set_of_functions probably wrong
+  for (BMPCC_gcc_function* f: setfun->set_funptr) {
+    op(&setfun->f, cookie);
+  }
+} // end gt_pch_nx(BMP_set_of_functions* setfun, gt_pointer_operator op, void*cookie)
+
 
 ////////////////////////////////////////////////////////////////
 ///// the plugin_init name is dlsym-ed by GCC.
@@ -110,12 +138,14 @@ plugin_init (struct plugin_name_args *plugin_info,
     return 1;
   }
 
+  curlpp::initialize (cURLpp::CURL_GLOBAL_ALL);
+
   ///
-  inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin built " __DATE__ " on " __TIME__ " process %d"
+  inform(UNKNOWN_LOCATION, "started Bismon GCC10 metaplugin built " __DATE__ " on " __TIME__ " process %d"
 #ifdef PLUGINGITID
          " (gitid " PLUGINGITID ")"
 #else
-	 " without PLUGINGITID"
+         " without PLUGINGITID"
 #endif
          " (%s:%d)",
          (int) getpid(), __FILE__, __LINE__);
@@ -192,7 +222,7 @@ handle_bismon_pid_BMPCC(const char*argval) {
     int pi = atoi(argval);
     if (pi>1) {
       if (kill((pid_t)pi, 0))
-	error("bismon-pid plugin argument %d is not running (%s)", pi, xstrerror(errno));
+        error("bismon-pid plugin argument %d is not running (%s)", pi, xstrerror(errno));
       bismon_pid_BMPCC = pi;
     }
     else
@@ -282,11 +312,11 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
     gethostname(thishostname, sizeof(thishostname)-1);
     if (bismon_pid_BMPCC>0)
       inform(UNKNOWN_LOCATION, "Bismon plugin %qs (%s:%d) with Bismon pid %d",
-	     plugin_name, __FILE__, __LINE__, (int)bismon_pid_BMPCC);
+             plugin_name, __FILE__, __LINE__, (int)bismon_pid_BMPCC);
     inform(UNKNOWN_LOCATION,
-	   "Bismon plugin %qs initialized (%s:%d) - version %qs pid %d on %s",
-	   plugin_name, __FILE__, __LINE__,
-	   versbuf, (int)getpid(), thishostname);
+           "Bismon plugin %qs initialized (%s:%d) - version %qs pid %d on %s",
+           plugin_name, __FILE__, __LINE__,
+           versbuf, (int)getpid(), thishostname);
   }
   /// register some GCC plugin events
   {
@@ -298,20 +328,23 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
   }
 } // end parse_plugin_arguments
 
- void
- BMP_start_unit_handler(void*gccdata,void*userdata)
- {
+void
+BMP_start_unit_handler(void*gccdata,void*userdata)
+{
 #warning BMP_start_unit_handler is uncomplete
-   assert(userdata == nullptr);
-   /**NOTICE: GCC warning wants a %qs *****/
-   //   warning(UNKNOWN_LOCATION, "incomplete handling of `Plugin_Start_Unit' event in %s:%d", __FILE__, __LINE__);
-   warning(UNKNOWN_LOCATION, "incomplete handling of %qs even in %s:%d (%s)",
-	   "Plugin_Start_Unit", __FILE__, __LINE__,
-	   __FUNCTION__);
-   /****
-    * TODO: code some curlpp request to Bismon
-    ****/
- } // end  BMP_start_unit_handler
+  assert(userdata == nullptr);
+  /**NOTICE: GCC warning wants a %qs *****/
+  //   warning(UNKNOWN_LOCATION, "incomplete handling of `Plugin_Start_Unit' event in %s:%d", __FILE__, __LINE__);
+  warning(UNKNOWN_LOCATION, "incomplete handling of %qs event in %s:%d (%s)",
+          "Plugin_Start_Unit", __FILE__, __LINE__,
+          __FUNCTION__);
+  /// we explicitly need some Bismon URL
+  if (bismon_url_prefix_BMPCC.empty())
+    fatal("no given bismon url prefix in %s:%d (%s)", __FILE__, __LINE__, __FUNCTION__);
+  /****
+   * TODO: code some curlpp request to Bismon
+   ****/
+} // end  BMP_start_unit_handler
 
 
 /****************
