@@ -90,7 +90,7 @@ gt_ggc_mx (BMP_set_of_functions *setfun)
   for (BMPCC_gcc_function* f: setfun->set_funptr) {
     gcc_assert(f);
     /// the below gt_ggc_mx_function is probably implemented in the generated _gcc10_metaplugin_BMGCC-gty.h file
-    gt_ggc_mx_function(*f);
+    gt_ggc_mx_function (*f);
   };
 } // end gt_ggc_mx (BMP_set_of_functions *setfun)
 
