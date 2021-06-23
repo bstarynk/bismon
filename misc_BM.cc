@@ -480,10 +480,14 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
                     (unsigned long)(srcmodstat.st_mtime - binmodstat.st_mtime));
       /// run a safe ls -l command,assume GNU coreutils ls(1)...
       std::string lscmdstr = "/bin/ls -lst --time-style=long-iso ";
+      ASSERT_BM (binmodpath.c_str() != nullptr);
       gchar* quotbinmodcstr = g_shell_quote(binmodpath.c_str());
+      ASSERT_BM (quotbinmodcstr != nullptr);
       lscmdstr += std::string(quotbinmodcstr);
       lscmdstr += " ";
+      ASSERT_BM (srcmodpath.c_str() != nullptr);
       gchar* quotsrcmodcstr = g_shell_quote(srcmodpath.c_str());
+      ASSERT_BM (quotsrcmodcstr != nullptr);
       lscmdstr += std::string(quotsrcmodcstr);
       lscmdstr += " > /dev/stderr";
       DBGPRINTF_BM("lscmdstr: %s", lscmdstr.c_str());
