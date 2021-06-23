@@ -83,6 +83,7 @@ typedef function BMPCC_gcc_function;
 #include <jsoncpp/json/value.h>
 
 
+#include <curlpp/cURLpp.hpp>
 #include <curlpp/Easy.hpp>
 
 

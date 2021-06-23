@@ -90,10 +90,18 @@ gt_ggc_mx (BMP_set_of_functions *setfun)
   for (BMPCC_gcc_function* f: setfun->set_funptr) {
     gcc_assert(f);
     /// the below gt_ggc_mx_function is probably implemented in the generated _gcc10_metaplugin_BMGCC-gty.h file
-    gt_ggc_mx_function (*f);
+    gt_ggc_mx_function (f);
   };
 } // end gt_ggc_mx (BMP_set_of_functions *setfun)
 
+
+
+
+
+
+
+#warning disabling precompiled header support for BMP_set_of_functions
+#if 0 /* NO precompiled header support */
 //// FIXME: GTY user support for class BMP_set_of_functions
 //// precompiled header marking routine
 void
@@ -117,9 +125,13 @@ gt_pch_nx(BMP_set_of_functions* setfun, gt_pointer_operator op, void*cookie)
   warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: precompiled header walker gt_pch_nx for BMP_set_of_functions probably wrong");
 #warning gt_pch_nx precompiled header walker for BMP_set_of_functions probably wrong
   for (BMPCC_gcc_function* f: setfun->set_funptr) {
-    op(&setfun->f, cookie);
+    op(f, cookie);
   }
 } // end gt_pch_nx(BMP_set_of_functions* setfun, gt_pointer_operator op, void*cookie)
+#endif /*NO precompiled header support */
+
+
+
 
 
 ////////////////////////////////////////////////////////////////
@@ -138,7 +150,8 @@ plugin_init (struct plugin_name_args *plugin_info,
     return 1;
   }
 
-  curlpp::initialize (cURLpp::CURL_GLOBAL_ALL);
+  // DONT WORK  curlpp::initialize (CURL_GLOBAL_ALL);
+  curlpp::initialize (CURL_GLOBAL_ALL);
 
   ///
   inform(UNKNOWN_LOCATION, "started Bismon GCC10 metaplugin built " __DATE__ " on " __TIME__ " process %d"
@@ -205,7 +218,7 @@ pluginargsarr_BMPCC[] =
 void
 handle_bismon_url_arg_BMPCC(const char*argval) {
   if (!bismon_url_prefix_BMPCC.empty() && argval) {
-    error("bismon-url plugin argument given twice: %qs and %qs",
+    error("bismon-url plugin argument given twice: %s and %s",
           bismon_url_prefix_BMPCC.c_str(), argval);
   }
   if (argval)
@@ -226,14 +239,14 @@ handle_bismon_pid_BMPCC(const char*argval) {
       bismon_pid_BMPCC = pi;
     }
     else
-      error("invalid bismon-pid plugin argument: %qs", argval);
+      error("invalid bismon-pid plugin argument: %s", argval);
   };
 } // end handle_bismon_pid_BMPCC
 
 void
 handle_bismon_project_arg_BMPCC(const char*argval) {
   if (!bismon_project_BMPCC.empty() && argval) {
-    error("bismon-project plugin argument given twice: %qs and %qs",
+    error("bismon-project plugin argument given twice: %s and %s",
           bismon_project_BMPCC.c_str(), argval);
   }
   if (argval)
@@ -243,7 +256,7 @@ handle_bismon_project_arg_BMPCC(const char*argval) {
 void
 handle_bismon_cookie_file_BMPCC(const char*argval) {
   if (!bismon_cookie_file_BMPCC.empty() && argval) {
-    error("bismon-cookie-file plugin argument given twice: %qs and %qs",
+    error("bismon-cookie-file plugin argument given twice: %s and %s",
           bismon_cookie_file_BMPCC.c_str(), argval);
   }
   if (argval)
@@ -340,7 +353,8 @@ BMP_start_unit_handler(void*gccdata,void*userdata)
           __FUNCTION__);
   /// we explicitly need some Bismon URL
   if (bismon_url_prefix_BMPCC.empty())
-    fatal("no given bismon url prefix in %s:%d (%s)", __FILE__, __LINE__, __FUNCTION__);
+    fatal_error(UNKNOWN_LOCATION, "no given bismon url prefix in %s:%d (%s)",
+		__FILE__, __LINE__, __FUNCTION__);
   /****
    * TODO: code some curlpp request to Bismon
    ****/
