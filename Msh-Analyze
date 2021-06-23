@@ -25,8 +25,12 @@
 ## The Msh shell is a tiny shell whose source code is downloadable
 ## from git@github.com:nerith/msh.git
 
-
-## to debug this script, consider using ./Msh-Analyze --bismon-debug-after-load --asm
+#######
+## to debug this script, consider using :
+##    ./Msh-Analyze --bismon-debug-after-load --asm --bismon-web-base=localhost:8086
+## or the equivalent
+##    ./Msh-Analyze --bismon-debug-after-load --asm --bismon-web-base=_
+#######
 ## the default source location of Msh could be overidden by the
 ## BISMON_MSH_SOURCE environment variable
 if [ -z "$BISMON_MSH_SOURCE" ]; then
@@ -122,7 +126,7 @@ done
 
 # https://serverfault.com/a/477506
 if [ ${#bismon_msh_args[@]} -eq 0 ]; then
-    bismon_msh_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=$BISMON_MSH_PROJECT --bismon-pid-file=/tmp/_bismon_msh.pid)
+    bismon_msh_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=$BISMON_MSH_PROJECT --bismon-pid-file=/tmp/_bismon_msh.pid )
 fi
 
 echo "$0:" bismon arguments $bismon_msh_args in $(pwd) > /dev/stderr
