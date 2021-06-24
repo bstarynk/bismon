@@ -1,0 +1,81 @@
+#!/bin/bash
+##   BISMON  ---- simple analysis of the Dash shell
+##   Copyright ©  2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+##   contributed by Basile Starynkevitch (working at CEA, LIST, France)
+##   <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
+##
+##   This program is free software: you can redistribute it and/or modify
+##   it under the terms of the GNU General Public License as published by
+##   the Free Software Foundation, either version 3 of the License, or
+##   (at your option) any later version.
+##
+##   This program is distributed in the hope that it will be useful,
+##   but WITHOUT ANY WARRANTY; without even the implied warranty of
+##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##   GNU General Public License for more details.
+##
+##   You should have received a copy of the GNU General Public License
+##   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##
+##   ----
+##   Contact me (Basile Starynkevitch) by email
+##   basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
+##   -----------
+
+### the Dash shell is from git.kernel.org/pub/scm/utils/dash/dash.git
+### we want to analyze its version 0.5.11.4 or similar
+
+### we conventionally use environment variables $BISMONDASH_* for
+### Dash-Analyze specific settings, and $BISMON for Bismon specific
+### settings
+
+if [ -f $HOME/.bismon-dash-analyze ]; then
+    ##|## that ~/.bismon-dash-analyze could export....
+    ##|##    BISMONDASH_SOURCE_DASH - source directory for dash, with dash.1
+    ##|##
+    ##|##    BISMON_GCC - the GCC compiler compiling Bismon
+    ##|##        €.g. BISMON_GCC=/usr/local/bin/host-gcc-11
+    ##|##
+    ##|##    BISMON_WEB_BASE for the base URL interfacing Bismon while
+    ##|##    it is running
+    ##|##        €.g. BISMON_WEB_BASE=localhost:8087
+    ##|##
+    ##|##    BISMONDASH_PROJECT is the name of the Bismon project for
+    ##|##    this analysis.
+    ##|##        €.g. BISMONDASH_PROJECT=dash_project
+    ##|##
+    source  $HOME/.bismon-dash-analyze
+fi
+
+### the default source location of Dash (containing dash.1) in
+### practice we have a symlink similar to
+###    /usr/src/Shell/dash -> /usr/src/Shell/dash-0.5.11.4
+if [ -z "$BISMONDASH_SOURCE_DASH" ]; then
+    export BISMONDASH_SOURCE_DASH=/usr/src/Shell/dash
+fi
+
+if [ ! -f "$BISMONDASH_SOURCE_DASH/dash.1" ]; then
+    echo $0: no dash.1 file in BISMONDASH_SOURCE_DASH= $BISMONDASH_SOURCE_DASH > /dev/stderr
+    exit 1
+fi
+
+
+## BISMON_GCC is the GCC compiler compiling Bismon
+if [ -z "$BISMON_GCC" ]; then
+    export BISMON_GCC=/usr/bin/gcc-10
+fi
+
+
+## BISMON_WEB_BASE is for the URL interfacing Bismon while it is running
+if [ -z "$BISMON_WEB_BASE" ]; then
+    export BISMON_WEB_BASE=localhost:8086
+fi
+
+## BISMONDASH_PROJECT is the name of the project for Dash, as known to Bismon
+## and to GCC metaplugins
+if [ -z "$BISMONDASH_PROJECT" ]; then
+    export BISMONDASH_PROJECT=dash_bismon_project
+fi
+
+
+################################# incomplete script Dash-Analyze
