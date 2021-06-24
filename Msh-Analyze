@@ -24,6 +24,7 @@
 
 ## The Msh shell is a tiny shell whose source code is downloadable
 ## from git@github.com:nerith/msh.git
+## it requires some editline library (NOT from github.com/troglobit/editline)
 
 #######
 ## to debug this script, consider using :
