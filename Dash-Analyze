@@ -101,4 +101,9 @@ if [ -f "$BISMONDASH_PIDFILE" ]; then
     fi
 fi
 
+
+
+
+printf "%s: incomplete script (pid %s)\n" $0 $$
+exit 1
 ################################# incomplete script Dash-Analyze
