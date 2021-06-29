@@ -44,6 +44,13 @@ if [ -f $HOME/.bismon-dash-analyze ]; then
     ##|##    this analysis.
     ##|##        €.g. BISMONDASH_PROJECT=dash_project
     ##|##
+    ##|##
+    ##|##    BISMONDASH_PIDFILE is the name of the textual file
+    ##|##    containing the pid of Bismon for this analysis.
+    ##|##        €.g. BISMONDASH_PIDFILE=$HOME/.bismondash_pid
+    ##|##
+    ##|##
+    ##|##
     source  $HOME/.bismon-dash-analyze
 fi
 
@@ -77,5 +84,8 @@ if [ -z "$BISMONDASH_PROJECT" ]; then
     export BISMONDASH_PROJECT=dash_bismon_project
 fi
 
-
+## BISMONDASH_PIDFILE is the name of the filepath containing the pid of Bismon
+if [ -z "$BISMONDASH_PIDFILE" ]; then
+    export BISMONDASH_PIDFILE=/tmp/bismondash_pidfile
+fi
 ################################# incomplete script Dash-Analyze
