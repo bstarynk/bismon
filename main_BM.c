@@ -894,7 +894,7 @@ const GOptionEntry optionstab_bm[] = {
    .description = "use PATH as the pid file;\n"
    "\t .. default is _bismon.pid.\n"
    "\t (if the pid file exists and mentions a valid pid, its process\n"
-   "\t  gets a SIGQUIT signal, and has one second to dump its state)\n",,
+   "\t  gets a SIGQUIT signal, and has one second to dump its state)\n",
    .arg_description = "PATH"},
   //
   {.long_name = "bismon-run-command",.short_name = (char) 0,
