@@ -88,4 +88,17 @@ fi
 if [ -z "$BISMONDASH_PIDFILE" ]; then
     export BISMONDASH_PIDFILE=/tmp/bismondash_pidfile
 fi
+
+### if file "$BISMONDASH_PIDFILE" exists and contains a running pid, kill it
+if [ -f "$BISMONDASH_PIDFILE" ]; then
+    declare -i bismon_pid=$(/bin/cat "$BISMONDASH_PIDFILE")
+    if [ $bismon_pid -gt 0 -a -d /proc/$bismon_pid/ ]; then
+	kill -QUIT $bismon_pid
+	sleep 0.5
+	if [ -d /proc/$bismon_pid/ ] ; then
+	    kill -TERM $bismon_pid
+	fi
+    fi
+fi
+
 ################################# incomplete script Dash-Analyze
