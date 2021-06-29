@@ -61,8 +61,8 @@ if [ -z "$BISMONDASH_SOURCE_DASH" ]; then
     export BISMONDASH_SOURCE_DASH=/usr/src/Shell/dash
 fi
 
-if [ ! -f "$BISMONDASH_SOURCE_DASH/dash.1" ]; then
-    echo $0: no dash.1 file in BISMONDASH_SOURCE_DASH= $BISMONDASH_SOURCE_DASH > /dev/stderr
+if [ ! -f "$BISMONDASH_SOURCE_DASH/src/dash.1" ]; then
+    echo $0: no src/dash.1 file in BISMONDASH_SOURCE_DASH= $BISMONDASH_SOURCE_DASH > /dev/stderr
     exit 1
 fi
 
