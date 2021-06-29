@@ -1685,11 +1685,28 @@ main (int argc, char **argv)
                   if (fscanf (oldpidfile, "%d", &oldpid) > 0 && oldpid > 0
                       && !kill (oldpid, 0))
                     {
-                      INFOPRINTF_BM ("quitting old Bismon process of pid %d",
-                                     oldpid);
-                      killedold = 0 == kill (oldpid, SIGQUIT);
+		      char thisexepath[256];
+		      char oldexepath[256];
+		      char oldpidpath[64];
+		      memset (thisexepath, 0, sizeof(thisexepath));
+		      memset (oldexepath, 0, sizeof(oldexepath));
+		      memset (oldpidpath, 0, sizeof(oldpidpath));
+		      snprintf(oldpidpath, sizeof(oldpidpath), "/proc/%d/exe", oldpid);
+		      /** WARNING: this is not entirely robust, if the
+			  old pid happens to terminate or is killed
+			  externally ... But we do check that it is
+			  running the same executable than the current
+			  one... See proc(5) on Linux */
+		      if (!readlink("/proc/self/exe", thisexepath, sizeof(thisexepath)-1)
+			  && !readlink(oldpidpath, oldexepath, sizeof(oldexepath)-1)
+			  && !strcmp(thisexepath, oldexepath)
+			  && strlen(thisexepath)<sizeof(thisexepath)-2) {
+			INFOPRINTF_BM ("quitting old Bismon process of pid %d running this executable %s",
+				       oldpid, thisexepath);
+			killedold = 0 == kill (oldpid, SIGQUIT);
+		      }
                     }
-                  fclose (oldpidfile);
+                  fclose (oldpidfile), oldpidfile = NULL;
                   char backuppidpath[256];
                   memset (backuppidpath, 0, sizeof (backuppidpath));
                   if (strlen (pid_filepath_bm) < sizeof (backuppidpath) - 4)
