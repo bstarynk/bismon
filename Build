@@ -62,14 +62,20 @@ if [ -z $BISMON_MAKE ]; then
     export BISMON_MAKE=make
 fi
 
+### extra flags to make
+###
+if [ -z $BISMON_MAKE_FLAGS ]; then
+    export BISMON_MAKE_FLAGS=
+fi
+
 ## build make dependencies
-$BISMON_MAKE _bismon-makedep.mk || (
+$BISMON_MAKE $BISMON_MAKE_FLAGS _bismon-makedep.mk || (
     echo Failed to make dependencies _bismon-makedep.mk in $(pwd) > /dev/stderr
     exit 1
 )
 
 ### build the BM_makeconst generator
-$BISMON_MAKE  BM_makeconst  || (
+$BISMON_MAKE  $BISMON_MAKE_FLAGS  BM_makeconst  || (
     echo Failed to make generator BM_makeconst  using $BISMON_MAKE in $(pwd) > /dev/stderr
     exit 1
 )
@@ -77,9 +83,9 @@ $BISMON_MAKE  BM_makeconst  || (
 ### build the object files in parallel
 nbproc=$(grep '^processor' /proc/cpuinfo | wc -l)
 
-$BISMON_MAKE --jobs=$[$nbproc/2 + 1] objects || (
+$BISMON_MAKE $BISMON_MAKE_FLAGS  --jobs=$[$nbproc/2 + 1] objects || (
     echo Failed to make objects using $BISMON_MAKE in $(pwd) > /dev/stderr
     exit 1
 )
 
-exec $BISMON_MAKE bismon
+exec $BISMON_MAKE $BISMON_MAKE_FLAGS  bismon
