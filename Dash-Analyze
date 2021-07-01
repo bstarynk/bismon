@@ -36,6 +36,12 @@ if [ -f $HOME/.bismon-dash-analyze ]; then
     ##|##    BISMON_GCC - the GCC compiler compiling Bismon
     ##|##        €.g. BISMON_GCC=/usr/local/bin/host-gcc-11
     ##|##
+    ##|##    BISMON_MAKE - the make (e.g. GNU make) program
+    ##|##        €.g. BISMON_MAKE=/usr/bin/remake
+    ##|##
+    ##|##    BISMON_MAKE_FLAGS - the make options
+    ##|##        €.g. BISMON_MAKE_FLAGS=-j3
+    ##|##
     ##|##    BISMON_WEB_BASE for the base URL interfacing Bismon while
     ##|##    it is running
     ##|##        €.g. BISMON_WEB_BASE=localhost:8087
@@ -102,6 +108,30 @@ if [ -f "$BISMONDASH_PIDFILE" ]; then
 fi
 
 
+
+### the generated header file _bm_config.h should exist, since it has been created by running successfully the ./Configure script
+if [ ! -f _bm_config.h ]; then
+    printf "%s: missing _bm_config.h in directory %s\n" $0 $(pwd) > /dev/stderr
+    printf "... Please run the ./Configure script in this directory %s\n" $(pwd) > /dev/stderr
+    exit 1
+fi
+
+declare dash_analysis_need_bismon_build
+if [ ! -x bismon ]; then
+    dash_analysis_need_bismon_build=yes
+else
+    for bmsrc in [a-z]*BM.c ; do
+	if [ $bmsrc -nt bismon ] ; then
+	    dash_analysis_need_bismon_build=yes
+	fi
+    done
+fi
+
+if [ -n "$dash_analysis_need_bismon_build" ]; then
+    ### our Build script is using shell variables like BISMON_MAKE
+    ### (e.g. the GNU make) BISMON_MAKE_FLAGS
+    ./Build
+fi
 
 
 printf "%s: incomplete script (pid %s)\n" $0 $$
