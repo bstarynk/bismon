@@ -62,6 +62,13 @@ if [ -f $HOME/.bismon-dash-analyze ]; then
     ##|##    containing the pid of Bismon for this analysis.
     ##|##        €.g. BISMONDASH_PIDFILE=$HOME/.bismondash_pid
     ##|##
+    ##|##   BISMONDASH_GCC is the GCC compiler for compiling Dash shell
+    ##|##   by default is it BISMON_GCC, when not given
+    ##|##        €.g. BISMONDASH_GCC=/usr/local/bin/gcc-10
+    ##|##
+    ##|##
+    ##|##    BISMON_COOKIE_FILE, if given, contain the Bismon HTTP cookie
+    ##|##        €.g. BISMON_COOKIE_FILE=/tmp/bismon_dashcokkie
     ##|##
     ##|##
     source  $HOME/.bismon-dash-analyze
@@ -166,9 +173,9 @@ if [ ${#bismon_dash_args[@]} -eq 0 ]; then
 fi
 
 
-echo "$0:" bismon arguments $bismon_msh_args in $(pwd) > /dev/stderr
+echo "$0:" bismon arguments $bismon_dash_args in $(pwd) > /dev/stderr
 
-echo "$0:" msh source $BISMON_MSH_SOURCE > /dev/stderr
+echo "$0:" Dash shell source $BISMONDASH_SOURCE_DASH > /dev/stderr
 
 
 
