@@ -178,8 +178,7 @@ echo "$0:" bismon arguments $bismon_dash_args in $(pwd) > /dev/stderr
 echo "$0:" Dash shell source $BISMONDASH_SOURCE_DASH > /dev/stderr
 
 
-
-#### check existence of needed files
+#### check existence of needed GCC plugin files
 
 if [ ! -d gccplugins/ ]; then
     echo "$0:" missing gccplugins/ directory in $(pwd) > /dev/stderr
@@ -200,6 +199,24 @@ if [ ! -x gccplugins/build-gcc10-metaplugin.sh ]; then
     echo  "$0:" missing or bad gccplugins/build-gcc10-metaplugin.sh script in $(pwd) > /dev/stderr
     exit 1
 fi
+
+
+
+################################################################
+########## start Bismon
+
+if [ ! -x bismon ]; then
+    echo "$0:" cannot start missing Bismon > /dev/stderr
+    exit 1
+fi
+
+./bismon $bismon_dash_args &
+
+export BISMON_PID=$!
+
+sleep 0.8
+
+printf "\n%s: Bismon pid is %s\n" $0 $BISMON_PID
 
 
 ### notice that the ./build-gcc10-metaplugin.sh may use the
