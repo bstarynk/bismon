@@ -160,7 +160,7 @@ declare -a bismon_dash_args
 for f in "$@"; do
     case "$f" in
 	--bismon*) bismon_dash_args=($bismon_dash_args $f);;
-	--dash-source=*) export BISMONDASH_SOURCE_DASH=$(echo $f | /bin/sed -e s/--msh-source=//);;
+	--dash-source=*) export BISMONDASH_SOURCE_DASH=$(echo $f | /bin/sed -e s/--dash-source=//);;
 	--asm) export BISMON_PLUGIN_ASMOUT=/tmp/gcc10_metaplugin_BMGCC.s;;
 	--gcc=*) export BISMON_GCC=$(echo $f | /bin/sed -e s/--gcc=//);;
     esac
@@ -169,7 +169,7 @@ done
 
 # https://serverfault.com/a/477506
 if [ ${#bismon_dash_args[@]} -eq 0 ]; then
-    bismon_dash_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=$BISMON_DASH_PROJECT --bismon-pid-file=/tmp/_bismon_msh.pid )
+    bismon_dash_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=$BISMON_DASH_PROJECT --bismon-pid-file=$BISMONDASH_PIDFILE )
 fi
 
 
@@ -215,11 +215,12 @@ echo '#° ./bismon' $bismon_dash_args
 ./bismon $bismon_dash_args &
 export BISMON_PID=$!
 
-
-
 sleep 0.8
 
 printf "\n%s: Bismon pid is %s\n" $0 $BISMON_PID
+
+########## now Bismon is running
+################################################################
 
 
 ### notice that the ./build-gcc10-metaplugin.sh may use the
@@ -239,6 +240,51 @@ fi
 
 export BISMON_GCC_NAME_PLUGIN=$(basename "$BISMON_GCC_PLUGIN" .so)
 
+
+### compile some given *.c file under $BISMONDASH_SOURCE_DASH/src/
+function compile_dash_c_file () {
+    $BISMONDASH_GCC -c -DHAVE_CONFIG_H -I. -I..  -include ../config.h \
+		    -DBSD=1 -DSHELL -Wall -Wextra -O -g \
+		    $1
+}
+
+
+pushd $BISMONDASH_SOURCE_DASH/src/
+compile_dash_c_file alias.c
+compile_dash_c_file arith_yacc.c
+compile_dash_c_file arith_yylex.c
+compile_dash_c_file cd.c
+compile_dash_c_file error.c
+compile_dash_c_file eval.c
+compile_dash_c_file exec.c
+compile_dash_c_file expand.c
+compile_dash_c_file histedit.c
+compile_dash_c_file input.c
+compile_dash_c_file jobs.c
+compile_dash_c_file mail.c
+compile_dash_c_file main.c
+compile_dash_c_file memalloc.c
+compile_dash_c_file miscbltin.c
+compile_dash_c_file mystring.c
+compile_dash_c_file option.c
+compile_dash_c_file parser.c
+compile_dash_c_file redir.c
+compile_dash_c_file show.c
+compile_dash_c_file trap.c
+compile_dash_c_file output.c
+compile_dash_c_file system.c
+compile_dash_c_file var.c
+compile_dash_c_file builtins.c
+compile_dash_c_file init.c
+compile_dash_c_file nodes.c
+compile_dash_c_file signames.c
+compile_dash_c_file syntax.c
+compile_dash_c_file bltin/printf.c
+compile_dash_c_file bltin/test.c
+compile_dash_c_file bltin/times.c
+popd
+
 printf "%s: incomplete script (pid %s)\n" $0 $$
 exit 1
 ################################# incomplete script Dash-Analyze
+
