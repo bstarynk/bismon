@@ -210,9 +210,12 @@ if [ ! -x bismon ]; then
     exit 1
 fi
 
+printf "\n\n\n ==== %s: starting Bismon ======\n\n" "$0"
+echo '#° ./bismon' $bismon_dash_args
 ./bismon $bismon_dash_args &
-
 export BISMON_PID=$!
+
+
 
 sleep 0.8
 
