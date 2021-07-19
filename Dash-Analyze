@@ -249,7 +249,14 @@ function compile_dash_c_file () {
 }
 
 
+if [ -z "$BISMONDASH_GCC" ]; then
+    printf '%s: cannot compile Dash source files, since missing $BISMONDASH_GCC in %s\n' $0 $(pwd) > /dev/stderr
+    exit 1
+fi
+
+################ compile Dash C files
 pushd $BISMONDASH_SOURCE_DASH/src/
+
 compile_dash_c_file alias.c
 compile_dash_c_file arith_yacc.c
 compile_dash_c_file arith_yylex.c
