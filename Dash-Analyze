@@ -104,6 +104,11 @@ if [ -z "$BISMONDASH_PROJECT" ]; then
     export BISMONDASH_PROJECT=dash_bismon_project
 fi
 
+## BISMONDASH_GCC is the GCC compiler compiling Dash
+if [ -z "$BISMONDASH_GCC" ]; then
+    export BISMONDASH_GCC=$BISMON_GCC
+fi
+
 
 ## BISMON_GCC_PLUGIN is the shared object for our plugin
 if [ -z "$BISMON_GCC_PLUGIN" ]; then
@@ -215,9 +220,13 @@ echo '#° ./bismon' $bismon_dash_args
 ./bismon $bismon_dash_args &
 export BISMON_PID=$!
 
-sleep 0.8
+sleep 1.8
 
 printf "\n%s: Bismon pid is %s\n" $0 $BISMON_PID
+
+netstat --tcp --all --numeric  --program
+
+sleep 0.5
 
 ########## now Bismon is running
 ################################################################
@@ -290,6 +299,10 @@ compile_dash_c_file bltin/printf.c
 compile_dash_c_file bltin/test.c
 compile_dash_c_file bltin/times.c
 popd
+
+printf "%s: sleeping five seconds (pid %s)\n" $0 $$
+sleep 5
+
 
 printf "%s: incomplete script (pid %s)\n" $0 $$
 exit 1
