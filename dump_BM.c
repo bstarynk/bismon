@@ -261,6 +261,8 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   memset (lockfilebuf, 0, sizeof (lockfilebuf));
   snprintf (lockfilebuf, sizeof (lockfilebuf) - 1,
             "%s/__Bismon_Lock", dirname);
+  if (!access(lockfilebuf, F_OK))
+    WARNPRINTF_BM("Bismon dump lock file %s already exists", lockfilebuf);
   FILE *lockfilp = fopen (lockfilebuf, "w+");
   if (!lockfilp)
     FATAL_BM ("cannot open Bismon dump lock file %s - %m", lockfilebuf);
