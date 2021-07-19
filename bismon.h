@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /**
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch.
 
     This program is free software: you can redistribute it and/or modify
