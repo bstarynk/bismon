@@ -1372,12 +1372,13 @@ show_program_options_BM (FILE * out, int argc, char **argv)
       if (aix > 0)
         fputc (' ', out);
       if (argv[aix] == NULL)
-        fprintf(out, "#?arg%d_null?#", aix);
-      else {
-	gchar *qa = g_shell_quote ((const gchar *) argv[aix]);
-	fputs ((const char *) qa, out);
-	g_free (qa);
-      }
+        fprintf (out, "#?arg%d_null?#", aix);
+      else
+        {
+          gchar *qa = g_shell_quote ((const gchar *) argv[aix]);
+          fputs ((const char *) qa, out);
+          g_free (qa);
+        }
     }
 }                               /* end show_program_options_BM */
 
@@ -1481,12 +1482,14 @@ main (int argc, char **argv)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
   if (!batch_bm && (!run_onion_BM || !onion_web_base_BM))
     {
-      fprintf (stderr, "\n@@@ Bad invocation without batch or onion (argc=%d): ", argc);
+      fprintf (stderr,
+               "\n@@@ Bad invocation without batch or onion (argc=%d): ",
+               argc);
       show_program_options_BM (stderr, argc, argv);
       fputc ('\n', stderr);
       FATAL_BM ("no batch or web option (parent pid %ld);\n"
-		"... please run with --batch or --web-base=URL;\n"
-		"... or run: %s --help", (long) getppid(), argv[0]);
+                "... please run with --batch or --web-base=URL;\n"
+                "... or run: %s --help", (long) getppid (), argv[0]);
     }
   /// running as root is really unreasonable.
   if (getuid () == 0)
@@ -1685,26 +1688,32 @@ main (int argc, char **argv)
                   if (fscanf (oldpidfile, "%d", &oldpid) > 0 && oldpid > 0
                       && !kill (oldpid, 0))
                     {
-		      char thisexepath[256];
-		      char oldexepath[256];
-		      char oldpidpath[64];
-		      memset (thisexepath, 0, sizeof(thisexepath));
-		      memset (oldexepath, 0, sizeof(oldexepath));
-		      memset (oldpidpath, 0, sizeof(oldpidpath));
-		      snprintf(oldpidpath, sizeof(oldpidpath), "/proc/%d/exe", oldpid);
-		      /** WARNING: this is not entirely robust, if the
+                      char thisexepath[256];
+                      char oldexepath[256];
+                      char oldpidpath[64];
+                      memset (thisexepath, 0, sizeof (thisexepath));
+                      memset (oldexepath, 0, sizeof (oldexepath));
+                      memset (oldpidpath, 0, sizeof (oldpidpath));
+                      snprintf (oldpidpath, sizeof (oldpidpath),
+                                "/proc/%d/exe", oldpid);
+                      /** WARNING: this is not entirely robust, if the
 			  old pid happens to terminate or is killed
 			  externally ... But we do check that it is
 			  running the same executable than the current
 			  one... See proc(5) on Linux */
-		      if (!readlink("/proc/self/exe", thisexepath, sizeof(thisexepath)-1)
-			  && !readlink(oldpidpath, oldexepath, sizeof(oldexepath)-1)
-			  && !strcmp(thisexepath, oldexepath)
-			  && strlen(thisexepath)<sizeof(thisexepath)-2) {
-			INFOPRINTF_BM ("quitting old Bismon process of pid %d running this executable %s",
-				       oldpid, thisexepath);
-			killedold = 0 == kill (oldpid, SIGQUIT);
-		      }
+                      if (!readlink
+                          ("/proc/self/exe", thisexepath,
+                           sizeof (thisexepath) - 1)
+                          && !readlink (oldpidpath, oldexepath,
+                                        sizeof (oldexepath) - 1)
+                          && !strcmp (thisexepath, oldexepath)
+                          && strlen (thisexepath) < sizeof (thisexepath) - 2)
+                        {
+                          INFOPRINTF_BM
+                            ("quitting old Bismon process of pid %d running this executable %s",
+                             oldpid, thisexepath);
+                          killedold = 0 == kill (oldpid, SIGQUIT);
+                        }
                     }
                   fclose (oldpidfile), oldpidfile = NULL;
                   char backuppidpath[256];
@@ -3162,7 +3171,8 @@ parse_program_options_BM (int argc, char **argv)
     {
       INFOPRINTF_BM
         ("%s: will run web service with onion web base %s (pid #%d, parent pid #%d, host %s)",
-         argv[0], onion_web_base_BM, (int) getpid (), (int) getppid(), myhostname_BM);
+         argv[0], onion_web_base_BM, (int) getpid (), (int) getppid (),
+         myhostname_BM);
       run_onion_BM = true;
     };
   ///
