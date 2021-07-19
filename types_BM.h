@@ -299,6 +299,7 @@ struct dumper_stBM
 {
   typedhead_tyBM pA;            // rlen & hash are unused
   enum dumpstate_enBM dump_state;
+  FILE* dump_lockfile;
   objectval_tyBM *dump_object;
   const stringval_tyBM *dump_dir;
   struct hashsetobj_stBM *dump_hset;
