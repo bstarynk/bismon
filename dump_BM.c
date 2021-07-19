@@ -257,6 +257,21 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
     }
   if (g_mkdir_with_parents (dirname, 0750))
     FATAL_BM ("failed to mkdir with parents %s", dirname);
+  char lockfilebuf[384];
+  memset (lockfilebuf, 0, sizeof (lockfilebuf));
+  snprintf (lockfilebuf, sizeof (lockfilebuf) - 1,
+            "%s/__Bismon_Lock", dirname);
+  FILE *lockfilp = fopen (lockfilebuf, "w+");
+  if (!lockfilp)
+    FATAL_BM ("cannot open Bismon dump lock file %s - %m", lockfilebuf);
+  if (flock (fileno (lockfilp), LOCK_EX))
+    FATAL_BM ("cannot lock exclusively Bismon dump lock file %s - %m",
+              lockfilebuf);
+  if (fprintf (lockfilp, "%d\n", (int) getpid ()) < 0)
+    FATAL_BM ("failed to write pid in Bismon dump lock file %s - %m",
+              lockfilebuf);
+  if (fflush (lockfilp))
+    FATAL_BM ("failed to fflush Bismon dump lock file %s - %m", lockfilebuf);
   _.dudirv = makestring_BM (dirname);
   _.duobj = makeobj_BM ();
   duptr = allocgcty_BM (typayl_dumper_BM, sizeof (struct dumper_stBM));
@@ -287,6 +302,12 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   di.dumpinfo_elapsedtime = elapsedtime_BM () - duptr->dump_startelapsedtime;
   di.dumpinfo_cputime = cputime_BM () - duptr->dump_startcputime;
   fill_the_system_with_bismon_BM (CURFRAME_BM);
+  if (flock (fileno (lockfilp), LOCK_UN))
+    FATAL_BM ("cannot unlock Bismon dump lock file %s - %m", lockfilebuf);
+  if (fclose (lockfilp))
+    FATAL_BM ("failed to fclose Bismon dump lock file %s - %m", lockfilebuf);
+  if (remove (lockfilebuf))
+    FATAL_BM ("failed to remove Bismon dump lock file %s - %m", lockfilebuf);
   DBGPRINTF_BM ("dump_BM dirname %s end tid#%ld\n",
                 dirname, (long) gettid_BM ());
   return di;
