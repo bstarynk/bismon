@@ -457,6 +457,10 @@ login_onion_handler_BM (void *clientdata,
                         onion_request * req, onion_response * resp);
 
 static onion_connection_status
+status_json_onion_handler_BM (void *clientdata,
+                        onion_request * req, onion_response * resp);
+
+static onion_connection_status
 bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                                  objectval_tyBM * sessionob,
                                  onion_request * req, onion_response * resp);
@@ -984,6 +988,11 @@ custom_onion_handler_BM (void *clientdata,
       DBGPRINTF_BM ("custom_onion_handler login page reqpath %s", reqpath);
       return login_onion_handler_BM (clientdata, req, resp);
     }
+  if (!strcmp (reqpath, "_status.json") || !strcmp (reqpath, "/_status.json"))
+    {
+      DBGPRINTF_BM ("custom_onion_handler status page reqpath %s", reqpath);
+      return status_json_onion_handler_BM (clientdata, req, resp);
+    }
   else if (!strncmp (reqpath, "_forgotpasswd/", strlen ("_forgotpasswd/"))
            || !strncmp (reqpath, "/_forgotpasswd/",
                         strlen ("/_forgotpasswd/")))
@@ -1334,9 +1343,46 @@ bismon_json_loadf_bm (const char *path, FILE * fil, size_t flags,
 
 static pthread_mutex_t settingmtx_bm = PTHREAD_MUTEX_INITIALIZER;
 
-  //// handling of /_bismon_settings.json; this is useful in our
-  //// JavaScript code to get some settings related to the session or
-  //// else to the entire system.
+
+//// handling of /_status.json
+onion_connection_status
+status_json_onion_handler_BM(void *clientdata,
+                        onion_request * req, onion_response * resp)
+{
+  json_t *jsonstat = NULL;
+  const char *reqpath = onion_request_get_path (req);
+  unsigned reqflags = onion_request_get_flags (req);
+  unsigned reqmeth = (reqflags & OR_METHODS);
+  DBGPRINTF_BM("status_json_onion_handler_BM start  start reqpath=%s"
+	       " [%s]", reqpath,  onion_request_methods[reqmeth]);
+  if (reqmeth != OR_GET && reqmeth != OR_HEAD)
+    return OCS_NOT_IMPLEMENTED;
+  jsonstat = json_object();
+  json_object_set(jsonstat, "bismon_shortgit", json_string(bismon_shortgitid));
+  json_object_set(jsonstat, "bismon_time", json_integer(bismon_timelong));
+  json_object_set(jsonstat, "bismon_timestamp", json_string(bismon_timestamp));
+  json_object_set(jsonstat, "bismon_pid", json_integer((json_int_t)getpid()));
+  json_object_set(jsonstat, "bismon_host", json_string(myhostname_BM));
+  json_object_set(jsonstat, "bismon_web_base", json_string(onion_web_base_BM));
+  json_object_set(jsonstat, "bismon_cpu_time", json_real(cputime_BM()));
+  json_object_set(jsonstat, "bismon_elapsed_time", json_real(elapsedtime_BM()));
+  char* jstr = json_dumps (jsonstat, JSON_SORT_KEYS|JSON_INDENT(1));
+  size_t jslen = strlen(jstr);
+  onion_response_set_header (resp, "Content-Type", "application/json");
+  onion_response_set_code (resp, HTTP_OK);
+  onion_response_set_length (resp, jslen + 1);
+  onion_response_write (resp, jstr, jslen);
+  onion_response_write (resp, "\n", 1);
+  onion_response_flush (resp);
+  json_decref(jsonstat), jsonstat=NULL;
+  free (jstr), jstr=NULL;
+  return OCS_PROCESSED;
+} /* end of status_json_onion_handler_BM */
+
+
+//// handling of /_bismon_settings.json; this is useful in our
+//// JavaScript code to get some settings related to the session or
+//// else to the entire system.
 onion_connection_status
 bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                                  objectval_tyBM * sessionobarg,
