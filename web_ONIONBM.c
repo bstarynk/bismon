@@ -481,6 +481,45 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                      onion_request * req,
                      onion_response * resp, struct stackframe_stBM *stkf);
 
+/* a Linux specific routine to check that a TCP port is unused;
+   otherwise fatal error */
+static void
+check_tcp_port_unused_BM(int portnum)
+{
+  /// see https://man7.org/linux/man-pages/man5/proc.5.html
+  /***
+   * the Linux pseudofile /proc/net/tcp could have, for
+   * localhost:8086, where localhost is 127.0.0.1 and port 8086 ix in
+   * hex 0x1f96, a line like :
+   *
+   * 0: 3500007F:0035 00000000:0000 0A 00000000:00000000 00:00000000
+   * 00000000 101 0 25052 1 0000000000000000 100 0 0 10 0
+   *
+   ***/
+  FILE *portf = fopen("/proc/net/tcp", "r");
+  if (!portf) {
+    WARNPRINTF_BM("check_tcp_port_unused_BM cannot fopen /proc/net/tcp - %m");
+    return;
+  }
+  char linebuf[256];
+  do {
+    memset (linebuf, 0, sizeof(linebuf));
+    if (!fgets(linebuf,sizeof(linebuf), portf))
+      break;
+    int sl= -1;
+    long srcip= -1;
+    int srcport= -1;
+    long destip= -1;
+    int destport= -1;
+    if (sscanf(linebuf, "%i: %lx:%x %lx:%x", &sl, &srcip, &srcport, &destip, &destport) >= 5) {
+      if (srcport == portnum)
+	FATAL_BM("TCP port %d already used in /proc/net/tcp so cannot be used by Bismon:\n %s\n",
+		 portnum, linebuf);
+    };
+  } while (!feof(portf));
+  fclose(portf);
+} /* end check_tcp_port_unused_BM */
+
 ////////////////
 void
 run_onionweb_BM (int nbjobs)    // declared and used only in
@@ -517,8 +556,12 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
     {
       onion_set_hostname (myonion_BM, webhost);
       char *lastcolon = strrchr (onion_web_base_BM, ':');
-      if (lastcolon && isdigit (lastcolon[1]))
+      if (lastcolon && isdigit (lastcolon[1])) {
+	int portnum = atoi(lastcolon+1);
+	if (portnum>0)
+	  check_tcp_port_unused_BM(portnum);
         onion_set_port (myonion_BM, lastcolon + 1);
+      }
       char *webrootpath = NULL;
       if (asprintf (&webrootpath, "%s/webroot/", bismon_directory) < 0
           || !webrootpath || !webrootpath[0]
