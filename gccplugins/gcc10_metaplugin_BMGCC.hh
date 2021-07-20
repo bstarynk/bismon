@@ -99,6 +99,8 @@ extern "C" const pass_data BMP_gimple_pass_data;
 
 extern "C" void BMP_start_unit_handler(void*gccdata,void*userdata);
 
+extern "C" void BMP_all_passes_end_handler(void*gccdata,void*userdata);
+
 class BMP_gimple_pass : public gimple_opt_pass {
 public:
   BMP_gimple_pass(gcc::context* ctxt)

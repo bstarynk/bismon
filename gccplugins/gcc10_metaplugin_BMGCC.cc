@@ -150,18 +150,19 @@ plugin_init (struct plugin_name_args *plugin_info,
     return 1;
   }
 
-  // DONT WORK  curlpp::initialize (CURL_GLOBAL_ALL);
   curlpp::initialize (CURL_GLOBAL_ALL);
 
   ///
-  inform(UNKNOWN_LOCATION, "started Bismon GCC10 metaplugin built " __DATE__ " on " __TIME__ " process %d"
+  inform(UNKNOWN_LOCATION, "started Bismon GCC10 metaplugin built " __DATE__ " on " __TIME__ " process %d for main input %s"
 #ifdef PLUGINGITID
          " (gitid " PLUGINGITID ")"
 #else
          " without PLUGINGITID"
 #endif
          " (%s:%d)",
-         (int) getpid(), __FILE__, __LINE__);
+         (int) getpid(),
+	 main_input_filename,
+	 __FILE__, __LINE__);
 
 
   return 0;
@@ -334,6 +335,7 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
   /// register some GCC plugin events
   {
     register_callback (plugin_name, PLUGIN_START_UNIT, BMP_start_unit_handler, NULL);
+    register_callback (plugin_name, PLUGIN_ALL_PASSES_END, BMP_all_passes_end_handler, NULL);
 #warning we probably need some PLUGIN_PASS_MANAGER_SETUP & PLUGIN_START_PARSE_FUNCTION event...
     /****
      * TODO: document more events
@@ -346,6 +348,10 @@ BMP_start_unit_handler(void*gccdata,void*userdata)
 {
 #warning BMP_start_unit_handler is uncomplete
   assert(userdata == nullptr);
+  ///
+  inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin start unit handler for main input %s",
+	 main_input_filename);
+
   /**NOTICE: GCC warning wants a %qs *****/
   //   warning(UNKNOWN_LOCATION, "incomplete handling of `Plugin_Start_Unit' event in %s:%d", __FILE__, __LINE__);
   warning(UNKNOWN_LOCATION, "incomplete handling of %qs event in %s:%d (%s)",
@@ -359,6 +365,29 @@ BMP_start_unit_handler(void*gccdata,void*userdata)
    * TODO: code some curlpp request to Bismon
    ****/
 } // end  BMP_start_unit_handler
+
+
+void
+BMP_all_passes_end_handler(void*gccdata,void*userdata)
+{
+#warning BMP_all_passes_end_handler is uncomplete
+  assert(userdata == nullptr);
+  inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin all passes end handler for main input %s",
+	 main_input_filename);
+  /**NOTICE: GCC warning wants a %qs *****/
+  //   warning(UNKNOWN_LOCATION, "incomplete handling of `Plugin_Start_Unit' event in %s:%d", __FILE__, __LINE__);
+  warning(UNKNOWN_LOCATION, "incomplete handling of %qs event in %s:%d (%s)",
+          "Plugin_All_Passes_End", __FILE__, __LINE__,
+          __FUNCTION__);
+  /// we explicitly need some Bismon URL
+  if (bismon_url_prefix_BMPCC.empty())
+    fatal_error(UNKNOWN_LOCATION, "no given bismon url prefix in %s:%d (%s)",
+		__FILE__, __LINE__, __FUNCTION__);
+  /****
+   * TODO: code some curlpp request to Bismon
+   ****/
+  usleep(1000);
+} // end  BMP_all_passes_end_handler_handler
 
 
 /****************
