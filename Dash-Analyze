@@ -238,6 +238,14 @@ sleep 0.5
 
 ### on some Debian, there is a bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=980609
 pushd gccplugins
+if [ -f gcc10_metaplugin_BMGCC.so ]; then
+    ## force recompilation of plugin if older than plugin source code
+    if [ gcc10_metaplugin_BMGCC.so -ot gcc10_metaplugin_BMGCC.cc ]; then
+	/bin/rm gcc10_metaplugin_BMGCC.so
+    elif [ gcc10_metaplugin_BMGCC.so -ot gcc10_metaplugin_BMGCC.hh ]; then
+	/bin/rm gcc10_metaplugin_BMGCC.so
+    fi
+fi
 ### Notice: the build-gcc10-metaplugin.sh script cares about a BISMON_PLUGIN_ASMOUT shell variable...
 ./build-gcc10-metaplugin.sh
 popd
@@ -254,7 +262,13 @@ export BISMON_GCC_NAME_PLUGIN=$(basename "$BISMON_GCC_PLUGIN" .so)
 function compile_dash_c_file () {
     $BISMONDASH_GCC -c -DHAVE_CONFIG_H -I. -I..  -include ../config.h \
 		    -DBSD=1 -DSHELL -Wall -Wextra -O -g \
+		    -fplugin=$BISMON_GCC_PLUGIN \
 		    $1
+    if [ $? -gt 0 ]; then
+	printf '%s: failed to compile dash C file %s\n' $0 $1 > /dev/stderr
+	exit 1
+    fi
+    sleep 0.1
 }
 
 
