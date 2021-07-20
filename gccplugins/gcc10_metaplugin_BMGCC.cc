@@ -141,6 +141,10 @@ plugin_init (struct plugin_name_args *plugin_info,
              struct plugin_gcc_version *version)
 {
   const char *plugin_name = plugin_info->base_name;
+#ifdef PLUGINGITID
+  plugin_info->version = PLUGINGITID "@" __DATE__ "/" __TIME__;
+#endif /*PLUGINGITID*/
+  plugin_info->help = __FILE__ " for Bismon - see starynkevitch.net/Basile/bismon-doc.pdf";
   if (!plugin_default_version_check (version, &gcc_version))
   {
     warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: fail version check for %s:"
@@ -161,8 +165,8 @@ plugin_init (struct plugin_name_args *plugin_info,
 #endif
          " (%s:%d)",
          (int) getpid(),
-	 main_input_filename,
-	 __FILE__, __LINE__);
+         main_input_filename,
+         __FILE__, __LINE__);
 
 
   return 0;
@@ -350,7 +354,7 @@ BMP_start_unit_handler(void*gccdata,void*userdata)
   assert(userdata == nullptr);
   ///
   inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin start unit handler for main input %s",
-	 main_input_filename);
+         main_input_filename);
 
   /**NOTICE: GCC warning wants a %qs *****/
   //   warning(UNKNOWN_LOCATION, "incomplete handling of `Plugin_Start_Unit' event in %s:%d", __FILE__, __LINE__);
@@ -360,7 +364,7 @@ BMP_start_unit_handler(void*gccdata,void*userdata)
   /// we explicitly need some Bismon URL
   if (bismon_url_prefix_BMPCC.empty())
     fatal_error(UNKNOWN_LOCATION, "no given bismon url prefix in %s:%d (%s)",
-		__FILE__, __LINE__, __FUNCTION__);
+                __FILE__, __LINE__, __FUNCTION__);
   /****
    * TODO: code some curlpp request to Bismon
    ****/
@@ -373,7 +377,7 @@ BMP_all_passes_end_handler(void*gccdata,void*userdata)
 #warning BMP_all_passes_end_handler is uncomplete
   assert(userdata == nullptr);
   inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin all passes end handler for main input %s",
-	 main_input_filename);
+         main_input_filename);
   /**NOTICE: GCC warning wants a %qs *****/
   //   warning(UNKNOWN_LOCATION, "incomplete handling of `Plugin_Start_Unit' event in %s:%d", __FILE__, __LINE__);
   warning(UNKNOWN_LOCATION, "incomplete handling of %qs event in %s:%d (%s)",
@@ -382,12 +386,22 @@ BMP_all_passes_end_handler(void*gccdata,void*userdata)
   /// we explicitly need some Bismon URL
   if (bismon_url_prefix_BMPCC.empty())
     fatal_error(UNKNOWN_LOCATION, "no given bismon url prefix in %s:%d (%s)",
-		__FILE__, __LINE__, __FUNCTION__);
+                __FILE__, __LINE__, __FUNCTION__);
   /****
    * TODO: code some curlpp request to Bismon
    ****/
   usleep(1000);
-} // end  BMP_all_passes_end_handler_handler
+} // end  BMP_all_passes_end_handler
+
+
+void
+BMP_finish_handler(void*gccdata,void*userdata)
+{
+#warning BMP_finish_handler is uncomplete
+  assert(userdata == nullptr);
+  inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin finish handler for main input %s",
+         main_input_filename);
+} // end  BMP_finish_handler
 
 
 /****************
