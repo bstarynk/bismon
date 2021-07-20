@@ -340,6 +340,7 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
   {
     register_callback (plugin_name, PLUGIN_START_UNIT, BMP_start_unit_handler, NULL);
     register_callback (plugin_name, PLUGIN_ALL_PASSES_END, BMP_all_passes_end_handler, NULL);
+    register_callback (plugin_name, PLUGIN_FINISH, BMP_finish_handler, NULL);
 #warning we probably need some PLUGIN_PASS_MANAGER_SETUP & PLUGIN_START_PARSE_FUNCTION event...
     /****
      * TODO: document more events
