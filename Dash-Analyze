@@ -282,7 +282,7 @@ compile_dash_c_file main.c
 compile_dash_c_file memalloc.c
 compile_dash_c_file miscbltin.c
 compile_dash_c_file mystring.c
-compile_dash_c_file option.c
+compile_dash_c_file options.c
 compile_dash_c_file parser.c
 compile_dash_c_file redir.c
 compile_dash_c_file show.c
