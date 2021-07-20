@@ -1,0 +1,104 @@
+#!/bin/bash -x
+
+### the generated header file _bm_config.h should exist, since it has been created by running successfully the ./Configure script
+if [ ! -f _bm_config.h ]; then
+    printf "%s: missing _bm_config.h in directory %s\n" $0 $(pwd) > /dev/stderr
+    printf "... Please run the ./Configure script in this directory %s\n" $(pwd) > /dev/stderr
+    exit 1
+fi
+
+declare hello_analysis_need_bismon_build
+if [ ! -x bismon ]; then
+    hello_analysis_need_bismon_build=yes
+else
+    for bmsrc in [a-z]*BM.c ; do
+	if [ $bmsrc -nt bismon ] ; then
+	    hello_analysis_need_bismon_build=yes
+	fi
+    done
+fi
+
+if [ -n "$hello_analysis_need_bismon_build" ]; then
+    ### our Build script is using shell variables like BISMON_MAKE
+    ### (e.g. the GNU make) BISMON_MAKE_FLAGS
+    ./Build
+fi
+
+declare -a bismon_hello_args
+
+for f in "$@"; do
+    case "$f" in
+	--bismon*) bismon_hello_args=($bismon_hello_args $f);;
+	--asm) export BISMON_PLUGIN_ASMOUT=/tmp/gcc10_metaplugin_BMGCC.s;;
+	--gcc=*) export BISMON_GCC=$(echo $f | /bin/sed -e s/--gcc=//);;
+    esac
+done
+
+
+echo "$0:" bismon arguments $bismon_hello_args in $(pwd) > /dev/stderr
+
+# https://serverfault.com/a/477506
+if [ ${#bismon_hello_args[@]} -eq 0 ]; then
+    bismon_hello_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=helloworld-project --bismon-pid-file=$BISMON_PIDFILE )
+fi
+
+#### check existence of needed GCC plugin files
+
+if [ ! -d gccplugins/ ]; then
+    echo "$0:" missing gccplugins/ directory in $(pwd) > /dev/stderr
+    exit 1
+fi
+
+if [ ! -f gccplugins/gcc10_metaplugin_BMGCC.cc ]; then
+    echo  "$0:" missing gccplugins/gcc10_metaplugin_BMGCC.cc in $(pwd) > /dev/stderr
+    exit 1
+fi
+
+if [ ! -f gccplugins/gcc10_metaplugin_BMGCC.hh ]; then
+    echo  "$0:" missing gccplugins/gcc10_metaplugin_BMGCC.hh in $(pwd) > /dev/stderr
+    exit 1
+fi
+
+if [ ! -x gccplugins/build-gcc10-metaplugin.sh ]; then
+    echo  "$0:" missing or bad gccplugins/build-gcc10-metaplugin.sh script in $(pwd) > /dev/stderr
+    exit 1
+fi
+
+
+
+################################################################
+########## start Bismon
+
+if [ ! -x bismon ]; then
+    echo "$0:" cannot start missing Bismon > /dev/stderr
+    exit 1
+fi
+
+printf "\n\n\n ==== %s: starting Bismon ======\n\n" "$0"
+echo '#° ./bismon' $bismon_hello_args
+./bismon $bismon_hello_args &
+export BISMON_PID=$!
+
+sleep 1.8
+
+printf "\n%s: Bismon pid is %s\n" $0 $BISMON_PID
+
+### on some Debian, there is a bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=980609
+pushd gccplugins
+if [ -f gcc10_metaplugin_BMGCC.so ]; then
+    ## force recompilation of plugin if older than plugin source code
+    if [ gcc10_metaplugin_BMGCC.so -ot gcc10_metaplugin_BMGCC.cc ]; then
+	/bin/rm gcc10_metaplugin_BMGCC.so
+    elif [ gcc10_metaplugin_BMGCC.so -ot gcc10_metaplugin_BMGCC.hh ]; then
+	/bin/rm gcc10_metaplugin_BMGCC.so
+    fi
+fi
+### Notice: the build-gcc10-metaplugin.sh script cares about a BISMON_PLUGIN_ASMOUT shell variable...
+./build-gcc10-metaplugin.sh
+popd
+
+/usr/bin/gcc-10 -O -Wall -g \
+		-fplugin=gccplugins/gcc10_metaplugin_BMGCC.so \
+		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
+		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
+		test-hello-world.c -o /tmp/test-hello-world
