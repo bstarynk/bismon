@@ -206,7 +206,7 @@ pluginargsarr_BMPCC[] =
     .parg_handler= handle_bismon_cookie_file_BMPCC,
     .parg_help="gives some HTTP cookie file written by Bismon"
   },
-  /// bismon-pid= <some-pid> # e.g. bismon-cookie-file=/tmp/bismoncookie
+  /// bismon-pid= <some-pid> # e.g. bismon-pid=1234
   {
     .parg_name="bismon-pid",
     .parg_handler= handle_bismon_pid_BMPCC,
