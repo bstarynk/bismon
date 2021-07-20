@@ -97,7 +97,7 @@ fi
 ./build-gcc10-metaplugin.sh
 popd
 
-/usr/bin/gcc-10 -O -Wall -g \
+/usr/bin/gcc-10 -O -Wall -g -v \
 		-fplugin=gccplugins/gcc10_metaplugin_BMGCC.so \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
