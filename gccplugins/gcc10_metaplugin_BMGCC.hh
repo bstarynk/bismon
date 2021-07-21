@@ -92,16 +92,23 @@ extern "C" int plugin_is_GPL_compatible;
 extern "C" std::string bismon_url_prefix_BMPCC;
 extern "C" std::string bismon_project_BMPCC;
 extern "C" std::string bismon_cookie_file_BMPCC;
+extern "C" std::string bismon_line_prefix_BMPCC;
 extern "C" pid_t bismon_pid_BMPCC;
 
 
 extern "C" const pass_data BMP_gimple_pass_data;
 
+// for GCC plugin event PLUGIN_START_UNIT
 extern "C" void BMP_start_unit_handler(void*gccdata,void*userdata);
 
+// for GCC plugin event PLUGIN_ALL_PASSES_END
 extern "C" void BMP_all_passes_end_handler(void*gccdata,void*userdata);
 
+// for GCC plugin event PLUGIN_FINISH
 extern "C" void BMP_finish_handler(void*gccdata,void*userdata);
+
+// for GCC plugin event PLUGIN_INCLUDE_FILE
+extern "C" void BMP_include_file_handler(void*gccdata,void*userdata);
 
 class BMP_gimple_pass : public gimple_opt_pass {
 public:

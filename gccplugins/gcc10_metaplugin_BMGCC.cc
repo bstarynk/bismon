@@ -183,11 +183,13 @@ struct pluginarg_handler_BMPCC {
 std::string bismon_url_prefix_BMPCC;
 std::string bismon_project_BMPCC;
 std::string bismon_cookie_file_BMPCC;
+std::string bismon_line_prefix_BMPCC;
 
 static void handle_bismon_url_arg_BMPCC(const char*);
 static void handle_bismon_project_arg_BMPCC(const char*);
 static void handle_bismon_cookie_file_BMPCC(const char*);
 static void handle_bismon_pid_BMPCC(const char*);
+static void handle_bismon_line_prefix_BMPCC(const char*);
 
 const pluginarg_handler_BMPCC
 pluginargsarr_BMPCC[] =
@@ -215,6 +217,12 @@ pluginargsarr_BMPCC[] =
     .parg_name="bismon-pid",
     .parg_handler= handle_bismon_pid_BMPCC,
     .parg_help="gives the pid of the process running Bismon"
+  },
+  /// bismon-line-prefix= <some-string> # e.g. bismon-line-prefix=ANALYZED_LINE
+  {
+    .parg_name="bismon-line-prefix",
+    .parg_handler= handle_bismon_line_prefix_BMPCC,
+    .parg_help="if given as some string prefix, display it for PLUGIN_INCLUDE_FILE events of GCC"
   },
   ///
   { .parg_name=nullptr, .parg_handler=nullptr, .parg_help=nullptr }
@@ -267,6 +275,16 @@ handle_bismon_cookie_file_BMPCC(const char*argval) {
   if (argval)
     bismon_cookie_file_BMPCC.assign(argval);
 } // end handle_bismon_cookie_file_BMPCC
+
+void
+handle_bismon_line_prefix_BMPCC(const char*argval) {
+  if (!bismon_line_prefix_BMPCC.empty() && argval) {
+    error("bismon-line-prefix plugin argument given twice: %s and %s",
+          bismon_line_prefix_BMPCC.c_str(), argval);
+  }
+  if (argval)
+    bismon_line_prefix_BMPCC.assign(argval);
+} // end handle_bismon_line_prefix_BMPCC
 
 static
 void show_help_BMGCC(const char*plugin_name)
@@ -341,6 +359,12 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
     register_callback (plugin_name, PLUGIN_START_UNIT, BMP_start_unit_handler, NULL);
     register_callback (plugin_name, PLUGIN_ALL_PASSES_END, BMP_all_passes_end_handler, NULL);
     register_callback (plugin_name, PLUGIN_FINISH, BMP_finish_handler, NULL);
+    if (!bismon_line_prefix_BMPCC.empty()) {
+      register_callback (plugin_name, PLUGIN_INCLUDE_FILE, BMP_include_file_handler,
+                         (void*)(bismon_line_prefix_BMPCC.c_str()));
+      inform (UNKNOWN_LOCATION, "Bismon plugin %qs  (%s:%d) will handle GCC include-file events with prefix %qs",
+              plugin_name,  __FILE__, __LINE__, bismon_line_prefix_BMPCC.c_str());
+    }
 #warning we probably need some PLUGIN_PASS_MANAGER_SETUP & PLUGIN_START_PARSE_FUNCTION event...
     /****
      * TODO: document more events
@@ -403,6 +427,20 @@ BMP_finish_handler(void*gccdata,void*userdata)
   inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin finish handler for main input %s",
          main_input_filename);
 } // end  BMP_finish_handler
+
+
+void
+BMP_include_file_handler(void*gccdata,void*userdata)
+{
+#warning BMP_include_file_handler_handler is uncomplete
+  assert(userdata != nullptr); /// the prefix
+  const char*prefix = reinterpret_cast<const char*>(userdata);
+  assert(gccdata != nullptr);
+  const char*gccfilepath = reinterpret_cast<const char*>(gccdata);
+  inform (UNKNOWN_LOCATION, "Bismon GCC10 metaplugin include handler prefix %s filepath %qs",
+          prefix, gccfilepath);
+} // end of BMP_include_file_handler
+
 
 
 /****************
