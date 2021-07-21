@@ -239,4 +239,5 @@ modubin/modbm_%.so: modules/modbm_%.c | bismon _bismon-config.mk _bm_config.h
 indent:
 	/bin/bash -cx 'for csrcfile in  $(BM_C_SOURCES) ; do /bin/ls -l $$csrcfile ; $(INDENT) $(INDENTFLAGS) $$csrcfile ; done'
 	/bin/bash -cx 'for cppsrcfile in $(BM_CXX_SOURCES) ; do /bin/ls -l $$cppsrcfile ; $(ASTYLE) $(ASTYLEFLAGS) $$cppsrcfile ; done'
+	/bin/bash -cx 'for plusrcfile in gccplugins/*.{cc,hh} ; do /bin/ls -l $$plusrcfile ; $(ASTYLE) $(ASTYLEFLAGS) $$plusrcfile ; done'
 ##### end of file bismon/GNUmakefile
