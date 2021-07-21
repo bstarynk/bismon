@@ -110,10 +110,12 @@ extern "C" void BMP_finish_handler(void*gccdata,void*userdata);
 // for GCC plugin event PLUGIN_INCLUDE_FILE
 extern "C" void BMP_include_file_handler(void*gccdata,void*userdata);
 
-class BMP_gimple_pass : public gimple_opt_pass {
+class BMP_gimple_pass : public gimple_opt_pass
+{
 public:
   BMP_gimple_pass(gcc::context* ctxt)
-    : gimple_opt_pass(BMP_gimple_pass_data, ctxt) {
+    : gimple_opt_pass(BMP_gimple_pass_data, ctxt)
+  {
   };
   /* opt_pass methods: */
   opt_pass* clone();
@@ -126,7 +128,8 @@ extern void gt_ggc_mx(BMP_set_of_functions*);
 extern void gt_pch_nx(BMP_set_of_functions*);
 extern void gt_pcx_nx(BMP_set_of_functions*, gt_pointer_operator op, void*cookie);
 
-class GTY((user)) BMP_set_of_functions {
+class GTY((user)) BMP_set_of_functions
+{
   static constexpr unsigned setfun_required_magic = 135889017; /*0x8198079*/
   unsigned set_magic;
   std::set<BMPCC_gcc_function*> set_funptr;
@@ -136,29 +139,36 @@ class GTY((user)) BMP_set_of_functions {
 public:
   typedef void do_functionptr_plain_t(function*);
   BMP_set_of_functions() : set_magic(setfun_required_magic), set_funptr() {};
-  ~BMP_set_of_functions() {
+  ~BMP_set_of_functions()
+  {
     set_magic = 0;
     set_funptr.clear();
   };
-  void check_magic(void) const {
+  void check_magic(void) const
+  {
     if (set_magic != setfun_required_magic)
       fatal_error(UNKNOWN_LOCATION, "corrupted bismon set of functions");
   };
-  void add_funptr(BMPCC_gcc_function*func) {
+  void add_funptr(BMPCC_gcc_function*func)
+  {
     gcc_assert(func != nullptr);
     set_funptr.insert(func);
   };
-  void every_funptr_do(do_functionptr_plain_t*do_f) {
-    for (BMPCC_gcc_function* funptr : set_funptr) {
-      gcc_assert(funptr != nullptr);
-      (*do_f)(funptr);
-    }
+  void every_funptr_do(do_functionptr_plain_t*do_f)
+  {
+    for (BMPCC_gcc_function* funptr : set_funptr)
+      {
+        gcc_assert(funptr != nullptr);
+        (*do_f)(funptr);
+      }
   };
-  void every_funptr_do_lambda(std::function<void(BMPCC_gcc_function*)> do_it) {
-    for (BMPCC_gcc_function* funptr : set_funptr) {
-      gcc_assert(funptr != nullptr);
-      do_it(funptr);
-    }
+  void every_funptr_do_lambda(std::function<void(BMPCC_gcc_function*)> do_it)
+  {
+    for (BMPCC_gcc_function* funptr : set_funptr)
+      {
+        gcc_assert(funptr != nullptr);
+        do_it(funptr);
+      }
   }
 };				// end class BMP_set_of_functions
 
