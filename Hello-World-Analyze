@@ -41,6 +41,10 @@ if [ -z "$BISMON_WEB_BASE" ]; then
     export BISMON_WEB_BASE=localhost:8086
 fi
 
+if [ -z "$BISMON_GCC" ]; then
+    export BISMON_GCC=/usr/bin/gcc-10
+fi
+
 # https://serverfault.com/a/477506
 if [ ${#bismon_hello_args[@]} -eq 0 ]; then
     bismon_hello_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=helloworld-project --bismon-pid-file=$BISMON_PIDFILE )
@@ -101,7 +105,7 @@ fi
 ./build-gcc10-metaplugin.sh
 popd
 
-/usr/bin/gcc-10 -O -Wall -g -v \
+$BISMON_GCC -O -Wall -g -v \
 		-fplugin=gccplugins/gcc10_metaplugin_BMGCC.so \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
