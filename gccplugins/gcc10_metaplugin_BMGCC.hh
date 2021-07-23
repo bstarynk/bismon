@@ -157,18 +157,18 @@ public:
   void every_funptr_do(do_functionptr_plain_t*do_f)
   {
     for (BMPCC_gcc_function* funptr : set_funptr)
-      {
-        gcc_assert(funptr != nullptr);
-        (*do_f)(funptr);
-      }
+    {
+      gcc_assert(funptr != nullptr);
+      (*do_f)(funptr);
+    }
   };
   void every_funptr_do_lambda(std::function<void(BMPCC_gcc_function*)> do_it)
   {
     for (BMPCC_gcc_function* funptr : set_funptr)
-      {
-        gcc_assert(funptr != nullptr);
-        do_it(funptr);
-      }
+    {
+      gcc_assert(funptr != nullptr);
+      do_it(funptr);
+    }
   }
 };				// end class BMP_set_of_functions
 

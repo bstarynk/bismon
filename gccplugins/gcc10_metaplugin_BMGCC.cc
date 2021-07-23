@@ -92,11 +92,11 @@ gt_ggc_mx (BMP_set_of_functions *setfun)
   gcc_assert(setfun);
   setfun->check_magic();
   for (BMPCC_gcc_function* f: setfun->set_funptr)
-    {
-      gcc_assert(f);
-      /// the below gt_ggc_mx_function is probably implemented in the generated _gcc10_metaplugin_BMGCC-gty.h file
-      gt_ggc_mx_function (f);
-    };
+  {
+    gcc_assert(f);
+    /// the below gt_ggc_mx_function is probably implemented in the generated _gcc10_metaplugin_BMGCC-gty.h file
+    gt_ggc_mx_function (f);
+  };
 } // end gt_ggc_mx (BMP_set_of_functions *setfun)
 
 
@@ -117,10 +117,10 @@ gt_pch_nx (BMP_set_of_functions* setfun)
   gcc_assert(setfun);
   setfun->check_magic();
   for (BMPCC_gcc_function* f: setfun->set_funptr)
-    {
-      gcc_assert(f);
-      gt_pch_nx (f);
-    };
+  {
+    gcc_assert(f);
+    gt_pch_nx (f);
+  };
 } // end gt_pch_nx (BMP_set_of_functions* setfun)
 
 //// FIXME: GTY user support for class BMP_set_of_functions
@@ -131,9 +131,9 @@ gt_pch_nx(BMP_set_of_functions* setfun, gt_pointer_operator op, void*cookie)
   warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: precompiled header walker gt_pch_nx for BMP_set_of_functions probably wrong");
 #warning gt_pch_nx precompiled header walker for BMP_set_of_functions probably wrong
   for (BMPCC_gcc_function* f: setfun->set_funptr)
-    {
-      op(f, cookie);
-    }
+  {
+    op(f, cookie);
+  }
 } // end gt_pch_nx(BMP_set_of_functions* setfun, gt_pointer_operator op, void*cookie)
 #endif /*NO precompiled header support */
 
@@ -152,14 +152,27 @@ plugin_init (struct plugin_name_args *plugin_info,
   plugin_info->version = PLUGINGITID "@" __DATE__ "/" __TIME__;
 #endif /*PLUGINGITID*/
   plugin_info->help = __FILE__ " for Bismon - see starynkevitch.net/Basile/bismon-doc.pdf";
-  if (!plugin_default_version_check (version, &gcc_version))
-    {
-      warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: fail version check for %s:"
-              " got %s/%s/%s/%s wanted %s/%s/%s/%s", plugin_name,
-              version->basever, version->datestamp, version->devphase, version->revision,
-              gcc_version.basever, gcc_version.datestamp, gcc_version.devphase, gcc_version.revision);
-      return 1;
-    }
+  /// the base version should be compatible
+  if (strcmp(version->basever, gcc_version.basever)) {
+    error("BISMON GCC10 METAPLUGIN: fail version check for %s: different base version %s vs %s",
+          plugin_name, version->basever, gcc_version.basever);
+    return 1;
+  }
+  /// other version information are tested and reported. In some
+  /// cases, that might work.
+  if (strcmp(version->datestamp, gcc_version.datestamp))
+    warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: datestamp difference for %s: plugin has %s, GCC had %s; risky!",
+            plugin->name, version->datestamp, gcc_version.datestamp);
+  if (strcmp(version->devphase, gcc_version.devphase))
+    warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: devphase difference for %s: plugin has %s, GCC had %s; risky!",
+            plugin->name, version->devphase, gcc_version.devphase);
+  if (strcmp(version->configuration_arguments,
+             gcc_version.configuration_arguments))
+    warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: configuration difference for %s: plugin has %s, GCC had %s; risky!",
+            plugin->name,
+            version->configuration_arguments,
+            gcc_version.configuration_arguments);
+
 
   curlpp::initialize (CURL_GLOBAL_ALL);
 
@@ -240,10 +253,10 @@ void
 handle_bismon_url_arg_BMPCC(const char*argval)
 {
   if (!bismon_url_prefix_BMPCC.empty() && argval)
-    {
-      error("bismon-url plugin argument given twice: %s and %s",
-            bismon_url_prefix_BMPCC.c_str(), argval);
-    }
+  {
+    error("bismon-url plugin argument given twice: %s and %s",
+          bismon_url_prefix_BMPCC.c_str(), argval);
+  }
   if (argval)
     bismon_url_prefix_BMPCC.assign(argval);
 } // end handle_bismon_url_arg_BMPCC
@@ -252,32 +265,32 @@ void
 handle_bismon_pid_BMPCC(const char*argval)
 {
   if (bismon_pid_BMPCC > 0 && argval)
-    {
-      error("bismon-pid plugin argument given twice: %d and %s",
-            (int) bismon_pid_BMPCC, argval);
-    }
+  {
+    error("bismon-pid plugin argument given twice: %d and %s",
+          (int) bismon_pid_BMPCC, argval);
+  }
   if (argval)
+  {
+    int pi = atoi(argval);
+    if (pi>1)
     {
-      int pi = atoi(argval);
-      if (pi>1)
-        {
-          if (kill((pid_t)pi, 0))
-            error("bismon-pid plugin argument %d is not running (%s)", pi, xstrerror(errno));
-          bismon_pid_BMPCC = pi;
-        }
-      else
-        error("invalid bismon-pid plugin argument: %s", argval);
-    };
+      if (kill((pid_t)pi, 0))
+        error("bismon-pid plugin argument %d is not running (%s)", pi, xstrerror(errno));
+      bismon_pid_BMPCC = pi;
+    }
+    else
+      error("invalid bismon-pid plugin argument: %s", argval);
+  };
 } // end handle_bismon_pid_BMPCC
 
 void
 handle_bismon_project_arg_BMPCC(const char*argval)
 {
   if (!bismon_project_BMPCC.empty() && argval)
-    {
-      error("bismon-project plugin argument given twice: %s and %s",
-            bismon_project_BMPCC.c_str(), argval);
-    }
+  {
+    error("bismon-project plugin argument given twice: %s and %s",
+          bismon_project_BMPCC.c_str(), argval);
+  }
   if (argval)
     bismon_project_BMPCC.assign(argval);
 } // end handle_bismon_project_arg_BMPCC
@@ -286,10 +299,10 @@ void
 handle_bismon_cookie_file_BMPCC(const char*argval)
 {
   if (!bismon_cookie_file_BMPCC.empty() && argval)
-    {
-      error("bismon-cookie-file plugin argument given twice: %s and %s",
-            bismon_cookie_file_BMPCC.c_str(), argval);
-    }
+  {
+    error("bismon-cookie-file plugin argument given twice: %s and %s",
+          bismon_cookie_file_BMPCC.c_str(), argval);
+  }
   if (argval)
     bismon_cookie_file_BMPCC.assign(argval);
 } // end handle_bismon_cookie_file_BMPCC
@@ -298,10 +311,10 @@ void
 handle_bismon_line_prefix_BMPCC(const char*argval)
 {
   if (!bismon_line_prefix_BMPCC.empty() && argval)
-    {
-      error("bismon-line-prefix plugin argument given twice: %s and %s",
-            bismon_line_prefix_BMPCC.c_str(), argval);
-    }
+  {
+    error("bismon-line-prefix plugin argument given twice: %s and %s",
+          bismon_line_prefix_BMPCC.c_str(), argval);
+  }
   if (argval)
     bismon_line_prefix_BMPCC.assign(argval);
 } // end handle_bismon_line_prefix_BMPCC
@@ -313,14 +326,14 @@ void show_help_BMGCC(const char*plugin_name)
   for (int aix=0;
        aix < (int) (sizeof(pluginargsarr_BMPCC)/sizeof(pluginargsarr_BMPCC[0]));
        aix++)
-    {
-      if (pluginargsarr_BMPCC[aix].parg_name == nullptr)
-        break;
-      if (pluginargsarr_BMPCC[aix].parg_name != nullptr
-          && pluginargsarr_BMPCC[aix].parg_handler
-          && pluginargsarr_BMPCC[aix].parg_help)
-        std::cout << "\t" << pluginargsarr_BMPCC[aix].parg_name << ":" << pluginargsarr_BMPCC[aix].parg_help << std::endl;
-    }
+  {
+    if (pluginargsarr_BMPCC[aix].parg_name == nullptr)
+      break;
+    if (pluginargsarr_BMPCC[aix].parg_name != nullptr
+        && pluginargsarr_BMPCC[aix].parg_handler
+        && pluginargsarr_BMPCC[aix].parg_help)
+      std::cout << "\t" << pluginargsarr_BMPCC[aix].parg_name << ":" << pluginargsarr_BMPCC[aix].parg_help << std::endl;
+  }
 } // end show_help_BMGCC
 
 
@@ -346,30 +359,30 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
   int cntarg = 0;
   for (struct plugin_argument* plcurarg = plugin_args->argv;
        (argix<plargc)?(plcurarg = plugin_args->argv+argix):nullptr; argix++)
+  {
+    const char*curkey = plcurarg->key;
+    const char*curval = plcurarg->value;
+    if (!strcmp(curkey, "help"))
+      show_help_BMGCC(plugin_name);
+    else
     {
-      const char*curkey = plcurarg->key;
-      const char*curval = plcurarg->value;
-      if (!strcmp(curkey, "help"))
-        show_help_BMGCC(plugin_name);
-      else
+      for (int paix=0;
+           paix<(int) (sizeof(pluginargsarr_BMPCC)/sizeof(pluginargsarr_BMPCC[0]));
+           paix++)
+      {
+        const pluginarg_handler_BMPCC* curpa = pluginargsarr_BMPCC+paix;
+        if (!curpa->parg_name)
+          break;
+        if (strcmp(curkey, curpa->parg_name))
+          continue;
+        if (curpa->parg_handler)
         {
-          for (int paix=0;
-               paix<(int) (sizeof(pluginargsarr_BMPCC)/sizeof(pluginargsarr_BMPCC[0]));
-               paix++)
-            {
-              const pluginarg_handler_BMPCC* curpa = pluginargsarr_BMPCC+paix;
-              if (!curpa->parg_name)
-                break;
-              if (strcmp(curkey, curpa->parg_name))
-                continue;
-              if (curpa->parg_handler)
-                {
-                  cntarg ++;
-                  (*(curpa->parg_handler))(curval);
-                }
-            }
+          cntarg ++;
+          (*(curpa->parg_handler))(curval);
         }
-    };
+      }
+    }
+  };
   /// show an informational message
   {
     if (bismon_pid_BMPCC>0)
@@ -382,12 +395,12 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
     register_callback (plugin_name, PLUGIN_ALL_PASSES_END, BMP_all_passes_end_handler, NULL);
     register_callback (plugin_name, PLUGIN_FINISH, BMP_finish_handler, NULL);
     if (!bismon_line_prefix_BMPCC.empty())
-      {
-        register_callback (plugin_name, PLUGIN_INCLUDE_FILE, BMP_include_file_handler,
-                           (void*)(bismon_line_prefix_BMPCC.c_str()));
-        inform (UNKNOWN_LOCATION, "Bismon plugin %qs  (%s:%d) will handle GCC include-file events with prefix %qs",
-                plugin_name,  __FILE__, __LINE__, bismon_line_prefix_BMPCC.c_str());
-      }
+    {
+      register_callback (plugin_name, PLUGIN_INCLUDE_FILE, BMP_include_file_handler,
+                         (void*)(bismon_line_prefix_BMPCC.c_str()));
+      inform (UNKNOWN_LOCATION, "Bismon plugin %qs  (%s:%d) will handle GCC include-file events with prefix %qs",
+              plugin_name,  __FILE__, __LINE__, bismon_line_prefix_BMPCC.c_str());
+    }
 #warning we probably need some PLUGIN_PASS_MANAGER_SETUP & PLUGIN_START_PARSE_FUNCTION event...
     /****
      * TODO: document more events
