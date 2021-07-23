@@ -24,13 +24,17 @@
 ##
 ################################################################
 
-## C++ compiler used to compile the plugin
-PLUGINGXX=/usr/bin/g++-10
+## C++ compiler used to compile the GCC meta plugin
+if [ -z "BISMON_PLUGIN_GXX" ]; then
+    export BISMON_PLUGIN_GXX=/usr/bin/g++-10
+fi
 
-## target compiler for the plugin
-TARGETGCC=/usr/bin/g++-10
+## target compiler which dlopen-s the GCC meta plugin
+if [ -z "BISMON_TARGET_GCC" ]; then
+    export BISMON_TARGET_GCC=/usr/bin/g++-10
+fi
 
-TARGETPLUGINDIR=$($TARGETGCC -print-file-name=plugin)
+TARGETPLUGINDIR=$($BISMON_TARGET_GCC -print-file-name=plugin)
 # run the gengtype utility, see https://gcc.gnu.org/onlinedocs/gccint/Files.html#Files
 
 TARGETGENGTYPE=$TARGETPLUGINDIR/gengtype
@@ -60,7 +64,7 @@ if [ -n "$BISMON_PLUGIN_ASMOUT" ]; then
     if [ -f "$BISMON_PLUGIN_ASMOUT" ]; then
 	/bin/mv  "$BISMON_PLUGIN_ASMOUT"  "$BISMON_PLUGIN_ASMOUT"~
     fi
-    $PLUGINGXX -Wall -Wextra -O1 -g3 \
+    $BISMON_PLUGIN_GXX -Wall -Wextra -O1 -g3 \
 	       -I $TARGETPLUGINDIR/include/ \
 	       -shared -fno-rtti -fPIC -rdynamic \
 	       -DPLUGINGITID=\"$SHORTGITID\" \
@@ -69,7 +73,7 @@ if [ -n "$BISMON_PLUGIN_ASMOUT" ]; then
 	       -S -fverbose-asm -o "$BISMON_PLUGIN_ASMOUT"
 fi
 
-$PLUGINGXX -Wall -Wextra -O1 -g3 \
+$BISMON_PLUGIN_GXX -Wall -Wextra -O1 -g3 \
 	   -I $TARGETPLUGINDIR/include/ \
 	   -shared -fno-rtti -fPIC -rdynamic \
 	   -DPLUGINGITID=\"$SHORTGITID\" \
