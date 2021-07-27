@@ -471,15 +471,17 @@ regulations like the European \index{GDPR} GDPR.
 
 \end{itemize}
 
-Since the main author of this draft report is known to \textsc{Bismon}
-and reified in the object of objid \texttt{\_6UYrSn7piPM\_3eYhLtoXl},
-the file \texttt{contributors\_BM} should at least contain a line like
+Since the main author of this draft report is known to the \textsc{Bismon} system
+and reified in the object of objid \\
+\texttt{\_6UYrSn7piPM\_3eYhLtoXl},
+the required file \texttt{contributors\_BM} should at least contain a line like
 perhaps\\ {\parbox{8cm}{{\relsize{-1.3}{ \texttt{Basile
       Starynkevitch;\_6UYrSn7piPM\_3eYhLtoXlmL;b.star@email.invalid;bstarynk@localhost}}}}}
 
 It is preferable to run the \texttt{./bismon} software with specific
 command lines argument to update the contributors file and the
-passwords file.
+passwords file. A valid password should contain letters, digits, and punctuation and should have at least 10 characters, for example \texttt{foo+1234PAS}. To change the password of contributor \texttt{Basile Starynkevitch} to that, you could run :\\
+\verbatim{echo Basile Starynkevitch:foo+1234PAS | ./bismon  --bismon-add-passwords=- --batch --dump=.}. Of course any serious sysadmin will avoid doing so, and write some script instead.
 
 \subsection{Generators and meta-programs in \texttt{bismon}}
 
