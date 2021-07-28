@@ -1,4 +1,29 @@
 #!/bin/bash -x
+## SPDX-License-Identifier: GPL-3.0-or-later
+
+##   Copyright ©  2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+##   contributed by Basile Starynkevitch (working at CEA, LIST, France)
+##   <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
+##
+##   This program is free software: you can redistribute it and/or modify
+##   it under the terms of the GNU General Public License as published by
+##   the Free Software Foundation, either version 3 of the License, or
+##   (at your option) any later version.
+##
+##   This program is distributed in the hope that it will be useful,
+##   but WITHOUT ANY WARRANTY; without even the implied warranty of
+##   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##   GNU General Public License for more details.
+##
+##   You should have received a copy of the GNU General Public License
+##   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##
+##   ----
+##   Contact me (Basile Starynkevitch) by email
+##   basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
+##   -----------
+
+### script file Hello-World-Analyze in github.com/bstarynk/bismon
 
 ### the generated header file _bm_config.h should exist, since it has been created by running successfully the ./Configure script
 if [ ! -f _bm_config.h ]; then
@@ -47,7 +72,7 @@ fi
 
 # https://serverfault.com/a/477506
 if [ ${#bismon_hello_args[@]} -eq 0 ]; then
-    bismon_hello_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=helloworld-project --bismon-pid-file=$BISMON_PIDFILE )
+    bismon_hello_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=helloworld-project --bismon-pid-file=$BISMON_PIDFILE  --bismon-anon-web-cookie=/tmp/bismon.cookie )
 fi
 
 #### check existence of needed GCC plugin files
