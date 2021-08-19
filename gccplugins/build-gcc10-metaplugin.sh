@@ -37,6 +37,13 @@ fi
 TARGETPLUGINDIR=$($BISMON_TARGET_GCC -print-file-name=plugin)
 # run the gengtype utility, see https://gcc.gnu.org/onlinedocs/gccint/Files.html#Files
 
+if [ -z "$TARGETPLUGINDIR" ]; then
+    printf "%s: failed to get TARGETPLUGINDIR with BISMON_TARGET_GCC=%s\n" "$0" "$BISMON_TARGET_GCC" > /dev/stderr
+    exit 1
+fi
+
+/bin/ls -ld $TARGETPLUGINDIR || exit 1
+
 TARGETGENGTYPE=$TARGETPLUGINDIR/gengtype
 $TARGETGENGTYPE --read-state $TARGETPLUGINDIR/gtype.state \
 		--plugin _gcc10_metaplugin_BMGCC-gty.h \
