@@ -51,6 +51,7 @@ extern const char *passwords_filepath_BM;
 extern const char *contact_filepath_BM;
 extern char *contact_name_BM;
 extern char *contact_email_BM;
+extern char *password_file_comment_BM;
 
 extern const char *myprogname_BM;
 

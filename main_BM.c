@@ -178,6 +178,7 @@ char *mailhtml_file_bm;
 char *mailhtml_contributor_bm;
 char *mailhtml_subject_bm;
 char *mailhtml_attachment_bm;
+char *password_file_comment_BM;
 static bool want_finalgc_bm;    /* to run a final GC */
 static bool want_cleanup_bm;    /* to make valgrind more happy; see http://valgrind.org/ for more */
 
@@ -571,6 +572,14 @@ const GOptionEntry optionstab_bm[] = {
    "use the given PASSWORDENTRIES file (if it is -, stdin) containing lines like <username>:<password> to add passwords",
    .arg_description = "PASSWORDENTRIES"},
   //
+  {.long_name = "add-password-comment",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &password_file_comment_bm,
+   .description =
+   "append a single comment line PASSWORDCOMMENT to the password file",
+   .arg_description = "PASSWORDCOMMENT"},
+  //
   {.long_name = "emit-has-predef",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_INT,
@@ -865,6 +874,15 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "use the given PASSWORDENTRIES file (if it is -, stdin) containing lines like <username>:<password> to add passwords",
    .arg_description = "PASSWORDENTRIES"},
+  //
+  //
+  {.long_name = "bismon-add-password-comment",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &password_file_comment_bm,
+   .description =
+   "append a single comment line PASSWORDCOMMENT to the password file",
+   .arg_description = "PASSWORDCOMMENT"},
   //
   {.long_name = "bismon-emit-has-predef",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -1593,7 +1611,8 @@ main (int argc, char **argv)
                  load_dir_bm, bismon_lastgitcommit);
   load_initial_BM (load_dir_bm);
   if (added_passwords_filepath_BM && added_passwords_filepath_BM[0])
-    add_passwords_from_file_BM (added_passwords_filepath_BM);
+    add_passwords_from_file_BM (added_passwords_filepath_BM,
+                                password_file_comment_bm);
   if (chdir_after_load_bm)
     {
       if (g_mkdir_with_parents (chdir_after_load_bm, 0750))
@@ -2434,7 +2453,7 @@ remove_contributors_after_load_BM (void)
 
 
 void
-add_passwords_from_file_BM (const char *addedpasspath)
+add_passwords_from_file_BM (const char *addedpasspath, const char *comment)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * contribob;);

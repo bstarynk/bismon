@@ -2162,7 +2162,7 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
   fprintf (passfil,
            "### when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
   fprintf (passfil,
-	   "### perhaps use ./bismon --bismon-add-passwords=PASSWORDENTRIES\n");
+           "### perhaps use ./bismon --bismon-add-passwords=PASSWORDENTRIES\n");
   fprintf (passfil, "###############################################\n");
   fprintf (passfil, "## written by BISMON built at %s\n", bismon_timestamp);
   fprintf (passfil, "## BISMON lastgitcommit %s\n", bismon_lastgitcommit);
@@ -2196,6 +2196,21 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
       idtocbuf32_BM (objid_BM (_.curcontribob), contridbuf);
       fprintf (passfil, "%s;%s;%s\n", bytstring_BM (_.curnamev), contridbuf,
                bytstring_BM (_.curpasstrv));
+    }
+  if (password_file_comment_BM)
+    {
+      const char *eoc = NULL;
+      if (strchr (password_file_comment_BM, '\n'))
+        eoc = strchr (password_file_comment_BM, '\n');
+      if (!eoc && strchr (password_file_comment_BM, '\r'))
+        eoc = strchr (password_file_comment_BM, '\r');
+      if (!eoc)
+        fprintf (passfil, "#~%s\n", password_file_comment_BM);
+      else if (eoc > password_file_comment_BM)
+        fprintf (passfil, "##~%*s\n", eoc - password_file_comment_BM,
+                 password_file_comment_BM);
+      else
+        fprintf (passfil, "####~~~~\n");
     }
   fprintf (passfil, "# end of BISMON password files for %d passwords\n",
            nbpasswords);
