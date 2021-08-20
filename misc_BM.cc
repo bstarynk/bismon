@@ -492,7 +492,8 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       lscmdstr += " > /dev/stderr";
       DBGPRINTF_BM("lscmdstr: %s", lscmdstr.c_str());
       fflush(nullptr);
-      system (lscmdstr.c_str());
+      if (system (lscmdstr.c_str()))
+	FATAL_BM("failed command %s", lscmdstr.c_str());
       g_free(quotbinmodcstr), quotbinmodcstr=nullptr;
       g_free(quotsrcmodcstr), quotsrcmodcstr=nullptr;
       shouldrebuild = true;
