@@ -2160,7 +2160,9 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
   else
     fprintf (passfil, "## BISMON passwords file %s\n", PASSWORDS_FILE_BM);
   fprintf (passfil,
-           "## when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
+           "### when BISMON is running, don't edit manually this file; it could be flock-ed.\n");
+  fprintf (passfil,
+	   "### perhaps use ./bismon --bismon-add-passwords=PASSWORDENTRIES\n");
   fprintf (passfil, "###############################################\n");
   fprintf (passfil, "## written by BISMON built at %s\n", bismon_timestamp);
   fprintf (passfil, "## BISMON lastgitcommit %s\n", bismon_lastgitcommit);
