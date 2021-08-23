@@ -1153,6 +1153,7 @@ custom_onion_handler_BM (void *clientdata,
           strftime (nowbuf, sizeof (nowbuf), "%c %Z", &nowtm);
           // send a fresh login form, using login_ONIONBM_thtml(onion_dict *context, onion_response *res)
           onion_dict *ctxdic = onion_dict_new ();
+	  onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
           if (onion_request_get_query_dict (req) != NULL)
             {
               char *locstr = NULL;
@@ -1170,13 +1171,13 @@ custom_onion_handler_BM (void *clientdata,
               DBGPRINTF_BM ("custom_onion_handle origpath_login locstr=%s", locstr);
               free (locstr), locstr = NULL;
             }
-          else
-            {
-              char pidbuf[40];
-              memset (pidbuf, 0, sizeof (pidbuf));
-              snprintf (pidbuf, sizeof (pidbuf), "%ld", (long) getpid ());
-              onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
-            }
+	  {
+	  char coriginbuf[48];
+	  memset (coriginbuf, 0, sizeof(coriginbuf));
+	  snprintf (coriginbuf, sizeof(coriginbuf), "%s:%d", __FILE__, __LINE__);
+	  onion_dict_add (ctxdic, "bismonweb_corigin", coriginbuf, OD_DUP_VALUE);
+	  DBGPRINTF_BM ("custom_onion_handle bismonweb_pid=%s, bismonweb_corigin=%s", pidbuf, coriginbuf);
+	  }
           onion_dict_add (ctxdic, "bismonweb_host", myhostname_BM, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "bismonweb_extra_login", "initial login", OD_DUP_VALUE);
@@ -1735,6 +1736,13 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
               }
               onion_dict_add (ctxdic, "bismonweb_host", myhostname_BM, OD_DUP_VALUE);
               onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
+	  {
+	  char coriginbuf[48];
+	  memset (coriginbuf, 0, sizeof(coriginbuf));
+	  snprintf (coriginbuf, sizeof(coriginbuf), "%s:%d", __FILE__, __LINE__);
+	  onion_dict_add (ctxdic, "bismonweb_corigin", coriginbuf, OD_DUP_VALUE);
+	  DBGPRINTF_BM ("login_onion_handler bismonweb_pid=%s, bismonweb_corigin=%s", pidbuf, coriginbuf);
+	  }
 #warning we should improve web_ONION to handle differently an invalid user and a bad password
               onion_dict_add (ctxdic, "bismonweb_extra_login", "Invalid user or password.",
                               OD_DUP_VALUE);
