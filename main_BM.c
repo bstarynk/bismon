@@ -71,7 +71,8 @@ static void backtracerrorcb_BM (void *data, const char *msg, int errnum);
 
 extern void run_testplugins_after_load_BM (void);
 
-static void add_passwords_from_file_BM (const char *addedpasspath, const char*comment);
+static void add_passwords_from_file_BM (const char *addedpasspath,
+                                        const char *comment);
 
 bool run_onion_BM = false;
 

@@ -2169,23 +2169,29 @@ do_forgot_email_onion_handler_BM (const char *formuser,
       onion_dict *ctxdic = onion_dict_new ();
       {
         const char *origpath = (reqpath && reqpath[0]) ? reqpath : "/";
+	DBGPRINTF_BM ("do_forgot_email_onion_handler_BM bismonweb_origpath=%s", origpath);
         onion_dict_add (ctxdic, "bismonweb_origpath", origpath, OD_DUP_VALUE);
       }
       onion_dict_add (ctxdic, "bismonweb_host", myhostname_BM, OD_DUP_VALUE);
       onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
+      DBGPRINTF_BM ("do_forgot_email_onion_handler_BM bismonweb_host=%s bismonweb_pid=%s",
+		    myhostname_BM, pidbuf);
       onion_dict_add (ctxdic, "bismonweb_extra_login", "Invalid user.", OD_DUP_VALUE);
       onion_dict_add (ctxdic, "bismonweb_buildtime", bismon_timestamp, OD_DUP_VALUE);
       onion_dict_add (ctxdic, "bismonweb_lastgitcommit", bismon_lastgitcommit,
                       OD_DUP_VALUE);
+      DBGPRINTF_BM ("do_forgot_email_onion_handler_BM bismonweb_buildtime=%s bismonweb_lastgitcommit=%s", bismon_timestamp, bismon_lastgitcommit);
       onion_dict_add (ctxdic, "bismonweb_gentime", nowbuf, OD_DUP_VALUE);
       onion_dict_add (ctxdic, "bismonweb_checksum", bismon_checksum, OD_DUP_VALUE);
+      DBGPRINTF_BM ("do_forgot_email_onion_handler_BM bismonweb_gentime=%s bismonweb_checksum=%s", nowbuf, bismon_checksum);
       onion_response_set_code (resp, HTTP_UNAUTHORIZED);
-      DBGPRINTF_BM ("login_onion_handler POST unauthorized");
+      DBGPRINTF_BM ("do_forgot_email_onion_handler_BM POST unauthorized");
       login_ONIONBM_thtml (ctxdic, resp);
       onion_dict_free (ctxdic);
+      DBGPRINTF_BM ("do_forgot_email_onion_handler_BM end no-contributor");
       return OCS_PROCESSED;
     }
-}                               /* end do_forgot_email_onion_BM */
+}                               /* end do_forgot_email_onion_handler_BM */
 
 
 
