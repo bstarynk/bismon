@@ -1170,10 +1170,13 @@ custom_onion_handler_BM (void *clientdata,
               onion_dict_add (ctxdic, "bismonweb_origpath_login", locstr, OD_DUP_VALUE);
               DBGPRINTF_BM ("custom_onion_handle origpath_login locstr=%s", locstr);
               free (locstr), locstr = NULL;
-            }
+            };
 	  {
 	  char coriginbuf[48];
 	  memset (coriginbuf, 0, sizeof(coriginbuf));
+        const char *origpath = (reqpath && reqpath[0]) ? reqpath : "/";
+	DBGPRINTF_BM ("custom_onion_handler bismonweb_origpath=%s", origpath);
+        onion_dict_add (ctxdic, "bismonweb_origpath", origpath, OD_DUP_VALUE);
 	  snprintf (coriginbuf, sizeof(coriginbuf), "%s:%d", __FILE__, __LINE__);
 	  onion_dict_add (ctxdic, "bismonweb_corigin", coriginbuf, OD_DUP_VALUE);
 	  DBGPRINTF_BM ("custom_onion_handle bismonweb_pid=%s, bismonweb_corigin=%s", pidbuf, coriginbuf);
