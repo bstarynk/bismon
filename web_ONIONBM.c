@@ -4500,6 +4500,9 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
   };
   fflush(stderr);
   pthread_mutex_unlock(&onion_log_mtx_bm);
+  if (level == O_ERROR)
+    FATAL_AT_BM(filename, lineno, "onion_log_with_backtrace_BM error: %s",
+		onion_log_buffer_bm);
 } /* end onion_log_with_backtrace_BM */
 
 //// end of file web_ONIONBM.c 
