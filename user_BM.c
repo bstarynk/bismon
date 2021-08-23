@@ -2207,7 +2207,7 @@ write_password_file_BM (FILE * passfil, objectval_tyBM * assocobarg,
       if (!eoc)
         fprintf (passfil, "#~%s\n", password_file_comment_BM);
       else if (eoc > password_file_comment_BM)
-        fprintf (passfil, "##~%*s\n", eoc - password_file_comment_BM,
+        fprintf (passfil, "##~%*s\n", (int)(eoc - password_file_comment_BM),
                  password_file_comment_BM);
       else
         fprintf (passfil, "####~~~~\n");
