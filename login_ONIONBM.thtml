@@ -61,7 +61,7 @@
   or better, or <a href='https://www.google.com/chrome'>Chrome</a> 90
   or better) to use <tt>Bismon</tt> (and you should enable JavaScript and WebSockets in that browser).</p>
 
-    <p class='tinyinfo_cl'>After a successful login, you'll be redirected to <tt>{{bismonweb_origpath}}</tt></p>
+    <p class='tinyinfo_cl'>After a successful login, you'll be redirected to <tt>{{bismonweb_origpath}}</tt> ....</p>
 
   <p class='tinyinfo_cl'>Login form generated at {{bismonweb_gentime}}.</p>
 
