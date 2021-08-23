@@ -4456,12 +4456,9 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
 {
   const char pri[] = { LOG_DEBUG, LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERR };
   const char*levmsg="??";
-  if (level >= sizeof(pri))
-    return;
   if (level == O_DEBUG0)
     return;
   switch(level) {
-  case O_DEBUG0: // won't happen
   case O_DEBUG:
     levmsg="ONION DEBUG";
     break;
@@ -4474,6 +4471,9 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
   case O_ERROR:
     levmsg="ONION ERROR";
     break;
+  default:
+    FATAL_BM("onion_log_with_backtrace_BM unexpected level %d from %s:%d",
+	     (int)level, filename, lineno);
   }
   pthread_mutex_lock(&onion_log_mtx_bm);
   memset (onion_log_buffer_bm, 0, sizeof(onion_log_buffer_bm));
@@ -4492,13 +4492,12 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
     fprintf(stderr, "%s\n°°°°°°° onionlogbacktrace\n", onion_log_buffer_bm);
   }
   else if (level >= O_WARNING) {
-    fprintf(stderr, "%s\n¤¤¤¤¤¤ onionlogbacktrace\n", onion_log_buffer_bm);
-      backtrace_print_BM					
-	((struct backtrace_state *) backtracestate_BM, 0,	
-	 stderr);						
-      fprintf(stderr, "%s:%d: **** end-onionlogbacktrace ***\n\n",		
-	     basename_BM((filename)), (lineno));
-  }			
+    fprintf(stderr, "%s\n¤¤¤¤¤¤ onionlogbacktrace/%s\n", onion_log_buffer_bm, levmsg);
+    backtrace_print_BM
+      ((struct backtrace_state *) backtracestate_BM, 0, stderr);
+    fprintf(stderr, "%s:%d: **** end-onionlogbacktrace/%s ***\n\n",
+	    basename_BM((filename)), (lineno), levmsg);
+  };
   fflush(stderr);
   pthread_mutex_unlock(&onion_log_mtx_bm);
 } /* end onion_log_with_backtrace_BM */
