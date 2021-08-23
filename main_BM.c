@@ -48,6 +48,7 @@ char *contact_name_BM;
 char *contact_email_BM;
 const char *project_name_BM;
 
+char real_executable_BM[128];
 
 /// these ONION variables may need to be declared even when
 /// web_ONIONBM.c is not linked, so
@@ -1420,6 +1421,13 @@ main (int argc, char **argv)
     debugmsg_BM = true;
   if (argc > 1 && !strcmp (argv[1], "--version"))
     give_prog_version_BM (argv[0]);
+  {
+    ssize_t rlc = readlink ("/proc/self/exe", real_executable_BM,
+                            sizeof (real_executable_BM) - 1);
+    if (rlc <= 0 || rlc >= sizeof (real_executable_BM) - 2)
+      FATAL_BM ("failed to readlink /proc/self/exe - %m");
+    DBGPRINTF_BM ("real_executable_BM is %s", real_executable_BM);
+  }
   DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
   if (!dlprog_BM)
@@ -3200,5 +3208,11 @@ parse_program_options_BM (int argc, char **argv)
                 initialargc, argc);
 }                               /* end parse_program_options_BM */
 
+
+const char *
+get_real_executable_path_BM (void)
+{
+  return real_executable_BM;
+}                               /* end get_real_executable_path_BM */
 
 /*** end of file main_BM.c ***/

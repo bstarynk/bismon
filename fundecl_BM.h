@@ -50,6 +50,8 @@ extern "C"
 
   static inline double cputime_BM (void);
   static inline double elapsedtime_BM (void);
+  /// return a static buffer containing the real executable path
+  extern const char* get_real_executable_path_BM(void);
   static inline void get_realtimespec_delayedms_BM (struct timespec *pts,
                                                     unsigned millisec);
   extern double taskletcputime_BM (void);
