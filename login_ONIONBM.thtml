@@ -88,7 +88,11 @@ programme, <a href='http://decoder-project.eu'>DECODER</a> project
   Any opinions are only those of the authors and contributors of <a href='http://github.com/bstarynk/bismon/'><tt>Bismon</tt></a>.</p>
 
   
-  <p class='tinyinfo_cl'><b>PS:</b> to customize this, edit the <tt>login_ONIONBM.thtml</tt> file.</p>
+  <p class='tinyinfo_cl'><b>PS:</b> to customize this, edit the <tt>login_ONIONBM.thtml</tt> file
+    {% if bimonweb_corigin %}
+    <i>from  <tt>{{bismonweb_corigin}}</tt></i>
+  {% endif %}
+    .</p>
 
 </body>
 <!-- end, generated from login_ONIONBM.thtml -->
