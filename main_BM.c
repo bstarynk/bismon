@@ -71,7 +71,7 @@ static void backtracerrorcb_BM (void *data, const char *msg, int errnum);
 
 extern void run_testplugins_after_load_BM (void);
 
-static void add_passwords_from_file_BM (const char *addedpasspath);
+static void add_passwords_from_file_BM (const char *addedpasspath, const char*comment);
 
 bool run_onion_BM = false;
 
@@ -575,7 +575,7 @@ const GOptionEntry optionstab_bm[] = {
   {.long_name = "add-password-comment",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
-   .arg_data = &password_file_comment_bm,
+   .arg_data = &password_file_comment_BM,
    .description =
    "append a single comment line PASSWORDCOMMENT to the password file",
    .arg_description = "PASSWORDCOMMENT"},
@@ -879,7 +879,7 @@ const GOptionEntry optionstab_bm[] = {
   {.long_name = "bismon-add-password-comment",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
-   .arg_data = &password_file_comment_bm,
+   .arg_data = &password_file_comment_BM,
    .description =
    "append a single comment line PASSWORDCOMMENT to the password file",
    .arg_description = "PASSWORDCOMMENT"},
@@ -1612,7 +1612,7 @@ main (int argc, char **argv)
   load_initial_BM (load_dir_bm);
   if (added_passwords_filepath_BM && added_passwords_filepath_BM[0])
     add_passwords_from_file_BM (added_passwords_filepath_BM,
-                                password_file_comment_bm);
+                                password_file_comment_BM);
   if (chdir_after_load_bm)
     {
       if (g_mkdir_with_parents (chdir_after_load_bm, 0750))
