@@ -25,12 +25,12 @@
 ################################################################
 
 ## C++ compiler used to compile the GCC meta plugin
-if [ -z "BISMON_PLUGIN_GXX" ]; then
+if [ -z "$BISMON_PLUGIN_GXX" ]; then
     export BISMON_PLUGIN_GXX=/usr/bin/g++-10
 fi
 
 ## target compiler which dlopen-s the GCC meta plugin
-if [ -z "BISMON_TARGET_GCC" ]; then
+if [ -z "$BISMON_TARGET_GCC" ]; then
     export BISMON_TARGET_GCC=/usr/bin/g++-10
 fi
 
