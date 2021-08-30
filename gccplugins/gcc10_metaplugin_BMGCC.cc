@@ -163,14 +163,14 @@ plugin_init (struct plugin_name_args *plugin_info,
   /// cases, that might work.
   if (strcmp(version->datestamp, gcc_version.datestamp))
     warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: datestamp difference for %s: plugin has %s, GCC had %s; risky!",
-            plugin->name, version->datestamp, gcc_version.datestamp);
+            plugin_name, version->datestamp, gcc_version.datestamp);
   if (strcmp(version->devphase, gcc_version.devphase))
     warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: devphase difference for %s: plugin has %s, GCC had %s; risky!",
-            plugin->name, version->devphase, gcc_version.devphase);
+            plugin_name, version->devphase, gcc_version.devphase);
   if (strcmp(version->configuration_arguments,
              gcc_version.configuration_arguments))
     warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: configuration difference for %s: plugin has %s, GCC had %s; risky!",
-            plugin->name,
+            plugin_name,
             version->configuration_arguments,
             gcc_version.configuration_arguments);
 
