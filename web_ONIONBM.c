@@ -577,8 +577,8 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       if (!filehdl)
         FATAL_BM ("failed to get onion webroot handler for %s", webrootpath);
       onion_set_root_handler (myonion_BM, customhdl);
-      DBGPRINTF_BM ("run_onionweb after set root handler filehdl@%p",
-                    filehdl);
+      DBGPRINTF_BM ("run_onionweb after set root handler filehdl@%p webrootpath=%s",
+                    filehdl, webrootpath);
       onion_handler_add (customhdl, filehdl);
       ///
       /// create the command pipe
