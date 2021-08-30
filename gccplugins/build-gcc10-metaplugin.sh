@@ -80,7 +80,8 @@ if [ -n "$BISMON_PLUGIN_ASMOUT" ]; then
 	       -S -fverbose-asm -o "$BISMON_PLUGIN_ASMOUT"
 fi
 
-$BISMON_PLUGIN_GXX -Wall -Wextra -O1 -g3 \
+### we need to exec, so that failure of plugin compilation fails this script
+exec $BISMON_PLUGIN_GXX -Wall -Wextra -O1 -g3 \
 	   -I $TARGETPLUGINDIR/include/ \
 	   -shared -fno-rtti -fPIC -rdynamic \
 	   -DPLUGINGITID=\"$SHORTGITID\" \
