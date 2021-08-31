@@ -75,6 +75,8 @@ extern void run_testplugins_after_load_BM (void);
 static void add_passwords_from_file_BM (const char *addedpasspath,
                                         const char *comment);
 
+static void write_pid_into_file_and_kill_old_BM (const char *pidfilepath);
+
 bool run_onion_BM = false;
 
 ////////////////
@@ -607,9 +609,11 @@ const GOptionEntry optionstab_bm[] = {
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &pid_filepath_bm,
-   .description = "use PATH as the pid file;\n"
+   .description = "use PATH as the pid file where our pid is written;\n"
    "\t ... default is _bismon.pid;\n"
-   "\t (if the pid file exists and mentions a valid pid, its process\n"
+   "\t (if the pid file exists and does not start with a dot or percent,\n"
+   "\t  and mentions a valid pid, its process,\n"
+   "\t  presumably some other Bismon process,\n"
    "\t  gets a SIGQUIT signal, and has one second to dump its state)\n",
    .arg_description = "PATH"},
   //
@@ -1618,6 +1622,8 @@ main (int argc, char **argv)
     }
   INFOPRINTF_BM ("bismon should load directory %s - git commit: %s",
                  load_dir_bm, bismon_lastgitcommit);
+  if (pid_filepath_bm && pid_filepath_bm[0] && strcmp (pid_filepath_bm, "-"))
+    write_pid_into_file_and_kill_old_BM (pid_filepath_bm);
   load_initial_BM (load_dir_bm);
   if (added_passwords_filepath_BM && added_passwords_filepath_BM[0])
     add_passwords_from_file_BM (added_passwords_filepath_BM,
@@ -1705,75 +1711,6 @@ main (int argc, char **argv)
         }
       else
         {
-          if (pid_filepath_bm && pid_filepath_bm[0]
-              && strcmp (pid_filepath_bm, "-"))
-            {
-              int oldpid = -1;
-              FILE *oldpidfile = fopen (pid_filepath_bm, "r");
-              bool killedold = false;
-              if (oldpidfile)
-                {
-                  if (fscanf (oldpidfile, "%d", &oldpid) > 0 && oldpid > 0
-                      && !kill (oldpid, 0))
-                    {
-                      char thisexepath[256];
-                      char oldexepath[256];
-                      char oldpidpath[64];
-                      memset (thisexepath, 0, sizeof (thisexepath));
-                      memset (oldexepath, 0, sizeof (oldexepath));
-                      memset (oldpidpath, 0, sizeof (oldpidpath));
-                      snprintf (oldpidpath, sizeof (oldpidpath),
-                                "/proc/%d/exe", oldpid);
-                      /** WARNING: this is not entirely robust, if the
-			  old pid happens to terminate or is killed
-			  externally ... But we do check that it is
-			  running the same executable than the current
-			  one... See proc(5) on Linux */
-                      if (!readlink
-                          ("/proc/self/exe", thisexepath,
-                           sizeof (thisexepath) - 1)
-                          && !readlink (oldpidpath, oldexepath,
-                                        sizeof (oldexepath) - 1)
-                          && !strcmp (thisexepath, oldexepath)
-                          && strlen (thisexepath) < sizeof (thisexepath) - 2)
-                        {
-                          INFOPRINTF_BM
-                            ("quitting old Bismon process of pid %d running this executable %s",
-                             oldpid, thisexepath);
-                          killedold = 0 == kill (oldpid, SIGQUIT);
-                        }
-                    }
-                  fclose (oldpidfile), oldpidfile = NULL;
-                  char backuppidpath[256];
-                  memset (backuppidpath, 0, sizeof (backuppidpath));
-                  if (strlen (pid_filepath_bm) < sizeof (backuppidpath) - 4)
-                    {
-                      if (snprintf (backuppidpath, sizeof (backuppidpath),
-                                    "%s~", pid_filepath_bm) > 0)
-                        {
-                          if (!rename (pid_filepath_bm, backuppidpath))
-                            INFOPRINTF_BM ("backed up pid file path %s -> %s",
-                                           pid_filepath_bm, backuppidpath);
-                        };
-                    }
-                }
-              if (killedold)    // probably a previous Bismon process is
-                // still running
-                {
-                  /* We sleep for one second, to give the old Bismon
-                     server enough time to dump its state
-                     properly. This is a bit messy, but could usually be
-                     helpful. */
-                  sleep (1);
-                };
-              FILE *pidfile = fopen (pid_filepath_bm, "w");
-              if (!pidfile)
-                FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
-              fprintf (pidfile, "%d\n", (int) getpid ());
-              fclose (pidfile);
-              INFOPRINTF_BM ("wrote pid %d in pid-file %s",
-                             (int) getpid (), pid_filepath_bm);
-            }
           {
             char cwdbuf[128];
             memset (cwdbuf, 0, sizeof (cwdbuf));
@@ -3214,5 +3151,85 @@ get_real_executable_path_BM (void)
 {
   return real_executable_BM;
 }                               /* end get_real_executable_path_BM */
+
+
+void
+write_pid_into_file_and_kill_old_BM (const char *pidfilepath)
+{
+  ASSERT_BM (pidfilepath && pidfilepath[0]);
+  int oldpid = -1;
+  FILE *oldpidfile = fopen (pidfilepath, "r");
+  /// if the pidfile starts with a dot or a percent, dont kill the old process
+  bool shouldkillold = pidfilepath[0] != '.' && pidfilepath[0] != '%';
+  bool killedold = false;
+  if (oldpidfile)
+    {
+      if (fscanf (oldpidfile, "%d", &oldpid) > 0 && oldpid > 0
+          && !kill (oldpid, 0))
+        {
+          char thisexepath[256];
+          char oldexepath[256];
+          char oldpidpath[64];
+          memset (thisexepath, 0, sizeof (thisexepath));
+          memset (oldexepath, 0, sizeof (oldexepath));
+          memset (oldpidpath, 0, sizeof (oldpidpath));
+          snprintf (oldpidpath, sizeof (oldpidpath), "/proc/%d/exe", oldpid);
+          /** WARNING: this is not entirely robust, if the
+	      old pid happens to terminate or is killed
+	      externally ... But we do check that it is
+	      running the same executable than the current
+	      one... See proc(5) on Linux */
+          if (!readlink
+              ("/proc/self/exe", thisexepath,
+               sizeof (thisexepath) - 1)
+              && !readlink (oldpidpath, oldexepath,
+                            sizeof (oldexepath) - 1)
+              && !strcmp (thisexepath, oldexepath)
+              && strlen (thisexepath) < sizeof (thisexepath) - 2
+              && shouldkillold)
+            {
+              INFOPRINTF_BM
+                ("quitting old Bismon process of pid %d running this executable %s",
+                 oldpid, thisexepath);
+              killedold = 0 == kill (oldpid, SIGQUIT);
+            }
+        }
+      fclose (oldpidfile), oldpidfile = NULL;
+      char backuppidpath[256];
+      memset (backuppidpath, 0, sizeof (backuppidpath));
+      if (strlen (pidfilepath) < sizeof (backuppidpath) - 4)
+        {
+          if (snprintf (backuppidpath, sizeof (backuppidpath),
+                        "%s~", pidfilepath) > 0)
+            {
+              if (!rename (pid_filepath_bm, backuppidpath))
+                INFOPRINTF_BM ("backed up pid file path %s -> %s",
+                               pid_filepath_bm, backuppidpath);
+            };
+        }
+    }
+  if (killedold)                // probably a previous Bismon process is
+    // still running
+    {
+      /* We sleep for one second, to give the old Bismon
+         server enough time to dump its state
+         properly. This is a bit messy, but could usually be
+         helpful. */
+      sleep (1);
+    };
+  FILE *pidfile = fopen (pid_filepath_bm, "w");
+  if (!pidfile)
+    FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
+  fprintf (pidfile, "%d\n", (int) getpid ());
+  fprintf (pidfile, "#pid on host %s\n", myhostname_BM);
+  fprintf (pidfile, "#git %s\n", bismon_shortgitid);
+  fprintf (pidfile, "#built %s\n", bismon_timestamp);
+  fflush (pidfile);
+  /// On purpose the pid file is kept open.... this ensures that lsof(1)
+  /// might be used...
+
+  INFOPRINTF_BM ("wrote pid %d in pid-file %s",
+                 (int) getpid (), pid_filepath_bm);
+}                               /* end write_pid_into_file_and_kill_old_BM */
 
 /*** end of file main_BM.c ***/
