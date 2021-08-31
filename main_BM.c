@@ -72,8 +72,7 @@ static void backtracerrorcb_BM (void *data, const char *msg, int errnum);
 
 extern void run_testplugins_after_load_BM (void);
 
-static void add_passwords_from_file_BM (const char *addedpasspath,
-                                        const char *comment);
+static void add_passwords_from_file_BM (const char *addedpasspath);
 
 static void write_pid_into_file_and_kill_old_BM (const char *pidfilepath);
 
@@ -1428,7 +1427,7 @@ main (int argc, char **argv)
   {
     ssize_t rlc = readlink ("/proc/self/exe", real_executable_BM,
                             sizeof (real_executable_BM) - 1);
-    if (rlc <= 0 || rlc >= sizeof (real_executable_BM) - 2)
+    if (rlc <= 0 || (int) rlc >= (int) sizeof (real_executable_BM) - 2)
       FATAL_BM ("failed to readlink /proc/self/exe - %m");
     DBGPRINTF_BM ("real_executable_BM is %s", real_executable_BM);
   }
@@ -1536,7 +1535,6 @@ main (int argc, char **argv)
     INFOPRINTF_BM ("batch mode requested without Web (%d jobs)",
                    nbworkjobs_BM);
   //
-#warning not sure of this....
   initialize_contributors_path_BM ();
   initialize_passwords_path_BM ();
   initialize_contact_path_BM ();
@@ -1626,8 +1624,10 @@ main (int argc, char **argv)
     write_pid_into_file_and_kill_old_BM (pid_filepath_bm);
   load_initial_BM (load_dir_bm);
   if (added_passwords_filepath_BM && added_passwords_filepath_BM[0])
-    add_passwords_from_file_BM (added_passwords_filepath_BM,
-                                password_file_comment_BM);
+    add_passwords_from_file_BM (added_passwords_filepath_BM);
+  /// NB: global variable password_file_comment_BM is used in
+  /// write_password_file_BM function of user_BM.c, and is set with
+  /// the --add-password-comment=COMMENT program option.
   if (chdir_after_load_bm)
     {
       if (g_mkdir_with_parents (chdir_after_load_bm, 0750))
@@ -2328,6 +2328,8 @@ init_afterload_bm ()
   size_init_afterload_bm = 0;
 }                               /* end init_afterload_bm */
 
+
+
 void
 add_contributors_after_load_BM (void)
 {
@@ -2399,7 +2401,7 @@ remove_contributors_after_load_BM (void)
 
 
 void
-add_passwords_from_file_BM (const char *addedpasspath, const char *comment)
+add_passwords_from_file_BM (const char *addedpasspath)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * contribob;);
