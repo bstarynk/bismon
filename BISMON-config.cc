@@ -555,7 +555,7 @@ bmc_print_config_header(const char*progname)
     {
       std::cerr << progname << " did already generate header '" << headerpath
 		<< "' [" __FILE__ ":" << __LINE__ << "]" << std::endl
-                << " (use --force option to overwrite, or maybe run distclean-script.bash)" << std::endl;
+                << " (use --force option to overwrite, or maybe run ./distclean-script.bash to clean everything)" << std::endl;
       return;
     }
   }
@@ -650,7 +650,7 @@ bmc_print_config_data(const char*progname)
     {
       std::cerr << progname << " did already generate configured data '" << datapath
 		<< "' [" __FILE__ ":" << __LINE__ << "]"  << std::endl
-                << " (use --force option to overwrite, or maybe run distclean-script.bash)" << std::endl;
+                << " (use --force option to overwrite, or maybe run ./distclean-script.bash to clean everything)" << std::endl;
       return;
     }
   }
@@ -837,7 +837,7 @@ bmc_print_config_make(const char*progname)
     {
       std::cerr << progname << " did already generate makefile '" << makepath
 		<< "' [" __FILE__ ":" << __LINE__ << "]" << std::endl
-                << " (use --force option to overwrite, or maybe run distclean-script.bash)" << std::endl;
+                << " (use --force option to overwrite, or maybe run ./distclean-script.bash to clean everything)" << std::endl;
       return;
     }
   }
@@ -1067,7 +1067,7 @@ bmc_print_config_ninja(const char*progname)
         {
           std::cerr << progname << " did already generate ninjafile (ninja-build.org) '" << ninjapath
 		    << "' [" __FILE__ ":" << __LINE__ << "]" << std::endl
-		    << " (use --force option to overwrite, or maybe run ./distclean-script.bash)" << std::endl;
+		    << " (use --force option to overwrite, or maybe run ./distclean-script.bash to clean everything)" << std::endl;
           return;
         }
     }
