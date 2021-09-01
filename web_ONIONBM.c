@@ -2521,7 +2521,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
       if (debugmsg_BM)
         {
           const onion_dict *postdict = onion_request_get_post_dict (req);
-          onion_block *postblock = onion_dict_to_json (postdict);
+          onion_block *postblock = onion_dict_to_json ((onion_dict*)postdict);
           DBGPRINTF_BM ("forgotpasswd_onion_handler_BM postdict count %d\n"
                         ".. postblock:\n"
                         "%s\n", onion_dict_count (postdict),
