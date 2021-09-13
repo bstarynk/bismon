@@ -485,7 +485,16 @@ BMP_include_file_handler(void*gccdata,void*userdata)
           prefix, gccfilepath);
 } // end of BMP_include_file_handler
 
-
+void
+BMP_post_jsoncurl::do_post()
+{
+#warning BMP_post_jsoncurl::do_post is incomplete
+  std::ostringstream os;
+  os <<  this->pjs_jsonval << std::flush;
+  warning (UNKNOWN_LOCATION, "Bismon GCC10 metaplugin unimplemented %s with %s",
+	   __func__,
+	   os.str().c_str());
+} // end BMP_post_jsoncurl::do_post
 
 /****************
  **                           for Emacs...

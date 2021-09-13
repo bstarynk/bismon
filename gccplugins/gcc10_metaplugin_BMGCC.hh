@@ -172,6 +172,20 @@ public:
   }
 };				// end class BMP_set_of_functions
 
+
+/// do a POST HTTP request to Bismon
+class BMP_post_jsoncurl {
+  Json::Value pjs_jsonval;
+protected:
+  BMP_post_jsoncurl(const Json::Value&jv) :
+    pjs_jsonval(jv) {};
+  virtual ~BMP_post_jsoncurl() = default;
+  BMP_post_jsoncurl(const BMP_post_jsoncurl&) = default;
+  BMP_post_jsoncurl(BMP_post_jsoncurl&&) = default;
+public:
+  void do_post();
+};				// end class BMP_post_jsoncurl
+
 #warning we may need types with Gty annotations here, and extern variables...
 /* see comments in file build-gcc10_metaplugin.sh */
 #endif /*GCC10_METAPLUGIN_BISMON_INCLUDED_*/
