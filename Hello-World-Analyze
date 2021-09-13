@@ -134,4 +134,5 @@ $BISMON_GCC -O -Wall -g -v \
 		-fplugin=gccplugins/gcc10_metaplugin_BMGCC.so \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
+		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
 		test-hello-world.c -o /tmp/test-hello-world
