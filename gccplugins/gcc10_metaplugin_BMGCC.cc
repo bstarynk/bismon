@@ -390,7 +390,7 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
   /// show an informational message
   {
     if (bismon_pid_BMPCC>0)
-      inform(UNKNOWN_LOCATION, "Bismon plugin %qs (%s:%d) with Bismon pid %d (recognized %d plugin arguments)",
+      inform(UNKNOWN_LOCATION, "Bismon plugin %s (%s:%d) with Bismon pid %d (recognized %d plugin arguments)",
              plugin_name, __FILE__, __LINE__, (int)bismon_pid_BMPCC, cntarg);
   }
   /// register some GCC plugin events
@@ -402,7 +402,7 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
       {
         register_callback (plugin_name, PLUGIN_INCLUDE_FILE, BMP_include_file_handler,
                            (void*)(bismon_line_prefix_BMPCC.c_str()));
-        inform (UNKNOWN_LOCATION, "Bismon plugin %qs  (%s:%d) will handle GCC include-file events with prefix %qs",
+        inform (UNKNOWN_LOCATION, "Bismon plugin %s  (%s:%d) will handle GCC include-file events with prefix %s",
                 plugin_name,  __FILE__, __LINE__, bismon_line_prefix_BMPCC.c_str());
       }
 #warning we probably need some PLUGIN_PASS_MANAGER_SETUP & PLUGIN_START_PARSE_FUNCTION event...
@@ -411,7 +411,7 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
      ****/
   }
   inform(UNKNOWN_LOCATION,
-         "Bismon plugin %qs initialized (%s:%d) - version %qs pid %d on %s",
+         "Bismon plugin %s initialized (%s:%d) - version %s pid %d on %s",
          plugin_name, __FILE__, __LINE__,
          versbuf, (int)getpid(), thishostname);
 } // end parse_plugin_arguments

@@ -1,11 +1,8 @@
-/* this test-hello-world.c is in the public domain */
+/* this TestHelloWorld/testhw-main.c file is in the public domain */
 #include <stdio.h>
 
-void
-say_anonymous_hello (void)
-{
-  printf ("Anonymous hello from %s:%d\n", __FILE__, __LINE__);
-}
+extern void say_anonymous_hello(void); // in TestHelloWorld/testhw-sayhello.c
+
 
 int
 main (int argc, char **argv)
@@ -23,4 +20,4 @@ main (int argc, char **argv)
   return 0;
 }
 
-/* end of file test-hello-world.c */
+/* end of file TestHelloWorld/testhw-main.c */

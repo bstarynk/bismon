@@ -25,6 +25,10 @@
 
 ### script file Hello-World-Analyze in github.com/bstarynk/bismon
 
+
+## the analyzed "hello-world" program has two C source files in
+## TestHelloWorld/testhw-sayhello.c and TestHelloWorld/testhw-main.c
+
 ### the generated header file _bm_config.h should exist, since it has been created by running successfully the ./Configure script
 if [ ! -f _bm_config.h ]; then
     printf "%s: missing _bm_config.h in directory %s\n" $0 $(pwd) > /dev/stderr
@@ -135,4 +139,14 @@ $BISMON_GCC -O -Wall -g -v \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
-		test-hello-world.c -o /tmp/test-hello-world
+		TestHelloWorld/testhw-main.c -o /tmp/testhw-main.c
+
+$BISMON_GCC -O -Wall -g -v \
+		-fplugin=gccplugins/gcc10_metaplugin_BMGCC.so \
+		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
+		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
+		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
+		TestHelloWorld/testhw-sayhello.c -o /tmp/testhw-sayhello.c
+
+
+### something should be using Frama-C
