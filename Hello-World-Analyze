@@ -74,6 +74,8 @@ if [ -z "$BISMON_GCC" ]; then
     export BISMON_GCC=/usr/bin/gcc-10
 fi
 
+rm /tmp/bismon.cookie
+
 # https://serverfault.com/a/477506
 if [ ${#bismon_hello_args[@]} -eq 0 ]; then
     bismon_hello_args=( --bismon-web-base=$BISMON_WEB_BASE --bismon-project-name=helloworld-project --bismon-debug-after-load --bismon-pid-file=$BISMON_PIDFILE  --bismon-anon-web-cookie=/tmp/bismon.cookie )
