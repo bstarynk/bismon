@@ -141,14 +141,22 @@ $BISMON_GCC -O -Wall -g -v \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
-		TestHelloWorld/testhw-main.c -o /tmp/testhw-main.c
+		TestHelloWorld/testhw-main.c -o /tmp/testhw-main.o
 
 $BISMON_GCC -O -Wall -g -v \
 		-fplugin=gccplugins/gcc10_metaplugin_BMGCC.so \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
-		TestHelloWorld/testhw-sayhello.c -o /tmp/testhw-sayhello.c
+		TestHelloWorld/testhw-sayhello.c -o /tmp/testhw-sayhello.o
+
+
+$BISMON_GCC -O -Wall -g -v \
+		-fplugin=gccplugins/gcc10_metaplugin_BMGCC.so \
+		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
+		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
+		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
+		  /tmp/testhw-main.o /tmp/testhw-sayhello.o -o /tmp/testhelloworld
 
 
 ### something should be using Frama-C
