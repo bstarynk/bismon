@@ -38,6 +38,9 @@ const char webonion_timestamp_BM[] =
 #endif /*BISMON_GITID */
   ;
 
+
+static volatile atomic_int count_dump_sigusr1_BM;
+
 // expiration delay for user session, in seconds (more than an hour,
 // but increased on every web interaction)
 #define USER_WEBSESSION_EXPIRATION_DELAY 4000.0
@@ -3763,6 +3766,8 @@ initialize_webonion_BM (void)
   sigaddset (&mysigset, SIGQUIT);
   sigaddset (&mysigset, SIGINT);
   sigaddset (&mysigset, SIGCHLD);
+  if (sigusr1_dump_prefix_BM)
+    sigaddset (&mysigset, SIGUSR1);
   if (sigprocmask (SIG_BLOCK, &mysigset, NULL) == -1)
     FATAL_BM ("initialize_webonion: sigprocmask mysigset failure");
   sigfd_BM = signalfd (-1, &mysigset, SFD_NONBLOCK | SFD_CLOEXEC);
@@ -3966,8 +3971,39 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
   // TODO: is this read_sigfd_BM incomplete?
   switch (siginf.ssi_signo)
     {
+    case SIGUSR1:
+      if (!sigusr1_dump_prefix_BM)
+	goto terminating_dump;
+      {
+	ASSERT_BM(sigusr1_dump_prefix_BM != (const char*)0);
+	int dumpcnt = atomic_fetch_add(&count_dump_sigusr1_BM, 1);
+        DBGPRINTF_BM ("read_sigfd_BM got SIGUSR1 for dumping count %d", dumpcnt);
+	char dirbufname[MAXLEN_SIGUSR1_DUMP_PREFIX_BM + 8];
+	memset (dirbufname, 0, sizeof(dirbufname));
+	snprintf (dirbufname, sizeof (dirbufname), "%s%03d",
+		 sigusr1_dump_prefix_BM,  dumpcnt);
+	ASSERT_BM(strlen(dirbufname) < sizeof(dirbufname)-2);
+	if (mkdir (dirbufname, S_IRWXU /* u+rwx */ ))
+	  FATAL_BM ("failed to mkdir %s for SIGUSR1 dump - %m",
+		    dirbufname);
+	agenda_suspend_for_gc_BM ();
+        struct dumpinfo_stBM di = dump_BM (dirbufname, NULL);
+        INFOPRINTF_BM
+          ("after dumping intermediate state into %s for SIGUSR1: scanned %ld, emitted %ld objects\n"
+           "did %ld todos, wrote %ld files\n"
+           "in %.3f elapsed, %.4f cpu seconds.\n", dirbufname,
+           di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount,
+           di.dumpinfo_todocount, di.dumpinfo_wrotefilecount,
+           di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
+	backtrace_print_BM ((struct backtrace_state *)
+			    backtracestate_BM, 0, stdout);
+	agenda_continue_after_gc_BM ();
+      }
+      return true;
+      
     case SIGTERM:
     case SIGINT:
+    terminating_dump:
       {
         DBGPRINTF_BM ("read_sigfd_BM got %s", strsignal (siginf.ssi_signo));
         stop_agenda_work_threads_BM ();
