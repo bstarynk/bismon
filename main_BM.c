@@ -47,6 +47,7 @@ const char *contact_filepath_BM;
 char *contact_name_BM;
 char *contact_email_BM;
 const char *project_name_BM;
+const char *sigusr1_dump_prefix_BM;
 
 char real_executable_BM[128];
 
@@ -68,7 +69,7 @@ thread_local volatile struct failurehandler_stBM *curfailurehandle_BM;
 volatile struct backstrace_state *backtracestate_BM;
 static void backtracerrorcb_BM (void *data, const char *msg, int errnum);
 
-
+static void test_make_empty_sigusr1_dump_dir_BM (void);
 
 extern void run_testplugins_after_load_BM (void);
 
@@ -567,6 +568,16 @@ const GOptionEntry optionstab_bm[] = {
    "\t .. default is contact_BM or $HOME/contact_BM",
    .arg_description = "PATH"},
   //
+  {.long_name = "sigusr1-dump-prefix",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &sigusr1_dump_prefix_BM,
+   .description =
+   "if given a directory prefix DUMP_PREFIX, every SIGUSR1 signal dumps the state into it\n"
+   "\t For example --sigusr1-dump-prefix=/tmp/dumpBM will make the first dump into /tmp/dumpBM1/,\n"
+   "\t ... the second dump into /tmp/dumpBM2/ etc...\n",
+   .arg_description = "DUMP_PREFIX"},
+  //
   {.long_name = "add-passwords",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
@@ -871,6 +882,16 @@ const GOptionEntry optionstab_bm[] = {
    .description = "use PATH as the master contact file;\n"
    "\t .. default is contact_BM or $HOME/contact_BM",
    .arg_description = "PATH"},
+  //
+  {.long_name = "bismon-sigusr1-dump-prefix",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &sigusr1_dump_prefix_BM,
+   .description =
+   "if given a directory prefix DUMP_PREFIX, every SIGUSR1 signal dumps the state into it\n"
+   "\t For example --bismon-sigusr1-dump-prefix=/tmp/dumpBM will make the first dump into /tmp/dumpBM1/,\n"
+   "\t ... the second dump into /tmp/dumpBM2/ etc...\n",
+   .arg_description = "DUMP_PREFIX"},
   //
   {.long_name = "bismon-add-passwords",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -1493,6 +1514,8 @@ main (int argc, char **argv)
   DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   if (give_version_bm)
     give_prog_version_BM (myprogname_BM);
+  if (sigusr1_dump_prefix_BM)
+    test_make_empty_sigusr1_dump_dir_BM ();
   if (print_contributor_of_oid_bm)
     {
       initialize_contributors_path_BM ();
@@ -3233,5 +3256,23 @@ write_pid_into_file_and_kill_old_BM (const char *pidfilepath)
   INFOPRINTF_BM ("wrote pid %d in pid-file %s",
                  (int) getpid (), pid_filepath_bm);
 }                               /* end write_pid_into_file_and_kill_old_BM */
+
+void
+test_make_empty_sigusr1_dump_dir_BM (void)
+{
+  char dirbufname[MAXLEN_SIGUSR1_DUMP_PREFIX_BM + 8];
+  ASSERT_BM (sigusr1_dump_prefix_BM != nullptr);
+  memset (dirbufname, 0, sizeof (dirbufname));
+  if (strlen (sigusr1_dump_prefix_BM) >= MAXLEN_SIGUSR1_DUMP_PREFIX_BM)
+    FATAL_BM ("too long sigusr1_dump_prefix_BM: %s (more than %d bytes)",
+              sigusr1_dump_prefix_BM, MAXLEN_SIGUSR1_DUMP_PREFIX_BM);
+  snprintf (dirbufname, sizeof (dirbufname), "%s--0000",
+            sigusr1_dump_prefix_BM);
+  ASSERT_BM (strlen (dirbufname) < sizeof (dirbufname) - 1);
+  if (mkdir (dirbufname, S_IRWXU /* u+rwx */ ))
+    FATAL_BM ("failed to mkdir %s - %m", dirbufname);
+  INFOPRINTF_BM ("Successfully made empty SIGUSR1 dump directory %s",
+                 dirbufname);
+}                               /* end test_make_empty_sigusr1_dump_dir_BM */
 
 /*** end of file main_BM.c ***/

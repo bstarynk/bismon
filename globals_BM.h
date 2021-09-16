@@ -52,6 +52,7 @@ extern const char *contact_filepath_BM;
 extern char *contact_name_BM;
 extern char *contact_email_BM;
 extern char *password_file_comment_BM;
+extern const char *sigusr1_dump_prefix_BM; // at most MAXLEN_SIGUSR1_DUMP_PREFIX_BM bytes
 
 extern const char *myprogname_BM;
 
