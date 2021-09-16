@@ -3261,7 +3261,7 @@ void
 test_make_empty_sigusr1_dump_dir_BM (void)
 {
   char dirbufname[MAXLEN_SIGUSR1_DUMP_PREFIX_BM + 8];
-  ASSERT_BM (sigusr1_dump_prefix_BM != nullptr);
+  ASSERT_BM (sigusr1_dump_prefix_BM != (const char *) 0);
   memset (dirbufname, 0, sizeof (dirbufname));
   if (strlen (sigusr1_dump_prefix_BM) >= MAXLEN_SIGUSR1_DUMP_PREFIX_BM)
     FATAL_BM ("too long sigusr1_dump_prefix_BM: %s (more than %d bytes)",
