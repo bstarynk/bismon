@@ -163,16 +163,16 @@ plugin_init (struct plugin_name_args *plugin_info,
   /// cases, that might work.
   if (strcmp(version->datestamp, gcc_version.datestamp))
     warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: datestamp difference for %s:\n"
-	    " plugin has %s, GCC had %s; this is risky.",
+            " plugin has %s, GCC had %s; this is risky.",
             plugin_name, version->datestamp, gcc_version.datestamp);
   if (strcmp(version->devphase, gcc_version.devphase))
     warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: devphase difference for %s:\n"
-	    " plugin has %s, GCC had %s; this is risky.",
+            " plugin has %s, GCC had %s; this is risky.",
             plugin_name, version->devphase, gcc_version.devphase);
   if (strcmp(version->configuration_arguments,
              gcc_version.configuration_arguments))
     warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: configuration difference for %s:\n"
-	    " plugin has %s, GCC had %s; this is risky.",
+            " plugin has %s, GCC had %s; this is risky.",
             plugin_name,
             version->configuration_arguments,
             gcc_version.configuration_arguments);
@@ -492,8 +492,8 @@ BMP_post_jsoncurl::do_post()
   std::ostringstream os;
   os <<  this->pjs_jsonval << std::flush;
   warning (UNKNOWN_LOCATION, "Bismon GCC10 metaplugin unimplemented %s with %s",
-	   __func__,
-	   os.str().c_str());
+           __func__,
+           os.str().c_str());
 } // end BMP_post_jsoncurl::do_post
 
 /****************

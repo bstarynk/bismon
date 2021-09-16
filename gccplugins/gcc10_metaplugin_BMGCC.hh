@@ -174,7 +174,8 @@ public:
 
 
 /// do a POST HTTP request to Bismon
-class BMP_post_jsoncurl {
+class BMP_post_jsoncurl
+{
   Json::Value pjs_jsonval;
 protected:
   BMP_post_jsoncurl(const Json::Value&jv) :
