@@ -208,6 +208,9 @@
 #define MAXSIZE_BM ((1<<30)-1)
 #define TINYSIZE_BM 15
 
+
+/* maximal length, in bytes, of sigusr1_dump_prefix_BM */
+#define MAXLEN_SIGUSR1_DUMP_PREFIX_BM 250
 #define PARSERMEMOLINERATIO_BM 16
 #define PARSOPMAGIC_BM 3144351953       /*0xbb6b00d1 */
 // only used by FATAL_BM macro
