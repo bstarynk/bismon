@@ -3984,6 +3984,8 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
            dump_dir_BM, rp,
            strsignal (siginf.ssi_signo), (int) getpid (), elapsedtime_BM ());
         free (rp), rp = NULL;
+	backtrace_print_BM ((struct backtrace_state *)
+			    backtracestate_BM, 0, stdout);
         struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
         INFOPRINTF_BM
           ("after dumping final state into %s for SIGTERM: scanned %ld, emitted %ld objects\n"
