@@ -57,7 +57,7 @@ declare -a bismon_hello_args
 
 for f in "$@"; do
     case "$f" in
-	--bismon*) bismon_hello_args=($bismon_hello_args $f);;
+	--bismon*) bismon_hello_args+=$f;;
 	--asm) export BISMON_PLUGIN_ASMOUT=/tmp/gcc10_metaplugin_BMGCC.s;;
 	--gcc=*) export BISMON_GCC=$(echo $f | /bin/sed -e s/--gcc=//);;
     esac
@@ -79,13 +79,12 @@ rm -rf /tmp/bismonsigusr1hw.dir
 
 # https://serverfault.com/a/477506
 if [ ${#bismon_hello_args[@]} -eq 0 ]; then
-    bismon_hello_args=( --bismon-web-base=$BISMON_WEB_BASE \
-			--bismon-project-name=helloworld-project \
-			--bismon-debug-after-load \
-			--bismon-pid-file=$BISMON_PIDFILE \
-			--bismon-anon-web-cookie=/tmp/bismon.cookie \
-			--bismon-sigusr1-dump-prefix=/tmp/bismonsigusr1hw.dir \
-		      )
+    bismon_hello_args+="--bismon-web-base=$BISMON_WEB_BASE"
+    bismon_hello_args+="--bismon-project-name=helloworld-project"
+    bismon_hello_args+="--bismon-debug-after-load"
+    bismon_hello_args+="--bismon-pid-file=$BISMON_PIDFILE"
+    bismon_hello_args+="--bismon-anon-web-cookie=/tmp/bismon.cookie"
+    bismon_hello_args+="--bismon-sigusr1-dump-prefix=/tmp/bismonsigusr1hw.dir"
 fi
 
 #### check existence of needed GCC plugin files
@@ -122,6 +121,9 @@ fi
 
 printf "\n\n\n ==== %s: starting Bismon ======\n\n" "$0"
 echo '#° ./bismon' $bismon_hello_args
+
+### perhaps we should use the coproc Bash keyword?
+### See https://www.gnu.org/software/bash/manual/html_node/Coprocesses.html
 ./bismon $bismon_hello_args &
 export BISMON_PID=$!
 
