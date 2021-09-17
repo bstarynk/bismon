@@ -1492,6 +1492,7 @@ main (int argc, char **argv)
       for (int i = 0; i < argc; i++)
         printf (" %s", argv[i]);
       printf ("\n##----\n");
+      sleep (1);
     }
   parse_program_options_BM (argc, argv);
   if (randomseed_BM > 0)
