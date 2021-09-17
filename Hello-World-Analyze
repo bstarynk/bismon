@@ -143,21 +143,24 @@ fi
 ./build-gcc10-metaplugin.sh
 popd
 
-$BISMON_GCC -O -Wall -g -v \
+printf "\n%s: Bismon compiling TestHelloWorld/testhw-main.c (pid %d)\n" $0 $$
+$BISMON_GCC -O -Wall -g -c -v \
 		-fplugin=gccplugins/gcc10_metaplugin_BMGCC.so \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
-		TestHelloWorld/testhw-main.c -o /tmp/testhw-main.o
+		TestHelloWorld/testhw-main.c -o /tmp/testhw-main.o || exit 1
 
-$BISMON_GCC -O -Wall -g -v \
+printf "\%s: Bismon compiling TestHelloWorld/testhw-sayhello.c (pid %d)\n" $0 $$
+$BISMON_GCC -O -Wall -g -c -v \
 		-fplugin=gccplugins/gcc10_metaplugin_BMGCC.so \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
-		TestHelloWorld/testhw-sayhello.c -o /tmp/testhw-sayhello.o
+		TestHelloWorld/testhw-sayhello.c -o /tmp/testhw-sayhello.o || exit 1
 
 
+printf "\%s: Bismon linking TestHelloWorld (pid %d)\n" $0 $$
 $BISMON_GCC -O -Wall -g -v \
 		-fplugin=gccplugins/gcc10_metaplugin_BMGCC.so \
 		-fplugin-arg-gcc10_metaplugin_BMGCC-bismon-url=localhost:8086 \
