@@ -3961,27 +3961,38 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
 {
   struct signalfd_siginfo siginf;
   memset (&siginf, 0, sizeof (siginf));
-  DBGPRINTF_BM ("read_sigfd_BM start sigfd_BM %d elapsed %3.f s", sigfd_BM,
-                elapsedtime_BM ());
+  time_t nowt = 0;
+  time(&nowt);
+  char nowbuf[48];
+  memset (nowbuf, 0, sizeof(nowbuf));
+  const char* nowstr = ctime_r(&nowt, nowbuf);
+  if (!nowstr)
+    nowstr = "????";
+  DBGPRINTF_BM ("read_sigfd_BM start sigfd_BM %d elapsed %3.f s at %s", sigfd_BM,
+                elapsedtime_BM (), nowstr);
   int nbr = read (sigfd_BM, &siginf, sizeof (siginf));
   if (nbr != sizeof (siginf))   // very unlikely, probably impossible
     FATAL_BM ("read_sigfd_BM: read fail (%d bytes read, want %d) - %m",
               nbr, (int) sizeof (siginf));
-  DBGPRINTF_BM ("read_sigfd_BM signo=%d", siginf.ssi_signo);
+  DBGPRINTF_BM ("read_sigfd_BM signo=%d at %s", siginf.ssi_signo, nowstr);
   // TODO: is this read_sigfd_BM incomplete?
   switch (siginf.ssi_signo)
     {
     case SIGUSR1:
-      if (!sigusr1_dump_prefix_BM)
-	goto terminating_dump;
       {
+	if (!sigusr1_dump_prefix_BM) {
+	  WARNPRINTF_BM("got SIGUSR1 at %s but without any --sigusr1-dump-prefix option",
+			nowstr			);
+	  goto terminating_dump;
+	};
 	ASSERT_BM(sigusr1_dump_prefix_BM != (const char*)0);
-	int dumpcnt = atomic_fetch_add(&count_dump_sigusr1_BM, 1);
-        DBGPRINTF_BM ("read_sigfd_BM got SIGUSR1 for dumping count %d", dumpcnt);
+	int dumpcnt = 1+atomic_fetch_add(&count_dump_sigusr1_BM, 1);
+        DBGPRINTF_BM ("read_sigfd_BM got SIGUSR1 at %s for dumping count %d",
+		      nowstr, dumpcnt);
 	char dirbufname[MAXLEN_SIGUSR1_DUMP_PREFIX_BM + 8];
 	memset (dirbufname, 0, sizeof(dirbufname));
 	snprintf (dirbufname, sizeof (dirbufname), "%s%03d",
-		 sigusr1_dump_prefix_BM,  dumpcnt);
+		  sigusr1_dump_prefix_BM,  dumpcnt);
 	ASSERT_BM(strlen(dirbufname) < sizeof(dirbufname)-2);
 	if (mkdir (dirbufname, S_IRWXU /* u+rwx */ ))
 	  FATAL_BM ("failed to mkdir %s for SIGUSR1 dump - %m",
@@ -3998,14 +4009,14 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
 	backtrace_print_BM ((struct backtrace_state *)
 			    backtracestate_BM, 0, stdout);
 	agenda_continue_after_gc_BM ();
-      }
+      };
       return true;
       
     case SIGTERM:
     case SIGINT:
     terminating_dump:
       {
-        DBGPRINTF_BM ("read_sigfd_BM got %s", strsignal (siginf.ssi_signo));
+        DBGPRINTF_BM ("read_sigfd_BM got %s at %s", strsignal (siginf.ssi_signo), nowstr);
         stop_agenda_work_threads_BM ();
         /// forcibly remove the payload of the_web_sessions. Its payload
         /// should not be dumped, because of its class, but anyway...
