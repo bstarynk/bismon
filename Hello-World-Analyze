@@ -131,6 +131,11 @@ sleep 1.8
 
 printf "\n%s: Bismon pid is %s\n" $0 $BISMON_PID
 
+if [ ! -d /proc/$BISMON_PID ]; then
+    printf "%s: Bismon pid %d died ****\n" $0 $BISMON_PID >& /dev/stderr
+    exit 1
+fi
+
 ### on some Debian, there is a bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=980609
 pushd gccplugins
 if [ -f gcc10_metaplugin_BMGCC.so ]; then
