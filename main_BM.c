@@ -1485,6 +1485,14 @@ main (int argc, char **argv)
                             /*errorcb: */
                             backtracerrorcb_BM,
                             /*data: */ NULL);
+  if (isatty (STDOUT_FILENO))
+    {
+      printf ("\n\n#**** BISMON %s with %d program arguments:\n#",
+              bismon_shortgitid, argc);
+      for (int i = 0; i < argc; i++)
+        printf (" %s", argv[i]);
+      printf ("\n##----\n");
+    }
   parse_program_options_BM (argc, argv);
   if (randomseed_BM > 0)
     {
