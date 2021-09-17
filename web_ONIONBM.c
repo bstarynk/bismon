@@ -3999,6 +3999,26 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
 		    dirbufname);
 	agenda_suspend_for_gc_BM ();
         struct dumpinfo_stBM di = dump_BM (dirbufname, NULL);
+	{
+	  char infopath [MAXLEN_SIGUSR1_DUMP_PREFIX_BM + 32];
+	  memset (infopath, 0, sizeof(infopath));
+	  snprintf (infopath, sizeof(infopath), "%s/BismonInfo",
+		    dirbufname);
+	  FILE *infofil= fopen(infopath, "w");
+	  if (infofil) {
+	    fprintf(infofil, "# emitted %s Bismon intermediate dump file\n", infopath);
+	    fprintf(infofil, "BISMON_PID=%d\n", (int)getpid());
+	    fprintf(infofil, "BISMON_DIRDUMP='%s'\n", dirbufname);
+	    fprintf(infofil, "BISMON_DUMPCOUNT=%d\n", dumpcnt);
+	    fprintf(infofil, "BISMON_HOST='%s'\n", myhostname_BM);
+	    fprintf(infofil, "BISMON_CHECKSUM='%s'\n", bismon_checksum);
+	    fprintf(infofil, "BISMON_SHORTGITID='%s'\n", bismon_shortgitid);
+	    fprintf(infofil, "BISMON_TIMESTAMP='%s'\n", bismon_timestamp);
+	    fprintf(infofil, "BISMON_TIMELONG=%ld\n", bismon_timelong);
+	    fprintf(infofil, "BISMON_DIRECTORY='%s'\n", bismon_directory);
+	    fclose(infofil);
+	  }
+	}
         INFOPRINTF_BM
           ("after dumping intermediate state into %s for SIGUSR1: scanned %ld, emitted %ld objects\n"
            "did %ld todos, wrote %ld files\n"
