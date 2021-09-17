@@ -124,7 +124,8 @@ echo '#° ./bismon' $bismon_hello_args
 
 ### perhaps we should use the coproc Bash keyword?
 ### See https://www.gnu.org/software/bash/manual/html_node/Coprocesses.html
-./bismon $bismon_hello_args &
+##Bad: ./bismon $bismon_hello_args &
+##Bad ./bismon  $bismon_hello_args[*] &
 export BISMON_PID=$!
 
 sleep 1.8
