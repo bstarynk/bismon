@@ -75,13 +75,13 @@ if [ -z "$BISMON_GCC" ]; then
 fi
 
 rm /tmp/bismon.cookie
-rm -rf /tmp/bismonsigusr1hw.dir
+rm -rf /tmp/bismonsigusr1hw.dir*
 
 # https://serverfault.com/a/477506
 # https://stackoverflow.com/q/69251163/841108
 if [ ${#bismon_hello_args[@]} -eq 0 ]; then
     bismon_hello_args+=("--bismon-web-base=$BISMON_WEB_BASE")
-    bismon_hello_args+=("--bismon-project-name=helloworld-project")
+    bismon_hello_args+=("--bismon-project-name=HelloWorld_Project")
     bismon_hello_args+=("--bismon-debug-after-load")
     bismon_hello_args+=("--bismon-pid-file=$BISMON_PIDFILE")
     bismon_hello_args+=("--bismon-anon-web-cookie=/tmp/bismon.cookie")
