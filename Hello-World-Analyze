@@ -78,13 +78,14 @@ rm /tmp/bismon.cookie
 rm -rf /tmp/bismonsigusr1hw.dir
 
 # https://serverfault.com/a/477506
+# https://stackoverflow.com/q/69251163/841108
 if [ ${#bismon_hello_args[@]} -eq 0 ]; then
-    bismon_hello_args+="--bismon-web-base=$BISMON_WEB_BASE"
-    bismon_hello_args+="--bismon-project-name=helloworld-project"
-    bismon_hello_args+="--bismon-debug-after-load"
-    bismon_hello_args+="--bismon-pid-file=$BISMON_PIDFILE"
-    bismon_hello_args+="--bismon-anon-web-cookie=/tmp/bismon.cookie"
-    bismon_hello_args+="--bismon-sigusr1-dump-prefix=/tmp/bismonsigusr1hw.dir"
+    bismon_hello_args+=("--bismon-web-base=$BISMON_WEB_BASE")
+    bismon_hello_args+=("--bismon-project-name=helloworld-project")
+    bismon_hello_args+=("--bismon-debug-after-load")
+    bismon_hello_args+=("--bismon-pid-file=$BISMON_PIDFILE")
+    bismon_hello_args+=("--bismon-anon-web-cookie=/tmp/bismon.cookie")
+    bismon_hello_args+=("--bismon-sigusr1-dump-prefix=/tmp/bismonsigusr1hw.dir")
 fi
 
 #### check existence of needed GCC plugin files
@@ -124,8 +125,11 @@ echo '#° ./bismon' $bismon_hello_args
 
 ### perhaps we should use the coproc Bash keyword?
 ### See https://www.gnu.org/software/bash/manual/html_node/Coprocesses.html
+## 
 ##Bad: ./bismon $bismon_hello_args &
 ##Bad ./bismon  $bismon_hello_args[*] &
+## https://stackoverflow.com/q/69251163/841108
+./bismon "${bismon_hello_args[@]}" &
 export BISMON_PID=$!
 
 sleep 1.8
