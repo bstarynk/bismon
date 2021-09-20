@@ -138,7 +138,9 @@ static void unlockonion_runpro_mtx_at_BM (int lineno);
 
 static void web_plain_event_loop_BM (void);
 
-// handle signals thu signafd(2); return true to break web_plain_event_loop_BM
+// Handle signals thu signalfd(2); return true to break
+// web_plain_event_loop_BM and stop the loop there. To continue the
+// event loop, it should return false.
 static bool read_sigfd_BM (void);
 // handle SIGCHLD
 static void handle_sigchld_BM (pid_t pid);
@@ -3955,7 +3957,7 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
 }                               /* end web_plain_event_loop_BM */
 
 
-
+/// this function should return true to continue the loop in web_plain_event_loop_BM
 static bool
 read_sigfd_BM (void)            // called from web_plain_event_loop_BM
 {
@@ -4030,7 +4032,7 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
 			    backtracestate_BM, 0, stdout);
 	agenda_continue_after_gc_BM ();
       };
-      return true;
+      return false;
       
     case SIGTERM:
     case SIGINT:
