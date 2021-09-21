@@ -1006,6 +1006,8 @@ custom_onion_handler_BM (void *clientdata,
                     reqpath);
       return forgotpasswd_onion_handler_BM (clientdata, req, resp);
     }
+  DBGPRINTF_BM ("custom_onion_handler webmethod %s of %s",
+		onion_request_methods[reqmeth], reqpath);
   // for some reason, I can't make the webroot/ work reliably with this.
   // so I special-case when the request corresponds to an existing file path
   // but for safety I don't do that for any URL containing /. or ..
