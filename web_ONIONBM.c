@@ -2275,7 +2275,7 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   bool addedcookie =            //
     onion_response_add_cookie   //
     (resp, "BISMONCOOKIE", bytstring_BM (_.cookiestrv), (time_t) (wsess->websess_expiretime - clocktime_BM (CLOCK_REALTIME)), "/", NULL,        /// domain
-     0);
+     OC_SAMESITE_STRICT);
   onion_response_set_code (resp, HTTP_REDIRECT);
   onion_response_set_header (resp, "Location", location);
   DBGPRINTF_BM ("do_login_redirect_onion_BM sessionob %s addedcookie %s"
