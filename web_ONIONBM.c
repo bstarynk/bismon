@@ -3475,10 +3475,11 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
      wsess->websess_expiretime);
   if (mimetype[0])
     onion_response_set_header (resp, "Content-Type", mimetype);
-  if (shouldputcookie)
+  if (shouldputcookie) {
     onion_response_add_cookie   //
       (resp, "BISMONCOOKIE", cookiebuf, (time_t) (wsess->websess_expiretime - clocktime_BM (CLOCK_REALTIME)), "/", NULL,        /// domain
-       0);
+       OC_SAMESITE_STRICT);
+  }
   else
     onion_response_add_cookie   //
       (resp, "BISMONCOOKIE", "", (time_t) 0, "/", NULL, 0);
