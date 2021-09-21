@@ -143,6 +143,7 @@ fi
 
 trap 'kill -TERM $BISMON_PID' TERM
 trap 'kill -QUIT $BISMON_PID' QUIT
+trap 'kill -INT $BISMON_PID' INT
 
 ### on some Debian, there is a bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=980609
 pushd gccplugins
