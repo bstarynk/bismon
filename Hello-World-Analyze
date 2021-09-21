@@ -141,6 +141,9 @@ if [ ! -d /proc/$BISMON_PID ]; then
     exit 1
 fi
 
+trap 'kill -TERM $BISMON_PID' TERM
+trap 'kill -QUIT $BISMON_PID' QUIT
+
 ### on some Debian, there is a bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=980609
 pushd gccplugins
 if [ -f gcc10_metaplugin_BMGCC.so ]; then
