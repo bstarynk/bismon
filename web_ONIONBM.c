@@ -1016,7 +1016,8 @@ custom_onion_handler_BM (void *clientdata,
       if (asprintf (&fipath, "%s/webroot/%s", bismon_directory, reqpath) > 0
           && fipath && !access (fipath, R_OK))
         {
-          DBGPRINTF_BM ("custom_onion_handler found fipath %s", fipath);
+          DBGPRINTF_BM ("custom_onion_handler found fipath %s for webmethod %s of %s",
+			fipath, onion_request_methods[reqmeth], reqpath);
           free (fipath), fipath = NULL;
           return OCS_NOT_PROCESSED;
 
