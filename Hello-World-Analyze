@@ -74,6 +74,10 @@ if [ -z "$BISMON_GCC" ]; then
     export BISMON_GCC=/usr/bin/gcc-10
 fi
 
+if [ -z "$BISMON_PIDFILE" ]; then
+    export BISMON_PIDFILE=_bismon.pid
+fi
+
 rm /tmp/bismon.cookie
 rm -rf /tmp/bismonsigusr1hw.dir*
 
