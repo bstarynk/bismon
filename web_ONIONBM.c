@@ -597,9 +597,7 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
           ("run_onionweb before onion_listen cmdpiprd#%d cmdpipwr#%d",
            cmdpipe_rd_BM, cmdpipe_wr_BM);
       }
-      ///
-      if (onion_anon_web_session_BM && *onion_anon_web_session_BM)
-        create_anonymous_web_session_BM ();
+#warning missing test and use of onion_anon_web_cookie_BM
       /// listen to HTTP, in other threads
       int err = onion_listen (myonion_BM);      // since detached, returns now
       DBGPRINTF_BM ("run_onionweb after onion_listen err=%d", err);
@@ -2879,26 +2877,26 @@ create_anonymous_web_session_BM (void)
                  objectval_tyBM * sessionob;    //
                  value_tyBM cookiestrv;);
   DBGPRINTF_BM
-    ("create_anonymous_web_session start onionanonwebsession '%s'",
-     onion_anon_web_session_BM);
+    ("create_anonymous_web_session start onionanonwebcookie '%s'",
+     onion_anon_web_cookie_BM);
   // backup cookie file, if it exists
-  if (!access (onion_anon_web_session_BM, R_OK))
+  if (!access (onion_anon_web_cookie_BM, R_OK))
     {
       char *backupath = NULL;
-      asprintf (&backupath, "%s~", onion_anon_web_session_BM);
+      asprintf (&backupath, "%s~", onion_anon_web_cookie_BM);
       if (backupath)
         {
-          if (!rename (onion_anon_web_session_BM, backupath))
+          if (!rename (onion_anon_web_cookie_BM, backupath))
             INFOPRINTF_BM
               ("back-up anonymous web session cookie file: %s -> %s",
-               onion_anon_web_session_BM, backupath);
+               onion_anon_web_cookie_BM, backupath);
           free (backupath), backupath = NULL;
         }
     }
-  FILE *fil = fopen (onion_anon_web_session_BM, "w");
+  FILE *fil = fopen (onion_anon_web_cookie_BM, "w");
   if (!fil)
-    FATAL_BM ("failed to fopen anonymous web session cookie file '%s' - %m",
-              onion_anon_web_session_BM);
+    FATAL_BM ("failed to fopen anonymous web cookie file '%s' - %m",
+              onion_anon_web_cookie_BM);
   /// create the session
   char sessidbuf[32];
   memset (sessidbuf, 0, sizeof (sessidbuf));
@@ -2944,7 +2942,7 @@ create_anonymous_web_session_BM (void)
   fclose (fil), fil = NULL;
   INFOPRINTF_BM
     ("generated web cookie for anonymous web session in file %s for sessionob %s",
-     onion_anon_web_session_BM, objectdbg_BM (_.sessionob));
+     onion_anon_web_cookie_BM, objectdbg_BM (_.sessionob));
 }                               /* end create_anonymous_web_session_BM */
 
 

@@ -92,7 +92,7 @@ extern volatile struct backstrace_state *backtracestate_BM;
 /*****************************************************************/
 extern const char *onion_ssl_certificate_BM;
 extern const char *onion_web_base_BM;
-extern const char *onion_anon_web_session_BM;
+extern const char *onion_anon_web_cookie_BM;
 /*****************************************************************/
 
 

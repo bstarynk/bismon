@@ -55,7 +55,7 @@ char real_executable_BM[128];
 /// web_ONIONBM.c is not linked, so
 const char *onion_ssl_certificate_BM;
 const char *onion_web_base_BM;
-const char *onion_anon_web_session_BM;
+const char *onion_anon_web_cookie_BM;
 
 
 
