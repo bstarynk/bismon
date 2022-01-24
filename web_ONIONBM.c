@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -3766,12 +3766,14 @@ initialize_webonion_BM (void)
   // see also https://ldpreload.com/blog/signalfd-is-useless
   sigset_t mysigset = { };
   sigemptyset (&mysigset);
-  sigaddset (&mysigset, SIGTERM);
-  sigaddset (&mysigset, SIGQUIT);
+  sigaddset (&mysigset, SIGTERM); /* dump and stop */
+  sigaddset (&mysigset, SIGQUIT); /* quit without dumping */
   sigaddset (&mysigset, SIGINT);
   sigaddset (&mysigset, SIGCHLD);
   if (sigusr1_dump_prefix_BM)
-    sigaddset (&mysigset, SIGUSR1);
+    sigaddset (&mysigset, SIGUSR1); /* dump and continue, with program option
+				       --bismon-sigusr1-dump-prefix=DUMP_PREFIX */
+  sigaddset (&mysigset, SIGUSR2); /* toggle debug */
   if (sigprocmask (SIG_BLOCK, &mysigset, NULL) == -1)
     FATAL_BM ("initialize_webonion: sigprocmask mysigset failure");
   sigfd_BM = signalfd (-1, &mysigset, SFD_NONBLOCK | SFD_CLOEXEC);
@@ -3842,11 +3844,11 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
             }
         unlockonion_runpro_mtx_at_BM (__LINE__);
       }
-#define POLL_DELAY_MILLISECS_BM 1750
+#define POLL_DELAY_MILLISECS_BM 3750
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM
-          ("web_plain_event_loop_BM before poll nbpoll=%d loop#%ld", nbpoll,
-           loopcnt);
+          ("web_plain_event_loop_BM before poll nbpoll=%d loop#%ld delay %d ms",
+	   nbpoll, loopcnt, POLL_DELAY_MILLISECS_BM);
       int nbready = poll (pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM ("web_plain_event_loop_BM nbready %d loop#%ld", nbready,
@@ -4035,7 +4037,21 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
 	agenda_continue_after_gc_BM ();
       };
       return false;
-      
+    case SIGUSR2:		/* toggle debug */
+      if (debugmsg_BM) {
+	DBGPRINTF_BM("debugging output suspended by SIGUSR2 at %s; send again the same signal to reenable it", nowstr);
+	debugmsg_BM = false;
+	INFOPRINTF_BM("no more debugging output at %s (bismon pid %d on %s) since SIGUSR2 signal recieved",
+		      nowstr, (int)getpid(), myhostname_BM);
+      }
+      else {
+	INFOPRINTF_BM("enabling debugging output at %s (bismon pid %d on %s) since SIGUSR2 signal recieved",
+		      nowstr, (int)getpid(), myhostname_BM);
+	debugmsg_BM = true;
+	DBGPRINTF_BM("debugging output enabled by SIGUSR2 at %s (bismon pid %d on %s); send again the same signal to disable it",
+		     nowstr, (int)getpid(), myhostname_BM);	
+      }
+      return true;
     case SIGTERM:
     case SIGINT:
     terminating_dump:
