@@ -1,7 +1,7 @@
 /**
     BISMON related GCC10 metaplugin gcc10_metaplugin_BMGCC.cc
     See https://github.com/bstarynk/bismon/
-    Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2020 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch and Franck Védrine
 
     This program is free software: you can redistribute it and/or modify
@@ -159,6 +159,11 @@ plugin_init (struct plugin_name_args *plugin_info,
             plugin_name, version->basever, gcc_version.basever);
       return 1;
     }
+  else
+    inform(UNKNOWN_LOCATION,
+           "BISMON GCC10 METAPLUGIN: plugin %s"
+           " (built " __DATE__ " on " __TIME__")"
+           " for GCC version %s", plugin_name, version->basever);
   /// other version information are tested and reported. In some
   /// cases, that might work.
   if (strcmp(version->datestamp, gcc_version.datestamp))
