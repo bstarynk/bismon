@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -34,7 +34,7 @@ void *dlprog_BM;
 const char *myprogname_BM;
 bool gui_is_running_BM;
 bool web_is_running_BM;
-bool debugmsg_BM;
+volatile bool debugmsg_BM;
 bool parsedebugmsg_BM;
 int nbworkjobs_BM;
 int randomseed_BM;
@@ -3155,8 +3155,13 @@ parse_program_options_BM (int argc, char **argv)
             "BISMON is a static source code analyzer, using GCC.\n"
             "see github.com/bstarynk/bismon commit %s...\n"
             "WITHOUT WARRANTY, since GPLv3+ licensed.\n"
-            "A DRAFT report might be available on starynkevitch.net/Basile/bismon-doc.pdf\n",
-            bismon_shortgitid);
+            "A DRAFT report might be available on starynkevitch.net/Basile/bismon-doc.pdf\n"
+            "signal handling:\n"
+            "   * SIGQUIT quit without dumping,\n"
+            "   * SIGTERM dump state and stop,\n"
+            "   * SIGUSR1 (with --bismon-sigusr1-dump-prefix=DUMP_PREFIX) dump state and continue,\n"
+            "   * SIGUSR2 toggle debugging output.\n"
+            " -----\n", bismon_shortgitid);
   g_option_context_set_summary (gctx, summarybuf);
   g_option_context_add_main_entries (gctx, optionstab_bm, NULL);
   if (!g_option_context_parse (gctx, &argc, &argv, &errp))
