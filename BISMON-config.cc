@@ -1491,7 +1491,7 @@ bmc_ask_missing_configuration(const char*progname)
       std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-11 ..." << std::endl;
       std::cerr << "... but that cross C++ compiler could be some script." << std::endl;
       if (!access("/usr/bin/g++-11", X_OK) && isatty(STDOUT_FILENO)) {
-	std::cout << "... Found some /usr/bin/g++-1Œ)" << std::endl;
+	std::cout << "... Found some /usr/bin/g++-11)" << std::endl;
 	BMC_DEBUG("defaulting target GXX to /usr/bin/g++-11");
 	bmc_set_readline_buffer("/usr/bin/g++-11");
       }
