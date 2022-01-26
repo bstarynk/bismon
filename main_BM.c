@@ -3231,6 +3231,18 @@ write_pid_into_file_and_kill_old_BM (const char *pidfilepath)
                 ("quitting old Bismon process of pid %d running this executable %s",
                  oldpid, thisexepath);
               killedold = 0 == kill (oldpid, SIGQUIT);
+              if (killedold)
+                {
+                  INFOPRINTF_BM
+                    ("SIGQUIT-ed old Bismon process of pid %d on %s running this executable %s",
+                     oldpid, myhostname_BM, thisexepath);
+                  fflush (NULL);
+                  sleep (1);    /* to let the other Bismon die gracefully */
+                }
+              else
+                WARNPRINTF_BM
+                  ("failed to SIGQUIT-ed old Bismon process of pid %d on %s running this executable %s (%m)",
+                   oldpid, myhostname_BM, thisexepath);
             }
         }
       fclose (oldpidfile), oldpidfile = NULL;
