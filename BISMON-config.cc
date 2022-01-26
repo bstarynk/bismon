@@ -109,7 +109,7 @@ bool bmc_force_flag;
 char bmc_hostname[64];
 enum bmc_longopt_en
 {
-  BMCOPT__longoptstart=1024,
+  BMCOPT__longoptstart=2048,
   BMCOPT_batch,
   BMCOPT_ninja,
   BMCOPT_target_gcc,
@@ -604,7 +604,7 @@ bmc_print_config_header(const char*progname)
   headoutf << "// end of Bismon generated configuration header file " << headerpath
            << std::endl << std::flush;
   sync();
-  usleep (1000);
+  usleep (1300);
   BMC_DEBUG("bmc_print_config_header ending headerpath=" << headerpath);
   if (!bmc_batch_flag && !bmc_silent_flag)
   {
@@ -801,7 +801,7 @@ bmc_print_config_data(const char*progname)
   //
   dataoutf << std::endl << "/// end of Bismon generated data " << datapath << std::endl;
   sync ();
-  usleep (1000);
+  usleep (1300);
   BMC_DEBUG("bmc_print_config_data ending datapath=" << datapath);
   if (!bmc_batch_flag && !bmc_silent_flag)
   {
@@ -964,7 +964,7 @@ bmc_print_config_make(const char*progname)
            << std::endl << std::flush;
   BMC_DEBUG("bmc_print_config_make ending makepath=" << makepath);
   sync();
-  usleep (1000);
+  usleep (1300);
   if (!bmc_batch_flag && !bmc_silent_flag)
   {
     std::cout << "#: generated Bismon configuration GNU make file " << makepath << std::endl;
@@ -1290,7 +1290,7 @@ bmc_print_config_ninja(const char*progname)
   ninjaoutf << "##**## end of generated file " << ninjapath << " ##**##" << std::endl;
   ninjaoutf << std::flush;
   sync();
-  usleep (1000);
+  usleep (1300);
   if (!bmc_batch_flag && !bmc_silent_flag) {
     struct stat ninjastat;
     memset (&ninjastat, 0, sizeof(ninjastat));
@@ -1360,10 +1360,10 @@ bmc_ask_missing_configuration(const char*progname)
 	BMC_DEBUG("defaulting Bismon host C compiler to /usr/bin/gcc-11");
 	bmc_set_readline_buffer("/usr/bin/gcc-11");
       }
-      else if (!access("/usr/bin/gcc-10", X_OK) && isatty(STDOUT_FILENO)) {
-	std::cout << "... Found some /usr/bin/gcc-10 " << std::endl;
-	BMC_DEBUG("defaulting host C compiler to /usr/bin/gcc-10");
-	bmc_set_readline_buffer("/usr/bin/gcc-10");
+      else if (!access("/usr/bin/gcc-12", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/gcc-12 " << std::endl;
+	BMC_DEBUG("defaulting host C compiler to /usr/bin/gcc-12");
+	bmc_set_readline_buffer("/usr/bin/gcc-12");
       }
       else if (!access("/usr/bin/clang", X_OK) && isatty(STDOUT_FILENO)) {
 	std::cout << "... Found some /usr/bin/clang " << std::endl;
@@ -1410,10 +1410,10 @@ bmc_ask_missing_configuration(const char*progname)
 	BMC_DEBUG("defaulting Bismon host C++ compiler to /usr/bin/g++-11");
 	bmc_set_readline_buffer("/usr/bin/g++-11");
       }
-      else if (!access("/usr/bin/g++-10", X_OK) && isatty(STDOUT_FILENO)) {
-	std::cout << "... Found some /usr/bin/g++-10 " << std::endl;
-	BMC_DEBUG("defaulting host C++ compiler to /usr/bin/g++-10");
-	bmc_set_readline_buffer("/usr/bin/g++-10");
+      else if (!access("/usr/bin/g++-12", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/g++-12 " << std::endl;
+	BMC_DEBUG("defaulting host C++ compiler to /usr/bin/g++-12");
+	bmc_set_readline_buffer("/usr/bin/g++-12");
       }
       else if (!access("/usr/bin/clang++", X_OK) && isatty(STDOUT_FILENO)) {
 	std::cout << "... Found some /usr/bin/clang++ " << std::endl;
@@ -1453,14 +1453,14 @@ bmc_ask_missing_configuration(const char*progname)
     {
       BMC_NLDEBUG("bmc_target_gcc is '" << bmc_target_gcc << "'");
       std::cout << std::endl
-		<< "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 10, preferably GCC 11."
+		<< "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 11 or preferably GCC 12."
 		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
       std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-11 ..." << std::endl;
       std::cout << "... but that cross-C-compiler could be some script." << std::endl;
-      if (!access("/usr/bin/gcc-10", X_OK) && isatty(STDOUT_FILENO)) {
-	std::cout << "... Found some /usr/bin/gcc-10)" << std::endl;
-	BMC_DEBUG("defaulting target GCC to /usr/bin/gcc-10");
-	bmc_set_readline_buffer("/usr/bin/gcc-10");
+      if (!access("/usr/bin/gcc-1Œ", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/gcc-11)" << std::endl;
+	BMC_DEBUG("defaulting target GCC to /usr/bin/gcc-11");
+	bmc_set_readline_buffer("/usr/bin/gcc-11");
       }
       else
 	std::cout << ")" << std::endl;
@@ -1486,14 +1486,14 @@ bmc_ask_missing_configuration(const char*progname)
     {
       BMC_NLDEBUG("bmc_target_gxx is '" << bmc_target_gxx << "'");
       std::cout << std::endl
-		<< "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 10."
+		<< "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 11."
 		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
-      std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-10 ..." << std::endl;
+      std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-11 ..." << std::endl;
       std::cerr << "... but that cross C++ compiler could be some script." << std::endl;
-      if (!access("/usr/bin/g++-10", X_OK) && isatty(STDOUT_FILENO)) {
-	std::cout << "... Found some /usr/bin/g++-10)" << std::endl;
-	BMC_DEBUG("defaulting target GXX to /usr/bin/g++-10");
-	bmc_set_readline_buffer("/usr/bin/g++-10");
+      if (!access("/usr/bin/g++-11", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/g++-1Œ)" << std::endl;
+	BMC_DEBUG("defaulting target GXX to /usr/bin/g++-11");
+	bmc_set_readline_buffer("/usr/bin/g++-11");
       }
       else
 	std::cout << ")" << std::endl;
@@ -1818,7 +1818,7 @@ main (int argc, char**argv)
         {
           std::cout << std::endl << std::endl << "***** " BMC_BOLD_ESCAPE "BISMON Debugged Configurator" BMC_PLAIN_ESCAPE " ****" << std::endl;
         }
-      usleep (1024*8);
+      usleep (2048*8);
     }
   gethostname(bmc_hostname, sizeof(bmc_hostname)-1);
   BMC_DEBUG("bmc_hostname:" << bmc_hostname);
@@ -1954,7 +1954,7 @@ main (int argc, char**argv)
     }
   }
   if (isatty(STDOUT_FILENO) && !bmc_silent_flag) {
-    usleep (1000);
+    usleep (1357);
     std::cout << std::endl;
     std::cout << "This " << argv[0] << " program is, like BISMON, GPLv3+ licensed so *WITHOUT ANY WARRANTY*." << std::endl;
     std::cout << "... see www.gnu.org/licenses/gpl-3.0.en.html for details." << std::endl;
@@ -1964,7 +1964,7 @@ main (int argc, char**argv)
 	      << "The interactive prompt is " BMC_BOLD_ESCAPE "in bold"  BMC_PLAIN_ESCAPE " below." << std::endl
 	      << std::endl;
   }
-  usleep(1024*16);
+  usleep(1555*16);
   if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO)
       && !bmc_batch_flag && !bmc_constdepend_flag)
     bmc_ask_missing_configuration(argv[0]);
