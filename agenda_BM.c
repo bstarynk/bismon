@@ -855,8 +855,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
     FATAL_BM ("bad tasklet object @%p", obtk);
   ASSERT_BM (flh != NULL);
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obtk;
-                 value_tyBM failres;);
+                 objectval_tyBM * obtk; value_tyBM failres;
+    );
   _.obtk = obtk;
   curfailurehandle_BM = NULL;
   objlock_BM (_.obtk);
@@ -901,15 +901,12 @@ defer_module_dynload_BM (objectval_tyBM * modulobarg, const closure_tyBM * postc
   objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ k_defer_module_dynload,
                  objectval_tyBM * modulob;      //
-                 const closure_tyBM * postclos;
-                 value_tyBM arg1v;      //
+                 const closure_tyBM * postclos; value_tyBM arg1v;       //
                  value_tyBM arg2v;      //
                  value_tyBM arg3v;      //
                  objectval_tyBM * curob;        //
                  objectval_tyBM * routob;       //
-                 value_tyBM causev;
-                 value_tyBM errorv;
-    );
+                 value_tyBM causev; value_tyBM errorv;);
   extern void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *data);  /* in misc_BM.cc */
   _.modulob = objectcast_BM (modulobarg);
   _.postclos = closurecast_BM ((value_tyBM) postclosarg);
@@ -1059,8 +1056,7 @@ do_postpone_defer_apply3_BM (int delayms, value_tyBM closarg,
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
-                 value_tyBM tmpv;
-    );
+                 value_tyBM tmpv;);
   _.closv = closarg;
   _.arg1v = arg1arg;
   _.arg2v = arg2arg;
@@ -1110,8 +1106,7 @@ do_postpone_defer_send3_BM (int delayms, value_tyBM recvarg,
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
-                 value_tyBM tmpv;
-    );
+                 value_tyBM tmpv;);
   _.recv = recvarg;
   _.obsel = obselarg;
   _.arg1v = arg1arg;
