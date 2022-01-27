@@ -534,7 +534,9 @@ miniscan_compatype_BM (objectval_tyBM * typ1ob, objectval_tyBM * typ2ob,
   //objectval_tyBM *k_int = BMK_0vgCFjXblkx_4zCMhMAWjVK;
   //objectval_tyBM *k_string = BMK_4T8am97muLl_5969SR22Ecq;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_miniscan_compatype,
-                 objectval_tyBM * typ1ob; objectval_tyBM * typ2ob;);
+                 objectval_tyBM * typ1ob;
+                 objectval_tyBM * typ2ob;
+    );
   _.typ1ob = typ1ob;
   _.typ2ob = typ2ob;
   if ((_.typ1ob == k_object && _.typ2ob == k_value)
@@ -567,7 +569,9 @@ miniscan_var_BM (objectval_tyBM * varob,
                  objectval_tyBM * fromob;       //
                  value_tyBM vrolv;      //
                  objectval_tyBM * rolconnob;    //
-                 value_tyBM causev; value_tyBM errorv;);
+                 value_tyBM causev;
+                 value_tyBM errorv;
+    );
   int failin = -1;
 #define FAILHERE(V) do { failin = __LINE__ ; _.causev = (value_tyBM)(V); \
     goto failure; } while(0)
@@ -953,8 +957,10 @@ ROUTINEOBJNAME_BM (_0zzJJsAL6Qm_2uw3eoWQHEq)    //
                  objectval_tyBM * seqcompob;    //
                  value_tyBM seqcompv;   //
                  value_tyBM compv;      //
-                 value_tyBM testexpv;
-                 value_tyBM resv; value_tyBM errorv; value_tyBM causev;);
+                 value_tyBM testexpv; value_tyBM resv;
+                 value_tyBM errorv;
+                 value_tyBM causev;
+    );
   objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
   objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
   // objectval_tyBM *k_miniscan_expr = BMK_7k3xb0vred0_9ZRHcZmhw77;
@@ -1622,7 +1628,11 @@ ROUTINEOBJNAME_BM (_6pA1Fxh7omw_0vJfR3s4tty)    //miniscan_stmt°basiclo_run
                  objectval_tyBM * subconnob;    //
                  objectval_tyBM * varob;        //
                  objectval_tyBM * typsubob;     //
-                 value_tyBM runv; value_tyBM resultv; value_tyBM compv; value_tyBM subcompv; value_tyBM causev; //
+                 value_tyBM runv;
+                 value_tyBM resultv;
+                 value_tyBM compv;
+                 value_tyBM subcompv;
+                 value_tyBM causev;     //
                  value_tyBM errorv;     //
     );
   int depth = 0;
@@ -1798,7 +1808,8 @@ ROUTINEOBJNAME_BM (_2CKEpke8P0q_8s0Vli5gjxM)    //miniscan_stmt°basiclo_intswit
                  value_tyBM oldv;       //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
-                 value_tyBM resultv;);
+                 value_tyBM resultv;
+    );
   int depth = 0;
   _.stmtob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
@@ -2007,8 +2018,10 @@ ROUTINEOBJNAME_BM (_7X7mHMa1QpC_1TQBkXwqeik)    // int-switch-when-miniscan
                  value_tyBM resultv;    //
                  value_tyBM hashv;      //
                  value_tyBM errorv;     //
-                 value_tyBM tson0v;
-                 value_tyBM tson1v; value_tyBM tmpv; value_tyBM causev;);
+                 value_tyBM tson0v; value_tyBM tson1v;
+                 value_tyBM tmpv;
+                 value_tyBM causev;
+    );
   _.testv = arg1;
   _.hashmapob = objectcast_BM (arg2);
   _.routprepob = objectcast_BM (arg3);
@@ -2151,8 +2164,10 @@ stopscan_objswitch_comp_bm (struct stackframe_stBM *stkf,
                  objectval_tyBM * assocob;      //
                  objectval_tyBM * testob;       //
                  objectval_tyBM * routprepob;   //
-                 value_tyBM testv;
-                 value_tyBM oldwhenv; value_tyBM causev; value_tyBM errorv;);
+                 value_tyBM testv; value_tyBM oldwhenv;
+                 value_tyBM causev;
+                 value_tyBM errorv;
+    );
   _.compob = compob;
   _.stmtob = stmtob;
   _.fromob = fromob;
@@ -2292,7 +2307,8 @@ ROUTINEOBJNAME_BM (_5nFFthyf8y9_00k5H4R0G6b)    //miniscan_stmt°basiclo_objswit
                  value_tyBM defaulttupv;        //
                  value_tyBM causev;     //
                  value_tyBM errorv;     //
-                 value_tyBM resultv;);
+                 value_tyBM resultv;
+    );
   int depth = 0;
   _.stmtob = objectcast_BM (arg1);
   _.routprepob = objectcast_BM (arg2);
@@ -2627,7 +2643,8 @@ ROUTINEOBJNAME_BM (_1vuSUudDrEr_9UjFr4Pcy8r)    // miniscan_node_conn°basiclo_p
                  objectval_tyBM * restypob;     //
                  value_tyBM resultv;    //
                  value_tyBM errorv;     //
-                 value_tyBM cursonv; objectval_tyBM * curargob; //
+                 value_tyBM cursonv;
+                 objectval_tyBM * curargob;     //
                  objectval_tyBM * curtypob;     //
                  objectval_tyBM * curargctypob; //
                  objectval_tyBM * connrestypob; //
@@ -2736,11 +2753,10 @@ ROUTINEOBJNAME_BM (_7vlMCZ0yvva_6tx0lFlqBG8)    // miniscan_stmt°basiclo_return
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7vlMCZ0yvva_6tx0lFlqBG8,
-                 objectval_tyBM * recv; objectval_tyBM * routprepob;
-                 objectval_tyBM * fromblockob; value_tyBM retexpv;
-                 objectval_tyBM * retypob; value_tyBM resultv;
-                 value_tyBM errorv;
-    );
+                 objectval_tyBM * recv;
+                 objectval_tyBM * routprepob; objectval_tyBM * fromblockob;
+                 value_tyBM retexpv; objectval_tyBM * retypob;
+                 value_tyBM resultv; value_tyBM errorv;);
   int failin = -1;
 #define FAILHERE() do { failin = __LINE__ ; goto failure; } while(0)
   objectval_tyBM *k_return = BMK_2DH0ucElTgh_62vxjxLcfev;
@@ -3277,7 +3293,8 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*modul
                  objectval_tyBM * modulob;      //
                  objectval_tyBM * modgenob;     //
                  objectval_tyBM * funhsetob;    //
-                 objectval_tyBM * consthsetob; objectval_tyBM * prepvecob;      //
+                 objectval_tyBM * consthsetob;
+                 objectval_tyBM * prepvecob;    //
                  objectval_tyBM * curfunob;     //
                  objectval_tyBM * failhsetob;   //
                  value_tyBM curcomp;    //
@@ -3286,8 +3303,8 @@ ROUTINEOBJNAME_BM (_8zNBXSMY2Ts_1VI5dmY4umA)    // prepare_module°basiclo*modul
                  setval_tyBM * setfun;  //
                  setval_tyBM * setconst;        //
                  value_tyBM setfail;    //
-                 value_tyBM errorv; value_tyBM causev;
-    );
+                 value_tyBM errorv;
+                 value_tyBM causev;);
   objectval_tyBM *k_failure_set = BMK_9QCfVAnPhdt_5NVyy8KOaLP;
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   objectval_tyBM *k_functions_set = BMK_9stpgEfdDDE_7LUgqylTeFI;
@@ -4003,11 +4020,11 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
     BMK_9le67LL7S9y_5VGpniEUNDA;
   objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9EqBenFWb40_86MuuXslynk,
-                 value_tyBM resultv; objectval_tyBM * modulob;
-                 objectval_tyBM * modgenob; value_tyBM srcdirstrv;
-                 value_tyBM pardirstrv; value_tyBM compilnodv;
-                 value_tyBM aftercompilclosv; value_tyBM argstrarr[8];
-    );
+                 value_tyBM resultv;
+                 objectval_tyBM * modulob; objectval_tyBM * modgenob;
+                 value_tyBM srcdirstrv; value_tyBM pardirstrv;
+                 value_tyBM compilnodv; value_tyBM aftercompilclosv;
+                 value_tyBM argstrarr[8];);
   _.modulob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
   char modulidbuf[32];
@@ -4163,8 +4180,8 @@ ROUTINEOBJNAME_BM (_9le67LL7S9y_5VGpniEUNDA)    // after-compilation-of-module, 
                  value_tyBM callingclosv;       //
                  objectval_tyBM * modulob;      //
                  value_tyBM postclosv;  //
-                 objectval_tyBM * modgenob; value_tyBM moddirstrv;
-    );
+                 objectval_tyBM * modgenob;
+                 value_tyBM moddirstrv;);
   int status = -1;
   _.outstrv = arg1;
   status = getint_BM (arg2);
