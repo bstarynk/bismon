@@ -4,7 +4,7 @@
 ## GPLv3+ licensed, from http://github.com/bstarynk/bismon
 # 
 #    BISMON 
-#   Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+#   Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 #   contributed by Basile Starynkevitch.
 #
 #   This program is free software: you can redistribute it and/or modify
@@ -63,6 +63,10 @@ BM_CXX_SOURCES= $(wildcard [a-z]*_BM.cc)
 BM_C_ONION_SOURCES= $(wildcard [a-z]*_ONIONBM.c)
 
 
+## CONVENTION: handwritten C files for GTK4 graphical user interface
+BM_C_GTK_SOURCES= $(wildcard [a-z]*_GTKBM.c)
+
+
 ## CONVENTION: templates for libonion
 BM_ONION_TEMPLATES= $(wildcard [a-z]*ONIONBM.thtml)
 
@@ -71,14 +75,14 @@ BM_ONIONTEMPL_C_CODE= $(patsubst %.thtml,_%.c,$(BM_ONION_TEMPLATES))
 BM_ONIONTEMPL_OBJECTS= $(patsubst %.c,%.o,$(BM_ONIONTEMPL_C_CODE))
 
 ## CONVENTION: packages for pkg-config
-BM_PACKAGES=  glib-2.0
+BISMON_PACKAGES=  glib-2.0 gtk4 gtk4-x11 gtksourceview-3.0
 
 ## CONVENTION: potential options for BISMON-config configurator. Could
 ## be overwritten by command line...
 BISMON_CONFIG_OPTIONS=
 
 ### object files:
-BM_OBJECTS= $(patsubst %.c,%.o,$(BM_C_SOURCES))  $(patsubst %.cc,%.o,$(BM_CXX_SOURCES))
+BM_OBJECTS= $(patsubst %.c,%.o,$(BM_C_SOURCES))  $(patsubst %.c,%.o,$(BM_C_GTK_SOURCES))  $(patsubst %.cc,%.o,$(BM_CXX_SOURCES))
 
 BM_ONION_OBJECTS= $(patsubst %.c,%.o,$(BM_C_ONION_SOURCES)) $(BM_ONIONTEMPL_OBJECTS)
 
@@ -113,7 +117,7 @@ CXX=g++
 endif
 
 ifndef BISMON_CFLAGS
-BISMON_CFLAGS= -O -g -Wall -Wextra -std=gnu11
+BISMON_CFLAGS= -O -g -Wall -Wextra -Wmissing-prototypes  std=gnu11 
 endif
 
 ifndef BISMON_CXXFLAGS
@@ -161,7 +165,11 @@ id_BM-g.o: id_BM.c id_BM.h
 	$(CC)   -DBISMON_MAKING_id_BM_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags glib-2.0) -g -Wall  -Wextra -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h
-	$(CC)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra -c  $< -o $@
+	$(CC)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMON_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra -c  $< -o $@
+
+%_GTKBM.o: %_GTKBM.c bismon.h
+	@echo BISMON_PACKAGES is $(BISMON_PACKAGES)
+	$(CC)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMON_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra -c  $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h
 	$(CC)  -DBISMON_MAKING_C_$*_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall-Wextra -c $< -o $@
@@ -226,7 +234,7 @@ else
 endif
 
 _bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash
-	./emit-make-dependencies.bash $(BM_C_SOURCES) $(BM_CXX_SOURCES) $(BM_C_ONION_SOURCES)
+	./emit-make-dependencies.bash $(BM_C_SOURCES) $(BM_C_ONION_SOURCES) $(BM_C_GTK_SOURCES)  $(BM_CXX_SOURCES)
 
 redump: bismon $(wildcard store*.bmon)
 	./bismon --version
