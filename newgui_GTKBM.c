@@ -20,8 +20,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
 
-#include "bismon.h"
+#include "gtkbismon.h"
 #include "newgui_GTKBM.const.h"
+
 
 char *gui_init_cmd_file_BM;
 
@@ -188,7 +189,7 @@ unlock_runpro_mtx_at_BM (int lineno)
 
 /*****************************************************************/
 // the function to handle keypresses of cmd, for Return & Tab
-static gboolean handlekeypress_newgui_cmd_BM (GtkWidget *, GdkEventKey *,
+static gboolean handlekeypress_newgui_cmd_BM (GtkWidget *, GdkEvent *,
                                               gpointer);
 
 // the function to handle "end-user-action" on commandbuf_BM
@@ -371,7 +372,7 @@ initialize_newgui_command_scrollview_BM (void)
                     G_CALLBACK (populatepopup_newgui_cmd_BM), NULL);
   g_signal_connect (commandbuf_BM, "mark-set",
                     G_CALLBACK (markset_newgui_cmd_BM), NULL);
-  GtkWidget *commandscrolw = gtk_scrolled_window_new (NULL, NULL);
+  GtkWidget *commandscrolw = gtk_scrolled_window_new ();
   gtk_container_add (GTK_CONTAINER (commandscrolw), commandview_BM);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (commandscrolw),
                                   GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -473,17 +474,17 @@ gcmarknewgui_BM (struct garbcoll_stBM *gc)
 // for "key-press-event" signal to commandview_BM
 gboolean
 handlekeypress_newgui_cmd_BM (GtkWidget *
-                              widg, GdkEventKey * evk, gpointer data)
+                              widg, GdkEvent * evk, gpointer data)
 {
   ASSERT_BM (GTK_IS_TEXT_VIEW (widg));
   ASSERT_BM (evk != NULL);
   ASSERT_BM (data == NULL);
   // see <gdk/gdkkeysyms.h> for names of keysyms
-  if (evk->keyval == GDK_KEY_Return)
+  if (gdk_key_event_get_keyval(evk) == GDK_KEY_Return)
     {
       GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
-      bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
-      bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
+      bool withctrl = (gdk_key_event_get_consumed_modifiers (evk)) == GDK_CONTROL_MASK;
+      bool withshift = (gdk_key_event_get_consumed_modifiers (evk)) == GDK_SHIFT_MASK;
       if (withctrl)
         {
           run_then_erase_newgui_command_BM ();
@@ -496,11 +497,11 @@ handlekeypress_newgui_cmd_BM (GtkWidget *
         return false;
       return true;              // dont propagate the return when withctrl or withshift
     }
-  else if (evk->keyval == GDK_KEY_Delete)
+  else if (gdk_key_event_get_keyval(evk) == GDK_KEY_Delete)
     {
       GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
-      bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
-      bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
+      bool withctrl = (gdk_key_event_get_consumed_modifiers (evk)) == GDK_CONTROL_MASK;
+      bool withshift = (gdk_key_event_get_consumed_modifiers (evk)) == GDK_SHIFT_MASK;
       if (withctrl && !withshift)
         {
           DBGPRINTF_BM ("handlekeypress_newgui delete+ctrl erase command");
@@ -511,20 +512,20 @@ handlekeypress_newgui_cmd_BM (GtkWidget *
       else                      // plain DELETE, propagate it
         return false;
     }
-  else if (evk->keyval == GDK_KEY_Tab)
+  else if (gdk_key_event_get_keyval(evk) == GDK_KEY_Tab)
     {
       tabautocomplete_gui_cmd_BM ();
       return true;              // dont propagate the tab
     }
-  else if (evk->keyval >= GDK_KEY_F1 && evk->keyval <= GDK_KEY_F10)
+  else if (gdk_key_event_get_keyval(evk) >= GDK_KEY_F1 && gdk_key_event_get_keyval(evk) <= GDK_KEY_F10)
     {
       GdkModifierType modmask = gtk_accelerator_get_default_mod_mask ();
-      bool withctrl = (evk->state & modmask) == GDK_CONTROL_MASK;
-      bool withshift = (evk->state & modmask) == GDK_SHIFT_MASK;
+      bool withctrl = (gdk_key_event_get_consumed_modifiers (evk)) == GDK_CONTROL_MASK;
+      bool withshift = (gdk_key_event_get_consumed_modifiers (evk)) == GDK_SHIFT_MASK;
       DBGPRINTF_BM
         ("handlekeypress_newgui_cmd_BM keyval %#x KEY_F%d %s%s",
-         evk->keyval,
-         evk->keyval - (GDK_KEY_F1 - 1),
+         gdk_key_event_get_keyval(evk),
+         gdk_key_event_get_keyval(evk) - (GDK_KEY_F1 - 1),
          withctrl ? " ctrl" : "", withshift ? " shift" : "");
 #warning should handle the function key
       return false;
