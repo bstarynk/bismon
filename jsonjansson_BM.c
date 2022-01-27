@@ -152,8 +152,7 @@ objputjanssonpayl_BM (objectval_tyBM * objarg, value_tyBM valarg,
 {
   objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
   LOCALFRAME_BM (stkf, /*descr: */ k_json,
-                 objectval_tyBM * obj;
-                 value_tyBM valv;       //
+                 objectval_tyBM * obj; value_tyBM valv; //
                  value_tyBM ctxv;       //
                  value_tyBM errorv;     //
     );
@@ -758,8 +757,7 @@ canonjsonifyvalue_BM (value_tyBM valarg,
                  {
                  value_tyBM * vcomp;    //
                  objectval_tyBM * ocomp;        //
-                 };
-    );
+                 };);
   _.valv = valarg;
   _.octxt = objectcast_BM (ctxarg);
   DBGPRINTF_BM ("canonjsonifyvalue start val=%s ctx=%s depth#%d",
@@ -932,10 +930,7 @@ nodaljsonstring_BM (struct nodaljsonmode_st *njm, const char *str,
   objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
   objectval_tyBM *k_json_string = BMK_419If27jxwQ_3WQnLqU53iq;
   LOCALFRAME_BM (stkf, /*descr: */ k_json_string,
-                 value_tyBM resv;
-                 value_tyBM setv;
-                 objectval_tyBM * ob;
-    );
+                 value_tyBM resv; value_tyBM setv; objectval_tyBM * ob;);
   ASSERT_BM (njm && njm->njs_magic == NODALJSON_MAGIC_BM);
   if (!str)
     return NULL;
@@ -989,11 +984,9 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
   objectval_tyBM *k_json_entry = BMK_78X6jYDHXpW_3opwNmDlnqc;
   ASSERT_BM (njm && njm->njs_magic == NODALJSON_MAGIC_BM);
   LOCALFRAME_BM (stkf, /*descr: */ k_nodal_json_decode,
-                 value_tyBM resv; value_tyBM tinarrv[TINYSIZE_BM];
-                 objectval_tyBM * ob1; value_tyBM vkey;
-                 value_tyBM vcomp;
-                 value_tyBM vnode;
-    );
+                 value_tyBM resv;
+                 value_tyBM tinarrv[TINYSIZE_BM]; objectval_tyBM * ob1;
+                 value_tyBM vkey; value_tyBM vcomp; value_tyBM vnode;);
   if (!js)
     return NULL;
   if (depth > MAXDEPTHJSON_BM)

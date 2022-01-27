@@ -1710,9 +1710,7 @@ objstrbufferoutputjsonindentedvaluepayl_BM (objectval_tyBM * objarg,
 {
   objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
   LOCALFRAME_BM (stkf, /*descr: */ k_json,
-                 objectval_tyBM * obj;
-                 value_tyBM val;
-                 value_tyBM ctxv);
+                 objectval_tyBM * obj; value_tyBM val; value_tyBM ctxv);
   _.obj = objectcast_BM (objarg);
   _.val = valarg;
   _.ctxv = ctxarg;
@@ -1749,9 +1747,7 @@ objstrbufferoutputjsoncompactedvaluepayl_BM (objectval_tyBM * objarg,
 {
   objectval_tyBM *k_json = BMK_2gNQ6wSYLGz_9FkMuCIKfmv;
   LOCALFRAME_BM (stkf, /*descr: */ k_json,
-                 objectval_tyBM * obj;
-                 value_tyBM val;
-                 value_tyBM ctxv);
+                 objectval_tyBM * obj; value_tyBM val; value_tyBM ctxv);
   _.obj = objectcast_BM (objarg);
   _.val = valarg;
   _.ctxv = ctxarg;
@@ -1788,9 +1784,7 @@ fill_the_system_with_bismon_BM (struct stackframe_stBM *stkf)
   objectval_tyBM *k_bismon_time = BMK_4D4kCFt8Nis_8EWgKMYUxq9;
   objectval_tyBM *k_bismon_timestamp = BMK_4ZtOeXua93M_4fBK54ih15X;
   LOCALFRAME_BM (stkf, /*descr: */ k_the_system,
-                 objectval_tyBM * sysob;
-                 value_tyBM val;
-    );
+                 objectval_tyBM * sysob; value_tyBM val;);
   _.sysob = k_the_system;
   ///////
   objlock_BM (_.sysob);
@@ -1828,9 +1822,7 @@ forget_the_system_with_bismon_BM (struct stackframe_stBM *stkf)
   objectval_tyBM *k_bismon_time = BMK_4D4kCFt8Nis_8EWgKMYUxq9;
   objectval_tyBM *k_bismon_timestamp = BMK_4ZtOeXua93M_4fBK54ih15X;
   LOCALFRAME_BM (stkf, /*descr: */ k_the_system,
-                 objectval_tyBM * sysob;
-                 value_tyBM val;
-    );
+                 objectval_tyBM * sysob; value_tyBM val;);
   _.sysob = k_the_system;
   ///////
   objlock_BM (_.sysob);
