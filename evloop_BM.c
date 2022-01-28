@@ -301,3 +301,165 @@ fork_process_at_slot_BM (int slotpos,
       onproc->rp_bufob = _.bufob;
     }
 }                               /* end fork_process_at_slot_BM */
+
+
+/// remember that only web_plain_event_loop_BM is allowed to *remove*
+/// things from onionrunprocarr_BM or onionrunpro_list_BM
+void
+web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
+{
+  //  objectval_tyBM *k_web_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+                 objectval_tyBM * bufob;);
+  atomic_init (&onionlooprunning_BM, true);
+
+  DBGBACKTRACEPRINTF_BM ("web_plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",      //
+                         sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
+  long loopcnt = 0;
+  INFOPRINTF_BM ("start loop of web_plain_event_loop_BM for %s",
+                 onion_web_base_BM);
+  while (atomic_load (&onionlooprunning_BM))
+    {
+      loopcnt++;
+      struct pollfd pollarr[MAXNBWORKJOBS_BM + 8];
+      pid_t endedprocarr[MAXNBWORKJOBS_BM];
+      memset (pollarr, 0, sizeof (pollarr));
+      memset (endedprocarr, 0, sizeof (endedprocarr));
+      int nbpoll = 0;
+      enum
+      { pollix_sigfd,           // got a signalfd
+        pollix_cmdp,            // the command pipe
+        pollix__last
+      };
+      pollarr[pollix_sigfd].fd = sigfd_BM;
+      pollarr[pollix_sigfd].events = POLL_IN;
+      pollarr[pollix_cmdp].fd = cmdpipe_rd_BM;
+      pollarr[pollix_cmdp].events = POLL_IN;
+      nbpoll = pollix__last;
+      {
+        lockonion_runpro_mtx_at_BM (__LINE__);
+        for (int j = 0; j < nbworkjobs_BM; j++)
+          if (onionrunprocarr_BM[j].rp_pid > 0
+              && onionrunprocarr_BM[j].rp_outpipe > 0)
+            {
+              pollarr[nbpoll].fd = onionrunprocarr_BM[j].rp_outpipe;
+              pollarr[nbpoll].events = POLL_IN;
+              nbpoll++;
+            }
+        unlockonion_runpro_mtx_at_BM (__LINE__);
+      }
+#define POLL_DELAY_MILLISECS_BM 3750
+      if (loopcnt % 4 == 0)
+        DBGPRINTF_BM
+          ("web_plain_event_loop_BM before poll nbpoll=%d loop#%ld delay %d ms",
+           nbpoll, loopcnt, POLL_DELAY_MILLISECS_BM);
+      int nbready = poll (pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
+      if (loopcnt % 4 == 0)
+        DBGPRINTF_BM ("web_plain_event_loop_BM nbready %d loop#%ld", nbready,
+                      loopcnt);
+      if (nbready == 0)         // no file descriptor read, timed out
+        continue;
+      if (nbready < 0)
+        {
+          if (errno != EINTR)
+            FATAL_BM ("web_plain_event_loop_BM poll failure");
+          continue;
+        }
+      {
+        char pipbuf[1024 + 4];
+        lockonion_runpro_mtx_at_BM (__LINE__);
+        int runix = 0;
+        for (int ix = pollix__last; ix < nbpoll; ix++)
+          {
+            if (pollarr[ix].revents & POLL_IN)
+              {
+                int curfd = pollarr[ix].fd;
+                while (runix < nbworkjobs_BM)
+                  {
+                    if (onionrunprocarr_BM[runix].rp_outpipe == curfd)
+                      {
+                        struct onionproc_stBM *onproc =
+                          onionrunprocarr_BM + runix;
+                        runix++;
+                        int bytcnt = 0;
+                        do
+                          {
+                            memset (pipbuf, 0, sizeof (pipbuf));
+                            // we might do ioctl(curfd, FIONBIO, &cnt)
+                            // but it is not worth doing since the pipe
+                            // is non-blocking. See https://stackoverflow.com/a/1151077/841108
+                            bytcnt =
+                              read (curfd, pipbuf, sizeof (pipbuf) - 4);
+                            if (bytcnt < 0 && errno == EINTR)
+                              continue;
+                            if (bytcnt < 0 && errno == EWOULDBLOCK)
+                              break;
+                            if (bytcnt < 0)
+                              {
+                                // this probably should not happen
+                                FATAL_BM
+                                  ("unexpected error %m on output pipe fd#%d for pid %d",
+                                   curfd, (int) onproc->rp_pid);
+                              }
+                            if (bytcnt == 0)
+                              { // end of file on pipe
+                                // the forked process might close its stdout
+                                // and still be running, even if this is
+                                // unfriendly...
+                                close (curfd);
+                                onproc->rp_outpipe = -1;
+                                break;
+                              }
+                            ASSERT_BM (bytcnt > 0);
+                            pipbuf[bytcnt] = (char) 0;
+                            if ((int) strlen (pipbuf) < (int) bytcnt)
+                              {
+                                WARNPRINTF_BM
+                                  ("unexpected null byte from process pid#%d command node %s in %s",
+                                   (int) onionrunprocarr_BM[runix].rp_pid,
+                                   OUTSTRVALUE_BM ((value_tyBM)
+                                                   onproc->rp_cmdnodv),
+                                   bytstring_BM (onproc->rp_dirstrv) ? :
+                                   "./");
+                                if (kill (onproc->rp_pid, SIGTERM) == 0)
+                                  WARNPRINTF_BM ("sent SIGTERM to pid#%d",
+                                                 onproc->rp_pid);
+                                close (curfd);
+                                onproc->rp_outpipe = -1;
+                                usleep (1000);
+
+                              }
+                            _.bufob = onproc->rp_bufob;
+                            ASSERT_BM (isobject_BM (_.bufob));
+                            ASSERT_BM (objhasstrbufferpayl_BM (_.bufob));
+                            objstrbufferappendcstrpayl_BM (_.bufob, pipbuf);
+                            _.bufob = NULL;
+                            pipbuf[0] = (char) 0;
+                          }
+                        while (bytcnt > 0);
+                        break;
+                      }
+                  }
+              }
+            _.bufob = NULL;
+          }
+        unlockonion_runpro_mtx_at_BM (__LINE__);
+      }
+      if (pollarr[pollix_sigfd].revents & POLL_IN)
+        {
+          DBGPRINTF_BM ("plain_event_loop sigfd readable");
+          bool stop = read_sigfd_BM ();
+          if (stop)
+            {
+              atomic_store (&onionlooprunning_BM, false);
+              DBGPRINTF_BM ("plain_event_loop sigfd stopping after sigfd");
+              break;
+            }
+          else
+            DBGPRINTF_BM ("plain_event_loop sigfd continuing after sigfd");
+        }
+      if (pollarr[pollix_cmdp].revents & POLL_IN)
+        read_commandpipe_BM ();
+    }                           /* end while onionlooprunning */
+  INFOPRINTF_BM ("web_plain_event_loop_BM ended loopcnt=%ld", loopcnt);
+}                               /* end web_plain_event_loop_BM */
