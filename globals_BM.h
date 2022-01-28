@@ -3,7 +3,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -89,12 +89,56 @@ extern int nbworkjobs_BM;
 
 extern volatile struct backstrace_state *backtracestate_BM;
 
+
+extern int sigfd_BM;       /* for signalfd(2) */
+extern atomic_int oniontimerfd_BM; /* for timerfd_create(2) */
+extern volatile atomic_bool onionlooprunning_BM;
+extern pthread_mutex_t onionstack_mtx_BM;
+extern pthread_cond_t onionstack_condchange_BM;
 /*****************************************************************/
 extern const char *onion_ssl_certificate_BM;
 extern const char *onion_web_base_BM;
 extern const char *onion_anon_web_cookie_BM;
 /*****************************************************************/
 
+struct onionstackinfo_stBM
+{
+  pthread_t ost_thread;
+  struct stackframe_stBM *ost_stkf;
+  atomic_bool ost_suspended;
+};
+extern struct onionstackinfo_stBM onionstackinfo_BM[MAXNBWORKJOBS_BM + 1];
+extern thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
+
+//////////////////////////////////////////////////////////////////////////
+/// For process queue running processes; similar to gtkrunprocarr_BM
+/// in newgui_GTKBM.c stuff is added into onionrunprocarr_BM &
+/// onionrunpro_list_BM by any thread doing queue_process_BM. Stuff is
+/// removed from them only by plain_event_loop_BM which would also
+/// apply the closures.
+struct onionproc_stBM
+{
+  pid_t rp_pid;
+  int rp_outpipe;
+  const stringval_tyBM *rp_dirstrv;
+  const node_tyBM *rp_cmdnodv;
+  const closure_tyBM *rp_closv;
+  objectval_tyBM *rp_bufob;
+};
+
+extern struct onionproc_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
+
+/// queued process commands, of nodes (dir, cmd, clos); for processes
+/// which are not yet in the array above...
+extern struct listtop_stBM *onionrunpro_list_BM;
+
+// lock for the structures above (both onionrunprocarr_BM & onionrunpro_list_BM)
+extern pthread_mutex_t onionrunpro_mtx_BM;
+
+extern volatile atomic_bool onionlooprunning_BM;
+
+extern pthread_mutex_t onionstack_mtx_BM;
+extern pthread_cond_t onionstack_condchange_BM;
 
 #define UNSPECIFIED_BM ((void*)(&unspecifieddata_BM))
 #define HAS_GLOBAL_BM(Nam) extern objectval_tyBM*globdata_##Nam##_BM;

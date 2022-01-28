@@ -1061,8 +1061,7 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
             ASSERT_BM (keyjs != NULL);
             _.vkey = NULL;
             _.vcomp = NULL;
-            _.vkey = nodaljsonstring_BM (njm, keyjs,
-                                         CURFRAME_BM);
+            _.vkey = nodaljsonstring_BM (njm, keyjs, CURFRAME_BM);
             _.vcomp = nodaljsondecode_BM (njm, jval, depth + 1, CURFRAME_BM);
             _.vnode = makenode2_BM (k_json_entry, _.vkey, _.vcomp);
             _.tinarrv[ix++] = _.vnode;
@@ -1080,8 +1079,7 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
             ASSERT_BM (keyjs != NULL);
             _.vkey = NULL;
             _.vcomp = NULL;
-            _.vkey = nodaljsonstring_BM (njm, keyjs,
-                                         CURFRAME_BM);
+            _.vkey = nodaljsonstring_BM (njm, keyjs, CURFRAME_BM);
             _.vcomp = nodaljsondecode_BM (njm, jval, depth + 1, CURFRAME_BM);
             _.vnode = makenode2_BM (k_json_entry, _.vkey, _.vcomp);
             objappendcomp_BM (_.ob1, _.vnode);

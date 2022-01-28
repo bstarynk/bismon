@@ -60,9 +60,6 @@ enum cmd_charcode_enBM
   cmdcod_postponetimer_bm = 'T',
 };
 
-static int sigfd_BM = -1;       /* for signalfd(2) */
-static atomic_int oniontimerfd_BM = -1; /* for timerfd_create(2) */
-
 extern void add_defer_command_onion_BM (void);
 
 extern void
@@ -81,41 +78,6 @@ extern void onion_log_object_message_BM (const objectval_tyBM * obj);
 extern void onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lineno,
 					const char *fmt, ...);
 
-//////////////////////////////////////////////////////////////////////////
-/// For process queue running processes; similar to gtkrunprocarr_BM
-/// in newgui_GTKBM.c stuff is added into onionrunprocarr_BM &
-/// onionrunpro_list_BM by any thread doing queue_process_BM. Stuff is
-/// removed from them only by plain_event_loop_BM which would also
-/// apply the closures.
-struct onionproc_stBM
-{
-  pid_t rp_pid;
-  int rp_outpipe;
-  const stringval_tyBM *rp_dirstrv;
-  const node_tyBM *rp_cmdnodv;
-  const closure_tyBM *rp_closv;
-  objectval_tyBM *rp_bufob;
-} onionrunprocarr_BM[MAXNBWORKJOBS_BM];
-
-/// queued process commands, of nodes (dir, cmd, clos); for processes
-/// which are not yet in the array above...
-struct listtop_stBM *onionrunpro_list_BM;
-
-// lock for the structures above (both onionrunprocarr_BM & onionrunpro_list_BM)
-pthread_mutex_t onionrunpro_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
-
-static volatile atomic_bool onionlooprunning_BM;
-
-static pthread_mutex_t onionstack_mtx_bm = PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t onionstack_condchange_bm = PTHREAD_COND_INITIALIZER;
-struct onionstackinfo_stBM
-{
-  pthread_t ost_thread;
-  struct stackframe_stBM *ost_stkf;
-  atomic_bool ost_suspended;
-};
-static struct onionstackinfo_stBM onionstackinfo_bm[MAXNBWORKJOBS_BM + 1];
-static thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
 
 static json_t *bismon_json_loadf_bm (const char *path, FILE * fil,
                                      size_t flags, json_error_t * jerr);
@@ -126,32 +88,6 @@ static char *percent_encode_onion_query_args_BM (onion_request * req);
 /// create the anonymous web session and write it into a file
 static void create_anonymous_web_session_BM (void);
 
-// the lock above should be set when calling:
-static void
-fork_onion_process_at_slot_BM (int slotpos,
-                               const stringval_tyBM * dirstrarg,
-                               const node_tyBM * cmdnodarg,
-                               const closure_tyBM * endclosarg,
-                               struct stackframe_stBM *stkf);
-static void lockonion_runpro_mtx_at_BM (int lineno);
-static void unlockonion_runpro_mtx_at_BM (int lineno);
-
-static void web_plain_event_loop_BM (void);
-
-// Handle signals thu signalfd(2); return true to break
-// web_plain_event_loop_BM and stop the loop there. To continue the
-// event loop, it should return false.
-static bool read_sigfd_BM (void);
-// handle SIGCHLD
-static void handle_sigchld_BM (pid_t pid);
-// handle the command pipe
-static void read_commandpipe_BM (void);
-
-static void register_onion_thread_stack_BM (struct stackframe_stBM *);
-static void unregister_onion_thread_stack_BM (struct stackframe_stBM *);
-static void perhaps_suspend_for_gc_onion_thread_stack_BM (struct
-                                                          stackframe_stBM *);
-
 /*** Our websession cookies are something like
      n<rank>r<rand1>t<rand2>o<oid> where <rank> is the websess_rank,
      <rand1> and <rand2> are random integers, <oid> is the websession
@@ -160,29 +96,6 @@ static void perhaps_suspend_for_gc_onion_thread_stack_BM (struct
 
 #define BISMONION_WEBSESS_SUFLEN 40
 
-
-void
-lockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
-{
-#if 0
-  // too verbose, so not needed
-  DBGPRINTFAT_BM (__FILE__, lineno, "lockonion_runpro_mtx_BM thrid=%ld",
-                  (long) gettid_BM ());
-#endif
-  pthread_mutex_lock (&onionrunpro_mtx_BM);
-}                               /* end lockonion_runpro_mtx_at_BM */
-
-
-void
-unlockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
-{
-#if 0
-  // too verbose, so not needed
-  DBGPRINTFAT_BM (__FILE__, lineno, "unlockonion_runpro_mtx_BM thrid=%ld",
-                  (long) gettid_BM ());
-#endif
-  pthread_mutex_unlock (&onionrunpro_mtx_BM);
-}                               /* end lockonion_runpro_mtx_at_BM */
 
 void
 onion_log_begin_message_BM (void)
@@ -239,214 +152,6 @@ onion_log_puts_message_BM (const char *msg)
 #warning onion_log_puts_message_BM  unimplemented in web_ONIONBM
 }                               /* end onion_log_puts_message_BM */
 
-
-// queue some external process; its stdin is /dev/null; both stdout &
-// stderr are merged & captured; final string is given to the closure.
-// dirstrv is the string of the directory to run it in (if NULL, use
-// cwd) cmdnodv is a node with all sons being strings, for the command
-// to run endclosv is the closure getting the status
-// stringoutput, could fail
-void
-onion_queue_process_BM (const stringval_tyBM * dirstrarg,
-                        const node_tyBM * cmdnodarg,
-                        const closure_tyBM * endclosarg,
-                        struct stackframe_stBM *stkf)
-{
-  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
-  //objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
-  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_queue_process, //
-                 const stringval_tyBM * dirstrv;        //
-                 const node_tyBM * cmdnodv;     //
-                 const closure_tyBM * endclosv; //
-                 value_tyBM curargv;    //
-                 value_tyBM errorv;     //
-                 value_tyBM causev;     //
-                 objectval_tyBM * bufob;        //
-                 value_tyBM nodv;       //
-    );
-  _.dirstrv = dirstrarg;
-  _.cmdnodv = cmdnodarg;
-  _.endclosv = endclosarg;
-  bool lockedproc = false;
-  int failin = -1;
-#define FAILHERE(Cause) do { failin = __LINE__ ;  _.causev = (value_tyBM)(Cause); goto failure; } while(0)
-  if (_.dirstrv && !isstring_BM ((value_tyBM) _.dirstrv))
-    FAILHERE (makenode1_BM (BMP_string, (value_tyBM) _.dirstrv));
-  if (_.dirstrv && isstring_BM ((value_tyBM) _.dirstrv))
-    {
-      struct stat dirstat;
-      int olderrno = errno;
-      errno = 0;
-      memset (&dirstat, 0, sizeof (dirstat));
-      if (!stat (bytstring_BM (_.dirstrv), &dirstat)
-          && (dirstat.st_mode & S_IFMT) != S_IFDIR)
-        errno = ENOTDIR;
-      int newerrno = errno;
-      errno = olderrno;
-      if (newerrno)
-        FAILHERE (makenode2_BM
-                  (BMP_node, (value_tyBM) _.dirstrv,
-                   taggedint_BM (newerrno)));
-    }
-  if (!isnode_BM ((value_tyBM) _.cmdnodv))
-    FAILHERE (makenode1_BM (BMP_node, (value_tyBM) _.cmdnodv));
-  if (!isclosure_BM ((value_tyBM) _.endclosv))
-    FAILHERE (makenode1_BM (BMP_closure, (value_tyBM) _.cmdnodv));
-  unsigned cmdlen = nodewidth_BM ((value_tyBM) _.cmdnodv);
-  if (cmdlen == 0)
-    FAILHERE (makenode1_BM (BMP_node, (value_tyBM) _.cmdnodv));
-  for (unsigned aix = 0; aix < cmdlen; aix++)
-    {
-      _.curargv = nodenthson_BM ((value_tyBM) _.cmdnodv, aix);
-      if (!isstring_BM (_.curargv))
-        FAILHERE (makenode2_BM
-                  (BMP_node, (value_tyBM) _.cmdnodv, taggedint_BM (aix)));
-    }
-  ASSERT_BM (nbworkjobs_BM >= MINNBWORKJOBS_BM
-             && nbworkjobs_BM <= MAXNBWORKJOBS_BM);
-  {
-    lockonion_runpro_mtx_at_BM (__LINE__);
-    lockedproc = true;
-    int slotpos = -1;
-    for (int ix = 0; ix < nbworkjobs_BM; ix++)
-      {
-        if (onionrunprocarr_BM[ix].rp_pid == 0)
-          {
-            slotpos = ix;
-            break;
-          };
-      }
-    if (slotpos >= 0 && !onionrunpro_list_BM)
-      {
-        fork_onion_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv,
-                                       _.endclosv, CURFRAME_BM);
-      }
-    else
-      {                         // append to onionrunpro_list_BM
-        if (!onionrunpro_list_BM)
-          onionrunpro_list_BM = makelist_BM ();
-        _.nodv = (value_tyBM)
-          makenode3_BM (k_queue_process, (value_tyBM) _.dirstrv,
-                        (value_tyBM) _.cmdnodv, (value_tyBM) _.endclosv);
-        listappend_BM (onionrunpro_list_BM, _.nodv);
-      }
-    ASSERT_BM (lockedproc);
-    unlockonion_runpro_mtx_at_BM (__LINE__), lockedproc = false;
-  }
-  LOCALJUSTRETURN_BM ();
-failure:
-#undef FAILHERE
-  if (lockedproc)
-    unlockonion_runpro_mtx_at_BM (__LINE__), lockedproc = false;
-  DBGPRINTF_BM
-    ("queue_process failure failin %d dirstr %s, cmdnod %s endclos %s, cause %s",
-     failin,
-     bytstring_BM (_.dirstrv), debug_outstr_value_BM ((value_tyBM) _.cmdnodv,
-                                                      CURFRAME_BM, 0),
-     debug_outstr_value_BM ((value_tyBM) _.endclosv, CURFRAME_BM, 0),
-     debug_outstr_value_BM ((value_tyBM) _.causev, CURFRAME_BM, 0));
-  _.errorv = (value_tyBM) makenode4_BM (k_queue_process, (value_tyBM) _.dirstrv, (value_tyBM) _.cmdnodv,        //
-                                        (value_tyBM) _.endclosv,
-                                        (value_tyBM) _.causev);
-  PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
-}                               /* end queue_process_BM */
-
-
-
-////////////////
-static void
-fork_onion_process_at_slot_BM (int slotpos,
-                               const stringval_tyBM * dirstrarg,
-                               const node_tyBM * cmdnodarg,
-                               const closure_tyBM * endclosarg,
-                               struct stackframe_stBM *stkf)
-{
-  //objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
-  //objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
-  LOCALFRAME_BM ( /*prev: */ stkf,
-                 /*descr: */ NULL,
-                 const stringval_tyBM * dirstrv;        //
-                 const node_tyBM * cmdnodv;     //
-                 const closure_tyBM * endclosv; //
-                 value_tyBM curargv;    //
-                 objectval_tyBM * bufob;        //
-    );
-  _.dirstrv = dirstrarg;
-  _.cmdnodv = cmdnodarg;
-  _.endclosv = endclosarg;
-  int cmdlen = nodewidth_BM ((value_tyBM) _.cmdnodv);
-  ASSERT_BM (cmdlen > 0);
-  ASSERT_BM (slotpos >= 0 && slotpos < MAXNBWORKJOBS_BM);
-  DBGPRINTF_BM ("fork_onion_process_at_slot_BM slotpos %d cmdnod %s",
-                slotpos,
-                debug_outstr_value_BM ((value_tyBM) _.cmdnodv, CURFRAME_BM,
-                                       0));
-  /// should fork the process
-  int pipfd[2] = { -1, -1 };
-  const char **args = calloc (cmdlen + 1, sizeof (char *));
-  if (!args)
-    FATAL_BM ("calloc args %d failed - %m", cmdlen);
-  for (int aix = 0; aix < cmdlen; aix++)
-    args[aix] = bytstring_BM (nodenthson_BM ((value_tyBM) _.cmdnodv, aix));
-  if (pipe (pipfd))
-    FATAL_BM ("pipe failed - %m");
-  ASSERT_BM (pipfd[0] > 0 && pipfd[1] > 0);
-  fflush (NULL);
-  pid_t pid = fork ();
-  if (pid < 0)
-    FATAL_BM ("failed to fork %s - %m", args[0]);
-  if (pid == 0)
-    {
-      {
-        // child process; 
-        sigset_t sigset = { };
-        sigemptyset (&sigset);
-        // restore default SIGTERM & SIGQUIT behavior
-        signal (SIGTERM, SIG_DFL);
-        signal (SIGQUIT, SIG_DFL);
-        signal (SIGCHLD, SIG_DFL);
-        sigaddset (&sigset, SIGTERM);
-        sigaddset (&sigset, SIGQUIT);
-        sigaddset (&sigset, SIGCHLD);
-        sigprocmask (SIG_UNBLOCK, &sigset, NULL);
-        sigfd_BM = -2;
-      }
-      //in principle, most file descriptors should be
-      //close-on-exec, but just in case we close some of them...
-      for (int ix = 3; ix < 64; ix++)
-        if (ix != pipfd[1])
-          (void) close (ix);
-      if (isstring_BM ((value_tyBM) _.dirstrv))
-        {
-          if (chdir (bytstring_BM (_.dirstrv)))
-            {
-              perror (bytstring_BM (_.dirstrv));
-              exit (126);
-            }
-        }
-      int fd = open ("/dev/null", O_RDONLY);
-      dup2 (fd, STDIN_FILENO);
-      close (fd), fd = -1;
-      dup2 (pipfd[1], STDOUT_FILENO);
-      dup2 (pipfd[1], STDERR_FILENO);
-      execv (args[0], (char *const *) args);
-      perror (args[0]);
-      _exit (127);
-    }
-  else
-    {                           // parent process
-      struct onionproc_stBM *onproc = onionrunprocarr_BM + slotpos;
-      ASSERT_BM (onproc->rp_pid <= 0 && onproc->rp_outpipe <= 0);
-      onproc->rp_pid = pid;
-      onproc->rp_outpipe = pipfd[0];
-      fcntl (pipfd[0], F_SETFL, O_NONBLOCK);
-      onproc->rp_cmdnodv = _.cmdnodv;
-      onproc->rp_closv = _.endclosv;
-      onproc->rp_dirstrv = _.dirstrv;
-      _.bufob = makeobj_BM ();
-      onproc->rp_bufob = _.bufob;
-    }
-}                               /* end fork_onion_process_at_slot_BM */
 
 
 ////////////////////////////////////////////////////////////////
@@ -1351,7 +1056,7 @@ bismon_json_loadf_bm (const char *path, FILE * fil, size_t flags,
 
 
 
-static pthread_mutex_t settingmtx_bm = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t settingmtx_BM = PTHREAD_MUTEX_INITIALIZER;
 
 
 //// handling of /_status.json
@@ -1425,7 +1130,7 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                          objectdbg_BM (_.sessionob));
   if (reqmeth != OR_GET && reqmeth != OR_HEAD)
     return OCS_NOT_IMPLEMENTED;
-  pthread_mutex_lock (&settingmtx_bm);
+  pthread_mutex_lock (&settingmtx_BM);
   /// compute jsonobpayl from web session
   if (_.sessionob)
     {
@@ -1604,7 +1309,7 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
       WARNPRINTF_BM
         ("json_dumps failed in bismon_settings_json_handler_BM, sessionob %s",
          objectdbg_BM (_.sessionob));
-      pthread_mutex_unlock (&settingmtx_bm);
+      pthread_mutex_unlock (&settingmtx_BM);
       if (jsoncontribpayl)
         json_decref (jsoncontribpayl), jsoncontribpayl = NULL;
       if (jsonobpayl)
@@ -1627,7 +1332,7 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
                      objectdbg_BM (_.sessionob), strj);
   }
   DBGPRINTF_BM ("bismon_settings_json_handler_BM strj:\n%s\n", strj);
-  pthread_mutex_unlock (&settingmtx_bm);
+  pthread_mutex_unlock (&settingmtx_BM);
   onion_response_set_header (resp, "Content-Type", "application/json");
   onion_response_set_code (resp, HTTP_OK);
   size_t sizej = strlen (strj);
@@ -3722,14 +3427,14 @@ webonion_suspend_before_gc_BM (void)
                 (long) gettid_BM (), elapsedtime_BM ());
   do
     {
-      pthread_mutex_lock (&onionstack_mtx_bm);
+      pthread_mutex_lock (&onionstack_mtx_BM);
       for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
         {
-          if (onionstackinfo_bm[ix].ost_thread != (pthread_t) 0
-              && onionstackinfo_bm[ix].ost_stkf)
+          if (onionstackinfo_BM[ix].ost_thread != (pthread_t) 0
+              && onionstackinfo_BM[ix].ost_stkf)
             {
               nbonionthreads++;
-              if (atomic_load (&onionstackinfo_bm[ix].ost_suspended))
+              if (atomic_load (&onionstackinfo_BM[ix].ost_suspended))
                 nbonionsuspended++;
             }
         }
@@ -3740,9 +3445,9 @@ webonion_suspend_before_gc_BM (void)
          nbonionthreads, nbonionsuspended, (long) gettid_BM (),
          elapsedtime_BM ());
       if (nbonionthreads > 0 && nbonionsuspended < nbonionthreads)
-        pthread_cond_timedwait (&onionstack_condchange_bm, &onionstack_mtx_bm,
+        pthread_cond_timedwait (&onionstack_condchange_BM, &onionstack_mtx_BM,
                                 &ts);
-      pthread_mutex_unlock (&onionstack_mtx_bm);
+      pthread_mutex_unlock (&onionstack_mtx_BM);
     }
   while (nbonionthreads > 0 && nbonionsuspended < nbonionthreads);
   DBGPRINTF_BM ("webonion_suspend_before_gc end tid#%ld elapsed %.3f s",
@@ -3962,7 +3667,7 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
 
 
 /// this function should return true to continue the loop in web_plain_event_loop_BM
-static bool
+bool
 read_sigfd_BM (void)            // called from web_plain_event_loop_BM
 {
   struct signalfd_siginfo siginf;
@@ -4113,7 +3818,7 @@ read_sigfd_BM (void)            // called from web_plain_event_loop_BM
 }                               /* end read_sigfd_BM */
 
 
-static void
+ void
 handle_sigchld_BM (pid_t pid)
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
@@ -4242,7 +3947,7 @@ handle_sigchld_BM (pid_t pid)
 }                               /* end handle_sigchld_BM */
 
 
-static void
+ void
 read_commandpipe_BM (void)
 {
 #define NANOSECONDS_PER_SECOND_bm   (1000*1000*1000)
@@ -4440,17 +4145,17 @@ register_onion_thread_stack_BM (struct stackframe_stBM *stkf)
 {
   ASSERT_BM (stkf != NULL);
   ASSERT_BM (stkf->stkfram_pA.htyp == typayl_StackFrame_BM);
-  pthread_mutex_lock (&onionstack_mtx_bm);
+  pthread_mutex_lock (&onionstack_mtx_BM);
   if (!curonionstackinfo_BM)
     {
       for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
         {
-          if (onionstackinfo_bm[ix].ost_stkf == NULL
-              && onionstackinfo_bm[ix].ost_thread == (pthread_t) 0)
+          if (onionstackinfo_BM[ix].ost_stkf == NULL
+              && onionstackinfo_BM[ix].ost_thread == (pthread_t) 0)
             {
-              curonionstackinfo_BM = onionstackinfo_bm + ix;
-              onionstackinfo_bm[ix].ost_thread = pthread_self ();
-              atomic_init (&onionstackinfo_bm[ix].ost_suspended, false);
+              curonionstackinfo_BM = onionstackinfo_BM + ix;
+              onionstackinfo_BM[ix].ost_thread = pthread_self ();
+              atomic_init (&onionstackinfo_BM[ix].ost_suspended, false);
               break;
             };
         }
@@ -4458,7 +4163,7 @@ register_onion_thread_stack_BM (struct stackframe_stBM *stkf)
   ASSERT_BM (curonionstackinfo_BM
              && curonionstackinfo_BM->ost_thread == pthread_self ());
   curonionstackinfo_BM->ost_stkf = stkf;
-  pthread_mutex_unlock (&onionstack_mtx_bm);
+  pthread_mutex_unlock (&onionstack_mtx_BM);
 }                               /* end register_onion_thread_stack_BM */
 
 
@@ -4467,14 +4172,14 @@ unregister_onion_thread_stack_BM (struct stackframe_stBM *stkf)
 {
   ASSERT_BM (stkf != NULL);
   ASSERT_BM (stkf->stkfram_pA.htyp == typayl_StackFrame_BM);
-  pthread_mutex_lock (&onionstack_mtx_bm);
+  pthread_mutex_lock (&onionstack_mtx_BM);
   ASSERT_BM (curonionstackinfo_BM != NULL);
   ASSERT_BM (curonionstackinfo_BM->ost_thread == pthread_self ());
   curonionstackinfo_BM->ost_thread = (pthread_t) 0;
   curonionstackinfo_BM->ost_stkf = NULL;
   atomic_store (&curonionstackinfo_BM->ost_suspended, false);
   curonionstackinfo_BM = NULL;
-  pthread_mutex_unlock (&onionstack_mtx_bm);
+  pthread_mutex_unlock (&onionstack_mtx_BM);
 }                               /* end unregister_onion_thread_stack_BM */
 
 
@@ -4486,13 +4191,13 @@ perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *stkf)
   NONPRINTF_BM
     ("perhaps_suspend_for_gc_onion_thread_stack_BM start tid#%ld elapsed %.3f s",
      (long) gettid_BM (), elapsedtime_BM ());
-  pthread_mutex_lock (&onionstack_mtx_bm);
+  pthread_mutex_lock (&onionstack_mtx_BM);
   ASSERT_BM (curonionstackinfo_BM != NULL);
   ASSERT_BM (curonionstackinfo_BM->ost_thread == pthread_self ());
   curonionstackinfo_BM->ost_stkf = stkf;
   atomic_store (&curonionstackinfo_BM->ost_suspended, true);
-  pthread_mutex_unlock (&onionstack_mtx_bm);
-  pthread_cond_broadcast (&onionstack_condchange_bm);
+  pthread_mutex_unlock (&onionstack_mtx_BM);
+  pthread_cond_broadcast (&onionstack_condchange_BM);
   long nbloops = 0;
   for (;;)
     {
@@ -4505,11 +4210,11 @@ perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *stkf)
            (long) gettid_BM (), elapsedtime_BM (), nbloops);
       agenda_wait_gc_BM ();
     }
-  pthread_mutex_lock (&onionstack_mtx_bm);
+  pthread_mutex_lock (&onionstack_mtx_BM);
   ASSERT_BM (curonionstackinfo_BM != NULL);
   atomic_store (&curonionstackinfo_BM->ost_suspended, false);
-  pthread_mutex_unlock (&onionstack_mtx_bm);
-  pthread_cond_broadcast (&onionstack_condchange_bm);
+  pthread_mutex_unlock (&onionstack_mtx_BM);
+  pthread_cond_broadcast (&onionstack_condchange_BM);
   if (nbloops > 0)
     DBGPRINTF_BM
       ("perhaps_suspend_for_gc_onion_thread_stack_BM end tid#%ld  elapsed %.3f s loops#%ld",
@@ -4522,14 +4227,14 @@ void
 gcmarkwebonion_BM (struct garbcoll_stBM *gc)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
-  pthread_mutex_lock (&onionstack_mtx_bm);
+  pthread_mutex_lock (&onionstack_mtx_BM);
   for (int ix = 0; ix < MAXNBWORKJOBS_BM; ix++)
     {
-      if (onionstackinfo_bm[ix].ost_stkf != NULL
-          && onionstackinfo_bm[ix].ost_thread != (pthread_t) 0)
-        gcframemark_BM (gc, onionstackinfo_bm[ix].ost_stkf, 0);
+      if (onionstackinfo_BM[ix].ost_stkf != NULL
+          && onionstackinfo_BM[ix].ost_thread != (pthread_t) 0)
+        gcframemark_BM (gc, onionstackinfo_BM[ix].ost_stkf, 0);
     }
-  pthread_mutex_unlock (&onionstack_mtx_bm);
+  pthread_mutex_unlock (&onionstack_mtx_BM);
 }                               /* end gcmarkwebonion_BM */
 
 
@@ -4537,7 +4242,7 @@ gcmarkwebonion_BM (struct garbcoll_stBM *gc)
 
 
 ////////////////////////////////////////////////////////////////
-static pthread_mutex_t onion_log_mtx_bm = PTHREAD_MUTEX_INITIALIZER;
+static pthread_mutex_t onion_log_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 static char onion_log_buffer_bm[1024];
 void
 onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lineno,
@@ -4564,7 +4269,7 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
     FATAL_BM("onion_log_with_backtrace_BM unexpected level %d from %s:%d",
 	     (int)level, filename, lineno);
   }
-  pthread_mutex_lock(&onion_log_mtx_bm);
+  pthread_mutex_lock(&onion_log_mtx_BM);
   memset (onion_log_buffer_bm, 0, sizeof(onion_log_buffer_bm));
   snprintf(onion_log_buffer_bm, sizeof(onion_log_buffer_bm)/2,
 	   "%s:%d:%s:", basename_BM(filename), lineno, levmsg);
@@ -4588,7 +4293,7 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
 	    basename_BM((filename)), (lineno), levmsg);
   };
   fflush(stderr);
-  pthread_mutex_unlock(&onion_log_mtx_bm);
+  pthread_mutex_unlock(&onion_log_mtx_BM);
   if (level == O_ERROR)
     FATAL_AT_BM(filename, lineno, "onion_log_with_backtrace_BM error: %s",
 		onion_log_buffer_bm);

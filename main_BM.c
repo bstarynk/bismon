@@ -49,6 +49,8 @@ char *contact_email_BM;
 const char *project_name_BM;
 const char *sigusr1_dump_prefix_BM;
 
+int sigfd_BM = -1;              /* for signalfd(2) */
+atomic_int oniontimerfd_BM = -1;        /* for timerfd_create(2) */
 char real_executable_BM[128];
 
 /// these ONION variables may need to be declared even when

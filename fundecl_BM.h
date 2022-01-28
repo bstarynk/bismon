@@ -388,6 +388,7 @@ extern "C"
                                       const objectval_tyBM * objsig);
 
   extern objrout_sigBM objrout_placeholder_BM;
+  extern bool read_sigfd_BM();
   static inline void objtouchmtime_BM (objectval_tyBM * obj, double mtime);
   static inline void objtouchnow_BM (objectval_tyBM * obj);
 
@@ -1586,12 +1587,20 @@ extern "C"
                                            struct webexchangedata_stBM *wex);
   extern void webexchangedatagckeep_BM (struct garbcoll_stBM *gc,
                                         struct webexchangedata_stBM *we);
+extern void
+fork_onion_process_at_slot_BM (int slotpos,
+                               const stringval_tyBM * dirstrarg,
+                               const node_tyBM * cmdnodarg,
+                               const closure_tyBM * endclosarg,
+                               struct stackframe_stBM *stkf);
+  extern void lockonion_runpro_mtx_at_BM (int lineno);
+extern void unlockonion_runpro_mtx_at_BM (int lineno);
+
 // payload delete support for websessiondata & webexchangedata
   extern void websessiondelete_BM (objectval_tyBM * ownobj,
                                    struct websessiondata_stBM *ws);
   extern void webexchangedelete_BM (objectval_tyBM * ownobj,
                                     struct webexchangedata_stBM *we);
-  extern void stop_onion_event_loop_BM (void);
   static inline bool objhaswebsessionpayl_BM (const objectval_tyBM * obj);
   static inline struct websessiondata_stBM *objgetwebsessionpayl_BM (const
                                                                      objectval_tyBM
