@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2020 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -19,8 +19,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
-#include "bismon.h"
+#include "gtkbismon.h"
 #include "guibrowse_GTKBM.const.h"
+
 
 GtkWidget *mainwin_BM;
 GtkWidget *errormessagedialog_BM;
@@ -164,7 +165,7 @@ GtkTextTag *xtra_cmdtags_BM[CMD_MAXNEST_BM];
 jmp_buf jmperrorcmd_BM;
 
 // the function to handle keypresses of cmd, for Return & Tab
-static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEventKey *, gpointer);
+static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEvent *, gpointer);
 
 // the function to handle "end-user-action" on commandbuf_BM
 static void enduseractioncmd_BM (GtkTextBuffer *, gpointer);
@@ -183,15 +184,15 @@ guint commandblinkid_BM;
 struct parenoffset_stBM commandblinkparens_BM;  /// offsets are absolute
 
 /// stop completely the blinking
-static void commandblinkstop_BM (void);
+static void commandblinkstop_GTKBM (void);
 
 // unblink temporarily
-static int commandblinkoff_BM (gpointer);
+static int commandblinkoff_GTKBM (gpointer);
 // blink temporarily
-static int commandblinkon_BM (gpointer);
+static int commandblinkon_GTKBM (gpointer);
 
 // start the blinking
-static void commandblinkstart_BM (void);
+static void commandblinkstart_GTKBM (void);
 
 
 const struct parserops_stBM parsop_command_build_BM = {
@@ -264,19 +265,19 @@ textiterstrdbg_BM (GtkTextIter * it)
 
 
 void
-run_then_erase_command_BM (void)
+run_then_erase_command_GTKBM (void)
 {
-  runcommand_BM (true);
-}                               /* end run_then_erase_command_BM */
+  runcommand_GTKBM (true);
+}                               /* end run_then_erase_command_GTKBM */
 
 void
-run_then_keep_command_BM (void)
+run_then_keep_command_GTKBM (void)
 {
-  runcommand_BM (false);
-}                               /* end run_then_keep_command_BM */
+  runcommand_GTKBM (false);
+}                               /* end run_then_keep_command_GTKBM */
 
 void
-clear_command_BM (void)
+clear_command_GTKBM (void)
 {
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
@@ -285,7 +286,7 @@ clear_command_BM (void)
   log_begin_message_BM ();
   log_puts_message_BM ("cleared commands");
   log_end_message_BM ();
-}                               /* end clear_command_BM */
+}                               /* end clear_command_GTKBM */
 
 
 
@@ -294,15 +295,15 @@ clear_command_BM (void)
 
 
 void
-browserblinkstop_BM (void)
+browserblinkstop_GTKBM (void)
 {
   if (browserblinkid_BM > 0)
     g_source_remove (browserblinkid_BM), browserblinkid_BM = 0;
   browserblinkoff_BM (NULL);
-}                               /* end browserblinkstop_BM */
+}                               /* end browserblinkstop_GTKBM */
 
 int
-browserblinkoff_BM (gpointer data __attribute__((unused)))
+browserblinkoff_GTKBM (gpointer data __attribute__((unused)))
 {
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
@@ -316,10 +317,10 @@ browserblinkoff_BM (gpointer data __attribute__((unused)))
   gtk_text_buffer_remove_tag (browserbuf_BM, blink_brotag_BM, &startit,
                               &endit);
   return G_SOURCE_REMOVE;
-}                               /* end browserblinkoff_BM */
+}                               /* end browserblinkoff_GTKBM */
 
 int
-browserblinkon_BM (gpointer data __attribute__((unused)))
+browserblinkon_GTKBM (gpointer data __attribute__((unused)))
 {
   if (browserblinkparens_BM.paroff_open > 0
       && browserblinkparens_BM.paroff_openlen > 0)
@@ -366,38 +367,38 @@ browserblinkon_BM (gpointer data __attribute__((unused)))
       gtk_text_buffer_apply_tag (browserbuf_BM, blink_brotag_BM, &xtrastartit,
                                  &xtraendit);
     }
-  if (browserblinkid_BM > 0)
+  if (browserblinkid_GTKBM > 0)
     {
-      (void) g_timeout_add (UNBLINKDELAYMILLISEC_BM, browserblinkoff_BM,
+      (void) g_timeout_add (UNBLINKDELAYMILLISEC_GTKBM, browserblinkoff_BM,
                             NULL);
       return G_SOURCE_CONTINUE;
     }
   return G_SOURCE_REMOVE;
-}                               /* end browserblinkon_BM */
+}                               /* end browserblinkon_GTKBM */
 
 
 void
-browserblinkstart_BM (void)
+browserblinkstart_GTKBM (void)
 {
-  if (browserblinkid_BM > 0)
-    g_source_remove (browserblinkid_BM), browserblinkid_BM = 0;
-  browserblinkoff_BM (NULL);
-  browserblinkid_BM =
-    g_timeout_add (BLINKDELAYMILLISEC_BM, browserblinkon_BM, NULL);
-  browserblinkon_BM (NULL);
+  if (browserblinkid_GTKBM > 0)
+    g_source_remove (browserblinkid_GTKBM), browserblinkid_GTKBM = 0;
+  browserblinkoff_GTKBM (NULL);
+  browserblinkid_GTKBM =
+    g_timeout_add (BLINKDELAYMILLISEC_GTKBM, browserblinkon_GTKBM, NULL);
+  browserblinkon_GTKBM (NULL);
 }                               /* end browserblinkstart_BM */
 
 void
-start_browse_object_BM (const objectval_tyBM * obj,
+start_browse_object_GTKBM (const objectval_tyBM * obj,
                         const objectval_tyBM * objsel, int depth)
 {
   if (!browserbuf_BM)
     {
-      browserbuf_BM = newgui_get_browsebuf_BM ();
+      browserbuf_BM = newgui_get_browsebuf_GTKBM ();
       if (!browserbuf_BM)
         return;
     };
-  browserblinkstop_BM ();
+  browserblinkstop_GTKBM ();
   ASSERT_BM (isobject_BM ((const value_tyBM) obj));
   ASSERT_BM (isobject_BM ((const value_tyBM) objsel));
   browsednvcurix_BM = -1;
@@ -522,7 +523,7 @@ start_browse_object_BM (const objectval_tyBM * obj,
 
 
 struct browsedobj_stBM *
-find_browsed_object_BM (const objectval_tyBM * obj)
+find_browsed_object_GTKBM (const objectval_tyBM * obj)
 {
   if (!isobject_BM ((const value_tyBM) obj))
     return NULL;
@@ -556,7 +557,7 @@ find_browsed_object_BM (const objectval_tyBM * obj)
 
 
 void
-hide_object_gui_BM (const objectval_tyBM * objbrows,
+hide_object_gui_GTKBM (const objectval_tyBM * objbrows,
                     struct stackframe_stBM *stkf)
 {
   if (!isobject_BM ((const value_tyBM) objbrows))
@@ -623,7 +624,7 @@ hide_object_gui_BM (const objectval_tyBM * objbrows,
 
 ////////////////
 void
-start_browse_named_value_BM (const stringval_tyBM * namev,
+start_browse_named_value_GTKBM (const stringval_tyBM * namev,
                              const value_tyBM val, int depth)
 {
   if (!browserbuf_BM)
@@ -761,11 +762,11 @@ start_browse_named_value_BM (const stringval_tyBM * namev,
   browsednvcurix_BM = browsednvulen_BM;
   browsednvulen_BM++;
   return;
-}                               /* end start_browse_named_value_BM */
+}                               /* end start_browse_named_value_GTKBM */
 
 
 struct browsedval_stBM *
-find_browsed_named_value_BM (const char *namestr)
+find_browsed_named_value_GTKBM (const char *namestr)
 {
   if (!namestr || !validname_BM (namestr))
     return NULL;
@@ -789,11 +790,11 @@ find_browsed_named_value_BM (const char *namestr)
         return mdval;
     };
   return NULL;
-}                               /* end find_browsed_named_value_BM */
+}                               /* end find_browsed_named_value_GTKBM */
 
 
 value_tyBM
-find_named_value_gui_BM (const char *namstr)
+find_named_value_gui_GTKBM (const char *namstr)
 {
   if (!namstr || !validname_BM (namstr))
     return NULL;
@@ -818,10 +819,10 @@ find_named_value_gui_BM (const char *namstr)
         return mdval->brow_val;
     };
   return NULL;
-}                               /* end find_named_value_gui_BM */
+}                               /* end find_named_value_gui_GTKBM */
 
 void
-hide_named_value_gui_BM (const stringval_tyBM * namev,
+hide_named_value_gui_GTKBM (const stringval_tyBM * namev,
                          struct stackframe_stBM *stkf)
 {
   if (!isstring_BM ((const value_tyBM) namev))
@@ -878,11 +879,11 @@ hide_named_value_gui_BM (const stringval_tyBM * namev,
           return;
         }
     }
-}                               /* end hide_named_value_gui_BM */
+}                               /* end hide_named_value_gui_GTKBM */
 
 
 int
-browse_show_start_offset_BM (void)
+browse_show_start_offset_GTKBM (void)
 {
   if (!browserbuf_BM)
     {
@@ -927,11 +928,11 @@ browse_show_start_offset_BM (void)
       ("browse_show_start_offset_BM corruption browserobcurix_BM=%d browsednvcurix_BM=%d",
        browserobcurix_BM, browsednvcurix_BM);
   return gtk_text_iter_get_offset (&it);
-}                               /* end browse_show_start_offset_BM */
+}                               /* end browse_show_start_offset_GTKBM */
 
 
 void
-browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
+browse_add_parens_GTKBM (int openoff, int closeoff, int xtraoff,
                       unsigned openlen, unsigned closelen,
                       unsigned xtralen, int depth,
                       struct stackframe_stBM *stkf)
@@ -1004,13 +1005,13 @@ browse_add_parens_BM (int openoff, int closeoff, int xtraoff,
       newgui_browse_add_parens_BM (openoff, closeoff, xtraoff,
                                    openlen, closelen, xtralen, depth, stkf);
     }
-}                               /* end browse_add_parens_BM */
+}                               /* end browse_add_parens_GTKBM */
 
 
 
 
 static void
-browse_object_gui_content_BM (const objectval_tyBM * objbrows,
+browse_object_gui_content_GTKBM (const objectval_tyBM * objbrows,
                               const objectval_tyBM * objsel,
                               int browsdepth, struct stackframe_stBM *stkf)
 {
@@ -1069,10 +1070,10 @@ browse_object_gui_content_BM (const objectval_tyBM * objbrows,
   gtk_text_buffer_move_mark (brobuf,
                              browsedobj_BM[browserobcurix_BM].brow_oendm,
                              &browserit_BM);
-}                               /* end browse_object_gui_content_BM */
+}                               /* end browse_object_gui_content_GTKBM */
 
 void
-browse_object_gui_BM (const objectval_tyBM * objbrows,
+browse_object_gui_GTKBM (const objectval_tyBM * objbrows,
                       const objectval_tyBM * objsel,
                       int browsdepth, struct stackframe_stBM *stkf)
 {
@@ -1090,13 +1091,13 @@ browse_object_gui_BM (const objectval_tyBM * objbrows,
     );
   _.objbrows = objbrows;
   _.objsel = objsel;
-  start_browse_object_BM (objbrows, objsel, browsdepth);
-  browse_object_gui_content_BM (objbrows, objsel, browsdepth, CURFRAME_BM);
-}                               /* end browse_object_gui_BM */
+  start_browse_object_GTKBM (objbrows, objsel, browsdepth);
+  browse_object_gui_content_GTKBM (objbrows, objsel, browsdepth, CURFRAME_BM);
+}                               /* end browse_object_gui_GTKBM */
 
 
 static void
-browse_value_gui_content_BM (const stringval_tyBM * namev,
+browse_value_gui_content_GTKBM (const stringval_tyBM * namev,
                              const value_tyBM val,
                              const objectval_tyBM * objsel,
                              int browsdepth, struct stackframe_stBM *stkf)

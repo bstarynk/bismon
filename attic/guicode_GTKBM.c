@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -19,8 +19,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
-#include "bismon.h"
-#include "guicode_BM.const.h"
+#include "gtkbismon.h"
+#include "guicode_GTKBM.const.h"
 
 
 /// method to gtk_browse_in_object°object-s
@@ -55,20 +55,20 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   gtk_text_buffer_insert_with_tags      //
     (brobuf, &browserit_BM, "|\342\227\274 ",   /* U+25FC BLACK MEDIUM SQUARE ◼ */
-     -1, miscomm_brotag_BM, NULL);
+     -1, miscomm_brotag_GTKBM, NULL);
   if (objbroname)
     {
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
-                                        objbroname, -1, objname_brotag_BM,
-                                        miscomm_brotag_BM, NULL);
+                                        objbroname, -1, objname_brotag_GTKBM,
+                                        miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, " = ", -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
     }
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
-                                    objbroid, -1, objid_brotag_BM,
-                                    objrefcomm_brotag_BM, NULL);
+                                    objbroid, -1, objid_brotag_GTKBM,
+                                    objrefcomm_brotag_GTKBM, NULL);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "\n ", -1,
-                                    miscomm_brotag_BM, NULL);
+                                    miscomm_brotag_GTKBM, NULL);
   ///
   //// show hi&lo id and hash
   Dl_info di = { };
@@ -86,7 +86,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
         FATAL_BM ("asprintf failure in gtk_browse_in_object]object");
 
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
-                                        commbuf, -1, miscomm_brotag_BM, NULL);
+                                        commbuf, -1, miscomm_brotag_GTKBM, NULL);
       free (commbuf), commbuf = NULL;
     }
   else
@@ -98,7 +98,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
                 (long long) _.objbrows->ob_id.id_lo,
                 objecthash_BM (_.objbrows));
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
-                                        idcomm, -1, miscomm_brotag_BM, NULL);
+                                        idcomm, -1, miscomm_brotag_GTKBM, NULL);
     }
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   ///
@@ -147,7 +147,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
     snprintf (commbuf, sizeof (commbuf), "|mtim:%s space:%s|", mbuf, spabuf);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, commbuf, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
     _.classob = objclass_BM (_.objbrows);
     DBGPRINTF_BM
@@ -172,7 +172,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
       {
         gtk_text_buffer_insert_with_tags (brobuf,
                                           &browserit_BM, "|no attributes|",
-                                          -1, miscomm_brotag_BM, NULL);
+                                          -1, miscomm_brotag_GTKBM, NULL);
         gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       }
     else
@@ -186,7 +186,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
         snprintf (commbuf, sizeof (commbuf), "|%d attributes:|", nbattrs);
         gtk_text_buffer_insert_with_tags (brobuf,
                                           &browserit_BM, commbuf, -1,
-                                          miscomm_brotag_BM, NULL);
+                                          miscomm_brotag_GTKBM, NULL);
         gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
         objectval_tyBM *tinyarr[TINYSIZE_BM] = {
         };
@@ -211,7 +211,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
                              CURFRAME_BM, maxdepth, 2);
             browsespacefordepth_BM (1);
             gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "|\342\207\242|",  //⇢ U+21E2 RIGHTWARDS DASHED ARROW
-                                              -1, miscomm_brotag_BM, NULL);
+                                              -1, miscomm_brotag_GTKBM, NULL);
             browsespacefordepth_BM (1);
             browse_value_BM ((const value_tyBM) _.curval,
                              CURFRAME_BM, maxdepth, 1);
@@ -232,7 +232,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
       {
         gtk_text_buffer_insert_with_tags (brobuf,
                                           &browserit_BM, "|no components|",
-                                          -1, miscomm_brotag_BM, NULL);
+                                          -1, miscomm_brotag_GTKBM, NULL);
         gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       }
     else
@@ -245,7 +245,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
         snprintf (commbuf, sizeof (commbuf), "|%d components:|", nbcomps);
         gtk_text_buffer_insert_with_tags (brobuf,
                                           &browserit_BM, commbuf, -1,
-                                          miscomm_brotag_BM, NULL);
+                                          miscomm_brotag_GTKBM, NULL);
         gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
         for (unsigned cix = 0; cix < nbcomps; cix++)
           {
@@ -253,7 +253,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
             snprintf (commbuf, sizeof (commbuf), "|#%d:|", cix);
             gtk_text_buffer_insert_with_tags (brobuf,
                                               &browserit_BM, commbuf, -1,
-                                              miscomm_brotag_BM, NULL);
+                                              miscomm_brotag_GTKBM, NULL);
             _.curval = objgetcomp_BM (_.objbrows, cix);
             browsespacefordepth_BM (1);
             browse_value_BM ((const value_tyBM) _.curval,
@@ -279,7 +279,7 @@ ROUTINEOBJNAME_BM (_23ViGouPnAg_15P5mpG9x3d)    //gtk_browse_in_object°object
       DBGPRINTF_BM ("gtk_browse_in_object°object objbrows %s no payload",
                     objectdbg_BM (_.objbrows));
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "|\342\246\260|",        //U+29B0 REVERSED EMPTY SET ⦰
-                                        -1, miscomm_brotag_BM, NULL);
+                                        -1, miscomm_brotag_GTKBM, NULL);
     }
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   /// return itself
@@ -342,18 +342,18 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // gtk_browse_value°object
         (" gtk_browse_value°object €_0BAnB0xjs2 objbrows=%s objnam=%s curdepth=%d",
          objectdbg_BM (_.objbrows), objnam, curdepth);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
-                                        objnam, -1, objname_brotag_BM, NULL);
+                                        objnam, -1, objname_brotag_GTKBM, NULL);
       if (curdepth <= 2)
         {
           gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                            " |=", -1, objrefcomm_brotag_BM,
+                                            " |=", -1, objrefcomm_brotag_GTKBM,
                                             NULL);
           gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
                                             idbuf,
-                                            -1, objrefcomm_brotag_BM, NULL);
+                                            -1, objrefcomm_brotag_GTKBM, NULL);
           gtk_text_buffer_insert_with_tags (brobuf,
                                             &browserit_BM, "|", -1,
-                                            objrefcomm_brotag_BM, NULL);
+                                            objrefcomm_brotag_GTKBM, NULL);
         }
     }
   else
@@ -362,7 +362,7 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // gtk_browse_value°object
         (" gtk_browse_value°object €_0BAnB0xjs2 anonymous objbrows=%s idbuf='%s'",
          objectdbg_BM (_.objbrows), idbuf);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
-                                        idbuf, -1, objid_brotag_BM, NULL);
+                                        idbuf, -1, objid_brotag_GTKBM, NULL);
       if (isstring_BM (_.commentv) && curdepth <= 2)
         {
           const char *commstr = bytstring_BM (_.commentv);
@@ -381,13 +381,13 @@ ROUTINEOBJNAME_BM (_0BAnB0xjs23_0WEOCOi5Nbe)    // gtk_browse_value°object
             {
               gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
                                                 " |/", -1,
-                                                objrefcomm_brotag_BM, NULL);
+                                                objrefcomm_brotag_GTKBM, NULL);
               gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
                                                 commstr,
-                                                showsiz, objrefcomm_brotag_BM,
+                                                showsiz, objrefcomm_brotag_GTKBM,
                                                 NULL);
               gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "|",
-                                                -1, objrefcomm_brotag_BM,
+                                                -1, objrefcomm_brotag_GTKBM,
                                                 NULL);
             }
         }
@@ -421,7 +421,6 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // gtk_browse_data°class
                  const objectval_tyBM * cursel;
                  const objectval_tyBM * supercla;
                  value_tyBM curval;);
-#ifdef BISMONGTK
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   if (!isobject_BM (arg1))
@@ -458,7 +457,7 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // gtk_browse_data°class
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM,
                                         "|superclass=|", -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       browse_value_BM ((const value_tyBM) _.supercla, CURFRAME_BM, 2, 0);
     }
   else
@@ -466,7 +465,7 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // gtk_browse_data°class
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM,
                                         "|nosuperclass|", -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, " __\n", -1,
                                         NULL, NULL);
@@ -481,13 +480,13 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // gtk_browse_data°class
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM,
                                         "|selector:|", -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, " ", -1, NULL, NULL);
       browse_value_BM ((const value_tyBM) _.cursel, CURFRAME_BM, 2, 1);
       browsespacefordepth_BM (1);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "|\342\207\242|",        //U+21E2 RIGHTWARDS DASHED ARROW ⇢
-                                        -1, miscomm_brotag_BM, NULL);
+                                        -1, miscomm_brotag_GTKBM, NULL);
       browsespacefordepth_BM (1);
       DBGPRINTF_BM
         ("gtk_browse_data°class €_09DxyieS objbrows=%s meth.ix=%d curval=%s depth=%d",
@@ -500,7 +499,7 @@ ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA)    // gtk_browse_data°class
     free (arr), arr = NULL;
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "~)\n", -1,
                                     NULL, NULL);
-#else /*!BISMONGTK */
+#if 0 /*!BISMONGTK */
   weakassertfailureat_BM
     ("noGTK gtk_browse_data°class _09DxyieS5Wz_7pkad4F88FA", __FILE__,
      __LINE__);
@@ -543,7 +542,7 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // gtk_browse_value°tuple
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    "[", -1, nest_brotag_BM, NULL);
+                                    "[", -1, nest_brotag_GTKBM, NULL);
   unsigned tupsiz = tuplesize_BM (_.tupbrows);
   if (curdepth < maxdepth)
     {
@@ -563,10 +562,10 @@ ROUTINEOBJNAME_BM (_0B1PYH9bN34_3RZdP24AVyt)    // gtk_browse_value°tuple
       snprintf (msgbuf, sizeof (msgbuf), "|\342\200\246"        /*U+2026 HORIZONTAL ELLIPSIS … */
                 " %d objects in tuple|", tupsiz);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
-                                        msgbuf, -1, toodeep_brotag_BM, NULL);
+                                        msgbuf, -1, toodeep_brotag_GTKBM, NULL);
     }
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    "]", -1, nest_brotag_BM, NULL);
+                                    "]", -1, nest_brotag_GTKBM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth,
                         CURFRAME_BM);
@@ -617,7 +616,7 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //gtk_browse_value°set
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    "{", -1, nest_brotag_BM, NULL);
+                                    "{", -1, nest_brotag_GTKBM, NULL);
   if (curdepth < maxdepth)
     {
       objectval_tyBM *tinyarr[TINYSIZE_BM] = {
@@ -648,10 +647,10 @@ ROUTINEOBJNAME_BM (_3rne4qbpnV9_0pywzeJp3Qr)    //gtk_browse_value°set
       snprintf (msgbuf, sizeof (msgbuf), "|\342\200\246"        /*U+2026 HORIZONTAL ELLIPSIS … */
                 " %d objects in set|", setcard);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
-                                        msgbuf, -1, toodeep_brotag_BM, NULL);
+                                        msgbuf, -1, toodeep_brotag_GTKBM, NULL);
     }
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    "}", -1, nest_brotag_BM, NULL);
+                                    "}", -1, nest_brotag_GTKBM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth,
                         CURFRAME_BM);
@@ -700,7 +699,7 @@ ROUTINEOBJNAME_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)    // gtk_browse_value°int
   memset (ibuf, 0, sizeof (ibuf));
   snprintf (ibuf, sizeof (ibuf), "%lld", (long long) i);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    ibuf, -1, num_brotag_BM, NULL);
+                                    ibuf, -1, num_brotag_GTKBM, NULL);
 #else /*!BISMONGTK */
   weakassertfailureat_BM
     ("noGTK gtk_browse_value°int _0HBMCM5CeLn_7L5YEV2jO7Y", __FILE__,
@@ -741,7 +740,7 @@ ROUTINEOBJNAME_BM (_6KYa0K6vqt5_00xCqyfhJhY)    // gtk_browse_value°double_floa
   if (atof (buf) != d || !strchr (buf, '.'))
     snprintf (buf, sizeof (buf), "%.12e", d);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    buf, -1, num_brotag_BM, NULL);
+                                    buf, -1, num_brotag_GTKBM, NULL);
 #endif /* BISMONGTK */
   return _.dblbrows;
 }                               /* end gtk_browse_value°double_float _63ZPkXUI2Uv_6Cp3qmh6Uud */
@@ -783,7 +782,7 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // gtk_browse_value°string
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    "\"", -1, stresc_brotag_BM, NULL);
+                                    "\"", -1, stresc_brotag_GTKBM, NULL);
   int ccnt = 0;
   int linecnt = 0;
 #define WANTEDLINEWIDTH_BM 64
@@ -794,7 +793,7 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // gtk_browse_value°string
       linecnt++;
 #define ADDESCAPESTR_BM(S)						\
     gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,	\
-				      (S), -1, stresc_brotag_BM, NULL)
+				      (S), -1, stresc_brotag_GTKBM, NULL)
       switch (uc)
         {
         case '\"':
@@ -861,7 +860,7 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // gtk_browse_value°string
               g_unichar_to_utf8 (uc, ubuf);
               gtk_text_buffer_insert_with_tags (brobuf,
                                                 &browserit_BM, ubuf, -1,
-                                                str_brotag_BM, NULL);
+                                                str_brotag_GTKBM, NULL);
             }
           else if (uc < 0xffff)
             {
@@ -881,7 +880,7 @@ ROUTINEOBJNAME_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)    // gtk_browse_value°string
         }
     }                           /* end for pc */
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    "\"", -1, stresc_brotag_BM, NULL);
+                                    "\"", -1, stresc_brotag_GTKBM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_add_parens_BM (openoff, closeoff, -1, 1, 1, 0, curdepth,
                         CURFRAME_BM);
@@ -934,14 +933,14 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    // gtk_browse_value°node
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   int xtraoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    "*", -1, nest_brotag_BM, NULL);
+                                    "*", -1, nest_brotag_GTKBM, NULL);
   gtk_text_buffer_insert (brobuf, &browserit_BM, " ", 1);
   browse_value_BM ((const value_tyBM) _.connob, CURFRAME_BM,
                    (maxdepth), (curdepth + 1));
   browsespacefordepth_BM (curdepth + 1);
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    "(", -1, nest_brotag_BM, NULL);
+                                    "(", -1, nest_brotag_GTKBM, NULL);
   if (curdepth < maxdepth)
     {
       for (unsigned six = 0; six < nw; six++)
@@ -960,10 +959,10 @@ ROUTINEOBJNAME_BM (_7fJKfG4SN0U_1QTu5J832xg)    // gtk_browse_value°node
       snprintf (msgbuf, sizeof (msgbuf), "|\342\200\246"        /*U+2026 HORIZONTAL ELLIPSIS … */
                 " %d sons in node|", nw);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
-                                        msgbuf, -1, toodeep_brotag_BM, NULL);
+                                        msgbuf, -1, toodeep_brotag_GTKBM, NULL);
     }
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    ")", -1, nest_brotag_BM, NULL);
+                                    ")", -1, nest_brotag_GTKBM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth,
                         CURFRAME_BM);
@@ -1016,7 +1015,7 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // gtk_browse_value°closure
   int xtraoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   GtkTextBuffer *brobuf = gtk_text_iter_get_buffer (&browserit_BM);
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    "%", -1, nest_brotag_BM, NULL);
+                                    "%", -1, nest_brotag_GTKBM, NULL);
   gtk_text_buffer_insert (brobuf, &browserit_BM, " ", 1);
   DBGPRINTF_BM
     ("gtk_browse_value°closure €_7CohjJ9tk connob=%s curdepth=%d",
@@ -1026,7 +1025,7 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // gtk_browse_value°closure
   browsespacefordepth_BM (curdepth + 1);
   int openoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    "(", -1, nest_brotag_BM, NULL);
+                                    "(", -1, nest_brotag_GTKBM, NULL);
   if (curdepth < maxdepth)
     {
       for (unsigned cix = 0; cix < cw; cix++)
@@ -1045,10 +1044,10 @@ ROUTINEOBJNAME_BM (_7CohjJ9tkfZ_4UMAIZCgwac)    // gtk_browse_value°closure
       snprintf (msgbuf, sizeof (msgbuf), "|\342\200\246"        /*U+2026 HORIZONTAL ELLIPSIS … */
                 " %d sons in closure|", cw);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
-                                        msgbuf, -1, toodeep_brotag_BM, NULL);
+                                        msgbuf, -1, toodeep_brotag_GTKBM, NULL);
     }
   gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,      //
-                                    ")", -1, nest_brotag_BM, NULL);
+                                    ")", -1, nest_brotag_GTKBM, NULL);
   int closeoff = gtk_text_iter_get_offset (&browserit_BM) - oboff;
   browse_add_parens_BM (openoff, closeoff, xtraoff, 1, 1, 1, curdepth,
                         CURFRAME_BM);
@@ -1098,7 +1097,7 @@ ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)    // gtk_browse_data°basiclo_func
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, vcommbuf, -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       browse_value_BM ((const value_tyBM) _.curval, CURFRAME_BM, depth, 0);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
     };
@@ -1142,7 +1141,7 @@ ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //gtk_browse_data°hset_object
     {
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, "|no hset|", -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       LOCALRETURN_BM (_.objbrows);
     }
@@ -1154,7 +1153,7 @@ ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK)    //gtk_browse_data°hset_object
   snprintf (commbuf, sizeof (commbuf), "|hset %d:|", setcardinal_BM (_.setk));
   gtk_text_buffer_insert_with_tags (brobuf,
                                     &browserit_BM, commbuf, -1,
-                                    miscomm_brotag_BM, NULL);
+                                    miscomm_brotag_GTKBM, NULL);
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   browse_value_BM ((const value_tyBM) _.setk, CURFRAME_BM, depth, 0);
   gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
@@ -1198,7 +1197,7 @@ ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // gtk_browse_data°contributor_
     {
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, "|no contributor|", -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       LOCALRETURN_BM (_.objbrows);
     }
@@ -1214,7 +1213,7 @@ ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // gtk_browse_data°contributor_
             FATAL_BM ("asprintf failed for contributor %s", namestr);
           gtk_text_buffer_insert_with_tags (brobuf,
                                             &browserit_BM, buf, -1,
-                                            miscomm_brotag_BM, NULL);
+                                            miscomm_brotag_GTKBM, NULL);
           gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
           free (buf), buf = NULL;
           LOCALRETURN_BM (_.objbrows);
@@ -1224,7 +1223,7 @@ ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // gtk_browse_data°contributor_
           gtk_text_buffer_insert_with_tags (brobuf,
                                             &browserit_BM,
                                             "|contributor without name|", -1,
-                                            miscomm_brotag_BM, NULL);
+                                            miscomm_brotag_GTKBM, NULL);
           gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
           LOCALRETURN_BM (_.objbrows);
         }
@@ -1234,7 +1233,7 @@ ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO)    // gtk_browse_data°contributor_
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM,
                                         "|bad payload for contributor|", -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       LOCALRETURN_BM (_.objbrows);
     }
@@ -1277,7 +1276,7 @@ ROUTINEOBJNAME_BM (_5W7KY9crMlv_1Q6deHedMZ5)    // gtk_browse_data°decaying_vec
     {
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, "|no decayed payload|",
-                                        -1, miscomm_brotag_BM, NULL);
+                                        -1, miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       LOCALRETURN_BM (_.objbrows);
     }
@@ -1294,7 +1293,7 @@ ROUTINEOBJNAME_BM (_5W7KY9crMlv_1Q6deHedMZ5)    // gtk_browse_data°decaying_vec
                 objdecayedvectorlimitimepayl_BM (_.objbrows) -
                 elapsedtime_BM ());
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, msgbuf, -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       for (unsigned ix = 0; ix < len; ix++)
         {
           gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
@@ -1303,7 +1302,7 @@ ROUTINEOBJNAME_BM (_5W7KY9crMlv_1Q6deHedMZ5)    // gtk_browse_data°decaying_vec
           snprintf (msgbuf, sizeof (msgbuf) - 1, "|decayed#%u:| ", ix);
           gtk_text_buffer_insert_with_tags (brobuf,
                                             &browserit_BM, msgbuf, -1,
-                                            miscomm_brotag_BM, NULL);
+                                            miscomm_brotag_GTKBM, NULL);
           browse_value_BM ((const value_tyBM) _.compv, CURFRAME_BM, depth, 0);
         }
       if (len > 0)
@@ -1350,7 +1349,7 @@ value_tyBM ROUTINEOBJNAME_BM (_2SwBWHiHN6V_64WhvTifJL4) (struct stackframe_stBM 
     {
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, "|no json payload|",
-                                        -1, miscomm_brotag_BM, NULL);
+                                        -1, miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       LOCALRETURN_BM (_.objbrows);
     }
@@ -1358,7 +1357,7 @@ value_tyBM ROUTINEOBJNAME_BM (_2SwBWHiHN6V_64WhvTifJL4) (struct stackframe_stBM 
     {
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, "|json payload:|",
-                                        -1, miscomm_brotag_BM, NULL);
+                                        -1, miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       json_t *js = objgetjansjsonpayl_BM (_.objbrows);
       char *jsbuf =
@@ -1368,7 +1367,7 @@ value_tyBM ROUTINEOBJNAME_BM (_2SwBWHiHN6V_64WhvTifJL4) (struct stackframe_stBM 
           ("json_dumps failed gtk_browse_data°json_object €_2SwBWHiH objbrows=%s",
            objectdbg_BM (_.objbrows));
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, jsbuf, -1,
-                                        str_brotag_BM, NULL);
+                                        str_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       free (jsbuf), jsbuf = NULL;
       LOCALRETURN_BM (_.objbrows);
@@ -1378,7 +1377,7 @@ value_tyBM ROUTINEOBJNAME_BM (_2SwBWHiHN6V_64WhvTifJL4) (struct stackframe_stBM 
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM,
                                         "|unexpected json payload|", -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       LOCALRETURN_BM (_.objbrows);
     };
@@ -1692,9 +1691,9 @@ ROUTINEOBJNAME_BM (_01zabIzVKNR_8AGQGMBkSd7)    //commandhandler#,insert
 ////////////////
 
 /// command handler for ,put_method
-extern objrout_sigBM ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX);
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9QuovXguk9K_17pMbAD0XmX);
 value_tyBM
-ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
+ROUTINEOBJNAME_BM (_9QuovXguk9K_17pMbAD0XmX)    //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2,         // the selector
@@ -1768,7 +1767,7 @@ ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX)    //
       log_end_message_BM ();
     }
   LOCALRETURN_BM (_.recv);
-}                               /* end commandhandler#,put_method _9QuovXgtk9K_17pMbAD0XmX */
+}                               /* end commandhandler#,put_method _9QuovXguk9K_17pMbAD0XmX */
 
 
 
@@ -1807,7 +1806,7 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    // gtk_browse_data°list_object
     snprintf (bufmsg, sizeof (bufmsg), "|list %d:|", nodlen);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
   for (int ix = 0; ix < nodlen; ix++)
@@ -1821,7 +1820,7 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    // gtk_browse_data°list_object
                 ix);
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, bufmsg, -1,
-                                        nest_brotag_BM, NULL);
+                                        nest_brotag_GTKBM, NULL);
       browse_value_BM ((const value_tyBM) _.cursonv,
                        CURFRAME_BM, maxdepth, 1);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
@@ -1832,7 +1831,7 @@ ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE)    // gtk_browse_data°list_object
     snprintf (bufmsg, sizeof (bufmsg), "|end list of %d|", nodlen);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
 #else /*!BISMONGTK */
@@ -1881,7 +1880,7 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //gtk_browse_data°assoc_object
     snprintf (bufmsg, sizeof (bufmsg), "|assoc %d:|", nbelem);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
   for (int ix = 0; ix < nbelem; ix++)
@@ -1891,11 +1890,11 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //gtk_browse_data°assoc_object
       _.curobj = tuplecompnth_BM (_.tupv, ix);
       _.curvalv = objassocgetattrpayl_BM (_.objbrows, _.curobj);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "\342\210\230 ", //U+2218 RING OPERATOR ∘
-                                        -1, nest_brotag_BM, NULL);
+                                        -1, nest_brotag_GTKBM, NULL);
       browse_value_BM ((const value_tyBM) _.curobj, CURFRAME_BM, maxdepth, 1);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, " \342\206\222 ",        //U+2192 RIGHTWARDS ARROW →
-                                        -1, nest_brotag_BM, NULL);
+                                        -1, nest_brotag_GTKBM, NULL);
       browse_value_BM ((const value_tyBM) _.curvalv,
                        CURFRAME_BM, maxdepth, 2);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
@@ -1906,7 +1905,7 @@ ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A)    //gtk_browse_data°assoc_object
     snprintf (bufmsg, sizeof (bufmsg), "|end assoc %d|", nbelem);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
 #else /*!BISMONGTK */
@@ -1953,7 +1952,7 @@ ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //gtk_browse_data°dict_object
     snprintf (bufmsg, sizeof (bufmsg), "|dict %d:|", nbnames);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
   for (int ix = 0; ix < nbnames; ix++)
@@ -1970,13 +1969,13 @@ ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //gtk_browse_data°dict_object
                 ix);
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, bufmsg, -1,
-                                        nest_brotag_BM, NULL);
+                                        nest_brotag_GTKBM, NULL);
       browse_value_BM ((const value_tyBM) _.cursonv,
                        CURFRAME_BM, maxdepth, 1);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
                                         " \342\206\246 ", -1,   // U+21A6 RIGHTWARDS ARROW FROM BAR ↦
-                                        nest_brotag_BM, NULL);
+                                        nest_brotag_GTKBM, NULL);
       browse_value_BM ((const value_tyBM) _.curvalv,
                        CURFRAME_BM, maxdepth, 1);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
@@ -1987,7 +1986,7 @@ ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE)    //gtk_browse_data°dict_object
     snprintf (bufmsg, sizeof (bufmsg), "|end dict of %d|", nbnames);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
 #else /*!BISMONGTK */
@@ -2030,7 +2029,7 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object
     {
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,
                                         "|no payload in sbuf_object|", -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       LOCALRETURN_BM (_.objbrows);
     }
@@ -2043,7 +2042,7 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object
                 "|bad payload (payty#%d:%s) in sbuf_object|", pt,
                 typestring_BM (pt));
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, buf, -1,
-                                        miscomm_brotag_BM, NULL);
+                                        miscomm_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       LOCALRETURN_BM (_.objbrows);
     }
@@ -2065,18 +2064,18 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object
               "|sbuf %d unicodes, %d bytes, %d lines:|", unilen, bylen,
               nblines);
     gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, strsb, bylen,
-                                      str_brotag_BM, NULL);
+                                      str_brotag_GTKBM, NULL);
     if (bylen > 0 && strsb[bylen - 1] == '\n')
       {
         memset (bufmsg, 0, sizeof (bufmsg));
         snprintf (bufmsg, sizeof (bufmsg), "|:endsbuf %d|", unilen);
         gtk_text_buffer_insert_with_tags (brobuf,
                                           &browserit_BM, bufmsg, -1,
-                                          miscomm_brotag_BM, NULL);
+                                          miscomm_brotag_GTKBM, NULL);
       }
     else
       {
@@ -2084,7 +2083,7 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object
         snprintf (bufmsg, sizeof (bufmsg), "|!endsbuf %d|", unilen);
         gtk_text_buffer_insert_with_tags (brobuf,
                                           &browserit_BM, bufmsg, -1,
-                                          miscomm_brotag_BM, NULL);
+                                          miscomm_brotag_GTKBM, NULL);
       }
     if (objhaswebexchangepayl_BM (_.objbrows))
       {
@@ -2110,7 +2109,7 @@ ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX)    // gtk_browse_data°sbuf_object
           {
             gtk_text_buffer_insert_with_tags (brobuf,
                                               &browserit_BM, buf, -1,
-                                              miscomm_brotag_BM, NULL);
+                                              miscomm_brotag_GTKBM, NULL);
             free (buf), buf = NULL;
           }
       }
@@ -2160,7 +2159,7 @@ ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //gtk_browse_data°hashsetval_ob
     snprintf (bufmsg, sizeof (bufmsg), "|hashsetval %d:|", nbvals);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
   for (int ix = 0; ix < nbvals; ix++)
@@ -2175,7 +2174,7 @@ ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //gtk_browse_data°hashsetval_ob
                 ix);
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, bufmsg, -1,
-                                        nest_brotag_BM, NULL);
+                                        nest_brotag_GTKBM, NULL);
       browse_value_BM ((const value_tyBM) _.cursonv,
                        CURFRAME_BM, maxdepth, 1);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
@@ -2186,7 +2185,7 @@ ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe)    //gtk_browse_data°hashsetval_ob
     snprintf (bufmsg, sizeof (bufmsg), "|end hashsetval %d|", nbvals);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
 #else /*!BISMONGTK */
@@ -2236,7 +2235,7 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //gtk_browse_data°hashmapval_ob
     snprintf (bufmsg, sizeof (bufmsg), "|hashmapval %d:|", nbkeys);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
   for (int ix = 0; ix < nbkeys; ix++)
@@ -2248,7 +2247,7 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //gtk_browse_data°hashmapval_ob
       _.curvalv = objhashmapvalgetpayl_BM (_.objbrows, _.cursonv);
       WEAKASSERT_BM (_.curvalv != NULL);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "\342\232\255 ", // U+26AD MARRIAGE SYMBOL ⚭);
-                                        -1, nest_brotag_BM, NULL);
+                                        -1, nest_brotag_GTKBM, NULL);
       char bufmsg[48];
       memset (bufmsg, 0, sizeof (bufmsg));
       snprintf (bufmsg, sizeof (bufmsg),        //
@@ -2256,14 +2255,14 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //gtk_browse_data°hashmapval_ob
       gtk_text_buffer_insert_with_tags (brobuf,
                                         &browserit_BM, bufmsg,
                                         -1,
-                                        nest_brotag_BM, miscomm_brotag_BM,
+                                        nest_brotag_GTKBM, miscomm_brotag_GTKBM,
                                         NULL);
       browse_value_BM ((const value_tyBM) _.cursonv, CURFRAME_BM, maxdepth,
                        1);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM,  //
                                         " \342\206\246 ", -1,   // U+21A6 RIGHTWARDS ARROW FROM BAR ↦
-                                        nest_brotag_BM, NULL);
+                                        nest_brotag_GTKBM, NULL);
       browse_value_BM ((const value_tyBM) _.curvalv,
                        CURFRAME_BM, maxdepth, 1);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
@@ -2274,7 +2273,7 @@ ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi)    //gtk_browse_data°hashmapval_ob
     snprintf (bufmsg, sizeof (bufmsg), "|end hashmapval of %d|", nbkeys);
     gtk_text_buffer_insert_with_tags (brobuf,
                                       &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
 #else /*!BISMONGTK */
@@ -2318,7 +2317,7 @@ value_tyBM ROUTINEOBJNAME_BM (_1tcgbIFhbTu_9WdGaq8NHWp) (struct stackframe_stBM 
     snprintf (bufmsg, sizeof (bufmsg), "|websession rank %d:|",
               objwebsessionrankpayl_BM (_.objbrows));
     gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
     snprintf (bufmsg, sizeof (bufmsg),
               "|websession expires %.3f = now + %.3f seconds:|",
@@ -2326,14 +2325,14 @@ value_tyBM ROUTINEOBJNAME_BM (_1tcgbIFhbTu_9WdGaq8NHWp) (struct stackframe_stBM 
               objwebsessionexpiretimepayl_BM (_.objbrows) -
               clocktime_BM (CLOCK_REALTIME));
     gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, bufmsg, -1,
-                                      miscomm_brotag_BM, NULL);
+                                      miscomm_brotag_GTKBM, NULL);
     gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
   }
   _.objcontrib = objwebsessioncontributorpayl_BM (_.objbrows);
   if (_.objcontrib)
     {
       gtk_text_buffer_insert_with_tags (brobuf, &browserit_BM, "\342\232\255 contributor:",     // U+26AD MARRIAGE SYMBOL ⚭);
-                                        -1, nest_brotag_BM, NULL);
+                                        -1, nest_brotag_GTKBM, NULL);
       gtk_text_buffer_insert (brobuf, &browserit_BM, "\n", -1);
       browse_value_BM ((const value_tyBM) _.objcontrib, CURFRAME_BM, maxdepth,
                        1);

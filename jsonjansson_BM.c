@@ -936,7 +936,7 @@ nodaljsonstring_BM (struct nodaljsonmode_st *njm, const char *str,
     return NULL;
   _.resv = NULL;
   rawid_tyBM id = { 0, 0 };
-  char *end = NULL;
+  const char *end = NULL;
   int len_euro_underscore = strlen ("€_");
   if (str[0] == '_' && isdigit (str[1])
       && (id = parse_rawid_BM (str, &end)).id_hi != 0
@@ -1050,18 +1050,18 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
   else if (json_is_object (js))
     {
       unsigned lnj = json_object_size (js);
-      json_t *jkey = NULL;
+      const char *keyjs = NULL;
       json_t *jval = NULL;
       if (lnj < TINYSIZE_BM)
         {
           int ix = 0;
           memset (_.tinarrv, 0, sizeof (_.tinarrv));
-          json_object_foreach (js, jkey, jval)
+          json_object_foreach (js, keyjs, jval)
           {
-            ASSERT_BM (json_is_string (jkey));
+            ASSERT_BM (keyjs != NULL);
             _.vkey = NULL;
             _.vcomp = NULL;
-            _.vkey = nodaljsonstring_BM (njm, json_string_value (jkey),
+            _.vkey = nodaljsonstring_BM (njm, keyjs,
                                          CURFRAME_BM);
             _.vcomp = nodaljsondecode_BM (njm, jval, depth + 1, CURFRAME_BM);
             _.vnode = makenode2_BM (k_json_entry, _.vkey, _.vcomp);
@@ -1075,12 +1075,12 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
           _.ob1 = makeobj_BM ();
           objreservecomps_BM (_.ob1, lnj);
           int cnt = 0;
-          json_object_foreach (js, jkey, jval)
+          json_object_foreach (js, keyjs, jval)
           {
-            ASSERT_BM (json_is_string (jkey));
+            ASSERT_BM (keyjs != NULL);
             _.vkey = NULL;
             _.vcomp = NULL;
-            _.vkey = nodaljsonstring_BM (njm, json_string_value (jkey),
+            _.vkey = nodaljsonstring_BM (njm, keyjs,
                                          CURFRAME_BM);
             _.vcomp = nodaljsondecode_BM (njm, jval, depth + 1, CURFRAME_BM);
             _.vnode = makenode2_BM (k_json_entry, _.vkey, _.vcomp);

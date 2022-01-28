@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -19,7 +19,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
-#include "bismon.h"
+#include "gtkbismon.h"
 #include "gui_GTKBM.const.h"
 
 extern void gtk_log_puts_message_BM (const char *msg);
@@ -58,8 +58,6 @@ GtkTextTag *stresc_brotag_BM;
 GtkTextTag *miscomm_brotag_BM;
 GtkTextTag *epilogue_brotag_BM;
 
-#define BLINKDELAYMILLISEC_BM 750
-#define UNBLINKDELAYMILLISEC_BM 400
 
 /// the browsed objects
 unsigned browserobsize_BM;      /* allocated size of browsedobj_BM */
@@ -173,7 +171,7 @@ GtkTextTag *xtra_cmdtags_BM[CMD_MAXNEST_BM];
 jmp_buf jmperrorcmd_BM;
 
 // the function to handle keypresses of cmd, for Return & Tab
-static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEventKey *, gpointer);
+static gboolean handlekeypresscmd_BM (GtkWidget *, GdkEvent *, gpointer);
 
 // the function to handle "end-user-action" on commandbuf_BM
 static void enduseractioncmd_BM (GtkTextBuffer *, gpointer);
@@ -4183,9 +4181,9 @@ keyrelcompletionmenucmd_cbBM (GtkWidget * w, GdkEventKey * evk, gpointer data)
 
 ////////////////
 
-/// called by run_then_keep_command_BM & run_then_erase_command_BM
+/// called by run_then_keep_command_GTKBM & run_then_erase_command_GTKBM
 void
-runcommand_BM (bool erase)
+runcommand_GTKBM (bool erase)
 {
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;

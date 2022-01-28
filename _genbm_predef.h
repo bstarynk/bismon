@@ -81,7 +81,7 @@ HAS_PREDEF_BM(_96AZeYX4rXS_91yzLJ7Zg58,7642992725428811004,7574780910417513382,3
 HAS_PREDEF_BM(_9bCobYhqBV5_5tIWuHnUPMX,7710984367614837479,4598885301230420087,607352696) /*=basiclo_constant_object*/
 HAS_PREDEF_BM(_9mdRnBqdqf5_9UvgSFA7wIY,7854536604469309927,8318599133820561868,972562377) /*=todo_send*/
 
-HAS_PREDEF_BM(_9uRC9w2Gte9_5mW0NanaS19,7971513276712049649,4506979252198741823,112529150) /*=gtk_browse_data*/
+HAS_PREDEF_BM(_9uRC9w2Gte9_5mW0NanaS19,7971513276712049649,4506979252198741823,112529150) /*=oldgtk_browse_data*/
 HAS_PREDEF_BM(_9G7cmLKeL7j_0ILBAfDNflG,8123823861219155089,606026151877003780,981530217) /*=question*/
 HAS_PREDEF_BM(_9HNJ3tJw4WW_3bTqGMi75wj,8146646349776473542,2678908747252784463,126423005) /*=equal*/
 HAS_PREDEF_BM(_9RGvDp7v8Eo_1xV1e6p3qUc,8280441572477752704,1298472930598304700,389202917) /*=dynload_module*/
@@ -190,15 +190,15 @@ HAS_PREDEF_BM(_9RGvDp7v8Eo_1xV1e6p3qUc,8280441572477752704,1298472930598304700,3
 #undef BMPNID_function_sig
 #define BMP_function_sig                PREDEF_BM(_7rduHPDI4aV_3JkXcYrH2m6)
 #define BMPNID_function_sig                _7rduHPDI4aV_3JkXcYrH2m6
-#undef BMP_gtk_browse_data
-#undef BMPNID_gtk_browse_data
-#define BMP_gtk_browse_data             PREDEF_BM(_9uRC9w2Gte9_5mW0NanaS19)
-#define BMPNID_gtk_browse_data             _9uRC9w2Gte9_5mW0NanaS19
+#undef BMP_oldgtk_browse_data
+#undef BMPNID_oldgtk_browse_data
+#define BMP_oldgtk_browse_data             PREDEF_BM(_9uRC9w2Gte9_5mW0NanaS19)
+#define BMPNID_oldgtk_browse_data             _9uRC9w2Gte9_5mW0NanaS19
 
-#undef BMP_gtk_browse_in_object
-#undef BMPNID_gtk_browse_in_object
-#define BMP_gtk_browse_in_object        PREDEF_BM(_8Y99VufgRZo_9SFMiDUruXS)
-#define BMPNID_gtk_browse_in_object        _8Y99VufgRZo_9SFMiDUruXS
+#undef BMP_oldgtk_browse_in_object
+#undef BMPNID_oldgtk_browse_in_object
+#define BMP_oldgtk_browse_in_object        PREDEF_BM(_8Y99VufgRZo_9SFMiDUruXS)
+#define BMPNID_oldgtk_browse_in_object        _8Y99VufgRZo_9SFMiDUruXS
 #undef BMP_gtk_browse_value
 #undef BMPNID_gtk_browse_value
 #define BMP_gtk_browse_value            PREDEF_BM(_6rHCoR6adv5_9SKAahoKWPj)

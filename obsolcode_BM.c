@@ -50,10 +50,10 @@ OBSOLETEROUTINE_BM (_01zabIzVKNR_8AGQGMBkSd7)   //commandhandler#,insert
      objectdbg_BM (_.recv));
 }                               /* endobsol commandhandler#,insert  _01zabIzVKNR_8AGQGMBkSd7 */
 
-/// method to gtk_browse_data for class-s
+/// method to oldgtk_browse_data for class-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_09DxyieS5Wz_7pkad4F88FA);
 value_tyBM
-OBSOLETEROUTINE_BM (_09DxyieS5Wz_7pkad4F88FA)   // gtk_browse_data°class
+OBSOLETEROUTINE_BM (_09DxyieS5Wz_7pkad4F88FA)   // oldgtk_browse_data°class
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
@@ -66,16 +66,16 @@ OBSOLETEROUTINE_BM (_09DxyieS5Wz_7pkad4F88FA)   // gtk_browse_data°class
     );
   _.recv = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data for class-s _09DxyieS5Wz_7pkad4F88FA recv %s",
+    ("°°obsolete oldgtk_browse_data for class-s _09DxyieS5Wz_7pkad4F88FA recv %s",
      objectdbg_BM (_.recv));
-}                               /* endobsol gtk_browse_data for class-s _09DxyieS5Wz_7pkad4F88FA */
+}                               /* endobsol oldgtk_browse_data for class-s _09DxyieS5Wz_7pkad4F88FA */
 
 
-//gtk_browse_data°assoc_object _0f1S28bCE26_3X6Vpz9lG4A
+//oldgtk_browse_data°assoc_object _0f1S28bCE26_3X6Vpz9lG4A
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0f1S28bCE26_3X6Vpz9lG4A);
 
 value_tyBM
-OBSOLETEROUTINE_BM (_0f1S28bCE26_3X6Vpz9lG4A)   //gtk_browse_data°assoc_object
+OBSOLETEROUTINE_BM (_0f1S28bCE26_3X6Vpz9lG4A)   //oldgtk_browse_data°assoc_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2_ __attribute__((unused)),        //
@@ -87,9 +87,9 @@ OBSOLETEROUTINE_BM (_0f1S28bCE26_3X6Vpz9lG4A)   //gtk_browse_data°assoc_object
     );
   _.recv = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data for assoc_object-s _0f1S28bCE26_3X6Vpz9lG4A recv %s",
+    ("°°obsolete oldgtk_browse_data for assoc_object-s _0f1S28bCE26_3X6Vpz9lG4A recv %s",
      objectdbg_BM (_.recv));
-}                               /* endobsol gtk_browse_data°assoc_object _0f1S28bCE26_3X6Vpz9lG4A */
+}                               /* endobsol oldgtk_browse_data°assoc_object _0f1S28bCE26_3X6Vpz9lG4A */
 
 /// command handler for ,remove
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0zf6nSKwSlU_6Cv3LMh1MmV);
@@ -193,11 +193,11 @@ OBSOLETEROUTINE_BM (_0HBMCM5CeLn_7L5YEV2jO7Y)   // gtk_browse_value°int
 }                               /* endobsol gtk_browse_value for int-s _0HBMCM5CeLn_7L5YEV2jO7Y */
 
 
-// gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi
+// oldgtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi
 extern objrout_sigBM ROUTINEOBJNAME_BM (_0M2jApBzFAy_8H8cpCjGpTi);
 
 value_tyBM
-OBSOLETEROUTINE_BM (_0M2jApBzFAy_8H8cpCjGpTi)   //gtk_browse_data°hashmapval_object 
+OBSOLETEROUTINE_BM (_0M2jApBzFAy_8H8cpCjGpTi)   //oldgtk_browse_data°hashmapval_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // object
  const value_tyBM arg2_ __attribute__((unused)),        // depth
@@ -210,9 +210,9 @@ OBSOLETEROUTINE_BM (_0M2jApBzFAy_8H8cpCjGpTi)   //gtk_browse_data°hashmapval_ob
     );
   _.recv = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi recv %s",
+    ("°°obsolete oldgtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi recv %s",
      objectdbg_BM (_.recv));
-}                               /* endobsol gtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi  */
+}                               /* endobsol oldgtk_browse_data°hashmapval_object _0M2jApBzFAy_8H8cpCjGpTi  */
 
 
 
@@ -237,7 +237,7 @@ OBSOLETEROUTINE_BM (_1eQ1a8KHixZ_1XDNH5iTQ0I)   //
      objectdbg_BM (_.recv));
 }                               /* endobsol  test_agenda command_handler _1eQ1a8KHixZ_1XDNH5iTQ0I */
 
-// code for _1tcgbIFhbTu_9WdGaq8NHWp gtk_browse_data°websession_object
+// code for _1tcgbIFhbTu_9WdGaq8NHWp oldgtk_browse_data°websession_object
 extern objrout_sigBM ROUTINEOBJNAME_BM (_1tcgbIFhbTu_9WdGaq8NHWp);
 
 value_tyBM
@@ -254,9 +254,9 @@ OBSOLETEROUTINE_BM (_1tcgbIFhbTu_9WdGaq8NHWp)   //
     );
   _.recv = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°websession_object _1tcgbIFhbTu_9WdGaq8NHWp recv %s",
+    ("°°obsolete oldgtk_browse_data°websession_object _1tcgbIFhbTu_9WdGaq8NHWp recv %s",
      objectdbg_BM (_.recv));
-}                               /* endobsol  gtk_browse_data°websession_object _1tcgbIFhbTu_9WdGaq8NHWp */
+}                               /* endobsol  oldgtk_browse_data°websession_object _1tcgbIFhbTu_9WdGaq8NHWp */
 
 /// command handler for ,put
 extern objrout_sigBM ROUTINEOBJNAME_BM (_1Xc5XJ7S5r7_3nYIzlf2XAw);
@@ -320,11 +320,11 @@ OBSOLETEROUTINE_BM (_2bzzB0nZuUO_2xfj3rDb3DN)   // emit_module#command_handler
      objectdbg_BM (_.recv));
 }                               /* endobsol  emit_module#command_handler _2bzzB0nZuUO_2xfj3rDb3DN */
 
-// method gtk_browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE
+// method oldgtk_browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE
 extern objrout_sigBM ROUTINEOBJNAME_BM (_2EtVNhr2mHz_8CsOQJdYeCE);
 
 value_tyBM
-OBSOLETEROUTINE_BM (_2EtVNhr2mHz_8CsOQJdYeCE)   // gtk_browse_data°list_object
+OBSOLETEROUTINE_BM (_2EtVNhr2mHz_8CsOQJdYeCE)   // oldgtk_browse_data°list_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
  const value_tyBM arg2_ __attribute__((unused)),        //
@@ -337,16 +337,16 @@ OBSOLETEROUTINE_BM (_2EtVNhr2mHz_8CsOQJdYeCE)   // gtk_browse_data°list_object
     );
   _.recv = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°list_object _23ViGouPnAg_15P5mpG9x3d  recv %s",
+    ("°°obsolete oldgtk_browse_data°list_object _23ViGouPnAg_15P5mpG9x3d  recv %s",
      objectdbg_BM (_.recv));
-}                               /* endobsol gtk_browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE */
+}                               /* endobsol oldgtk_browse_data°list_object _2EtVNhr2mHz_8CsOQJdYeCE */
 
 
-//// gtk_browse_data°json_object
+//// oldgtk_browse_data°json_object
 extern objrout_sigBM ROUTINEOBJNAME_BM (_2SwBWHiHN6V_64WhvTifJL4);
 
 value_tyBM
-OBSOLETEROUTINE_BM (_2SwBWHiHN6V_64WhvTifJL4)   // gtk_browse_data°json_object
+OBSOLETEROUTINE_BM (_2SwBWHiHN6V_64WhvTifJL4)   // oldgtk_browse_data°json_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
  const value_tyBM arg2_ __attribute__((unused)),        //
@@ -359,9 +359,9 @@ OBSOLETEROUTINE_BM (_2SwBWHiHN6V_64WhvTifJL4)   // gtk_browse_data°json_object
     );
   _.recv = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°jsonobject _2SwBWHiHN6V_64WhvTifJL4  recv %s",
+    ("°°obsolete oldgtk_browse_data°jsonobject _2SwBWHiHN6V_64WhvTifJL4  recv %s",
      objectdbg_BM (_.recv));
-}                               /* endobsol  gtk_browse_data°jsonobject _2SwBWHiHN6V_64WhvTifJL4  */
+}                               /* endobsol  oldgtk_browse_data°jsonobject _2SwBWHiHN6V_64WhvTifJL4  */
 
 //  command_handler#transient _2WuloCaOgGk_9oQOcW9c5Je
 extern objrout_sigBM ROUTINEOBJNAME_BM (_2WuloCaOgGk_9oQOcW9c5Je);
@@ -408,7 +408,7 @@ OBSOLETEROUTINE_BM (_3rne4qbpnV9_0pywzeJp3Qr)   //gtk_browse_value°set
 //_browse_data°hset_object
 extern objrout_sigBM ROUTINEOBJNAME_BM (_4IshjBIv6ol_5korHKUIjeK);
 value_tyBM
-OBSOLETEROUTINE_BM (_4IshjBIv6ol_5korHKUIjeK)   // gtk_browse_data°hset_object
+OBSOLETEROUTINE_BM (_4IshjBIv6ol_5korHKUIjeK)   // oldgtk_browse_data°hset_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
  const value_tyBM arg2_ __attribute__((unused)),        //
@@ -421,9 +421,9 @@ OBSOLETEROUTINE_BM (_4IshjBIv6ol_5korHKUIjeK)   // gtk_browse_data°hset_object
     );
   _.recv = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK recv %s",
+    ("°°obsolete oldgtk_browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK recv %s",
      objectdbg_BM (_.recv));
-}                               /* endobsol  gtk_browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK  */
+}                               /* endobsol  oldgtk_browse_data°hset_object _4IshjBIv6ol_5korHKUIjeK  */
 
 // dump command_handler _5oSaKNehPiO_3GSlpH5boCW
 extern objrout_sigBM ROUTINEOBJNAME_BM (_5oSaKNehPiO_3GSlpH5boCW);
@@ -471,7 +471,7 @@ OBSOLETEROUTINE_BM (_5v5ChlG1IYh_1Pv87MZJFPl)   //
 extern objrout_sigBM ROUTINEOBJNAME_BM (_5W7KY9crMlv_1Q6deHedMZ5);
 
 value_tyBM                      //
-OBSOLETEROUTINE_BM (_5W7KY9crMlv_1Q6deHedMZ5)   // gtk_browse_data°decaying_vector_object
+OBSOLETEROUTINE_BM (_5W7KY9crMlv_1Q6deHedMZ5)   // oldgtk_browse_data°decaying_vector_object
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // 
  const value_tyBM arg2_ __attribute__((unused)),        //
@@ -484,9 +484,9 @@ OBSOLETEROUTINE_BM (_5W7KY9crMlv_1Q6deHedMZ5)   // gtk_browse_data°decaying_vec
     );
   _.recv = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°decaying_vector_object _5W7KY9crMlv_1Q6deHedMZ5 recv %s",
+    ("°°obsolete oldgtk_browse_data°decaying_vector_object _5W7KY9crMlv_1Q6deHedMZ5 recv %s",
      objectdbg_BM (_.recv));
-}                               /* endobsol gtk_browse_data°decaying_vector_object _5W7KY9crMlv_1Q6deHedMZ5 */
+}                               /* endobsol oldgtk_browse_data°decaying_vector_object _5W7KY9crMlv_1Q6deHedMZ5 */
 
 
 
@@ -533,11 +533,11 @@ OBSOLETEROUTINE_BM (_63ZPkXUI2Uv_6Cp3qmh6Uud)   // gtk_browse_value°string
 }                               /* endobsol _63ZPkXUI2Uv_6Cp3qmh6Uud gtk_browse_value°string */
 
 /////
-// gtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE
+// oldgtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE
 extern objrout_sigBM ROUTINEOBJNAME_BM (_6xPQJolJkUw_2jCiJ3IOKXE);
 
 value_tyBM
-OBSOLETEROUTINE_BM (_6xPQJolJkUw_2jCiJ3IOKXE)   //gtk_browse_data°dict_object 
+OBSOLETEROUTINE_BM (_6xPQJolJkUw_2jCiJ3IOKXE)   //oldgtk_browse_data°dict_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
@@ -550,9 +550,9 @@ OBSOLETEROUTINE_BM (_6xPQJolJkUw_2jCiJ3IOKXE)   //gtk_browse_data°dict_object
     );
   _.recv = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE recv %s",
+    ("°°obsolete oldgtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE recv %s",
      objectdbg_BM (_.recv));
-}                               /* endobsol gtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE */
+}                               /* endobsol oldgtk_browse_data°dict_object _6xPQJolJkUw_2jCiJ3IOKXE */
 
 /// command handler for ,init_class
 extern objrout_sigBM ROUTINEOBJNAME_BM (_797zacMjvvt_3I2uxNJRfdq);
@@ -616,11 +616,11 @@ OBSOLETEROUTINE_BM (_7rRjqfXs3QI_4Nwk2Lfm569)   //test_agenda-log
 
 
 
-// gtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO
+// oldgtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO
 extern objrout_sigBM ROUTINEOBJNAME_BM (_7xwUcosBMjj_3Sa2de3sCGO);
 
 value_tyBM
-OBSOLETEROUTINE_BM (_7xwUcosBMjj_3Sa2de3sCGO)   // gtk_browse_data°contributor_class 
+OBSOLETEROUTINE_BM (_7xwUcosBMjj_3Sa2de3sCGO)   // oldgtk_browse_data°contributor_class 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2_ __attribute__((unused)),        //
@@ -634,9 +634,9 @@ OBSOLETEROUTINE_BM (_7xwUcosBMjj_3Sa2de3sCGO)   // gtk_browse_data°contributor_
     );
   _.objbrows = arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO recv %s",
+    ("°°obsolete oldgtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO recv %s",
      objectdbg_BM (_.objbrows));
-}                               /* endobsol  gtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO */
+}                               /* endobsol  oldgtk_browse_data°contributor_class _7xwUcosBMjj_3Sa2de3sCGO */
 
 
 /// obsolete method to gtk_browse_value for closure-s
@@ -681,12 +681,12 @@ OBSOLETEROUTINE_BM (_7EgSAlg8UbA_6x0iNxUOrYE)   // final-find_object
 }                               /* end obsolete final function -the todo added */
 
 //////
-// gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX
+// oldgtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX
 
 extern objrout_sigBM ROUTINEOBJNAME_BM (_8L6mTIICJRt_4RccFDlgACX);
 
 value_tyBM
-OBSOLETEROUTINE_BM (_8L6mTIICJRt_4RccFDlgACX)   // gtk_browse_data°sbuf_object 
+OBSOLETEROUTINE_BM (_8L6mTIICJRt_4RccFDlgACX)   // oldgtk_browse_data°sbuf_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
@@ -698,18 +698,18 @@ OBSOLETEROUTINE_BM (_8L6mTIICJRt_4RccFDlgACX)   // gtk_browse_data°sbuf_object
                  value_tyBM resultv; const objectval_tyBM * objbrows;);
   _.objbrows = (const objectval_tyBM *) arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX recv %s",
+    ("°°obsolete oldgtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX recv %s",
      objectdbg_BM (_.objbrows));
-}                               /* endobsol  gtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX */
+}                               /* endobsol  oldgtk_browse_data°sbuf_object _8L6mTIICJRt_4RccFDlgACX */
 
 /////
-// gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe
+// oldgtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9dKLCRPRn9Z_1tczFz5weBe);
 
 
 
 value_tyBM
-OBSOLETEROUTINE_BM (_9dKLCRPRn9Z_1tczFz5weBe)   //gtk_browse_data°hashsetval_object 
+OBSOLETEROUTINE_BM (_9dKLCRPRn9Z_1tczFz5weBe)   //oldgtk_browse_data°hashsetval_object 
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         //
  const value_tyBM arg2_ __attribute__((unused)),        //
@@ -723,15 +723,15 @@ OBSOLETEROUTINE_BM (_9dKLCRPRn9Z_1tczFz5weBe)   //gtk_browse_data°hashsetval_ob
                  value_tyBM cursonv;);
   _.objbrows = (const objectval_tyBM *) arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe recv %s",
+    ("°°obsolete oldgtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe recv %s",
      objectdbg_BM (_.objbrows));
-}                               /* endobsol gtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe */
+}                               /* endobsol oldgtk_browse_data°hashsetval_object _9dKLCRPRn9Z_1tczFz5weBe */
 
 
-/// method to gtk_browse_data for basiclo_function-s
+/// method to oldgtk_browse_data for basiclo_function-s
 extern objrout_sigBM ROUTINEOBJNAME_BM (_9zpvXnTuDeB_2B7ZiBtN8fA);
 value_tyBM
-OBSOLETEROUTINE_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)   // gtk_browse_data°basiclo_function
+OBSOLETEROUTINE_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)   // oldgtk_browse_data°basiclo_function
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2_ __attribute__((unused)),        // the browse maxdepth
@@ -744,14 +744,14 @@ OBSOLETEROUTINE_BM (_9zpvXnTuDeB_2B7ZiBtN8fA)   // gtk_browse_data°basiclo_func
     );
   _.objbrows = (const objectval_tyBM *) arg1;
   FATAL_BM
-    ("°°obsolete gtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA recv %s",
+    ("°°obsolete oldgtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA recv %s",
      objectdbg_BM (_.objbrows));
-}                               /* endobsol gtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA */
+}                               /* endobsol oldgtk_browse_data°basiclo_function _9zpvXnTuDeB_2B7ZiBtN8fA */
 
 /// command handler for ,put_method
-extern objrout_sigBM ROUTINEOBJNAME_BM (_9QuovXgtk9K_17pMbAD0XmX);
+extern objrout_sigBM ROUTINEOBJNAME_BM (_9QuovXguk9K_17pMbAD0XmX);
 value_tyBM
-OBSOLETEROUTINE_BM (_9QuovXgtk9K_17pMbAD0XmX)   //
+OBSOLETEROUTINE_BM (_9QuovXguk9K_17pMbAD0XmX)   //
 (struct stackframe_stBM * stkf, //
  const value_tyBM arg1,         // the reciever
  const value_tyBM arg2_ __attribute__((unused)),        // the selector
@@ -766,7 +766,7 @@ OBSOLETEROUTINE_BM (_9QuovXgtk9K_17pMbAD0XmX)   //
   FATAL_BM
     ("°°obsolete command handler for ,put_method recv %s",
      objectdbg_BM (_.recv));
-}                               /* endobsol    command handler for ,put_method _9QuovXgtk9K_17pMbAD0XmX */
+}                               /* endobsol    command handler for ,put_method _9QuovXguk9K_17pMbAD0XmX */
 
 /*** TODO: more obsolete routines should be added by running ./Build
  * then make redump ; if it fails with a ./bismon: undefined symbol:

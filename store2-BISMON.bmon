@@ -9495,12 +9495,12 @@ _17mrxkMdNtH_2CduQ2WDIy5 _8g1WBJBhDT9_1QK8IcuWYx2) ~)
 
 
 
-«_4DzpsR0MDLS_1GMNlJhyPX5 |=postponed_guigtk|
-!~ name (~ postponed_guigtk ~)
-± 1571992933.349
+«_4DzpsR0MDLS_1GMNlJhyPX5 |=postponed_guioldgtk|
+!~ name (~ postponed_guioldgtk ~)
+± 1643360261.349
 ∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "descriptor of postponed_guigtk_cbBM for register_gui_postponed in gui_GTKBM.c"
+ "descriptor of postponed_guioldgtk_cbBM for register_gui_postponed in gui_GTKBM.c"
 
 »_4DzpsR0MDLS_1GMNlJhyPX5
 
@@ -9670,7 +9670,7 @@ _0vgCFjXblkx_4zCMhMAWjVK
 ± 1519400282.860
 ∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 ↦ _0xbmmxnN8E8_0ZuEqJmqMNH |=command_handler|
- % _9QuovXgtk9K_17pMbAD0XmX ()
+ % _9QuovXguk9K_17pMbAD0XmX ()
 ↦ _0NnNXZqWvmz_1ucZGX0YPu1 |=command_arity|
  3
 
@@ -19206,7 +19206,7 @@ _2RUj1oyJ2rf_1ICZWr844Sv
 ± 1579256803.856
 ∈ _2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "gtk_browse_data°websession_object"
+ "oldgtk_browse_data°websession_object"
 
 »_1tcgbIFhbTu_9WdGaq8NHWp
 
@@ -26044,10 +26044,10 @@ _6Z4UU939WbU_8BK9xcKsXNb
 
 «_2SwBWHiHN6V_64WhvTifJL4
 Σ *
-± 1576161482.127
+± 1643360261.127
 ∈ _2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "json_object°gtk_browse_data(obrowe depth)"
+ "json_object°oldgtk_browse_data(obrowe depth)"
 
 »_2SwBWHiHN6V_64WhvTifJL4
 
@@ -39235,10 +39235,10 @@ _2RUj1oyJ2rf_1ICZWr844Sv
 
 «_5W7KY9crMlv_1Q6deHedMZ5
 Σ *
-± 1575971389.320
+± 1643360261.320
 ∈ _2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "method for gtk_browse_data°decaying_vector_object(obj"& " maxdepth) in guicode_BM.c"
+ "method for oldgtk_browse_data°decaying_vector_object(obj"& " maxdepth) in guicode_BM.c"
 
 »_5W7KY9crMlv_1Q6deHedMZ5
 
@@ -42949,10 +42949,10 @@ _6CNxxDuR549_5nVIV57U3hP
 
 «_6KYa0K6vqt5_00xCqyfhJhY
 Σ *
-± 1549636771.112
+± 1643360261.112
 ∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "the gtk_browse_value°double_float in guicode_BM.c"
+ "the oldgtk_browse_value°double_float in guicode_BM.c"
 
 »_6KYa0K6vqt5_00xCqyfhJhY
 
@@ -46078,10 +46078,10 @@ _4gjtBqgrY3i_67ZPUd9LxPU
 
 «_7rRjqfXs3QI_4Nwk2Lfm569
 Σ *
-± 1521229706.330
+± 1643360261.330
 ∈ _2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "gtk test agenda"
+ "oldgtk test agenda"
 
 »_7rRjqfXs3QI_4Nwk2Lfm569
 
@@ -55752,10 +55752,10 @@ _2wGWzItVmrN_2CBwG6iHWFO
 
 «_9EqBenFWb40_86MuuXslynk
 Σ *
-± 1524745213.220
+± 1643360261.220
 ∈ _2Ir1i8qnrA4_3jSkierlc5z |=basiclo_function|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "gtk defer compile module"
+ "oldgtk defer compile module"
 
 »_9EqBenFWb40_86MuuXslynk
 
@@ -56465,7 +56465,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 
 
 
-«_9QuovXgtk9K_17pMbAD0XmX
+«_9QuovXguk9K_17pMbAD0XmX
 Σ *
 ± 1519401343.750
 ∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
@@ -56474,7 +56474,7 @@ _6jZqk9RP0Pe_12cIgV9WMFC
 ↦ _4rz1Bi4weGz_8Y03gU81cRL |=see|
  { _373gFe8m21E_47xzvCGxpI9 _9KxVIxneLrM_8xLQNri9PmJ }
 
-»_9QuovXgtk9K_17pMbAD0XmX
+»_9QuovXguk9K_17pMbAD0XmX
 
 
 

@@ -19,7 +19,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ***/
-#include "bismon.h"
+#include "gtkbismon.h"
 #include "guicommand_GTKBM.const.h"
 
 void
@@ -36,7 +36,7 @@ commandblinkoff_BM (gpointer data __attribute__((unused)))
   GtkTextIter startit = EMPTY_TEXT_ITER_BM;
   GtkTextIter endit = EMPTY_TEXT_ITER_BM;
   gtk_text_buffer_get_bounds (commandbuf_BM, &startit, &endit);
-  gtk_text_buffer_remove_tag (commandbuf_BM, blink_cmdtag_BM, &startit,
+  gtk_text_buffer_remove_tag (commandbuf_BM, blink_cmdtag_GTKBM, &startit,
                               &endit);
   return G_SOURCE_REMOVE;
 }                               /* end commandblinkoff_BM */
@@ -54,7 +54,7 @@ commandblinkon_BM (gpointer data __attribute__((unused)))
       openendit = openstartit;
       gtk_text_iter_forward_chars (&openendit,
                                    commandblinkparens_BM.paroff_openlen);
-      gtk_text_buffer_apply_tag (commandbuf_BM, blink_cmdtag_BM, &openstartit,
+      gtk_text_buffer_apply_tag (commandbuf_BM, blink_cmdtag_GTKBM, &openstartit,
                                  &openendit);
     }
   if (commandblinkparens_BM.paroff_close > 0
@@ -67,7 +67,7 @@ commandblinkon_BM (gpointer data __attribute__((unused)))
       closestartit = closeendit;
       gtk_text_iter_backward_chars (&closestartit,
                                     commandblinkparens_BM.paroff_closelen);
-      gtk_text_buffer_apply_tag (commandbuf_BM, blink_cmdtag_BM,
+      gtk_text_buffer_apply_tag (commandbuf_BM, blink_cmdtag_GTKBM,
                                  &closestartit, &closeendit);
     }
   if (commandblinkparens_BM.paroff_xtra > 0
@@ -80,12 +80,12 @@ commandblinkon_BM (gpointer data __attribute__((unused)))
       xtraendit = xtrastartit;
       gtk_text_iter_forward_chars (&xtraendit,
                                    commandblinkparens_BM.paroff_xtralen);
-      gtk_text_buffer_apply_tag (commandbuf_BM, blink_cmdtag_BM, &xtrastartit,
+      gtk_text_buffer_apply_tag (commandbuf_BM, blink_cmdtag_GTKBM, &xtrastartit,
                                  &xtraendit);
     }
   if (commandblinkid_BM > 0)
     {
-      (void) g_timeout_add (UNBLINKDELAYMILLISEC_BM, commandblinkoff_BM,
+      (void) g_timeout_add (UNBLINKDELAYMILLISEC_GTKBM, commandblinkoff_BM,
                             NULL);
       return G_SOURCE_CONTINUE;
     }
@@ -736,16 +736,16 @@ runcommand_BM (bool erase)
       GtkTextIter it = EMPTY_TEXT_ITER_BM;
       gtk_text_buffer_get_end_iter (logbuf_BM, &it);
       gtk_text_buffer_insert_with_tags
-        (logbuf_BM, &it, commbuf, -1, comment_logtag_BM, NULL);
+        (logbuf_BM, &it, commbuf, -1, comment_logtag_GTKBM, NULL);
       gtk_text_buffer_insert (logbuf_BM, &it, "\n", -1);
       gtk_text_buffer_insert_with_tags
-        (logbuf_BM, &it, cmdstr, -1, command_logtag_BM, NULL);
+        (logbuf_BM, &it, cmdstr, -1, command_logtag_GTKBM, NULL);
       if (cmdlen > 0 && cmdstr[cmdlen - 1] != '\n')
         gtk_text_buffer_insert (logbuf_BM, &it, "\n", -1);
       snprintf (commbuf, sizeof (commbuf), "///--%s end command #%d",
                 serbuf, commandnumber_BM);
       gtk_text_buffer_insert_with_tags
-        (logbuf_BM, &it, commbuf, -1, comment_logtag_BM, NULL);
+        (logbuf_BM, &it, commbuf, -1, comment_logtag_GTKBM, NULL);
       gtk_text_buffer_insert (logbuf_BM, &it, "\n", -1);
       log_end_message_BM ();
     }
@@ -952,168 +952,168 @@ initialize_gui_tags_BM (GtkBuilder * bld)
   logtagtable_BM =              //
     GTK_TEXT_TAG_TABLE (gtk_builder_get_object (bld, "logtagtable_id"));
   ////////////////
-  pagetitle_brotag_BM =         //
+  pagetitle_brotag_GTKBM =         //
     gtk_text_tag_table_lookup (browsertagtable_BM, "pagetitle_brotag");
-  if (!pagetitle_brotag_BM)
-    FATAL_BM ("cannot find pagetitle_brotag_BM");
-  objtitle_brotag_BM =          //
+  if (!pagetitle_brotag_GTKBM)
+    FATAL_BM ("cannot find pagetitle_brotag_GTKBM");
+  objtitle_brotag_GTKBM =          //
     gtk_text_tag_table_lookup (browsertagtable_BM, "objtitle_brotag");
-  if (!objtitle_brotag_BM)
-    FATAL_BM ("cannot find objtitle_brotag_BM");
-  valtitle_brotag_BM =          //
+  if (!objtitle_brotag_GTKBM)
+    FATAL_BM ("cannot find objtitle_brotag_GTKBM");
+  valtitle_brotag_GTKBM =          //
     gtk_text_tag_table_lookup (browsertagtable_BM, "valtitle_brotag");
-  if (!valtitle_brotag_BM)
-    FATAL_BM ("cannot find valtitle_brotag_BM");
-  focustitle_brotag_BM =        //
+  if (!valtitle_brotag_GTKBM)
+    FATAL_BM ("cannot find valtitle_brotag_GTKBM");
+  focustitle_brotag_GTKBM =        //
     gtk_text_tag_table_lookup (browsertagtable_BM, "focustitle_brotag");
-  if (!focustitle_brotag_BM)
-    FATAL_BM ("cannot find focustitle_brotag_BM");
-  objcommtitle_brotag_BM =      //
+  if (!focustitle_brotag_GTKBM)
+    FATAL_BM ("cannot find focustitle_brotag_GTKBM");
+  objcommtitle_brotag_GTKBM =      //
     gtk_text_tag_table_lookup (browsertagtable_BM, "objcommtitle_brotag");
-  if (!objcommtitle_brotag_BM)
-    FATAL_BM ("cannot find objcommtitle_brotag_BM");
-  objnametitle_brotag_BM =      //
+  if (!objcommtitle_brotag_GTKBM)
+    FATAL_BM ("cannot find objcommtitle_brotag_GTKBM");
+  objnametitle_brotag_GTKBM =      //
     gtk_text_tag_table_lookup (browsertagtable_BM, "objnametitle_brotag");
-  if (!objnametitle_brotag_BM)
-    FATAL_BM ("cannot find objnametitle_brotag_BM");
-  objidtitle_brotag_BM =        //
+  if (!objnametitle_brotag_GTKBM)
+    FATAL_BM ("cannot find objnametitle_brotag_GTKBM");
+  objidtitle_brotag_GTKBM =        //
     gtk_text_tag_table_lookup (browsertagtable_BM, "objidtitle_brotag");
-  if (!objidtitle_brotag_BM)
-    FATAL_BM ("cannot find objidtitle_brotag_BM");
-  objid_brotag_BM =             //
+  if (!objidtitle_brotag_GTKBM)
+    FATAL_BM ("cannot find objidtitle_brotag_GTKBM");
+  objid_brotag_GTKBM =             //
     gtk_text_tag_table_lookup (browsertagtable_BM, "objid_brotag");
-  if (!objid_brotag_BM)
-    FATAL_BM ("cannot find objid_brotag_BM");
-  objname_brotag_BM =           //
+  if (!objid_brotag_GTKBM)
+    FATAL_BM ("cannot find objid_brotag_GTKBM");
+  objname_brotag_GTKBM =           //
     gtk_text_tag_table_lookup (browsertagtable_BM, "objname_brotag");
-  if (!objname_brotag_BM)
-    FATAL_BM ("cannot find objname_brotag_BM");
-  objrefcomm_brotag_BM =        //
+  if (!objname_brotag_GTKBM)
+    FATAL_BM ("cannot find objname_brotag_GTKBM");
+  objrefcomm_brotag_GTKBM =        //
     gtk_text_tag_table_lookup (browsertagtable_BM, "objrefcomm_brotag");
-  if (!objrefcomm_brotag_BM)
-    FATAL_BM ("cannot find objrefcomm_brotag_BM");
-  nest_brotag_BM =              //
+  if (!objrefcomm_brotag_GTKBM)
+    FATAL_BM ("cannot find objrefcomm_brotag_GTKBM");
+  nest_brotag_GTKBM =              //
     gtk_text_tag_table_lookup (browsertagtable_BM, "nest_brotag");
-  if (!nest_brotag_BM)
-    FATAL_BM ("cannot find nest_brotag_BM");
-  blink_brotag_BM =             //
+  if (!nest_brotag_GTKBM)
+    FATAL_BM ("cannot find nest_brotag_GTKBM");
+  blink_brotag_GTKBM =             //
     gtk_text_tag_table_lookup (browsertagtable_BM, "blink_brotag");
-  if (!blink_brotag_BM)
-    FATAL_BM ("cannot find blink_brotag_BM");
-  num_brotag_BM =               //
+  if (!blink_brotag_GTKBM)
+    FATAL_BM ("cannot find blink_brotag_GTKBM");
+  num_brotag_GTKBM =               //
     gtk_text_tag_table_lookup (browsertagtable_BM, "num_brotag");
-  if (!num_brotag_BM)
-    FATAL_BM ("cannot find num_brotag_BM");
-  toodeep_brotag_BM =           //
+  if (!num_brotag_GTKBM)
+    FATAL_BM ("cannot find num_brotag_GTKBM");
+  toodeep_brotag_GTKBM =           //
     gtk_text_tag_table_lookup (browsertagtable_BM, "toodeep_brotag");
-  if (!toodeep_brotag_BM)
-    FATAL_BM ("cannot find toodeep_brotag_BM");
-  str_brotag_BM =               //
+  if (!toodeep_brotag_GTKBM)
+    FATAL_BM ("cannot find toodeep_brotag_GTKBM");
+  str_brotag_GTKBM =               //
     gtk_text_tag_table_lookup (browsertagtable_BM, "str_brotag");
-  if (!str_brotag_BM)
-    FATAL_BM ("cannot find str_brotag_BM");
-  stresc_brotag_BM =            //
+  if (!str_brotag_GTKBM)
+    FATAL_BM ("cannot find str_brotag_GTKBM");
+  stresc_brotag_GTKBM =            //
     gtk_text_tag_table_lookup (browsertagtable_BM, "stresc_brotag");
-  if (!stresc_brotag_BM)
-    FATAL_BM ("cannot find stresc_brotag_BM");
-  miscomm_brotag_BM =           //
+  if (!stresc_brotag_GTKBM)
+    FATAL_BM ("cannot find stresc_brotag_GTKBM");
+  miscomm_brotag_GTKBM =           //
     gtk_text_tag_table_lookup (browsertagtable_BM, "miscomm_brotag");
-  if (!miscomm_brotag_BM)
-    FATAL_BM ("cannot find miscomm_brotag_BM");
-  epilogue_brotag_BM =          //
+  if (!miscomm_brotag_GTKBM)
+    FATAL_BM ("cannot find miscomm_brotag_GTKBM");
+  epilogue_brotag_GTKBM =          //
     gtk_text_tag_table_lookup (browsertagtable_BM, "epilogue_brotag");
-  if (!epilogue_brotag_BM)
-    FATAL_BM ("cannot find epilogue_brotag_BM");
+  if (!epilogue_brotag_GTKBM)
+    FATAL_BM ("cannot find epilogue_brotag_GTKBM");
   ////////////////
-  errored_cmdtag_BM =           //
+  errored_cmdtag_GTKBM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "errored_cmdtag");
-  if (!errored_cmdtag_BM)
+  if (!errored_cmdtag_GTKBM)
     FATAL_BM ("cannot find errored_cmdtag");
-  skipped_cmdtag_BM =           //
+  skipped_cmdtag_GTKBM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "skipped_cmdtag");
-  if (!skipped_cmdtag_BM)
+  if (!skipped_cmdtag_GTKBM)
     FATAL_BM ("cannot find skipped_cmdtag");
-  commentinside_cmdtag_BM =     //
+  commentinside_cmdtag_GTKBM =     //
     gtk_text_tag_table_lookup (commandtagtable_BM, "commentinside_cmdtag");
-  if (!commentinside_cmdtag_BM)
+  if (!commentinside_cmdtag_GTKBM)
     FATAL_BM ("cannot find commentinside_cmdtag");
-  commentsign_cmdtag_BM =       //
+  commentsign_cmdtag_GTKBM =       //
     gtk_text_tag_table_lookup (commandtagtable_BM, "commentsign_cmdtag");
-  if (!commentsign_cmdtag_BM)
+  if (!commentsign_cmdtag_GTKBM)
     FATAL_BM ("cannot find commentsign_cmdtag");
-  delim_cmdtag_BM =             //
+  delim_cmdtag_GTKBM =             //
     gtk_text_tag_table_lookup (commandtagtable_BM, "delim_cmdtag");
-  if (!delim_cmdtag_BM)
+  if (!delim_cmdtag_GTKBM)
     FATAL_BM ("cannot find delim_cmdtag");
-  knowname_cmdtag_BM =          //
+  knowname_cmdtag_GTKBM =          //
     gtk_text_tag_table_lookup (commandtagtable_BM, "knowname_cmdtag");
-  if (!knowname_cmdtag_BM)
+  if (!knowname_cmdtag_GTKBM)
     FATAL_BM ("cannot find knowname_cmdtag");
-  newname_cmdtag_BM =           //
+  newname_cmdtag_GTKBM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "newname_cmdtag");
-  if (!newname_cmdtag_BM)
+  if (!newname_cmdtag_GTKBM)
     FATAL_BM ("cannot find newname_cmdtag");
   //
-  id_cmdtag_BM =                //
+  id_cmdtag_GTKBM =                //
     gtk_text_tag_table_lookup (commandtagtable_BM, "id_cmdtag");
-  if (!id_cmdtag_BM)
+  if (!id_cmdtag_GTKBM)
     FATAL_BM ("cannot find id_cmdtag");
   //
-  number_cmdtag_BM =            //
+  number_cmdtag_GTKBM =            //
     gtk_text_tag_table_lookup (commandtagtable_BM, "number_cmdtag");
-  if (!number_cmdtag_BM)
+  if (!number_cmdtag_GTKBM)
     FATAL_BM ("cannot find number_cmdtag");
   //
-  stringsign_cmdtag_BM =        //
+  stringsign_cmdtag_GTKBM =        //
     gtk_text_tag_table_lookup (commandtagtable_BM, "stringsign_cmdtag");
-  if (!stringsign_cmdtag_BM)
+  if (!stringsign_cmdtag_GTKBM)
     FATAL_BM ("cannot find stringsign_cmdtag");
   //
-  stringinside_cmdtag_BM =      //
+  stringinside_cmdtag_GTKBM =      //
     gtk_text_tag_table_lookup (commandtagtable_BM, "stringinside_cmdtag");
-  if (!stringinside_cmdtag_BM)
+  if (!stringinside_cmdtag_GTKBM)
     FATAL_BM ("cannot find stringinside_cmdtag");
   //
-  dollar_cmdtag_BM =            //
+  dollar_cmdtag_GTKBM =            //
     gtk_text_tag_table_lookup (commandtagtable_BM, "dollar_cmdtag");
-  if (!dollar_cmdtag_BM)
+  if (!dollar_cmdtag_GTKBM)
     FATAL_BM ("cannot find dollar_cmdtag");
-  nesting_cmdtag_BM =           //
+  nesting_cmdtag_GTKBM =           //
     gtk_text_tag_table_lookup (commandtagtable_BM, "nesting_cmdtag");
-  if (!nesting_cmdtag_BM)
+  if (!nesting_cmdtag_GTKBM)
     FATAL_BM ("cannot find nesting_cmdtag");
-  blink_cmdtag_BM =             //
+  blink_cmdtag_GTKBM =             //
     gtk_text_tag_table_lookup (commandtagtable_BM, "blink_cmdtag");
-  if (!blink_cmdtag_BM)
+  if (!blink_cmdtag_GTKBM)
     FATAL_BM ("cannot find blink_cmdtag");
   ////////////////
-  code_logtag_BM =              //
+  code_logtag_GTKBM =              //
     gtk_text_tag_table_lookup (logtagtable_BM, "code_logtag");
-  if (!code_logtag_BM)
+  if (!code_logtag_GTKBM)
     FATAL_BM ("cannot find code_logtag");
-  error_logtag_BM =             //
+  error_logtag_GTKBM =             //
     gtk_text_tag_table_lookup (logtagtable_BM, "error_logtag");
-  if (!error_logtag_BM)
+  if (!error_logtag_GTKBM)
     FATAL_BM ("cannot find error_logtag");
-  time_logtag_BM =              //
+  time_logtag_GTKBM =              //
     gtk_text_tag_table_lookup (logtagtable_BM, "time_logtag");
-  if (!time_logtag_BM)
+  if (!time_logtag_GTKBM)
     FATAL_BM ("cannot find time_logtag");
-  id_logtag_BM =                //
+  id_logtag_GTKBM =                //
     gtk_text_tag_table_lookup (logtagtable_BM, "id_logtag");
-  if (!id_logtag_BM)
+  if (!id_logtag_GTKBM)
     FATAL_BM ("cannot find id_logtag");
-  name_logtag_BM =              //
+  name_logtag_GTKBM =              //
     gtk_text_tag_table_lookup (logtagtable_BM, "name_logtag");
-  if (!name_logtag_BM)
+  if (!name_logtag_GTKBM)
     FATAL_BM ("cannot find name_logtag");
-  comment_logtag_BM =           //
+  comment_logtag_GTKBM =           //
     gtk_text_tag_table_lookup (logtagtable_BM, "comment_logtag");
-  if (!comment_logtag_BM)
+  if (!comment_logtag_GTKBM)
     FATAL_BM ("cannot find comment_logtag");
-  command_logtag_BM =           //
+  command_logtag_GTKBM =           //
     gtk_text_tag_table_lookup (logtagtable_BM, "command_logtag");
-  if (!command_logtag_BM)
+  if (!command_logtag_GTKBM)
     FATAL_BM ("cannot find command_logtag");
 }                               /* end initialize_gui_tags_BM */
 
