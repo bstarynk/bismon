@@ -48,6 +48,7 @@ char *contact_name_BM;
 char *contact_email_BM;
 const char *project_name_BM;
 const char *sigusr1_dump_prefix_BM;
+const char *unix_json_socket_BM;
 
 int sigfd_BM = -1;              /* for signalfd(2) */
 atomic_int oniontimerfd_BM = -1;        /* for timerfd_create(2) */
@@ -810,13 +811,14 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = NULL},
   //
   //////////////////
+  /////// web service related options; that is also used by GCC plugins 
   //
   {.long_name = "ssl-certificate",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &onion_ssl_certificate_BM,
    .description =
-   "Uses FILEPREFIX.pem & FILEPREFIX.key for SSL certificate to libonion",
+   "Uses FILEPREFIX.pem & FILEPREFIX.key for SSL certificate to libonion - could be used by GCC plugins",
    .arg_description = "FILEPREFIX"},
   //
   {.long_name = "web-base",.short_name = (char) 0,
@@ -834,9 +836,23 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "Create an anonymous web session, and write its cookie in the given COOKIEFILE",
    .arg_description = "COOKIEFILE"},
+  //////////////////
   ////
-  ////
-  ////
+  /////// unix socket related options. Protocol is JSON, ended by double newlines or formfeeds
+  /// the socket is used by GCC plugins
+  ///
+  {
+   .long_name = "unix-json-socket",.short_name = (char) 'U',
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING,
+   .arg_data = &unix_json_socket_BM,
+   .description =
+   "Creates/uses/listen a unix(7) socket named UNIX_SOCKET on the local machine.\n"
+   "Input and output protocol is JSON, each message ended by double newlines or a single formfeed."
+   "Usable by GCC plugins or other applications on the local machine.",
+   .arg_description = "UNIX_SOCKET"},
+  ///
+  ///
   /******************************************************************
    * same long options, all prefixed by --bismon
    ******************************************************************/
@@ -1121,7 +1137,7 @@ const GOptionEntry optionstab_bm[] = {
    .description = "gives version information",
    .arg_description = NULL},
   //
-  //////////////////
+  ////////////////// web
   //
   {.long_name = "bismon-ssl-certificate",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
@@ -1146,6 +1162,15 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "Create an anonymous web HTTP cookie, and write its cookie in the given COOKIEFILE",
    .arg_description = "COOKIEFILE"},
+  //
+  ///////////// unix-json socket
+  {.long_name = "bismon-unix-json-socket",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &unix_json_socket_BM,
+   .description =
+   "Create/uses/listen a unix(7) socket named UNIX_SOCKET on the local machine. Same as --unix-json-socket UNIX_SOCKET",
+   .arg_description = "UNIX_SOCKET"},
   /// end of options
   {}
 };
