@@ -1596,6 +1596,10 @@ fork_onion_process_at_slot_BM (int slotpos,
   extern void lockonion_runpro_mtx_at_BM (int lineno);
 extern void unlockonion_runpro_mtx_at_BM (int lineno);
 
+
+extern void register_onion_thread_stack_BM (struct stackframe_stBM *);
+extern void unregister_onion_thread_stack_BM (struct stackframe_stBM *);
+extern void perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *);
 // payload delete support for websessiondata & webexchangedata
   extern void websessiondelete_BM (objectval_tyBM * ownobj,
                                    struct websessiondata_stBM *ws);

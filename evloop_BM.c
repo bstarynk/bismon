@@ -69,12 +69,7 @@ bool read_sigfd_BM (void);
 // handle SIGCHLD
 void handle_sigchld_BM (pid_t pid);
 // handle the command pipe
-static void read_commandpipe_BM (void);
-
-static void register_onion_thread_stack_BM (struct stackframe_stBM *);
-static void unregister_onion_thread_stack_BM (struct stackframe_stBM *);
-static void perhaps_suspend_for_gc_onion_thread_stack_BM (struct
-                                                          stackframe_stBM *);
+void read_commandpipe_BM (void);
 
 void
 lockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
