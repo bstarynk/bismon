@@ -52,11 +52,11 @@ thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
 
 // the lock above should be set when calling:
 void
-fork_onion_process_at_slot_BM (int slotpos,
-                               const stringval_tyBM * dirstrarg,
-                               const node_tyBM * cmdnodarg,
-                               const closure_tyBM * endclosarg,
-                               struct stackframe_stBM *stkf);
+fork_process_at_slot_BM (int slotpos,
+                         const stringval_tyBM * dirstrarg,
+                         const node_tyBM * cmdnodarg,
+                         const closure_tyBM * endclosarg,
+                         struct stackframe_stBM *stkf);
 void lockonion_runpro_mtx_at_BM (int lineno);
 void unlockonion_runpro_mtx_at_BM (int lineno);
 
@@ -172,8 +172,8 @@ onion_queue_process_BM (const stringval_tyBM * dirstrarg,
       }
     if (slotpos >= 0 && !onionrunpro_list_BM)
       {
-        fork_onion_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv,
-                                       _.endclosv, CURFRAME_BM);
+        fork_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv,
+                                 _.endclosv, CURFRAME_BM);
       }
     else
       {                         // append to onionrunpro_list_BM
@@ -209,11 +209,11 @@ failure:
 
 ////////////////
 void
-fork_onion_process_at_slot_BM (int slotpos,
-                               const stringval_tyBM * dirstrarg,
-                               const node_tyBM * cmdnodarg,
-                               const closure_tyBM * endclosarg,
-                               struct stackframe_stBM *stkf)
+fork_process_at_slot_BM (int slotpos,
+                         const stringval_tyBM * dirstrarg,
+                         const node_tyBM * cmdnodarg,
+                         const closure_tyBM * endclosarg,
+                         struct stackframe_stBM *stkf)
 {
   //objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
   //objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
@@ -231,7 +231,7 @@ fork_onion_process_at_slot_BM (int slotpos,
   int cmdlen = nodewidth_BM ((value_tyBM) _.cmdnodv);
   ASSERT_BM (cmdlen > 0);
   ASSERT_BM (slotpos >= 0 && slotpos < MAXNBWORKJOBS_BM);
-  DBGPRINTF_BM ("fork_onion_process_at_slot_BM slotpos %d cmdnod %s",
+  DBGPRINTF_BM ("fork_process_at_slot_BM slotpos %d cmdnod %s",
                 slotpos,
                 debug_outstr_value_BM ((value_tyBM) _.cmdnodv, CURFRAME_BM,
                                        0));
@@ -300,4 +300,4 @@ fork_onion_process_at_slot_BM (int slotpos,
       _.bufob = makeobj_BM ();
       onproc->rp_bufob = _.bufob;
     }
-}                               /* end fork_onion_process_at_slot_BM */
+}                               /* end fork_process_at_slot_BM */

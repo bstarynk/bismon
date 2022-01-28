@@ -3885,7 +3885,7 @@ handle_sigchld_BM (pid_t pid)
                                                 0),
                    debug_outstr_value_BM (_.newcmdnodv, CURFRAME_BM, 0),
                    debug_outstr_value_BM (_.newendclosv, CURFRAME_BM, 0));
-                fork_onion_process_at_slot_BM (chix, _.newdirstrv,
+                fork_process_at_slot_BM (chix, _.newdirstrv,
                                                _.newcmdnodv, _.newendclosv,
                                                CURFRAME_BM);
                 didfork = true;

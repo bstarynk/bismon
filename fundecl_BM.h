@@ -1588,7 +1588,7 @@ extern "C"
   extern void webexchangedatagckeep_BM (struct garbcoll_stBM *gc,
                                         struct webexchangedata_stBM *we);
 extern void
-fork_onion_process_at_slot_BM (int slotpos,
+fork_process_at_slot_BM (int slotpos,
                                const stringval_tyBM * dirstrarg,
                                const node_tyBM * cmdnodarg,
                                const closure_tyBM * endclosarg,
