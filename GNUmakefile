@@ -94,7 +94,7 @@ BISMON_SHGIT2:= $(shell if git status | grep -q 'nothing to commit'; then echo; 
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count executable clean runconfig objects indent redump
+.PHONY: all config count executable clean distclean runconfig objects indent redump
 
 .DEFAULTS: all
 
@@ -127,6 +127,10 @@ endif
 clean:
 	$(RM) *.o BISMON-config bismon   modubin/*.so modubin/*.o *~ *% *.cc.orig
 	$(RM) gccplugins/*.so gccplugins/*~ gccplugins/*%
+
+distclean: clean
+	$(RM) *.mkd
+	$(RM) *.const.h
 
 _bismon-config.mk:
 	@echo you should run the Configure script in $(pwd) for $@ > /dev/stderr
