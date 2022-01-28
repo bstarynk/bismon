@@ -141,6 +141,7 @@ extern volatile atomic_bool onionlooprunning_BM;
 
 extern pthread_mutex_t onionstack_mtx_BM;
 extern pthread_cond_t onionstack_condchange_BM;
+extern int cmdpipe_rd_BM, cmdpipe_wr_BM;
 
 #define UNSPECIFIED_BM ((void*)(&unspecifieddata_BM))
 #define HAS_GLOBAL_BM(Nam) extern objectval_tyBM*globdata_##Nam##_BM;
