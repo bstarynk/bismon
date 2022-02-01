@@ -315,12 +315,12 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
       /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
       INFOPRINTF_BM
-        ("run_onionweb_BM runs web_plain_event_loop, timestamped %s",
+        ("run_onionweb_BM runs plain_event_loop, timestamped %s",
          webonion_timestamp_BM);
       web_is_running_BM = true;
-      web_plain_event_loop_BM ();
+      plain_event_loop_BM ();
       web_is_running_BM = false;
-      INFOPRINTF_BM ("run_onionweb ended web_plain_event_loop");
+      INFOPRINTF_BM ("run_onionweb ended plain_event_loop");
     }
 }                               /* end run_onionweb_BM */
 
@@ -3505,9 +3505,9 @@ register_web_postponed_BM (double nextimstamp)
 
 
 
-/// this function should return true to continue the loop in web_plain_event_loop_BM
+/// this function should return true to continue the loop in plain_event_loop_BM
 bool
-read_sigfd_BM (void)            // called from web_plain_event_loop_BM
+read_sigfd_BM (void)            // called from plain_event_loop_BM
 {
   struct signalfd_siginfo siginf;
   memset (&siginf, 0, sizeof (siginf));

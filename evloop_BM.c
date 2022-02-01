@@ -60,10 +60,10 @@ fork_process_at_slot_BM (int slotpos,
 void lockonion_runpro_mtx_at_BM (int lineno);
 void unlockonion_runpro_mtx_at_BM (int lineno);
 
-void web_plain_event_loop_BM (void);
+void plain_event_loop_BM (void);
 
 // Handle signals thu signalfd(2); return true to break
-// web_plain_event_loop_BM and stop the loop there. To continue the
+// plain_event_loop_BM and stop the loop there. To continue the
 // event loop, it should return false.
 bool read_sigfd_BM (void);
 // handle SIGCHLD
@@ -303,20 +303,20 @@ fork_process_at_slot_BM (int slotpos,
 }                               /* end fork_process_at_slot_BM */
 
 
-/// remember that only web_plain_event_loop_BM is allowed to *remove*
+/// remember that only plain_event_loop_BM is allowed to *remove*
 /// things from onionrunprocarr_BM or onionrunpro_list_BM
 void
-web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
+plain_event_loop_BM (void)  /// called from run_onionweb_BM
 {
-  //  objectval_tyBM *k_web_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
+  //  objectval_tyBM *k_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * bufob;);
   atomic_init (&onionlooprunning_BM, true);
 
-  DBGBACKTRACEPRINTF_BM ("web_plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",      //
+  DBGBACKTRACEPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",      //
                          sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
-  INFOPRINTF_BM ("start loop of web_plain_event_loop_BM for %s",
+  INFOPRINTF_BM ("start loop of plain_event_loop_BM for %s",
                  onion_web_base_BM);
   while (atomic_load (&onionlooprunning_BM))
     {
@@ -351,18 +351,18 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
 #define POLL_DELAY_MILLISECS_BM 3750
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM
-          ("web_plain_event_loop_BM before poll nbpoll=%d loop#%ld delay %d ms",
+          ("plain_event_loop_BM before poll nbpoll=%d loop#%ld delay %d ms",
            nbpoll, loopcnt, POLL_DELAY_MILLISECS_BM);
       int nbready = poll (pollarr, nbpoll, POLL_DELAY_MILLISECS_BM);
       if (loopcnt % 4 == 0)
-        DBGPRINTF_BM ("web_plain_event_loop_BM nbready %d loop#%ld", nbready,
+        DBGPRINTF_BM ("plain_event_loop_BM nbready %d loop#%ld", nbready,
                       loopcnt);
       if (nbready == 0)         // no file descriptor read, timed out
         continue;
       if (nbready < 0)
         {
           if (errno != EINTR)
-            FATAL_BM ("web_plain_event_loop_BM poll failure");
+            FATAL_BM ("plain_event_loop_BM poll failure");
           continue;
         }
       {
@@ -461,5 +461,5 @@ web_plain_event_loop_BM (void)  /// called from run_onionweb_BM
       if (pollarr[pollix_cmdp].revents & POLL_IN)
         read_commandpipe_BM ();
     }                           /* end while onionlooprunning */
-  INFOPRINTF_BM ("web_plain_event_loop_BM ended loopcnt=%ld", loopcnt);
-}                               /* end web_plain_event_loop_BM */
+  INFOPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
+}                               /* end plain_event_loop_BM */
