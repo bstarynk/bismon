@@ -1786,7 +1786,7 @@ main (int argc, char **argv)
   ///
   if (run_onion_BM)
     {
-      stop_onion_event_loop_BM ();
+      stop_event_loop_BM ();
     }
   //
   if (want_finalgc_bm)

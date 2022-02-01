@@ -45,7 +45,7 @@ extern bool gui_is_running_BM;
 extern bool web_is_running_BM;
 extern FILE *gui_command_log_file_BM;
 ////
-extern const char*unix_json_socket_BM;
+extern volatile const char*unix_json_socket_BM;
 
 /// these will be realpath-s after initialization
 extern const char *contributors_filepath_BM;
