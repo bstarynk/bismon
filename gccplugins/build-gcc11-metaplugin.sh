@@ -2,10 +2,10 @@
 ##// SPDX-License-Identifier: GPL-3.0-or-later
 ##### this shell script could be invoked from Msh-Analyze
 ##
-## BISMON related GCC10 metaplugin builder
-## file gccplugins/build-gcc10_metaplugin.sh
+## BISMON related GCC11 metaplugin builder
+## file gccplugins/build-gcc11_metaplugin.sh
 ## See https://github.com/bstarynk/bismon/
-## Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+## Copyright © 2020 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 ################################################################
 ## contributed by Basile Starynkevitch 
 ##
@@ -26,12 +26,12 @@
 
 ## C++ compiler used to compile the GCC meta plugin
 if [ -z "$BISMON_PLUGIN_GXX" ]; then
-    export BISMON_PLUGIN_GXX=/usr/bin/g++-10
+    export BISMON_PLUGIN_GXX=/usr/bin/g++-11
 fi
 
 ## target compiler which dlopen-s the GCC meta plugin
 if [ -z "$BISMON_TARGET_GCC" ]; then
-    export BISMON_TARGET_GCC=/usr/bin/g++-10
+    export BISMON_TARGET_GCC=/usr/bin/g++-11
 fi
 
 TARGETPLUGINDIR=$($BISMON_TARGET_GCC -print-file-name=plugin)
@@ -46,8 +46,8 @@ fi
 
 TARGETGENGTYPE=$TARGETPLUGINDIR/gengtype
 $TARGETGENGTYPE --read-state $TARGETPLUGINDIR/gtype.state \
-		--plugin _gcc10_metaplugin_BMGCC-gty.h \
-		gcc10_metaplugin_BMGCC.cc gcc10_metaplugin_BMGCC.hh
+		--plugin _gcc11_metaplugin_BMGCC-gty.h \
+		gcc11_metaplugin_BMGCC.cc gcc11_metaplugin_BMGCC.hh
 
 SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 
@@ -66,7 +66,9 @@ SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 
 #### see also Debian bug #983436
 
-### in rare cases, we also want the assembler file of the plugin (e.g. to debug some dlerror in it)
+### in rare cases, we also want the assembler file of the plugin
+### (e.g. to debug some dlerror in it).  Assembler output is obtained
+### by setting the environment variable BISMON_PLUGIN_ASMOUT
 if [ -n "$BISMON_PLUGIN_ASMOUT" ]; then
     if [ -f "$BISMON_PLUGIN_ASMOUT" ]; then
 	/bin/mv  "$BISMON_PLUGIN_ASMOUT"  "$BISMON_PLUGIN_ASMOUT"~
@@ -75,7 +77,7 @@ if [ -n "$BISMON_PLUGIN_ASMOUT" ]; then
 	       -I $TARGETPLUGINDIR/include/ \
 	       -shared -fno-rtti -fPIC -rdynamic \
 	       -DPLUGINGITID=\"$SHORTGITID\" \
-	       gcc10_metaplugin_BMGCC.cc \
+	       gcc11_metaplugin_BMGCC.cc \
                $(pkg-config --cflags --libs jsoncpp curlpp) \
 	       -S -fverbose-asm -o "$BISMON_PLUGIN_ASMOUT"
 fi
@@ -85,9 +87,9 @@ exec $BISMON_PLUGIN_GXX -Wall -Wextra -O1 -g3 \
 	   -I $TARGETPLUGINDIR/include/ \
 	   -shared -fno-rtti -fPIC -rdynamic \
 	   -DPLUGINGITID=\"$SHORTGITID\" \
-	   gcc10_metaplugin_BMGCC.cc \
+	   gcc11_metaplugin_BMGCC.cc \
            $(pkg-config --cflags --libs jsoncpp curlpp) \
-	   -o gcc10_metaplugin_BMGCC.so
+	   -o gcc11_metaplugin_BMGCC.so
 
 ##FIXME: GCC documentation suggests linking with -shared
 ## -Wl,export-all-symbols which seems to not work above...

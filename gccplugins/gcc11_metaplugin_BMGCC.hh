@@ -1,9 +1,9 @@
 
 /**
-    BISMON related GCC10 metaplugin header gcc10_metaplugin_BMGCC.hh
+    BISMON related GCC11 metaplugin header gcc11_metaplugin_BMGCC.hh
     See https://github.com/bstarynk/bismon/
 
-    Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2020 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch.
 
     This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,8 @@
 
 **/
 
-#ifndef GCC10_METAPLUGIN_BISMON_INCLUDED_
-#define  GCC10_METAPLUGIN_BISMON_INCLUDED_ 1
+#ifndef GCC11_METAPLUGIN_BISMON_INCLUDED_
+#define  GCC11_METAPLUGIN_BISMON_INCLUDED_ 1
 
 //// the conventional prefix or suffix in names is BMP - for BisMon Plugin
 
@@ -188,12 +188,12 @@ public:
 };				// end class BMP_post_jsoncurl
 
 #warning we may need types with Gty annotations here, and extern variables...
-/* see comments in file build-gcc10_metaplugin.sh */
-#endif /*GCC10_METAPLUGIN_BISMON_INCLUDED_*/
+/* see comments in file build-gcc11_metaplugin.sh */
+#endif /*GCC11_METAPLUGIN_BISMON_INCLUDED_*/
 /****************
  **                           for Emacs...
  ** Local Variables: ;;
- ** compile-command: "./build-gcc10_metaplugin.sh" ;;
+ ** compile-command: "./build-gcc11_metaplugin.sh" ;;
  ** End: ;;
  ****************/
-/* end of header file gcc10_metaplugin_BMGCC.hh */
+/* end of header file gcc11_metaplugin_BMGCC.hh */

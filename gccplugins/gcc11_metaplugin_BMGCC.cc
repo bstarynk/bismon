@@ -1,5 +1,5 @@
 /**
-    BISMON related GCC10 metaplugin gcc10_metaplugin_BMGCC.cc
+    BISMON related GCC11 metaplugin gcc11_metaplugin_BMGCC.cc
     See https://github.com/bstarynk/bismon/
     Copyright © 2020 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch and Franck Védrine
@@ -22,11 +22,11 @@
 
 //// the conventional prefix or suffix in names is BMP - for BisMon Plugin
 
-#include "gcc10_metaplugin_BMGCC.hh"
+#include "gcc11_metaplugin_BMGCC.hh"
 
 //// include generated GTY support by gengtype
 //// See e.g. https://gcc.gnu.org/onlinedocs/gccint/Type-Information.html
-#include "_gcc10_metaplugin_BMGCC-gty.h"
+#include "_gcc11_metaplugin_BMGCC-gty.h"
 
 
 
@@ -94,7 +94,7 @@ gt_ggc_mx (BMP_set_of_functions *setfun)
   for (BMPCC_gcc_function* f: setfun->set_funptr)
     {
       gcc_assert(f);
-      /// the below gt_ggc_mx_function is probably implemented in the generated _gcc10_metaplugin_BMGCC-gty.h file
+      /// the below gt_ggc_mx_function is probably implemented in the generated _gcc11_metaplugin_BMGCC-gty.h file
       gt_ggc_mx_function (f);
     };
 } // end gt_ggc_mx (BMP_set_of_functions *setfun)
@@ -112,7 +112,7 @@ gt_ggc_mx (BMP_set_of_functions *setfun)
 void
 gt_pch_nx (BMP_set_of_functions* setfun)
 {
-  warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: precompiled header marking gt_pch_nx for BMP_set_of_functions probably wrong");
+  warning(UNKNOWN_LOCATION, "BISMON GCC11 METAPLUGIN: precompiled header marking gt_pch_nx for BMP_set_of_functions probably wrong");
 #warning precompiled header marking gt_pch_nx for BMP_set_of_functions probably wrong
   gcc_assert(setfun);
   setfun->check_magic();
@@ -128,7 +128,7 @@ gt_pch_nx (BMP_set_of_functions* setfun)
 void
 gt_pch_nx(BMP_set_of_functions* setfun, gt_pointer_operator op, void*cookie)
 {
-  warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: precompiled header walker gt_pch_nx for BMP_set_of_functions probably wrong");
+  warning(UNKNOWN_LOCATION, "BISMON GCC11 METAPLUGIN: precompiled header walker gt_pch_nx for BMP_set_of_functions probably wrong");
 #warning gt_pch_nx precompiled header walker for BMP_set_of_functions probably wrong
   for (BMPCC_gcc_function* f: setfun->set_funptr)
     {
@@ -155,28 +155,28 @@ plugin_init (struct plugin_name_args *plugin_info,
   /// the base version should be compatible
   if (strcmp(version->basever, gcc_version.basever))
     {
-      error("BISMON GCC10 METAPLUGIN: fail version check for %s: different base version %s vs %s",
+      error("BISMON GCC11 METAPLUGIN: fail version check for %s: different base version %s vs %s",
             plugin_name, version->basever, gcc_version.basever);
       return 1;
     }
   else
     inform(UNKNOWN_LOCATION,
-           "BISMON GCC10 METAPLUGIN: plugin %s"
+           "BISMON GCC11 METAPLUGIN: plugin %s"
            " (built " __DATE__ " on " __TIME__")"
            " for GCC version %s", plugin_name, version->basever);
   /// other version information are tested and reported. In some
   /// cases, that might work.
   if (strcmp(version->datestamp, gcc_version.datestamp))
-    warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: datestamp difference for %s:\n"
+    warning(UNKNOWN_LOCATION, "BISMON GCC11 METAPLUGIN: datestamp difference for %s:\n"
             " plugin has %s, GCC had %s; this is risky.",
             plugin_name, version->datestamp, gcc_version.datestamp);
   if (strcmp(version->devphase, gcc_version.devphase))
-    warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: devphase difference for %s:\n"
+    warning(UNKNOWN_LOCATION, "BISMON GCC11 METAPLUGIN: devphase difference for %s:\n"
             " plugin has %s, GCC had %s; this is risky.",
             plugin_name, version->devphase, gcc_version.devphase);
   if (strcmp(version->configuration_arguments,
              gcc_version.configuration_arguments))
-    warning(UNKNOWN_LOCATION, "BISMON GCC10 METAPLUGIN: configuration difference for %s:\n"
+    warning(UNKNOWN_LOCATION, "BISMON GCC11 METAPLUGIN: configuration difference for %s:\n"
             " plugin has %s, GCC had %s; this is risky.",
             plugin_name,
             version->configuration_arguments,
@@ -186,7 +186,7 @@ plugin_init (struct plugin_name_args *plugin_info,
   curlpp::initialize (CURL_GLOBAL_ALL);
 
   ///
-  inform(UNKNOWN_LOCATION, "started Bismon GCC10 metaplugin built " __DATE__ " on " __TIME__ " process %d for main input %s"
+  inform(UNKNOWN_LOCATION, "started Bismon GCC11 metaplugin built " __DATE__ " on " __TIME__ " process %d for main input %s"
 #ifdef PLUGINGITID
          " (gitid " PLUGINGITID ")"
 #else
@@ -353,7 +353,7 @@ parse_plugin_arguments(const char*plugin_name, struct plugin_name_args*plugin_ar
   int plargc = plugin_args->argc;
   static char versbuf[256];
   snprintf(versbuf, sizeof(versbuf),
-           "Bismon GCC10 metaplugin "
+           "Bismon GCC11 metaplugin "
 #ifdef PLUGINGITID
            " (gitid " PLUGINGITID ")"
 #endif
@@ -427,7 +427,7 @@ BMP_start_unit_handler(void*gccdata,void*userdata)
 #warning BMP_start_unit_handler is uncomplete
   assert(userdata == nullptr);
   ///
-  inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin start unit handler for main input %s",
+  inform(UNKNOWN_LOCATION, "Bismon GCC11 metaplugin start unit handler for main input %s",
          main_input_filename);
 
   /**NOTICE: GCC warning wants a %qs *****/
@@ -450,7 +450,7 @@ BMP_all_passes_end_handler(void*gccdata,void*userdata)
 {
 #warning BMP_all_passes_end_handler is uncomplete
   assert(userdata == nullptr);
-  inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin all passes end handler for main input %s",
+  inform(UNKNOWN_LOCATION, "Bismon GCC11 metaplugin all passes end handler for main input %s",
          main_input_filename);
   /**NOTICE: GCC warning wants a %qs *****/
   //   warning(UNKNOWN_LOCATION, "incomplete handling of `Plugin_Start_Unit' event in %s:%d", __FILE__, __LINE__);
@@ -473,7 +473,7 @@ BMP_finish_handler(void*gccdata,void*userdata)
 {
 #warning BMP_finish_handler is uncomplete
   assert(userdata == nullptr);
-  inform(UNKNOWN_LOCATION, "Bismon GCC10 metaplugin finish handler for main input %s",
+  inform(UNKNOWN_LOCATION, "Bismon GCC11 metaplugin finish handler for main input %s",
          main_input_filename);
 } // end  BMP_finish_handler
 
@@ -486,7 +486,7 @@ BMP_include_file_handler(void*gccdata,void*userdata)
   const char*prefix = reinterpret_cast<const char*>(userdata);
   assert(gccdata != nullptr);
   const char*gccfilepath = reinterpret_cast<const char*>(gccdata);
-  inform (UNKNOWN_LOCATION, "Bismon GCC10 metaplugin include handler prefix %s filepath %qs",
+  inform (UNKNOWN_LOCATION, "Bismon GCC11 metaplugin include handler prefix %s filepath %qs",
           prefix, gccfilepath);
 } // end of BMP_include_file_handler
 
@@ -496,7 +496,7 @@ BMP_post_jsoncurl::do_post()
 #warning BMP_post_jsoncurl::do_post is incomplete
   std::ostringstream os;
   os <<  this->pjs_jsonval << std::flush;
-  warning (UNKNOWN_LOCATION, "Bismon GCC10 metaplugin unimplemented %s with %s",
+  warning (UNKNOWN_LOCATION, "Bismon GCC11 metaplugin unimplemented %s with %s",
            __func__,
            os.str().c_str());
 } // end BMP_post_jsoncurl::do_post
@@ -504,7 +504,7 @@ BMP_post_jsoncurl::do_post()
 /****************
  **                           for Emacs...
  ** Local Variables: ;;
- ** compile-command: "./build-gcc10-metaplugin.sh" ;;
+ ** compile-command: "./build-gcc11-metaplugin.sh" ;;
  ** End: ;;
  ****************/
-////// end of file bismon/gccplugins/gcc10_metaplugin_BMGCC.cc
+////// end of file bismon/gccplugins/gcc11_metaplugin_BMGCC.cc
