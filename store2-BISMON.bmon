@@ -9440,6 +9440,17 @@ _7T9OwSFlgov_0wVJaK1eZbn
 
 
 
+«_74VNUG6Vqq4_700i8h0o8EI |=plain_event_loop|
+!~ name (~ plain_event_loop ~)
+± 1643722742.265
+∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "describe the function plain_event_loop_BM in evloop_BM.c"
+
+»_74VNUG6Vqq4_700i8h0o8EI
+
+
+
 «_3pO69EI4P0q_7Dnb672CUkN |=plain_jsmodule_object|
 !~ name (~ plain_jsmodule_object ~)
 ± 1534745224.773
@@ -12104,17 +12115,6 @@ _7T9OwSFlgov_0wVJaK1eZbn
  "gives the empty handler in web dictionnary"
 
 »_8Rwc7G3hQ0G_230O74aoi1w
-
-
-
-«_74VNUG6Vqq4_700i8h0o8EI |=plain_event_loop|
-!~ name (~ plain_event_loop ~)
-± 1643722742.265
-∈ _7T9OwSFlgov_0wVJaK1eZbn |=object|
-↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "describe the function plain_event_loop_BM in evloop_BM.c"
-
-»_74VNUG6Vqq4_700i8h0o8EI
 
 
 
