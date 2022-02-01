@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -1715,8 +1715,11 @@ extern void perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM
 
   extern void webonion_suspend_before_gc_BM (void);
   extern void webonion_continue_after_gc_BM (void);
-  extern void stop_onion_event_loop_BM (void);
+  extern void stop_event_loop_BM (void);
   extern void gcmarkwebonion_BM (struct garbcoll_stBM *gc);
+  extern void stop_unix_json_socket_processing_BM(void);
+
+
 
 // send an email; both contribob and decayob should have been locked
 // by the caller; the decayob would become a decayed vector whose

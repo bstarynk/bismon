@@ -306,14 +306,14 @@ fork_process_at_slot_BM (int slotpos,
 /// remember that only plain_event_loop_BM is allowed to *remove*
 /// things from onionrunprocarr_BM or onionrunpro_list_BM
 void
-plain_event_loop_BM (void)  /// called from run_onionweb_BM
+plain_event_loop_BM (void)      /// called from run_onionweb_BM
 {
   //  objectval_tyBM *k_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * bufob;);
   atomic_init (&onionlooprunning_BM, true);
 
-  DBGBACKTRACEPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",      //
+  DBGBACKTRACEPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",  //
                          sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
   INFOPRINTF_BM ("start loop of plain_event_loop_BM for %s",
@@ -463,3 +463,12 @@ plain_event_loop_BM (void)  /// called from run_onionweb_BM
     }                           /* end while onionlooprunning */
   INFOPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
 }                               /* end plain_event_loop_BM */
+
+
+
+void
+stop_unix_json_socket_processing_BM (void)
+{
+  FATAL_BM ("unimplemented stop_unix_json_socket_processing_BM");
+#warning stop_unix_json_socket_processing_BM unimplemented
+}                               /* end stop_unix_json_socket_processing_BM */
