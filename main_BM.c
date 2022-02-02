@@ -3043,54 +3043,36 @@ queue_process_BM (const stringval_tyBM * dirstrarg,
                   const closure_tyBM * endclosarg,
                   struct stackframe_stBM *stkf)
 {
-#ifdef BISMONGTK
-  extern void
-    gtk_queue_process_BM (const stringval_tyBM * dirstrarg,
-                          const node_tyBM * cmdnodarg,
-                          const closure_tyBM * endclosarg,
-                          struct stackframe_stBM *stkf);
-#endif
   extern void
     onion_queue_process_BM (const stringval_tyBM * dirstrarg,
                             const node_tyBM * cmdnodarg,
                             const closure_tyBM * endclosarg,
                             struct stackframe_stBM *stkf);
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    {
-      gtk_queue_process_BM (dirstrarg, cmdnodarg, endclosarg, stkf);
-      return;
-    }
-#endif
   //
   if (web_is_running_BM)
     {
       onion_queue_process_BM (dirstrarg, cmdnodarg, endclosarg, stkf);
       return;
     }
-  FATAL_BM ("queue_process_BM without web or GUI");
+  /// FIXME: this is probably wrong, queue_process_BM can run with
+  /// event loop...
+#warning queue_process_BM could be wrong
+  FATAL_BM ("queue_process_BM without web ....");
 }                               /* end queue_process_BM */
 
 void
 log_begin_message_BM (void)
 {
-#ifdef BISMONGTK
-  extern void gtk_log_begin_message_BM (void);
-#endif
   extern void onion_log_begin_message_BM (void);
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    {
-      gtk_log_begin_message_BM ();
-      return;
-    };
-#endif /*BISMONGTK*/
-    if (web_is_running_BM)
+  if (web_is_running_BM)
     {
       onion_log_begin_message_BM ();
       return;
     }
-  FATAL_BM ("log_begin_message_BM without web or GUI");
+  /// FIXME: this is probably wrong, log_begin_message_BM can run with
+  /// event loop...
+#warning log_begin_message_BM could be wrong
+  FATAL_BM ("log_begin_message_BM without web");
 }                               /* end log_begin_message_BM */
 
 
@@ -3098,23 +3080,16 @@ log_begin_message_BM (void)
 void
 log_end_message_BM (void)
 {
-#ifdef BISMONGTK
-  extern void gtk_log_end_message_BM (void);
-#endif
   extern void onion_log_end_message_BM (void);
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    {
-      gtk_log_end_message_BM ();
-      return;
-    };
-#endif /*BISMONGTK*/
-    if (web_is_running_BM)
+  if (web_is_running_BM)
     {
       onion_log_end_message_BM ();
       return;
     }
-  FATAL_BM ("log_end_message_BM without web or GUI");
+  /// FIXME: this is probably wrong, log_end_message_BM can run with
+  /// event loop...
+#warning log_begin_message_BM could be wrong
+  FATAL_BM ("log_end_message_BM without web");
 }                               /* end log_end_message_BM */
 
 
@@ -3122,44 +3097,30 @@ log_end_message_BM (void)
 void
 log_puts_message_BM (const char *str)
 {
-#ifdef BISMONGTK
-  extern void gtk_log_puts_message_BM (const char *);
-#endif
   extern void onion_log_puts_message_BM (const char *);
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    {
-      gtk_log_puts_message_BM (str);
-      return;
-    };
-#endif /*BISMONGTK*/
-    if (web_is_running_BM)
+  if (web_is_running_BM)
     {
       onion_log_puts_message_BM (str);
       return;
     }
+  /// FIXME: this is probably wrong, log_end_message_BM can run with
+  /// event loop...
+#warning log_puts_message_BM could be wrong
   FATAL_BM ("log_puts_message_BM without web or GUI for: %s", str);
 }                               /* end log_puts_message_BM */
 
 void
 log_object_message_BM (const objectval_tyBM * obj)
 {
-#ifdef BISMONGTK
-  extern void gtk_log_object_message_BM (const objectval_tyBM *);
-#endif
   extern void onion_log_object_message_BM (const objectval_tyBM *);
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    {
-      gtk_log_object_message_BM (obj);
-      return;
-    };
-#endif /*BISMONGTK*/
-    if (web_is_running_BM)
+  if (web_is_running_BM)
     {
       onion_log_object_message_BM (obj);
       return;
     }
+  /// FIXME: this is probably wrong, log_object_message_BM can run with
+  /// event loop...
+#warning log_object_message_BM could be wrong
   FATAL_BM ("log_object_message_BM without web or GUI for %s",
             objectdbg_BM (obj));
 }                               /* end log_object_message_BM */
