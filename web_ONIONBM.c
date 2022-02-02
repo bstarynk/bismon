@@ -3695,13 +3695,13 @@ handle_sigchld_BM (pid_t pid)
               }
           }
         _.qnodv =
-          (value_tyBM) nodecast_BM (listfirst_BM (onionrunpro_list_BM));
+          (value_tyBM) nodecast_BM (listfirst_BM (pendingrunproc_list_BM));
         if (_.qnodv)
           {
             ASSERT_BM (nodeconn_BM (_.qnodv) == k_queue_process);
             if (nbruncmds <= nbworkjobs_BM)
               {
-                listpopfirst_BM (onionrunpro_list_BM);
+                listpopfirst_BM (pendingrunproc_list_BM);
                 _.newdirstrv = (value_tyBM)
                   stringcast_BM ((value_tyBM) nodenthson_BM (_.qnodv, 0));
                 _.newcmdnodv = (value_tyBM)

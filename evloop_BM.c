@@ -29,17 +29,17 @@
 //////////////////////////////////////////////////////////////////////////
 /// For process queue running processes; similar to gtkrunprocarr_BM
 /// in newgui_GTKBM.c stuff is added into onionrunprocarr_BM &
-/// onionrunpro_list_BM by any thread doing queue_process_BM. Stuff is
+/// pendingrunproc_list_BM by any thread doing queue_process_BM. Stuff is
 /// removed from them only by plain_event_loop_BM which would also
 /// apply the closures.
 struct pendingprocesses_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
 
 /// queued process commands, of nodes (dir, cmd, clos); for processes
 /// which are not yet in the array above...
-struct listtop_stBM *onionrunpro_list_BM;
+struct listtop_stBM *pendingrunproc_list_BM;
 
-// lock for the structures above (both onionrunprocarr_BM & onionrunpro_list_BM)
-pthread_mutex_t onionrunpro_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
+// lock for the structures above (both onionrunprocarr_BM & pendingrunproc_list_BM)
+pthread_mutex_t pendingrunproc_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 
 volatile atomic_bool onionlooprunning_BM;
 
@@ -180,7 +180,7 @@ lockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
   DBGPRINTFAT_BM (__FILE__, lineno, "lockonion_runpro_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
 #endif
-  pthread_mutex_lock (&onionrunpro_mtx_BM);
+  pthread_mutex_lock (&pendingrunproc_mtx_BM);
 }                               /* end lockonion_runpro_mtx_at_BM */
 
 
@@ -271,7 +271,7 @@ unlockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
   DBGPRINTFAT_BM (__FILE__, lineno, "unlockonion_runpro_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
 #endif
-  pthread_mutex_unlock (&onionrunpro_mtx_BM);
+  pthread_mutex_unlock (&pendingrunproc_mtx_BM);
 }                               /* end lockonion_runpro_mtx_at_BM */
 
 // queue some external process; its stdin is /dev/null; both stdout &
@@ -350,19 +350,19 @@ onion_queue_process_BM (const stringval_tyBM * dirstrarg,
             break;
           };
       }
-    if (slotpos >= 0 && !onionrunpro_list_BM)
+    if (slotpos >= 0 && !pendingrunproc_list_BM)
       {
         fork_process_at_slot_BM (slotpos, _.dirstrv, _.cmdnodv,
                                  _.endclosv, CURFRAME_BM);
       }
     else
-      {                         // append to onionrunpro_list_BM
-        if (!onionrunpro_list_BM)
-          onionrunpro_list_BM = makelist_BM ();
+      {                         // append to pendingrunproc_list_BM
+        if (!pendingrunproc_list_BM)
+          pendingrunproc_list_BM = makelist_BM ();
         _.nodv = (value_tyBM)
           makenode3_BM (k_queue_process, (value_tyBM) _.dirstrv,
                         (value_tyBM) _.cmdnodv, (value_tyBM) _.endclosv);
-        listappend_BM (onionrunpro_list_BM, _.nodv);
+        listappend_BM (pendingrunproc_list_BM, _.nodv);
       }
     ASSERT_BM (lockedproc);
     unlockonion_runpro_mtx_at_BM (__LINE__), lockedproc = false;
@@ -484,7 +484,7 @@ fork_process_at_slot_BM (int slotpos,
 
 
 /// remember that only plain_event_loop_BM is allowed to *remove*
-/// things from onionrunprocarr_BM or onionrunpro_list_BM
+/// things from onionrunprocarr_BM or pendingrunproc_list_BM
 void
 plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called from main)
 //// or directly from main

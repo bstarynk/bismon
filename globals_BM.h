@@ -115,7 +115,7 @@ extern thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
 //////////////////////////////////////////////////////////////////////////
 /// For process queue running processes; similar to gtkrunprocarr_BM
 /// in newgui_GTKBM.c stuff is added into onionrunprocarr_BM &
-/// onionrunpro_list_BM by any thread doing queue_process_BM. Stuff is
+/// pendingrunproc_list_BM by any thread doing queue_process_BM. Stuff is
 /// removed from them only by plain_event_loop_BM which would also
 /// apply the closures.
 struct pendingprocesses_stBM
@@ -132,10 +132,10 @@ extern struct pendingprocesses_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
 
 /// queued process commands, of nodes (dir, cmd, clos); for processes
 /// which are not yet in the array above...
-extern struct listtop_stBM *onionrunpro_list_BM;
+extern struct listtop_stBM *pendingrunproc_list_BM;
 
-// lock for the structures above (both onionrunprocarr_BM & onionrunpro_list_BM)
-extern pthread_mutex_t onionrunpro_mtx_BM;
+// lock for the structures above (both onionrunprocarr_BM & pendingrunproc_list_BM)
+extern pthread_mutex_t pendingrunproc_mtx_BM;
 
 extern volatile atomic_bool onionlooprunning_BM;
 
