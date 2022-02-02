@@ -71,6 +71,107 @@ void handle_sigchld_BM (pid_t pid);
 // handle the command pipe
 void read_commandpipe_BM (void);
 
+// the command pipe contains bytes, each considered as a different message
+int cmdpipe_rd_BM = -1, cmdpipe_wr_BM = -1;
+
+#define MAXTIMER_SECONDS_BM 0.5
+enum cmd_charcode_enBM
+{
+  cmdcod__none_bm = 0,
+  cmdcod_execdefer_bm = 'X',
+  cmdcod_rungc_bm = 'G',
+  cmdcod_postponetimer_bm = 'T',
+};
+
+
+void
+create_commandpipe_BM (void)
+{
+  int piparr[2] = { -1, -1 };
+  if (pipe2 (piparr, O_CLOEXEC | O_NONBLOCK))
+    FATAL_BM ("create_commandpipe_BM failure for the command pipe - %m");
+  cmdpipe_rd_BM = piparr[0];
+  cmdpipe_wr_BM = piparr[1];
+  DBGPRINTF_BM
+    ("create_commandpipe_BM before onion_listen cmdpiprd#%d cmdpipwr#%d",
+     cmdpipe_rd_BM, cmdpipe_wr_BM);
+}                               /* end create_commandpipe_BM */
+
+void
+read_commandpipe_BM (void)
+{
+#define NANOSECONDS_PER_SECOND_bm   (1000*1000*1000)
+  extern bool did_deferred_BM (void);
+  char buf[4];
+  memset (&buf, 0, sizeof (buf));
+  int nbr = read (cmdpipe_rd_BM, buf, 1);
+  if (nbr == 1)
+    {
+      DBGPRINTF_BM ("read_commandpipe_BM '%s'", buf);
+      switch (buf[0])
+        {
+          // if buf[0] is 'X', execute a deferred command
+        case cmdcod_execdefer_bm:      // 'X'
+          if (!did_deferred_BM ())
+            WARNPRINTF_BM ("read_commandpipe_BM failed to do deferred");
+          return;
+        case cmdcod_rungc_bm:  // 'G'
+          // if buf[0] is 'G', run the garbage collector. Not sure!
+          garbage_collect_if_wanted_BM (NULL);
+          return;
+        case cmdcod_postponetimer_bm:  // 'T'
+          // if buf[0] is 'T', something changed about postponed timers
+          {
+            struct itimerspec its;
+            memset (&its, 0, sizeof (its));
+            if (UNLIKELY_BM (oniontimerfd_BM < 0))
+              {
+                oniontimerfd_BM =
+                  timerfd_create (CLOCK_MONOTONIC, TFD_CLOEXEC);
+                if (oniontimerfd_BM < 0)
+                  FATAL_BM
+                    ("read_commandpipe_BM fail on timerfd_create - %m");
+                DBGPRINTF_BM ("read_commandpipe_BM oniontimerfd_BM=%d",
+                              oniontimerfd_BM);
+              }
+            double timestamp = timestamp_newest_postpone_BM ();
+            double deltatime = timestamp - elapsedtime_BM ();
+            if (deltatime > MAXTIMER_SECONDS_BM)
+              deltatime = MAXTIMER_SECONDS_BM;
+            DBGPRINTF_BM ("read_commandpipe_BM deltatime=%.5f", deltatime);
+            if (deltatime > 0.0)
+              {
+                clock_gettime (CLOCK_MONOTONIC, &its.it_value);
+                its.it_value.tv_sec += (long) (floor (deltatime));
+                its.it_value.tv_nsec += (long) (deltatime * 1.0e9);
+                while (its.it_value.tv_nsec > NANOSECONDS_PER_SECOND_bm)
+                  {
+                    its.it_value.tv_sec++;
+                    its.it_value.tv_nsec -= NANOSECONDS_PER_SECOND_bm;
+                  }
+                if (timerfd_settime
+                    (oniontimerfd_BM, TFD_TIMER_ABSTIME, &its, NULL))
+                  FATAL_BM
+                    ("read_commandpipe_BM timerfd_settime failure deltatime=%.4f / %m",
+                     deltatime);
+              }
+          }
+          break;
+        default:
+          /// this should not happen....
+          WARNPRINTF_BM ("read_commandpipe_BM  '%s' unknown", buf);
+          backtrace_print_BM ((struct backtrace_state *)
+                              backtracestate_BM, 0, stdout);
+          printf ("%s:%d: unexpected command %s\n", __FILE__, __LINE__, buf);
+          fflush (stdout);
+        }
+      // should handle the command
+    }
+  else
+    DBGPRINTF_BM ("read_commandpipe_BM nbr %d - %s", nbr,
+                  (nbr < 0) ? strerror (errno) : "--");
+}                               /* end read_commandpipe_BM */
+
 void
 lockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
 {
@@ -82,6 +183,85 @@ lockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
   pthread_mutex_lock (&onionrunpro_mtx_BM);
 }                               /* end lockonion_runpro_mtx_at_BM */
 
+
+void
+add_defer_command_onion_BM (void)
+{
+  char buf[4];
+  memset (&buf, 0, sizeof (buf));
+  buf[0] = cmdcod_execdefer_bm /* 'X' */ ;
+  int count = 0;
+  while (count < 256)
+    {                           /* this loop usually runs once */
+      int nbw = write (cmdpipe_wr_BM, buf, 1);
+      if (nbw < 0 && errno == EINTR)
+        continue;
+      if (nbw < 0 && errno == EWOULDBLOCK)
+        {
+          usleep (2000);
+          continue;
+        };
+      if (nbw == 1)
+        return;
+      FATAL_BM ("add_defer_command_onion_BM nbw %d - %s", nbw,
+                (nbw < 0) ? strerror (errno) : "--");
+    }
+  FATAL_BM ("add_defer_command_onion_BM failed");
+}                               /* end add_defer_command_onion_BM */
+
+
+void
+add_rungarbcoll_command_onion_BM (void)
+{
+  char buf[4];
+  memset (&buf, 0, sizeof (buf));
+  DBGBACKTRACEPRINTF_BM ("add_rungarbcoll_command_onion_BM");
+  buf[0] = cmdcod_rungc_bm;     /* 'G' */
+  int count = 0;
+  while (count < 256)
+    {                           /* this loop usually runs once */
+      int nbw = write (cmdpipe_wr_BM, buf, 1);
+      if (nbw < 0 && errno == EINTR)
+        continue;
+      if (nbw < 0 && errno == EWOULDBLOCK)
+        {
+          usleep (2000);
+          continue;
+        };
+      if (nbw == 1)
+        return;
+      FATAL_BM ("add_rungarbcoll_command_onion_BM nbw %d - %s", nbw,
+                (nbw < 0) ? strerror (errno) : "--");
+    }
+  FATAL_BM ("add_rungarbcoll_command_onion_BM failed");
+}                               /* end add_defer_command_onion_BM */
+
+
+void
+add_postponetimer_command_onion_BM (void)
+{
+  char buf[4];
+  memset (&buf, 0, sizeof (buf));
+  DBGBACKTRACEPRINTF_BM ("add_postponetimer_command_onion_BM");
+  buf[0] = cmdcod_postponetimer_bm;     /* 'T' */
+  int count = 0;
+  while (count < 256)
+    {                           /* this loop usually runs once */
+      int nbw = write (cmdpipe_wr_BM, buf, 1);
+      if (nbw < 0 && errno == EINTR)
+        continue;
+      if (nbw < 0 && errno == EWOULDBLOCK)
+        {
+          usleep (2000);
+          continue;
+        };
+      if (nbw == 1)
+        return;
+      FATAL_BM ("add_postponetimer_command_onion_BM nbw %d - %s", nbw,
+                (nbw < 0) ? strerror (errno) : "--");
+    }
+  FATAL_BM ("add_postponetimer_command_onion_BM failed");
+}                               /* end add_postponetimer_command_onion_BM */
 
 void
 unlockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))

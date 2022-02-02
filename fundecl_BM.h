@@ -1714,6 +1714,7 @@ extern void perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM
 ////////////////
 
   extern void initialize_onionweb_BM (int nbjobs);
+  extern void create_commandpipe_BM(void);
   extern void webonion_suspend_before_gc_BM (void);
   extern void webonion_continue_after_gc_BM (void);
   extern void stop_event_loop_BM (void);
