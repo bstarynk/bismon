@@ -306,7 +306,8 @@ fork_process_at_slot_BM (int slotpos,
 /// remember that only plain_event_loop_BM is allowed to *remove*
 /// things from onionrunprocarr_BM or onionrunpro_list_BM
 void
-plain_event_loop_BM (void)      /// called from run_onionweb_BM
+plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called from main)
+//// or directly from main
 {
   //  objectval_tyBM *k_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
@@ -472,3 +473,13 @@ stop_unix_json_socket_processing_BM (void)
   FATAL_BM ("unimplemented stop_unix_json_socket_processing_BM");
 #warning stop_unix_json_socket_processing_BM unimplemented
 }                               /* end stop_unix_json_socket_processing_BM */
+
+
+void
+initialize_unix_json_socket_processing_BM (const char *ujsname)
+{
+  ASSERT_BM (ujsname == unix_json_socket_BM);
+  FATAL_BM ("unimplemented initialize_unix_json_socket_processing_BM %s",
+            ujsname);
+#warning initialize_unix_json_socket_processing_BM unimplemented
+}                               /* end initialize_unix_json_socket_processing_BM */

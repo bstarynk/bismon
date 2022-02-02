@@ -1718,7 +1718,7 @@ extern void perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM
   extern void stop_event_loop_BM (void);
   extern void gcmarkwebonion_BM (struct garbcoll_stBM *gc);
   extern void stop_unix_json_socket_processing_BM(void);
-
+  extern void initialize_unix_json_socket_processing_BM (const char *ujsname);
 
 
 // send an email; both contribob and decayob should have been locked

@@ -1783,8 +1783,19 @@ main (int argc, char **argv)
           run_onionweb_BM (nbworkjobs_BM);
         }
     }
+  else if (unix_json_socket_BM && !batch_bm && nbworkjobs_BM > 0)
+    {
+      initialize_unix_json_socket_processing_BM (unix_json_socket_BM);
+#warning should have an event loop for Unix json socket
+      FATAL_BM ("should use Unix json socket %s for %d jobs",
+                unix_json_socket_BM, nbworkjobs_BM);
+    }
   ///
-  if (run_onion_BM)
+  DBGPRINTF_BM
+    ("main before stop_event_loop_BM run_onion_BM %s, unix_json_socket_BM=%s",
+     run_onion_BM ? "true" : "false", unix_json_socket_BM ? : "**missing**");
+
+  if (run_onion_BM || unix_json_socket_BM)
     {
       stop_event_loop_BM ();
     }
