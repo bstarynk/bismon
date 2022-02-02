@@ -3495,6 +3495,7 @@ register_web_postponed_BM (double nextimstamp)
 
 
 
+#warning read_sigfd_BM should probably move to evlooop_BM...
 /// this function should return true to continue the loop in plain_event_loop_BM
 bool
 read_sigfd_BM (void)            // called from plain_event_loop_BM
@@ -3647,6 +3648,7 @@ read_sigfd_BM (void)            // called from plain_event_loop_BM
 }                               /* end read_sigfd_BM */
 
 
+#warning handle_sigchld_BM should probably move to evloop_BM.c
 void
 handle_sigchld_BM (pid_t pid)
 {
@@ -3677,19 +3679,19 @@ handle_sigchld_BM (pid_t pid)
         lockonion_runpro_mtx_at_BM (__LINE__);
         for (int oix = 0; oix < MAXNBWORKJOBS_BM; oix++)
           {
-            struct onionproc_stBM *onproc = onionrunprocarr_BM + oix;
-            if (!onproc->rp_pid)
+            struct pendingprocesses_stBM *pendproc = onionrunprocarr_BM + oix;
+            if (!pendproc->rp_pid)
               continue;
             nbruncmds++;
-            if (onproc->rp_pid == pid)
+            if (pendproc->rp_pid == pid)
               {
                 ASSERT_BM (chix < 0);
                 chix = oix;
-                _.chdirstrv = (value_tyBM) onproc->rp_dirstrv;
-                _.chcmdnodv = (value_tyBM) onproc->rp_cmdnodv;
-                _.chclosv = (value_tyBM) onproc->rp_closv;
-                _.chbufob = (value_tyBM) onproc->rp_bufob;
-                memset ((void *) onproc, 0, sizeof (struct onionproc_stBM));
+                _.chdirstrv = (value_tyBM) pendproc->rp_dirstrv;
+                _.chcmdnodv = (value_tyBM) pendproc->rp_cmdnodv;
+                _.chclosv = (value_tyBM) pendproc->rp_closv;
+                _.chbufob = (value_tyBM) pendproc->rp_bufob;
+                memset ((void *) pendproc, 0, sizeof (struct pendingprocesses_stBM));
               }
           }
         _.qnodv =

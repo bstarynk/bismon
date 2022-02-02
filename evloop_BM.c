@@ -32,7 +32,7 @@
 /// onionrunpro_list_BM by any thread doing queue_process_BM. Stuff is
 /// removed from them only by plain_event_loop_BM which would also
 /// apply the closures.
-struct onionproc_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
+struct pendingprocesses_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
 
 /// queued process commands, of nodes (dir, cmd, clos); for processes
 /// which are not yet in the array above...
@@ -469,7 +469,7 @@ fork_process_at_slot_BM (int slotpos,
     }
   else
     {                           // parent process
-      struct onionproc_stBM *onproc = onionrunprocarr_BM + slotpos;
+      struct pendingprocesses_stBM *onproc = onionrunprocarr_BM + slotpos;
       ASSERT_BM (onproc->rp_pid <= 0 && onproc->rp_outpipe <= 0);
       onproc->rp_pid = pid;
       onproc->rp_outpipe = pipfd[0];
@@ -559,7 +559,7 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
                   {
                     if (onionrunprocarr_BM[runix].rp_outpipe == curfd)
                       {
-                        struct onionproc_stBM *onproc =
+                        struct pendingprocesses_stBM *onproc =
                           onionrunprocarr_BM + runix;
                         runix++;
                         int bytcnt = 0;

@@ -118,7 +118,7 @@ extern thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
 /// onionrunpro_list_BM by any thread doing queue_process_BM. Stuff is
 /// removed from them only by plain_event_loop_BM which would also
 /// apply the closures.
-struct onionproc_stBM
+struct pendingprocesses_stBM
 {
   pid_t rp_pid;
   int rp_outpipe;
@@ -128,7 +128,7 @@ struct onionproc_stBM
   objectval_tyBM *rp_bufob;
 };
 
-extern struct onionproc_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
+extern struct pendingprocesses_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
 
 /// queued process commands, of nodes (dir, cmd, clos); for processes
 /// which are not yet in the array above...
