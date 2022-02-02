@@ -53,12 +53,12 @@ int cmdpipe_rd_BM = -1, cmdpipe_wr_BM = -1;
 
 #define MAXTIMER_SECONDS_BM 0.5
 enum cmd_charcode_enBM
-{
-  cmdcod__none_bm = 0,
-  cmdcod_execdefer_bm = 'X',
-  cmdcod_rungc_bm = 'G',
-  cmdcod_postponetimer_bm = 'T',
-};
+  {
+    cmdcod__none_bm = 0,
+    cmdcod_execdefer_bm = 'X',
+    cmdcod_rungc_bm = 'G',
+    cmdcod_postponetimer_bm = 'T',
+  };
 
 extern void add_defer_command_onion_BM (void);
 
@@ -92,7 +92,7 @@ static void create_anonymous_web_session_BM (void);
      n<rank>r<rand1>t<rand2>o<oid> where <rank> is the websess_rank,
      <rand1> and <rand2> are random integers, <oid> is the websession
      object id
- ***/
+***/
 
 #define BISMONION_WEBSESS_SUFLEN 40
 
@@ -168,7 +168,7 @@ login_onion_handler_BM (void *clientdata,
 
 static onion_connection_status
 status_json_onion_handler_BM (void *clientdata,
-                        onion_request * req, onion_response * resp);
+			      onion_request * req, onion_response * resp);
 
 static onion_connection_status
 bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
@@ -235,10 +235,9 @@ check_tcp_port_unused_BM(int portnum)
 } /* end check_tcp_port_unused_BM */
 
 ////////////////
+
 void
-run_onionweb_BM (int nbjobs)    // declared and used only in
-                                // main_BM.c, called from main
-                                // function
+initialize_onionweb_BM(int nbjobs)
 {
   char *webhost = NULL;
   int webport = 0;
@@ -290,39 +289,51 @@ run_onionweb_BM (int nbjobs)    // declared and used only in
       DBGPRINTF_BM ("run_onionweb after set root handler filehdl@%p webrootpath=%s",
                     filehdl, webrootpath);
       onion_handler_add (customhdl, filehdl);
-      ///
-      /// create the command pipe
-      {
-        int piparr[2] = { -1, -1 };
-        if (pipe2 (piparr, O_CLOEXEC | O_NONBLOCK))
-          FATAL_BM ("run_onionweb pipe failure for the command pipe - %m");
-        cmdpipe_rd_BM = piparr[0];
-        cmdpipe_wr_BM = piparr[1];
-        DBGPRINTF_BM
-          ("run_onionweb before onion_listen cmdpiprd#%d cmdpipwr#%d",
-           cmdpipe_rd_BM, cmdpipe_wr_BM);
-      }
-#warning missing test and use of onion_anon_web_cookie_BM
-      /// listen to HTTP, in other threads
-      int err = onion_listen (myonion_BM);      // since detached, returns now
-      DBGPRINTF_BM ("run_onionweb after onion_listen err=%d", err);
-      if (err)
-        FATAL_BM ("failed to do onion_listen (err#%d / %s)", err,
-                  strerror (err));
-      ///
-      /// should add our event loop, at least related to queued processes
-      /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
-      /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
-      /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
-      INFOPRINTF_BM
-        ("run_onionweb_BM runs plain_event_loop, timestamped %s",
-         webonion_timestamp_BM);
-      web_is_running_BM = true;
-      plain_event_loop_BM ();
-      web_is_running_BM = false;
-      INFOPRINTF_BM ("run_onionweb ended plain_event_loop");
     }
-}                               /* end run_onionweb_BM */
+} /* end initialize_onionweb_BM */
+
+
+
+void
+run_onionweb_BM (int nbjobs)    // declared and used only in
+// main_BM.c, called from main
+// function
+{
+  initialize_onionweb_BM(nbjobs);
+  ///
+#warning FIXME: command pipe creation should go to evloop_BM
+  /// create the command pipe
+  {
+    int piparr[2] = { -1, -1 };
+    if (pipe2 (piparr, O_CLOEXEC | O_NONBLOCK))
+      FATAL_BM ("run_onionweb pipe failure for the command pipe - %m");
+    cmdpipe_rd_BM = piparr[0];
+    cmdpipe_wr_BM = piparr[1];
+    DBGPRINTF_BM
+      ("run_onionweb before onion_listen cmdpiprd#%d cmdpipwr#%d",
+       cmdpipe_rd_BM, cmdpipe_wr_BM);
+  }
+#warning missing test and use of onion_anon_web_cookie_BM
+  /// listen to HTTP, in other threads
+  int err = onion_listen (myonion_BM);      // since detached, returns now
+  DBGPRINTF_BM ("run_onionweb after onion_listen err=%d", err);
+  if (err)
+    FATAL_BM ("failed to do onion_listen (err#%d / %s)", err,
+	      strerror (err));
+  ///
+  /// should add our event loop, at least related to queued processes
+  /// (and their output pipes), to SIGCHLD and SIGTERM + SIGQUIT
+  /// see https://groups.google.com/a/coralbits.com/d/msg/onion-dev/m-wH-BY2MA0/QJqLNcHvAAAJ
+  /// and https://groups.google.com/a/coralbits.com/d/msg/onion-dev/ImjNf1EIp68/R37DW3mZAAAJ
+  INFOPRINTF_BM
+    ("run_onionweb_BM runs plain_event_loop, timestamped %s",
+     webonion_timestamp_BM);
+  web_is_running_BM = true;
+  plain_event_loop_BM ();
+  web_is_running_BM = false;
+  INFOPRINTF_BM ("run_onionweb ended plain_event_loop");
+}
+/* end run_onionweb_BM */
 
 ////////////////////////////////////////////////////////////////
 static void dict_query_visitor_bm (void *data, const char *key,
@@ -572,13 +583,13 @@ websessiondelete_BM (objectval_tyBM * ownobj, struct websessiondata_stBM *wsd)
 
 	When we change our garbage collector, this code should be
 	updated accordingly.
-     **/
+    **/
     struct
     {
       stringval_tyBM sv;
       char space[sizeof (cookiebuf) + 16];
     }
-    stringlike;
+      stringlike;
     memset (&stringlike, 0, sizeof (stringlike));
     hash_tyBM h = stringhash_BM (cookiebuf);
     ((typedhead_tyBM *) (&stringlike.sv))->htyp = tyString_BM;
@@ -676,8 +687,8 @@ custom_onion_handler_BM (void *clientdata,
   objectval_tyBM *k_custom_onion_handler = BMK_5C5Dfd8eVkR_3306NWk09Bn;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_custom_onion_handler,
-                 objectval_tyBM * sessionob;
-    );
+		  objectval_tyBM * sessionob;
+		  );
   while (agenda_need_gc_BM ())
     {
       DBGPRINTF_BM ("custom_onion_handler need GC");
@@ -883,14 +894,14 @@ custom_onion_handler_BM (void *clientdata,
               free (locstr), locstr = NULL;
             };
 	  {
-	  char coriginbuf[48];
-	  memset (coriginbuf, 0, sizeof(coriginbuf));
-        const char *origpath = (reqpath && reqpath[0]) ? reqpath : "/";
-	DBGPRINTF_BM ("custom_onion_handler bismonweb_origpath=%s", origpath);
-        onion_dict_add (ctxdic, "bismonweb_origpath", origpath, OD_DUP_VALUE);
-	  snprintf (coriginbuf, sizeof(coriginbuf), "%s:%d", __FILE__, __LINE__);
-	  onion_dict_add (ctxdic, "bismonweb_corigin", coriginbuf, OD_DUP_VALUE);
-	  DBGPRINTF_BM ("custom_onion_handle bismonweb_pid=%s, bismonweb_corigin=%s", pidbuf, coriginbuf);
+	    char coriginbuf[48];
+	    memset (coriginbuf, 0, sizeof(coriginbuf));
+	    const char *origpath = (reqpath && reqpath[0]) ? reqpath : "/";
+	    DBGPRINTF_BM ("custom_onion_handler bismonweb_origpath=%s", origpath);
+	    onion_dict_add (ctxdic, "bismonweb_origpath", origpath, OD_DUP_VALUE);
+	    snprintf (coriginbuf, sizeof(coriginbuf), "%s:%d", __FILE__, __LINE__);
+	    onion_dict_add (ctxdic, "bismonweb_corigin", coriginbuf, OD_DUP_VALUE);
+	    DBGPRINTF_BM ("custom_onion_handle bismonweb_pid=%s, bismonweb_corigin=%s", pidbuf, coriginbuf);
 	  }
           onion_dict_add (ctxdic, "bismonweb_host", myhostname_BM, OD_DUP_VALUE);
           onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
@@ -1062,7 +1073,7 @@ static pthread_mutex_t settingmtx_BM = PTHREAD_MUTEX_INITIALIZER;
 //// handling of /_status.json
 onion_connection_status
 status_json_onion_handler_BM(void *clientdata,
-                        onion_request * req, onion_response * resp)
+			     onion_request * req, onion_response * resp)
 {
   json_t *jsonstat = NULL;
   const char *reqpath = onion_request_get_path (req);
@@ -1107,13 +1118,13 @@ bismon_settings_json_handler_BM (struct stackframe_stBM *stkf,
   objectval_tyBM *k_name = BMK_1jJjA6LcXiX_1V4ZcXlje09;
   objectval_tyBM *k_web_theme = BMK_4HR54GlXs46_4rDg4Tb637x;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ k_bismon_settings_json,
-                 objectval_tyBM * sessionob;    //
-                 objectval_tyBM * jsonob;       //
-                 objectval_tyBM * jsoncontribob;        //
-                 objectval_tyBM * contribob;    //
-                 objectval_tyBM * webthemeob;   //
-                 value_tyBM * themenamev;       //
-    );
+		  objectval_tyBM * sessionob;    //
+		  objectval_tyBM * jsonob;       //
+		  objectval_tyBM * jsoncontribob;        //
+		  objectval_tyBM * contribob;    //
+		  objectval_tyBM * webthemeob;   //
+		  value_tyBM * themenamev;       //
+		  );
   json_t *jsonobpayl = NULL;
   json_t *jsonhome = NULL;
   json_t *jsoncontribpayl = NULL;
@@ -1366,8 +1377,8 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
 {
   objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
-                 objectval_tyBM * contribob;
-    );
+		  objectval_tyBM * contribob;
+		  );
   const char *reqpath = onion_request_get_path (req);
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
@@ -1450,13 +1461,13 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
               }
               onion_dict_add (ctxdic, "bismonweb_host", myhostname_BM, OD_DUP_VALUE);
               onion_dict_add (ctxdic, "bismonweb_pid", pidbuf, OD_DUP_VALUE);
-	  {
-	  char coriginbuf[48];
-	  memset (coriginbuf, 0, sizeof(coriginbuf));
-	  snprintf (coriginbuf, sizeof(coriginbuf), "%s:%d", __FILE__, __LINE__);
-	  onion_dict_add (ctxdic, "bismonweb_corigin", coriginbuf, OD_DUP_VALUE);
-	  DBGPRINTF_BM ("login_onion_handler bismonweb_pid=%s, bismonweb_corigin=%s", pidbuf, coriginbuf);
-	  }
+	      {
+		char coriginbuf[48];
+		memset (coriginbuf, 0, sizeof(coriginbuf));
+		snprintf (coriginbuf, sizeof(coriginbuf), "%s:%d", __FILE__, __LINE__);
+		onion_dict_add (ctxdic, "bismonweb_corigin", coriginbuf, OD_DUP_VALUE);
+		DBGPRINTF_BM ("login_onion_handler bismonweb_pid=%s, bismonweb_corigin=%s", pidbuf, coriginbuf);
+	      }
 #warning we should improve web_ONION to handle differently an invalid user and a bad password
               onion_dict_add (ctxdic, "bismonweb_extra_login", "Invalid user or password.",
                               OD_DUP_VALUE);
@@ -1531,13 +1542,13 @@ login_onion_handler_BM (void *_clientdata __attribute__((unused)),
 
 
 enum
-{
-  DECAYFORGOTTENCONTRIBIX_bm,   // #0 index of contributor object
-  DECAYFORGOTTENCLOSUREIX_bm,   // #1 index of closure
-  DECAYFORGOTTENRANDOMIX_bm,    // #2 index of random number
-  DECAYFORGOTTENOTHERANDIX_bm,  // #3 index of other random
-  DECAYFORGOTTEN__LASTINDEX_bm  // ==== 4
-} decayforgottenemail_enBM;
+  {
+    DECAYFORGOTTENCONTRIBIX_bm,   // #0 index of contributor object
+    DECAYFORGOTTENCLOSUREIX_bm,   // #1 index of closure
+    DECAYFORGOTTENRANDOMIX_bm,    // #2 index of random number
+    DECAYFORGOTTENOTHERANDIX_bm,  // #3 index of other random
+    DECAYFORGOTTEN__LASTINDEX_bm  // ==== 4
+  } decayforgottenemail_enBM;
 
 #define FORGOTEMAIL_DELAY_MILLISEC_BM  (720*1000)       /*720 seconds is 12 minutes */
 static onion_dict *
@@ -1555,12 +1566,12 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
   objectval_tyBM *k_forgotemail_webhandler = BMK_6aWaLxHQBv4_9bcZim3ljEh;
   onion_dict *mailctxdic = NULL;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * contribob;    //
-                 objectval_tyBM * decayforgotob;        //
-                 value_tyBM contribnamv;        //
-                 value_tyBM contribemailv;      //
-                 value_tyBM closv;
-    );
+		  objectval_tyBM * contribob;    //
+		  objectval_tyBM * decayforgotob;        //
+		  value_tyBM contribnamv;        //
+		  value_tyBM contribemailv;      //
+		  value_tyBM closv;
+		  );
   _.contribob = contribobarg;
   _.decayforgotob = decayforgotobarg;
   DBGPRINTF_BM
@@ -1735,10 +1746,10 @@ make_onion_dict_forgotten_email_BM (objectval_tyBM *
      objdecayedvectlenpayl_BM (_.decayforgotob),
      objdecayedvectallocsizepayl_BM (_.decayforgotob), (unsigned) rn,
      mailctxdic);
-//WARNPRINTF_BM
-//  ("incomplete make_onion_dict_forgotten_email_BM contribob %s decayforgotob %s rn %u",
-//   objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
-//   (unsigned) rn);
+  //WARNPRINTF_BM
+  //  ("incomplete make_onion_dict_forgotten_email_BM contribob %s decayforgotob %s rn %u",
+  //   objectdbg_BM (_.contribob), objectdbg1_BM (_.decayforgotob),
+  //   (unsigned) rn);
   return mailctxdic;
 }                               /* end of make_onion_dict_forgotten_email_BM */
 
@@ -1748,12 +1759,12 @@ forgotpasswd_urlstring_BM (objectval_tyBM * decayforgotarg,
                            struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * decayforgotob;        // created decaying forgotting object
-                 objectval_tyBM * contribob;    // contributor
-                 value_tyBM closv;      // closure
-                 value_tyBM randv;      // random
-                 value_tyBM resv;       // result
-    );
+		  objectval_tyBM * decayforgotob;        // created decaying forgotting object
+		  objectval_tyBM * contribob;    // contributor
+		  value_tyBM closv;      // closure
+		  value_tyBM randv;      // random
+		  value_tyBM resv;       // result
+		  );
   _.decayforgotob = decayforgotarg;
   DBGPRINTF_BM
     ("forgotpasswd_urlstring start decayforgotob %s, decaylen#%d, decaysize#%d, LASTINDEX:%d",
@@ -1808,13 +1819,13 @@ do_forgot_email_onion_handler_BM (const char *formuser,
   // minifunction forgotemailsender (o_contrib o_decayemail)
   objectval_tyBM *k_forgotemailsender = BMK_6STwOZTcBwM_6wz4Akuletb;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_forgot_email_onion_handler,
-                 objectval_tyBM * contribob;    //
-                 objectval_tyBM * decayforgotob;        // created decaying forgotting object
-                 value_tyBM forgotclosv;        //
-                 value_tyBM contribnamv;        //
-                 value_tyBM contribemailv;      //
-                 value_tyBM resapplyv;  //
-    );
+		  objectval_tyBM * contribob;    //
+		  objectval_tyBM * decayforgotob;        // created decaying forgotting object
+		  value_tyBM forgotclosv;        //
+		  value_tyBM contribnamv;        //
+		  value_tyBM contribemailv;      //
+		  value_tyBM resapplyv;  //
+		  );
   _.contribob = find_contributor_BM (formuser, CURFRAME_BM);
   const char *reqpath = onion_request_get_path (req);
   DBGPRINTF_BM
@@ -1928,9 +1939,9 @@ do_login_redirect_onion_BM (objectval_tyBM * contribobarg,
   objectval_tyBM *k_websession_object = BMK_56KY6TzyCU5_12De0mHE48M;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * contribob;    //
-                 objectval_tyBM * sessionob;    //
-                 value_tyBM cookiestrv;);
+		  objectval_tyBM * contribob;    //
+		  objectval_tyBM * sessionob;    //
+		  value_tyBM cookiestrv;);
   ASSERT_BM (isobject_BM (contribobarg));
   _.contribob = contribobarg;
   DBGPRINTF_BM
@@ -2092,15 +2103,15 @@ forgotpasswd_ctxdic_bm (objectval_tyBM * decayobarg,
                         struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * decayob;      //
-                 value_tyBM decaycontribv;      //
-                 value_tyBM decayclosurev;      //
-                 value_tyBM decayrandomv;       //
-                 value_tyBM decayotherv;        //
-                 objectval_tyBM * contribob;    //
-                 value_tyBM contribnamv;        //
-                 value_tyBM contribemailv;      //
-    );
+		  objectval_tyBM * decayob;      //
+		  value_tyBM decaycontribv;      //
+		  value_tyBM decayclosurev;      //
+		  value_tyBM decayrandomv;       //
+		  value_tyBM decayotherv;        //
+		  objectval_tyBM * contribob;    //
+		  value_tyBM contribnamv;        //
+		  value_tyBM contribemailv;      //
+		  );
   _.decayob = decayobarg;
   if (!(isobject_BM (_.decayob)
         && objhasdecayedvectorpayl_BM (_.decayob)
@@ -2206,15 +2217,15 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
 {
   objectval_tyBM *k_login_onion_handler = BMK_8qHowkDvzRL_03sltCgsDN2;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ k_login_onion_handler,
-                 objectval_tyBM * contribob;    //
-                 objectval_tyBM * decayob;      //
-                 value_tyBM decaycontribv;      //
-                 value_tyBM decayclosurev;      //
-                 value_tyBM decayrandomv;       //
-                 value_tyBM decayotherv;        //
-                 value_tyBM contribnamv;        //
-                 value_tyBM contribemailv;      //
-    );
+		  objectval_tyBM * contribob;    //
+		  objectval_tyBM * decayob;      //
+		  value_tyBM decaycontribv;      //
+		  value_tyBM decayclosurev;      //
+		  value_tyBM decayrandomv;       //
+		  value_tyBM decayotherv;        //
+		  value_tyBM contribnamv;        //
+		  value_tyBM contribemailv;      //
+		  );
   char oidbuf[32];
   char errmsg[200];
   const char *reqpath = onion_request_get_path (req);
@@ -2579,8 +2590,8 @@ create_anonymous_web_session_BM (void)
   objectval_tyBM *k_websession_object = BMK_56KY6TzyCU5_12De0mHE48M;
   objectval_tyBM *k_websession_dict_object = BMK_2HGGdFqLH2E_8HktHZxdBd8;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * sessionob;    //
-                 value_tyBM cookiestrv;);
+		  objectval_tyBM * sessionob;    //
+		  value_tyBM cookiestrv;);
   DBGPRINTF_BM
     ("create_anonymous_web_session start onionanonwebcookie '%s'",
      onion_anon_web_cookie_BM);
@@ -2659,8 +2670,8 @@ objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * objarg,
                                        struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * websessob;
-                 value_tyBM jsonv; value_tyBM ctxv;);
+		  objectval_tyBM * websessob;
+		  value_tyBM jsonv; value_tyBM ctxv;);
   _.websessob = objarg;
   _.jsonv = jsonarg;
   _.ctxv = ctxtarg;
@@ -2835,16 +2846,16 @@ do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
   objectval_tyBM *k_in = BMK_0eMGYofuNVh_8ZP2mXdhtHO;
   objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * sessionob;    //
-                 objectval_tyBM * webexob;      //
-                 objectval_tyBM * jsonob;       //
-                 value_tyBM failreasonv;        //
-                 value_tyBM failplacev; //
-                 value_tyBM webhandlerv;        //
-                 value_tyBM restpathv;  //
-                 value_tyBM appresv;    //
-                 value_tyBM errorv;     //
-    );
+		  objectval_tyBM * sessionob;    //
+		  objectval_tyBM * webexob;      //
+		  objectval_tyBM * jsonob;       //
+		  value_tyBM failreasonv;        //
+		  value_tyBM failplacev; //
+		  value_tyBM webhandlerv;        //
+		  value_tyBM restpathv;  //
+		  value_tyBM appresv;    //
+		  value_tyBM errorv;     //
+		  );
   unsigned reqflags = onion_request_get_flags (req);
   unsigned reqmeth = (reqflags & OR_METHODS);
   ASSERT_BM (isobject_BM (sessionobarg));
@@ -3244,15 +3255,15 @@ find_web_handler_BM (objectval_tyBM * sessionobarg,
   objectval_tyBM *k_webhandler_dict_object = BMK_23YbAS1S796_1ZeW8OZfp1J;
   objectval_tyBM *k_and_then = BMK_6GcgFxSMvWY_4vzl0zmI5FA;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * sessionob;    //
-                 objectval_tyBM * dictob;       //
-                 objectval_tyBM * valob;        //
-                 objectval_tyBM * nextdictob;   //
-                 objectval_tyBM * thendictob;   //
-                 value_tyBM wordv;      //
-                 value_tyBM valv;       //
-                 value_tyBM thenvalv;   //
-    );
+		  objectval_tyBM * sessionob;    //
+		  objectval_tyBM * dictob;       //
+		  objectval_tyBM * valob;        //
+		  objectval_tyBM * nextdictob;   //
+		  objectval_tyBM * thendictob;   //
+		  value_tyBM wordv;      //
+		  value_tyBM valv;       //
+		  value_tyBM thenvalv;   //
+		  );
   _.sessionob = sessionobarg;
   _.dictob = dictobarg;
   ASSERT_BM (isobject_BM (_.dictob));
@@ -3659,24 +3670,24 @@ read_sigfd_BM (void)            // called from plain_event_loop_BM
 }                               /* end read_sigfd_BM */
 
 
- void
+void
 handle_sigchld_BM (pid_t pid)
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
   bool didfork = false;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 /// for the terminating child process
-                 value_tyBM chdirstrv;  //
-                 value_tyBM chcmdnodv;  //
-                 value_tyBM chclosv;    //
-                 objectval_tyBM * chbufob;      //
-                 value_tyBM choutstrv;  //
-                 // for queued commands
-                 value_tyBM qnodv;      //
-                 value_tyBM newdirstrv; //
-                 value_tyBM newcmdnodv; //
-                 value_tyBM newendclosv;        //
-    );
+		  /// for the terminating child process
+		  value_tyBM chdirstrv;  //
+		  value_tyBM chcmdnodv;  //
+		  value_tyBM chclosv;    //
+		  objectval_tyBM * chbufob;      //
+		  value_tyBM choutstrv;  //
+		  // for queued commands
+		  value_tyBM qnodv;      //
+		  value_tyBM newdirstrv; //
+		  value_tyBM newcmdnodv; //
+		  value_tyBM newendclosv;        //
+		  );
   DBGPRINTF_BM ("handle_sigchld_BM start pid=%d", (int) pid);
   int wstatus = 0;
   pid_t wpid = waitpid (pid, &wstatus, WNOHANG);
@@ -3727,8 +3738,8 @@ handle_sigchld_BM (pid_t pid)
                    debug_outstr_value_BM (_.newcmdnodv, CURFRAME_BM, 0),
                    debug_outstr_value_BM (_.newendclosv, CURFRAME_BM, 0));
                 fork_process_at_slot_BM (chix, _.newdirstrv,
-                                               _.newcmdnodv, _.newendclosv,
-                                               CURFRAME_BM);
+					 _.newcmdnodv, _.newendclosv,
+					 CURFRAME_BM);
                 didfork = true;
               }
           }
@@ -3788,7 +3799,7 @@ handle_sigchld_BM (pid_t pid)
 }                               /* end handle_sigchld_BM */
 
 
- void
+void
 read_commandpipe_BM (void)
 {
 #define NANOSECONDS_PER_SECOND_bm   (1000*1000*1000)
@@ -3953,13 +3964,13 @@ webonion_send_forgotten_email_BM (objectval_tyBM * contribobarg,
   objectval_tyBM *k_webonion_send_forgotten_email
     = BMK_2NlCdv8k607_8Auo9BVVvb0;
   LOCALFRAME_BM ( /*prev: */ stkf,
-                 /*descr: */ k_webonion_send_forgotten_email,
-                 //
-                 objectval_tyBM * contribob;    // the contributor
-                 objectval_tyBM * decayob;      // the decayed object
-                 // holding a closure
-                 value_tyBM tmpv;       // temporary
-    );
+		  /*descr: */ k_webonion_send_forgotten_email,
+		  //
+		  objectval_tyBM * contribob;    // the contributor
+		  objectval_tyBM * decayob;      // the decayed object
+		  // holding a closure
+		  value_tyBM tmpv;       // temporary
+		  );
   _.contribob = contribobarg;
   _.decayob = decayobarg;
   DBGBACKTRACEPRINTF_BM

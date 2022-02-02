@@ -48,7 +48,7 @@ char *contact_name_BM;
 char *contact_email_BM;
 const char *project_name_BM;
 const char *sigusr1_dump_prefix_BM;
-const char *unix_json_socket_BM;
+const volatile char *unix_json_socket_BM;
 
 int sigfd_BM = -1;              /* for signalfd(2) */
 atomic_int oniontimerfd_BM = -1;        /* for timerfd_create(2) */
