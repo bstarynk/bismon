@@ -1520,7 +1520,8 @@ remove_contributor_by_name_BM (const char *oldname,
   overwrite_contributor_file_BM (fil, _.assocob, CURFRAME_BM);
   fflush (fil);
   long filen = ftell (fil);
-  ftruncate (fd, filen);
+  if (ftruncate (fd, filen) < 0)
+    FATAL_BM ("failed to ftruncate fd#%d to %ld for %s", fd, filen, rcpath);
   usleep (100);
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
