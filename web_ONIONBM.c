@@ -46,7 +46,6 @@ const char webonion_timestamp_BM[] =
 #define ANON_WEBSESSION_EXPIRATION_DELAY 333.0e6
 extern void run_onionweb_BM (int nbjobs);
 static onion *myonion_BM;
-extern void add_defer_command_onion_BM (void);
 
 extern void
 onion_queue_process_BM (const stringval_tyBM * dirstrarg,

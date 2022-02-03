@@ -65,7 +65,7 @@ request_delayed_garbage_collection_BM (void)
   atomic_store (&want_garbage_collection_BM, true);     // request delayed GC
   if (web_is_running_BM)
     {
-      add_rungarbcoll_command_onion_BM ();
+      add_rungarbcoll_command_BM ();
     }
   agenda_notify_BM ();
 }                               /* end request_delayed_garbage_collection_BM */

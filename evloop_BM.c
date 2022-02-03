@@ -503,7 +503,7 @@ unlockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
 
 
 void
-add_defer_command_onion_BM (void)
+add_defer_command_BM (void)
 {
   char buf[4];
   memset (&buf, 0, sizeof (buf));
@@ -521,19 +521,19 @@ add_defer_command_onion_BM (void)
         };
       if (nbw == 1)
         return;
-      FATAL_BM ("add_defer_command_onion_BM nbw %d - %s", nbw,
+      FATAL_BM ("add_defer_command_BM nbw %d - %s", nbw,
                 (nbw < 0) ? strerror (errno) : "--");
     }
-  FATAL_BM ("add_defer_command_onion_BM failed");
-}                               /* end add_defer_command_onion_BM */
+  FATAL_BM ("add_defer_command_BM failed");
+}                               /* end add_defer_command_BM */
 
 
 void
-add_rungarbcoll_command_onion_BM (void)
+add_rungarbcoll_command_BM (void)
 {
   char buf[4];
   memset (&buf, 0, sizeof (buf));
-  DBGBACKTRACEPRINTF_BM ("add_rungarbcoll_command_onion_BM");
+  DBGBACKTRACEPRINTF_BM ("add_rungarbcoll_command_BM");
   buf[0] = cmdcod_rungc_bm;     /* 'G' */
   int count = 0;
   while (count < 256)
@@ -548,11 +548,11 @@ add_rungarbcoll_command_onion_BM (void)
         };
       if (nbw == 1)
         return;
-      FATAL_BM ("add_rungarbcoll_command_onion_BM nbw %d - %s", nbw,
+      FATAL_BM ("add_rungarbcoll_command_BM nbw %d - %s", nbw,
                 (nbw < 0) ? strerror (errno) : "--");
     }
-  FATAL_BM ("add_rungarbcoll_command_onion_BM failed");
-}                               /* end add_rungarbcoll_command_onion_BM */
+  FATAL_BM ("add_rungarbcoll_command_BM failed");
+}                               /* end add_rungarbcoll_command_BM */
 
 
 void

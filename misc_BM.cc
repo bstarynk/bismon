@@ -1172,12 +1172,7 @@ do_main_defer_apply3_BM (value_tyBM funv, value_tyBM arg1, value_tyBM arg2, valu
   }
   DBGPRINTF_BM("do_main_defer_apply elapsed %.3f s", elapsedtime_BM());
   ////
-  if (bismon_has_web_BM())
-    add_defer_command_onion_BM ();
-#if defined (BISMONGTK)
-  if (bismon_has_gui_BM())
-    add_defer_command_gtk_BM ();
-#endif /* or BISMONGTK*/
+  add_defer_command_BM ();
   ////
   DBGPRINTF_BM("do_main_defer_apply end tid#%ld funv %s arg1 %s arg2 %s arg3 %s",
                (long)gettid_BM(),
@@ -1205,10 +1200,7 @@ do_main_defer_send3_BM(value_tyBM recv, objectval_tyBM*obsel,  value_tyBM arg1, 
     deferdeque_BM.emplace_back(dap);
   }
   ////
-  add_defer_command_onion_BM ();
-#if defined (BISMONGTK)
-  add_defer_command_gtk_BM ();
-#endif /*BISMONGTK*/
+  add_defer_command_BM ();
 } // end of do_main_defer_send3_BM
 
 ////////////////
