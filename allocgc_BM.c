@@ -770,6 +770,7 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   gcmarkglobals_BM (&GCdata);
   gcmarkdefer_BM (&GCdata);
   gcmarkwebonion_BM (&GCdata);
+  gcmarkevloop_BM (&GCdata);
   gcmarkagenda_BM (&GCdata);
   gcmarkmodules_BM (&GCdata);
   gcframemark_BM (&GCdata, stkfram, 0);

@@ -1506,6 +1506,7 @@ extern "C"
   extern void gcmarkglobals_BM (struct garbcoll_stBM *gc);
   extern void gcmarkdefer_BM (struct garbcoll_stBM *gc);
   extern void gcmarkconstants_BM (struct garbcoll_stBM *gc);
+  extern void gcmarkevloop_BM (struct garbcoll_stBM*gc);
 
 /// open a module during loading, returns true if ok
   extern bool open_module_for_loader_BM (const rawid_tyBM modid,

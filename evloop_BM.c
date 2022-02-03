@@ -372,19 +372,19 @@ handle_sigchld_BM (pid_t pid)
         lock_runproc_mtx_at_BM (__LINE__);
         for (int oix = 0; oix < MAXNBWORKJOBS_BM; oix++)
           {
-            struct processdescr_stBM *pendproc = onionrunprocarr_BM + oix;
-            if (!pendproc->rp_pid)
+            struct processdescr_stBM *runproc = onionrunprocarr_BM + oix;
+            if (!runproc->rp_pid)
               continue;
             nbruncmds++;
-            if (pendproc->rp_pid == pid)
+            if (runproc->rp_pid == pid)
               {
                 ASSERT_BM (chix < 0);
                 chix = oix;
-                _.chdirstrv = (value_tyBM) pendproc->rp_dirstrv;
-                _.chcmdnodv = (value_tyBM) pendproc->rp_cmdnodv;
-                _.chclosv = (value_tyBM) pendproc->rp_closv;
-                _.chbufob = (value_tyBM) pendproc->rp_bufob;
-                memset ((void *) pendproc, 0,
+                _.chdirstrv = (value_tyBM) runproc->rp_dirstrv;
+                _.chcmdnodv = (value_tyBM) runproc->rp_cmdnodv;
+                _.chclosv = (value_tyBM) runproc->rp_closv;
+                _.chbufob = (value_tyBM) runproc->rp_bufob;
+                memset ((void *) runproc, 0,
                         sizeof (struct processdescr_stBM));
               }
           }
@@ -956,6 +956,21 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
 }                               /* end plain_event_loop_BM */
 
 
+void
+gcmarkevloop_BM (struct garbcoll_stBM *gc)
+{
+  ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  lock_runproc_mtx_at_BM (__LINE__);
+  VALUEGCPROC_BM (gc, pendingrunproc_list_BM, 0);
+  for (int oix = 0; oix < MAXNBWORKJOBS_BM; oix++)
+    {
+      struct processdescr_stBM *runproc = onionrunprocarr_BM + oix;
+      VALUEGCPROC_BM (gc, runproc->rp_dirstrv, 0);
+      VALUEGCPROC_BM (gc, runproc->rp_cmdnodv, 0);
+      VALUEGCPROC_BM (gc, runproc->rp_bufob, 0);
+    };
+  unlock_runproc_mtx_at_BM (__LINE__);
+}                               /* end gcmarkevloop_BM */
 
 void
 stop_unix_json_socket_processing_BM (void)
