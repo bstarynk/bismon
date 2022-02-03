@@ -1587,19 +1587,19 @@ extern "C"
                                            struct webexchangedata_stBM *wex);
   extern void webexchangedatagckeep_BM (struct garbcoll_stBM *gc,
                                         struct webexchangedata_stBM *we);
-extern void
-fork_process_at_slot_BM (int slotpos,
-                               const stringval_tyBM * dirstrarg,
-                               const node_tyBM * cmdnodarg,
-                               const closure_tyBM * endclosarg,
-                               struct stackframe_stBM *stkf);
+  extern void
+  fork_process_at_slot_BM (int slotpos,
+			   const stringval_tyBM * dirstrarg,
+			   const node_tyBM * cmdnodarg,
+			   const closure_tyBM * endclosarg,
+			   struct stackframe_stBM *stkf);
   extern void lockonion_runpro_mtx_at_BM (int lineno);
-extern void unlockonion_runpro_mtx_at_BM (int lineno);
+  extern void unlockonion_runpro_mtx_at_BM (int lineno);
 
 
-extern void register_onion_thread_stack_BM (struct stackframe_stBM *);
-extern void unregister_onion_thread_stack_BM (struct stackframe_stBM *);
-extern void perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *);
+  extern void register_onion_thread_stack_BM (struct stackframe_stBM *);
+  extern void unregister_onion_thread_stack_BM (struct stackframe_stBM *);
+  extern void perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *);
 // payload delete support for websessiondata & webexchangedata
   extern void websessiondelete_BM (objectval_tyBM * ownobj,
                                    struct websessiondata_stBM *ws);
@@ -1815,12 +1815,20 @@ extern void perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM
                                 value_tyBM arg2v, value_tyBM arg3v,
                                 struct stackframe_stBM *stkf);
 ////////////////////////////////////////////////////////////////
-// queue some external process; its stdin is /dev/null; both stdout &
-// stderr are merged & captured; final string is given to the closure.
+// Since we generate C code, we need to run external processes to
+// compile them in dlopen(3)-ed plugins....  We could also need to run
+// other external processes (e.g. GNU indent, mailer user agents,
+// etc...).
+/////
+// The queue_process_BM routine queue some external command, a bit
+// like the batch(1) Linux utility; when running in some process, its
+// stdin is /dev/null; both stdout & stderr are merged & captured in
+// some output string...; That final string is given to the closure.
 // dirstrv is the string of the directory to run it in (if NULL, use
 // cwd) cmdnodv is a node with all sons being strings, for the command
-// to run endclosv is the closure getting the status
-// stringoutput, could fail
+// to run. And the closure endclosv is the closure getting the status
+// and some stringoutput, could fail.  Several command processes could
+// run in parallel, taking advantage of some multi-core processor.
   extern void queue_process_BM (const stringval_tyBM * dirstr,
                                 const node_tyBM * cmdnodv,
                                 const closure_tyBM * endclosv,
