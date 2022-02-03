@@ -41,7 +41,7 @@ struct listtop_stBM *pendingrunproc_list_BM;
 // lock for the structures above (both onionrunprocarr_BM & pendingrunproc_list_BM)
 pthread_mutex_t pendingrunproc_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 
-volatile atomic_bool onionlooprunning_BM;
+volatile atomic_bool eventlooprunning_BM;
 
 pthread_mutex_t onionstack_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t onionstack_condchange_BM = PTHREAD_COND_INITIALIZER;
@@ -492,14 +492,14 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
   //  objectval_tyBM *k_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
                  objectval_tyBM * bufob;);
-  atomic_init (&onionlooprunning_BM, true);
+  atomic_init (&eventlooprunning_BM, true);
 
   DBGBACKTRACEPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",  //
                          sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
   INFOPRINTF_BM ("start loop of plain_event_loop_BM for %s",
                  onion_web_base_BM);
-  while (atomic_load (&onionlooprunning_BM))
+  while (atomic_load (&eventlooprunning_BM))
     {
       loopcnt++;
       struct pollfd pollarr[MAXNBWORKJOBS_BM + 8];
@@ -632,7 +632,7 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
           bool stop = read_sigfd_BM ();
           if (stop)
             {
-              atomic_store (&onionlooprunning_BM, false);
+              atomic_store (&eventlooprunning_BM, false);
               DBGPRINTF_BM ("plain_event_loop sigfd stopping after sigfd");
               break;
             }
@@ -641,7 +641,7 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
         }
       if (pollarr[pollix_cmdp].revents & POLL_IN)
         read_commandpipe_BM ();
-    }                           /* end while onionlooprunning */
+    }                           /* end while eventlooprunning */
   INFOPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
 }                               /* end plain_event_loop_BM */
 

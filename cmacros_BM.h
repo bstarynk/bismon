@@ -331,7 +331,7 @@ void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 
 // we could use DBGPRINTF_BM and later replace it by NONPRINTF_BM
 #define DBGPRINTFATBIS_BM(Fil,Lin,Fmt,...) do { \
-    if (debugmsg_BM) {				\
+    if (showdebugmsg_BM) {				\
       printf("%s:%d+ ", basename_BM((Fil)),	\
 	     (Lin));				\
       printf(Fmt "\n", ##__VA_ARGS__); }	\
@@ -395,7 +395,7 @@ void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 ////////////////
 
 #define DBGBACKTRACEPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
-    if (debugmsg_BM) { printf("%s:%d:+ " Fmt "\n",		\
+    if (showdebugmsg_BM) { printf("%s:%d:+ " Fmt "\n",		\
 			      basename_BM((Fil)), (Lin),	\
 			      ##__VA_ARGS__);			\
       backtrace_print_BM					\

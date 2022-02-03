@@ -2217,7 +2217,7 @@ forgotpasswd_onion_handler_BM (void *_clientdata __attribute__((unused)),
      onion_request_methods[reqmeth]);
   if (reqmeth == OR_POST)
     {
-      if (debugmsg_BM)
+      if (showdebugmsg_BM)
         {
           const onion_dict *postdict = onion_request_get_post_dict (req);
           onion_block *postblock = onion_dict_to_json ((onion_dict*)postdict);
@@ -2809,7 +2809,7 @@ static value_tyBM find_web_handler_BM (objectval_tyBM * sessionobarg,
 
 
 ////////////////
-#define WEBEXCHANGE_DELAY_BM   (debugmsg_BM?21.0:2.4)
+#define WEBEXCHANGE_DELAY_BM   (showdebugmsg_BM?21.0:2.4)
 onion_connection_status
 do_dynamic_onion_BM (objectval_tyBM * sessionobarg, const char *reqpath,
                      bool postrequest,
@@ -3399,7 +3399,7 @@ void
 stop_event_loop_BM (void)
 {
   DBGPRINTF_BM ("stop_onion_event_loop_BM");
-  atomic_store (&onionlooprunning_BM, false);
+  atomic_store (&eventlooprunning_BM, false);
   if (myonion_BM)
     onion_listen_stop (myonion_BM);
   if (unix_json_socket_BM)
@@ -3573,16 +3573,16 @@ read_sigfd_BM (void)            // called from plain_event_loop_BM
       };
       return false;
     case SIGUSR2:		/* toggle debug */
-      if (debugmsg_BM) {
+      if (showdebugmsg_BM) {
 	DBGPRINTF_BM("debugging output suspended by SIGUSR2 at %s; send again the same signal to reenable it", nowstr);
-	debugmsg_BM = false;
+	showdebugmsg_BM = false;
 	INFOPRINTF_BM("no more debugging output at %s (bismon pid %d on %s) since SIGUSR2 signal recieved",
 		      nowstr, (int)getpid(), myhostname_BM);
       }
       else {
 	INFOPRINTF_BM("enabling debugging output at %s (bismon pid %d on %s) since SIGUSR2 signal recieved",
 		      nowstr, (int)getpid(), myhostname_BM);
-	debugmsg_BM = true;
+	showdebugmsg_BM = true;
 	DBGPRINTF_BM("debugging output enabled by SIGUSR2 at %s (bismon pid %d on %s); send again the same signal to disable it",
 		     nowstr, (int)getpid(), myhostname_BM);	
       }
@@ -3626,7 +3626,7 @@ read_sigfd_BM (void)            // called from plain_event_loop_BM
     case SIGCHLD:
       {
         pid_t pid = siginf.ssi_pid;
-        if (debugmsg_BM)
+        if (showdebugmsg_BM)
           {
             char exebuf[64];
             char pathbuf[64];
@@ -3959,7 +3959,7 @@ onion_log_with_backtrace_BM(onion_log_level level, const char *filename, int lin
 	      ap);
     va_end(ap);
   }
-  if (debugmsg_BM) {
+  if (showdebugmsg_BM) {
     fprintf(stderr, "%s\n°°°°°°° onionlogbacktrace\n", onion_log_buffer_bm);
   }
   else if (level >= O_WARNING) {

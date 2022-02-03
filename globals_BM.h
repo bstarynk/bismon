@@ -60,7 +60,7 @@ extern const char *myprogname_BM;
 
 extern const char *project_name_BM;
 
-extern volatile bool debugmsg_BM;
+extern volatile bool showdebugmsg_BM;
 extern bool parsedebugmsg_BM;
 extern bool debug_after_load_BM;
 
@@ -94,7 +94,7 @@ extern volatile struct backstrace_state *backtracestate_BM;
 
 extern int sigfd_BM;       /* for signalfd(2) */
 extern atomic_int oniontimerfd_BM; /* for timerfd_create(2) */
-extern volatile atomic_bool onionlooprunning_BM;
+extern volatile atomic_bool eventlooprunning_BM;
 extern pthread_mutex_t onionstack_mtx_BM;
 extern pthread_cond_t onionstack_condchange_BM;
 /*****************************************************************/
@@ -137,7 +137,6 @@ extern struct listtop_stBM *pendingrunproc_list_BM;
 // lock for the structures above (both onionrunprocarr_BM & pendingrunproc_list_BM)
 extern pthread_mutex_t pendingrunproc_mtx_BM;
 
-extern volatile atomic_bool onionlooprunning_BM;
 
 extern pthread_mutex_t onionstack_mtx_BM;
 extern pthread_cond_t onionstack_condchange_BM;

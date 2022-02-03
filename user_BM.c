@@ -149,7 +149,7 @@ overwrite_contributor_file_BM (FILE * fil,
   rewind (fil);
   int nbcontrib = 0;
   _.keysetv = (value_tyBM) objassocsetattrspayl_BM (_.assocob);
-  if (debugmsg_BM)
+  if (showdebugmsg_BM)
     {
       char contidbuf[32];
       memset (contidbuf, 0, sizeof (contidbuf));
@@ -589,7 +589,7 @@ check_and_load_contributors_file_BM (struct loader_stBM *ld,
       FATAL_BM ("cannot open contributors file %s  : %m", rcpath);
       return;
     }
-  if (debugmsg_BM)
+  if (showdebugmsg_BM)
     {
       char contidbuf[32];
       memset (contidbuf, 0, sizeof (contidbuf));
@@ -1197,7 +1197,7 @@ add_contributor_user_BM (const char *str,
     return NULL;
   if (perrmsg)
     *perrmsg = NULL;
-  if (debugmsg_BM)
+  if (showdebugmsg_BM)
     {
       _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
       DBGPRINTF_BM ("add_contributor_user_BM start str='%s' contrib-set=%s",
@@ -1272,7 +1272,7 @@ add_contributor_user_BM (const char *str,
         add_contributor_name_email_alias_BM (namestr,
                                              emailstr, NULL,
                                              perrmsg, CURFRAME_BM);
-      if (debugmsg_BM)
+      if (showdebugmsg_BM)
         {
           _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
           DBGPRINTF_BM
@@ -1321,7 +1321,7 @@ add_contributor_user_BM (const char *str,
         add_contributor_name_email_alias_BM (namestr,
                                              emailstr,
                                              aliasstr, perrmsg, CURFRAME_BM);
-      if (debugmsg_BM)
+      if (showdebugmsg_BM)
         {
           _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
           DBGPRINTF_BM
@@ -1363,7 +1363,7 @@ remove_contributor_by_name_BM (const char *oldname,
                  value_tyBM keysetv;    // the set of keys
                  value_tyBM tmpv;       // temporary, for debugging
     );
-  if (debugmsg_BM)
+  if (showdebugmsg_BM)
     {
       _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
       DBGPRINTF_BM
@@ -1528,7 +1528,7 @@ remove_contributor_by_name_BM (const char *oldname,
     FATAL_BM ("failed to fclose %s", rcpath);
   fil = NULL;
   fd = -1;
-  if (debugmsg_BM)
+  if (showdebugmsg_BM)
     {
       _.tmpv = (value_tyBM) objhashsettosetpayl_BM (BMP_contributors);
       DBGPRINTF_BM

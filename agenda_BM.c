@@ -578,7 +578,7 @@ agenda_run_deferred_after_gc_BM (void)
       ASSERT_BM (nextagd != NULL || curagd == oldlast);
       agdcount++;
       ASSERT_BM (curagd->agd_rout != NULL);
-      if (debugmsg_BM)
+      if (showdebugmsg_BM)
         {
           Dl_info di = { };
           if (dladdr (curagd->agd_rout, &di) && di.dli_sname)

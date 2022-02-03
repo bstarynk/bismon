@@ -34,7 +34,7 @@ void *dlprog_BM;
 const char *myprogname_BM;
 bool gui_is_running_BM;
 bool web_is_running_BM;
-volatile bool debugmsg_BM;
+volatile bool showdebugmsg_BM;
 bool parsedebugmsg_BM;
 int nbworkjobs_BM;
 int randomseed_BM;
@@ -755,7 +755,7 @@ const GOptionEntry optionstab_bm[] = {
   {.long_name = "debug",.short_name = (char) 'D',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
-   .arg_data = &debugmsg_BM,
+   .arg_data = (bool *) &showdebugmsg_BM,
    .description = "gives lots of debug messages",
    .arg_description = NULL},
   //
@@ -1082,7 +1082,7 @@ const GOptionEntry optionstab_bm[] = {
   {.long_name = "bismon-debug",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
-   .arg_data = &debugmsg_BM,
+   .arg_data = (bool *) &showdebugmsg_BM,
    .description = "gives lots of debug messages",
    .arg_description = NULL},
   //
@@ -1469,7 +1469,7 @@ main (int argc, char **argv)
     }
   myprogname_BM = argv[0];
   if (argc > 1 && (!strcmp (argv[1], "-D") || !strcmp (argv[1], "--debug")))
-    debugmsg_BM = true;
+    showdebugmsg_BM = true;
   if (argc > 1 && !strcmp (argv[1], "--version"))
     give_prog_version_BM (argv[0]);
   {
@@ -1542,7 +1542,7 @@ main (int argc, char **argv)
                 run_onion_BM ? "true" : "false", argc);
   ////
   ///
-  if (debugmsg_BM)
+  if (showdebugmsg_BM)
     fprintf (stderr,
              "debug messages enabled %s pid %d timestamp %s commit %s\n",
              myprogname_BM, (int) getpid (), bismon_timestamp,
@@ -1710,7 +1710,7 @@ main (int argc, char **argv)
     {
       INFOPRINTF_BM ("bismon with debug messages after load from %s",
                      load_dir_bm);
-      debugmsg_BM = true;
+      showdebugmsg_BM = true;
     };
   show_net_info_bm ();
   if (!batch_bm)
@@ -1753,9 +1753,9 @@ main (int argc, char **argv)
       if (debug_after_load_BM)
         {
           INFOPRINTF_BM
-            ("bismon disabling debug before dump after load to %s",
-             dump_after_load_dir_bm);
-          debugmsg_BM = false;
+            ("Bismon (pid %d on %s git %s) disabling debug before dump after load to %s",
+             (int) getpid (), myhostname_BM, dump_after_load_dir_bm);
+          showdebugmsg_BM = false;
         }
       do_dump_after_load_BM ();
     };

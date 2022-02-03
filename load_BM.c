@@ -692,9 +692,9 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
   unsigned lineno = parserlineno_BM (ldpars);
   unsigned colpos = parsercolpos_BM (ldpars);
   bool removedebug = false;
-  if (debugjson && !debugmsg_BM)
+  if (debugjson && !showdebugmsg_BM)
     {
-      debugmsg_BM = true;
+      showdebugmsg_BM = true;
       removedebug = true;
       DBGBACKTRACEPRINTF_BM ("load_modif_json_BM ix=%d L%uC%u debugjson=%s",
                              ix, lineno, colpos, debugjson);
@@ -774,7 +774,7 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
         ("load_modif_json_BM ix=%d L%uC%u end debugjson=%s curldobj=%s strjs=\n%s\n",
          ix, lineno, colpos, debugjson, objectdbg_BM (_.curldobj), strjs);
       free (strjs);
-      debugmsg_BM = false;
+      showdebugmsg_BM = false;
     }
 }                               /* end load_modif_json_BM */
 
@@ -1429,10 +1429,10 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
   /// check and load contributors and passwords files
   {
     extern bool debug_after_load_BM;
-    bool wasdebug = debugmsg_BM;
+    bool wasdebug = showdebugmsg_BM;
     if (debug_after_load_BM)
       {
-        debugmsg_BM = true;
+        showdebugmsg_BM = true;
         INFOPRINTF_BM
           ("load force debugging (since --debug-after-load) for contributors and passwords files");
       }
@@ -1442,7 +1442,7 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       {
         INFOPRINTF_BM
           ("load reset debugging after contributors and passwords files");
-        debugmsg_BM = false;
+        showdebugmsg_BM = false;
       }
   }
   // close all files
