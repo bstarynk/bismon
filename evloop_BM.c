@@ -23,6 +23,9 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <syslog.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+
 #include "bismon.h"
 #include "evloop_BM.const.h"
 
@@ -51,6 +54,9 @@ pthread_cond_t onionstack_condchange_BM = PTHREAD_COND_INITIALIZER;
 struct onionstackinfo_stBM onionstackinfo_BM[MAXNBWORKJOBS_BM + 1];
 thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
 
+int master_unix_json_socket_fd_BM = -1;
+
+void handle_master_unix_json_connection_BM (struct stackframe_stBM *);
 
 // the lock above should be set when calling:
 void
@@ -807,13 +813,14 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
   DBGBACKTRACEPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",  //
                          sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
+  int masterixjs = -1;
   INFOPRINTF_BM ("start loop of plain_event_loop_BM for %s",
                  onion_web_base_BM);
   while (atomic_load (&eventlooprunning_BM))
     {
       loopcnt++;
-      struct pollfd pollarr[MAXNBWORKJOBS_BM + 8];
-      pid_t endedprocarr[MAXNBWORKJOBS_BM];
+      struct pollfd pollarr[MAXNBWORKJOBS_BM + 10];
+      pid_t endedprocarr[MAXNBWORKJOBS_BM + 2];
       memset (pollarr, 0, sizeof (pollarr));
       memset (endedprocarr, 0, sizeof (endedprocarr));
       int nbpoll = 0;
@@ -839,6 +846,13 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
             }
         unlock_runproc_mtx_at_BM (__LINE__);
       }
+      if (master_unix_json_socket_fd_BM > 0)
+        {
+          pollarr[nbpoll].fd = master_unix_json_socket_fd_BM;
+          pollarr[nbpoll].events = POLL_IN;
+          masterixjs = nbpoll;
+          nbpoll++;
+        }
 #define POLL_DELAY_MILLISECS_BM 3750
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM
@@ -951,10 +965,23 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
         }
       if (pollarr[pollix_cmdp].revents & POLL_IN)
         read_commandpipe_BM ();
+      if (masterixjs > 0 && pollarr[masterixjs].revents & POLL_IN)
+        {
+          ASSERT_BM (pollarr[masterixjs].fd == master_unix_json_socket_fd_BM);
+          handle_master_unix_json_connection_BM (&_);
+        };
     }                           /* end while eventlooprunning */
   INFOPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
 }                               /* end plain_event_loop_BM */
 
+void
+handle_master_unix_json_connection_BM (struct stackframe_stBM *stkf)
+{
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 value_tyBM val);
+#warning handle_master_unix_json_connection_BM unimplemented
+  FATAL_BM ("unimplemented handle_master_unix_json_connection_BM");
+}                               /* end handle_master_unix_json_connection_BM */
 
 void
 gcmarkevloop_BM (struct garbcoll_stBM *gc)
@@ -975,8 +1002,10 @@ gcmarkevloop_BM (struct garbcoll_stBM *gc)
 void
 stop_unix_json_socket_processing_BM (void)
 {
-  FATAL_BM ("unimplemented stop_unix_json_socket_processing_BM");
-#warning stop_unix_json_socket_processing_BM unimplemented
+  ASSERT_BM (master_unix_json_socket_fd_BM > 0);
+  close (master_unix_json_socket_fd_BM);
+  master_unix_json_socket_fd_BM = -1;
+#warning stop_unix_json_socket_processing_BM incomplete
 }                               /* end stop_unix_json_socket_processing_BM */
 
 
@@ -984,7 +1013,29 @@ void
 initialize_unix_json_socket_processing_BM (const char *ujsname)
 {
   ASSERT_BM (ujsname == unix_json_socket_BM);
-  FATAL_BM ("unimplemented initialize_unix_json_socket_processing_BM %s",
-            ujsname);
-#warning initialize_unix_json_socket_processing_BM unimplemented
+  master_unix_json_socket_fd_BM = socket (AF_UNIX, SOCK_STREAM, 0);
+  if (master_unix_json_socket_fd_BM < 0)
+    FATAL_BM ("failed to make master_unix_json_socket_BM (%m)");
+  {
+    struct sockaddr_un sa_ujs;
+    memset (&sa_ujs, 0, sizeof (sa_ujs));
+    sa_ujs.sun_family = AF_UNIX;
+    strncpy (sa_ujs.sun_path, ujsname, sizeof (sa_ujs.sun_path) - 1);
+    if (bind (master_unix_json_socket_fd_BM, &sa_ujs, sizeof (sa_ujs)) < 0)
+      FATAL_BM ("failed to bind master json socket#%d to Unix name %s",
+                master_unix_json_socket_fd_BM, sa_ujs.sun_path);
+  }
+  struct stat stat_ujs = { 0 };
+  if (stat (ujsname, &stat_ujs) == 0)
+    {
+      ASSERT_BM (stat_ujs.st_ino > 0);
+      if ((S_IFMT & stat_ujs.st_mode) != S_IFSOCK)
+        FATAL_BM ("unix JSON socket %s is not a genuine socket", ujsname);
+    }
+  atexit (stop_unix_json_socket_processing_BM);
+  ASSERT_BM (master_unix_json_socket_fd_BM > 0);
 }                               /* end initialize_unix_json_socket_processing_BM */
+
+
+
+///////// end of file evloop_BM.c 
