@@ -64,6 +64,7 @@ const char *onion_anon_web_cookie_BM;
 
 ////////////////////////////////////////////////////////////////
 extern void parse_program_options_BM (int argc, char **argv);
+extern void show_program_options_BM (FILE * out, int argc, char **argv);
 
 static const char *chdir_after_load_bm;
 thread_local struct threadinfo_stBM *curthreadinfo_BM;
