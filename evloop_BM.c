@@ -59,8 +59,8 @@ fork_process_at_slot_BM (int slotpos,
                          const node_tyBM * cmdnodarg,
                          const closure_tyBM * endclosarg,
                          struct stackframe_stBM *stkf);
-void lockonion_runpro_mtx_at_BM (int lineno);
-void unlockonion_runpro_mtx_at_BM (int lineno);
+void lock_runproc_mtx_at_BM (int lineno);
+void unlock_runproc_mtx_at_BM (int lineno);
 
 void plain_event_loop_BM (void);
 
@@ -369,7 +369,7 @@ handle_sigchld_BM (pid_t pid)
       {
         int chix = -1;
         int nbruncmds = 0;
-        lockonion_runpro_mtx_at_BM (__LINE__);
+        lock_runproc_mtx_at_BM (__LINE__);
         for (int oix = 0; oix < MAXNBWORKJOBS_BM; oix++)
           {
             struct processdescr_stBM *pendproc = onionrunprocarr_BM + oix;
@@ -416,7 +416,7 @@ handle_sigchld_BM (pid_t pid)
                 didfork = true;
               }
           }
-        unlockonion_runpro_mtx_at_BM (__LINE__);
+        unlock_runproc_mtx_at_BM (__LINE__);
         if (chix >= 0)
           {
             _.choutstrv =
@@ -476,27 +476,27 @@ handle_sigchld_BM (pid_t pid)
 
 
 void
-lockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
+lock_runproc_mtx_at_BM (int lineno __attribute__((unused)))
 {
 #if 0
   // too verbose, so not needed
-  DBGPRINTFAT_BM (__FILE__, lineno, "lockonion_runpro_mtx_BM thrid=%ld",
+  DBGPRINTFAT_BM (__FILE__, lineno, "lock_runproc_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
 #endif
   pthread_mutex_lock (&pendingrunproc_mtx_BM);
-}                               /* end lockonion_runpro_mtx_at_BM */
+}                               /* end lock_runproc_mtx_at_BM */
 
 
 void
-unlockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
+unlock_runproc_mtx_at_BM (int lineno __attribute__((unused)))
 {
 #if 0
   // too verbose, so not needed
-  DBGPRINTFAT_BM (__FILE__, lineno, "unlockonion_runpro_mtx_BM thrid=%ld",
+  DBGPRINTFAT_BM (__FILE__, lineno, "unlock_runproc_mtx_BM thrid=%ld",
                   (long) gettid_BM ());
 #endif
   pthread_mutex_unlock (&pendingrunproc_mtx_BM);
-}                               /* end lockonion_runpro_mtx_at_BM */
+}                               /* end unlock_runproc_mtx_at_BM */
 
 
 
@@ -649,7 +649,7 @@ onion_queue_process_BM (const stringval_tyBM * dirstrarg,
   ASSERT_BM (nbworkjobs_BM >= MINNBWORKJOBS_BM
              && nbworkjobs_BM <= MAXNBWORKJOBS_BM);
   {
-    lockonion_runpro_mtx_at_BM (__LINE__);
+    lock_runproc_mtx_at_BM (__LINE__);
     lockedproc = true;
     int slotpos = -1;
     for (int ix = 0; ix < nbworkjobs_BM; ix++)
@@ -675,13 +675,13 @@ onion_queue_process_BM (const stringval_tyBM * dirstrarg,
         listappend_BM (pendingrunproc_list_BM, _.nodv);
       }
     ASSERT_BM (lockedproc);
-    unlockonion_runpro_mtx_at_BM (__LINE__), lockedproc = false;
+    unlock_runproc_mtx_at_BM (__LINE__), lockedproc = false;
   }
   LOCALJUSTRETURN_BM ();
 failure:
 #undef FAILHERE
   if (lockedproc)
-    unlockonion_runpro_mtx_at_BM (__LINE__), lockedproc = false;
+    unlock_runproc_mtx_at_BM (__LINE__), lockedproc = false;
   DBGPRINTF_BM
     ("queue_process failure failin %d dirstr %s, cmdnod %s endclos %s, cause %s",
      failin,
@@ -828,7 +828,7 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
       pollarr[pollix_cmdp].events = POLL_IN;
       nbpoll = pollix__last;
       {
-        lockonion_runpro_mtx_at_BM (__LINE__);
+        lock_runproc_mtx_at_BM (__LINE__);
         for (int j = 0; j < nbworkjobs_BM; j++)
           if (onionrunprocarr_BM[j].rp_pid > 0
               && onionrunprocarr_BM[j].rp_outpipe > 0)
@@ -837,7 +837,7 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
               pollarr[nbpoll].events = POLL_IN;
               nbpoll++;
             }
-        unlockonion_runpro_mtx_at_BM (__LINE__);
+        unlock_runproc_mtx_at_BM (__LINE__);
       }
 #define POLL_DELAY_MILLISECS_BM 3750
       if (loopcnt % 4 == 0)
@@ -858,7 +858,7 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
         }
       {
         char pipbuf[1024 + 4];
-        lockonion_runpro_mtx_at_BM (__LINE__);
+        lock_runproc_mtx_at_BM (__LINE__);
         int runix = 0;
         for (int ix = pollix__last; ix < nbpoll; ix++)
           {
@@ -934,7 +934,7 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
               }
             _.bufob = NULL;
           }
-        unlockonion_runpro_mtx_at_BM (__LINE__);
+        unlock_runproc_mtx_at_BM (__LINE__);
       }
       if (pollarr[pollix_sigfd].revents & POLL_IN)
         {

@@ -1593,8 +1593,9 @@ extern "C"
 			   const node_tyBM * cmdnodarg,
 			   const closure_tyBM * endclosarg,
 			   struct stackframe_stBM *stkf);
-  extern void lockonion_runpro_mtx_at_BM (int lineno);
-  extern void unlockonion_runpro_mtx_at_BM (int lineno);
+  /* lock/unlock some mutex related to running or runnable process. */
+  extern void lock_runproc_mtx_at_BM (int lineno);
+  extern void unlock_runproc_mtx_at_BM (int lineno);
 
 
   extern void register_onion_thread_stack_BM (struct stackframe_stBM *);
