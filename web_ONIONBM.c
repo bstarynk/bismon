@@ -2787,7 +2787,7 @@ objwebsessioncookiestringpayl_BM (objectval_tyBM * obj, const char *prefix)
   if (prefix)
     return sprintfstring_BM ("%s%s", prefix, cookiebuf);
   else
-    return makestring_BM (cookiebuf);
+    return (value_tyBM)makestring_BM (cookiebuf);
 }                               /* end objwebsessioncookiestringpayl_BM */
 
 
