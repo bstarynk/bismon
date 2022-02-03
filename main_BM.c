@@ -1718,7 +1718,8 @@ main (int argc, char **argv)
     {
       if (run_onion_BM)
         {
-          INFOPRINTF_BM ("initializing ONION for Web services");
+          INFOPRINTF_BM ("Bismon pid %d on %s (git %s) initializing ONION for Web services",
+			 (int)getpid(), myhostname_BM, bismon_shortgitid);
           initialize_webonion_BM ();
         }
     }
