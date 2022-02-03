@@ -32,16 +32,18 @@
 /// pendingrunproc_list_BM by any thread doing queue_process_BM. Stuff is
 /// removed from them only by plain_event_loop_BM which would also
 /// apply the closures.
-struct pendingprocesses_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
+struct processdescr_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
 
 /// queued process commands, of nodes (dir, cmd, clos); for processes
-/// which are not yet in the array above...
+/// which are not yet in the array above... so they are not yet running.
 struct listtop_stBM *pendingrunproc_list_BM;
 
 // lock for the structures above (both onionrunprocarr_BM & pendingrunproc_list_BM)
 pthread_mutex_t pendingrunproc_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 
 volatile atomic_bool eventlooprunning_BM;
+
+static volatile atomic_int count_dump_sigusr1_BM;
 
 pthread_mutex_t onionstack_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t onionstack_condchange_BM = PTHREAD_COND_INITIALIZER;
@@ -172,6 +174,307 @@ read_commandpipe_BM (void)
                   (nbr < 0) ? strerror (errno) : "--");
 }                               /* end read_commandpipe_BM */
 
+
+
+
+/// this function should return true to continue the loop in plain_event_loop_BM
+bool
+read_sigfd_BM (void)            // called from plain_event_loop_BM
+{
+  struct signalfd_siginfo siginf;
+  memset (&siginf, 0, sizeof (siginf));
+  time_t nowt = 0;
+  time (&nowt);
+  char nowbuf[48];
+  memset (nowbuf, 0, sizeof (nowbuf));
+  const char *nowstr = ctime_r (&nowt, nowbuf);
+  if (!nowstr)
+    nowstr = "????";
+  DBGPRINTF_BM ("read_sigfd_BM start sigfd_BM %d elapsed %3.f s at %s",
+                sigfd_BM, elapsedtime_BM (), nowstr);
+  int nbr = read (sigfd_BM, &siginf, sizeof (siginf));
+  if (nbr != sizeof (siginf))   // very unlikely, probably impossible
+    FATAL_BM ("read_sigfd_BM: read fail (%d bytes read, want %d) - %m",
+              nbr, (int) sizeof (siginf));
+  DBGPRINTF_BM ("read_sigfd_BM signo=%d at %s", siginf.ssi_signo, nowstr);
+  // TODO: is this read_sigfd_BM incomplete?
+  switch (siginf.ssi_signo)
+    {
+    case SIGUSR1:
+      {
+        if (!sigusr1_dump_prefix_BM)
+          {
+            WARNPRINTF_BM
+              ("got SIGUSR1 at %s but without any --sigusr1-dump-prefix option",
+               nowstr);
+            goto terminating_dump;
+          };
+        ASSERT_BM (sigusr1_dump_prefix_BM != (const char *) 0);
+        int dumpcnt = 1 + atomic_fetch_add (&count_dump_sigusr1_BM, 1);
+        DBGPRINTF_BM ("read_sigfd_BM got SIGUSR1 at %s for dumping count %d",
+                      nowstr, dumpcnt);
+        char dirbufname[MAXLEN_SIGUSR1_DUMP_PREFIX_BM + 8];
+        memset (dirbufname, 0, sizeof (dirbufname));
+        snprintf (dirbufname, sizeof (dirbufname), "%s%03d",
+                  sigusr1_dump_prefix_BM, dumpcnt);
+        ASSERT_BM (strlen (dirbufname) < sizeof (dirbufname) - 2);
+        if (mkdir (dirbufname, S_IRWXU /* u+rwx */ ))
+          FATAL_BM ("failed to mkdir %s for SIGUSR1 dump - %m", dirbufname);
+        agenda_suspend_for_gc_BM ();
+        struct dumpinfo_stBM di = dump_BM (dirbufname, NULL);
+        {
+          char infopath[MAXLEN_SIGUSR1_DUMP_PREFIX_BM + 32];
+          memset (infopath, 0, sizeof (infopath));
+          snprintf (infopath, sizeof (infopath), "%s/BismonInfo", dirbufname);
+          FILE *infofil = fopen (infopath, "w");
+          if (infofil)
+            {
+              fprintf (infofil,
+                       "# emitted %s Bismon intermediate dump file\n",
+                       infopath);
+              fprintf (infofil, "BISMON_PID=%d\n", (int) getpid ());
+              fprintf (infofil, "BISMON_DIRDUMP='%s'\n", dirbufname);
+              fprintf (infofil, "BISMON_DUMPCOUNT=%d\n", dumpcnt);
+              fprintf (infofil, "BISMON_HOST='%s'\n", myhostname_BM);
+              fprintf (infofil, "BISMON_CHECKSUM='%s'\n", bismon_checksum);
+              fprintf (infofil, "BISMON_SHORTGITID='%s'\n",
+                       bismon_shortgitid);
+              fprintf (infofil, "BISMON_TIMESTAMP='%s'\n", bismon_timestamp);
+              fprintf (infofil, "BISMON_TIMELONG=%ld\n", bismon_timelong);
+              fprintf (infofil, "BISMON_DIRECTORY='%s'\n", bismon_directory);
+              fclose (infofil);
+            }
+        }
+        INFOPRINTF_BM
+          ("after dumping intermediate state into %s for SIGUSR1: scanned %ld, emitted %ld objects\n"
+           "did %ld todos, wrote %ld files\n"
+           "in %.3f elapsed, %.4f cpu seconds.\n", dirbufname,
+           di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount,
+           di.dumpinfo_todocount, di.dumpinfo_wrotefilecount,
+           di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
+        backtrace_print_BM ((struct backtrace_state *)
+                            backtracestate_BM, 0, stdout);
+        agenda_continue_after_gc_BM ();
+      };
+      return false;
+    case SIGUSR2:              /* toggle debug */
+      if (showdebugmsg_BM)
+        {
+          DBGPRINTF_BM
+            ("debugging output suspended by SIGUSR2 at %s; send again the same signal to reenable it",
+             nowstr);
+          showdebugmsg_BM = false;
+          INFOPRINTF_BM
+            ("no more debugging output at %s (bismon pid %d on %s) since SIGUSR2 signal recieved",
+             nowstr, (int) getpid (), myhostname_BM);
+        }
+      else
+        {
+          INFOPRINTF_BM
+            ("enabling debugging output at %s (bismon pid %d on %s) since SIGUSR2 signal recieved",
+             nowstr, (int) getpid (), myhostname_BM);
+          showdebugmsg_BM = true;
+          DBGPRINTF_BM
+            ("debugging output enabled by SIGUSR2 at %s (bismon pid %d on %s); send again the same signal to disable it",
+             nowstr, (int) getpid (), myhostname_BM);
+        }
+      return true;
+    case SIGTERM:
+    case SIGINT:
+    terminating_dump:
+      {
+        DBGPRINTF_BM ("read_sigfd_BM got %s at %s",
+                      strsignal (siginf.ssi_signo), nowstr);
+        stop_agenda_work_threads_BM ();
+        /// forcibly remove the payload of the_web_sessions. Its payload
+        /// should not be dumped, because of its class, but anyway...
+        {
+          objlock_BM (BMP_the_web_sessions);
+          objclearpayload_BM (BMP_the_web_sessions);
+          objunlock_BM (BMP_the_web_sessions);
+        }
+        char *rp = realpath (dump_dir_BM ? : ".", NULL);
+        INFOPRINTF_BM
+          ("before dumping final state into %s (really %s) after signal %s to process %d, elapsed %.3f s",
+           dump_dir_BM, rp,
+           strsignal (siginf.ssi_signo), (int) getpid (), elapsedtime_BM ());
+        free (rp), rp = NULL;
+        backtrace_print_BM ((struct backtrace_state *)
+                            backtracestate_BM, 0, stdout);
+        struct dumpinfo_stBM di = dump_BM (dump_dir_BM, NULL);
+        INFOPRINTF_BM
+          ("after dumping final state into %s for SIGTERM: scanned %ld, emitted %ld objects\n"
+           "did %ld todos, wrote %ld files\n"
+           "in %.3f elapsed, %.4f cpu seconds.\n", dump_dir_BM,
+           di.dumpinfo_scanedobjectcount, di.dumpinfo_emittedobjectcount,
+           di.dumpinfo_todocount, di.dumpinfo_wrotefilecount,
+           di.dumpinfo_elapsedtime, di.dumpinfo_cputime);
+      }
+      return true;
+    case SIGQUIT:
+      INFOPRINTF_BM
+        ("terminating without dump after SIGQUIT to process %d, elapsed %.3f s",
+         (int) getpid (), elapsedtime_BM ());
+      return true;
+    case SIGCHLD:
+      {
+        pid_t pid = siginf.ssi_pid;
+        if (showdebugmsg_BM)
+          {
+            char exebuf[64];
+            char pathbuf[64];
+            memset (exebuf, 0, sizeof (exebuf));
+            memset (pathbuf, 0, sizeof (pathbuf));
+            snprintf (pathbuf, sizeof (pathbuf), "/proc/%d/exe", pid);
+            if (readlink (pathbuf, exebuf, sizeof (exebuf) - 1) < 0)
+              FATAL_BM ("readlink %s failed (%m)", pathbuf);
+            DBGPRINTF_BM ("read_sigfd_BM got SIGCHLD pid=%d (%s)", (int) pid,
+                          exebuf);
+          }
+        handle_sigchld_BM (pid);
+        return false;
+      }
+    default:
+      FATAL_BM ("read_sigfd_BM unexpected signo %d", siginf.ssi_signo);
+    };
+  DBGPRINTF_BM ("read_sigfd_BM ending");
+  return false;
+}                               /* end read_sigfd_BM */
+
+
+void
+handle_sigchld_BM (pid_t pid)
+{
+  objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
+  bool didfork = false;
+  LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
+                 /// for the terminating child process
+                 value_tyBM chdirstrv;  //
+                 value_tyBM chcmdnodv;  //
+                 value_tyBM chclosv;    //
+                 objectval_tyBM * chbufob;      //
+                 value_tyBM choutstrv;  //
+                 // for queued commands
+                 value_tyBM qnodv;      //
+                 value_tyBM newdirstrv; //
+                 value_tyBM newcmdnodv; //
+                 value_tyBM newendclosv;        //
+    );
+  DBGPRINTF_BM ("handle_sigchld_BM start pid=%d", (int) pid);
+  int wstatus = 0;
+  pid_t wpid = waitpid (pid, &wstatus, WNOHANG);
+  if (wpid == pid)
+    {
+      DBGPRINTF_BM ("handle_sigchld_BM pid %d", (int) pid);
+      {
+        int chix = -1;
+        int nbruncmds = 0;
+        lockonion_runpro_mtx_at_BM (__LINE__);
+        for (int oix = 0; oix < MAXNBWORKJOBS_BM; oix++)
+          {
+            struct processdescr_stBM *pendproc = onionrunprocarr_BM + oix;
+            if (!pendproc->rp_pid)
+              continue;
+            nbruncmds++;
+            if (pendproc->rp_pid == pid)
+              {
+                ASSERT_BM (chix < 0);
+                chix = oix;
+                _.chdirstrv = (value_tyBM) pendproc->rp_dirstrv;
+                _.chcmdnodv = (value_tyBM) pendproc->rp_cmdnodv;
+                _.chclosv = (value_tyBM) pendproc->rp_closv;
+                _.chbufob = (value_tyBM) pendproc->rp_bufob;
+                memset ((void *) pendproc, 0,
+                        sizeof (struct processdescr_stBM));
+              }
+          }
+        _.qnodv =
+          (value_tyBM) nodecast_BM (listfirst_BM (pendingrunproc_list_BM));
+        if (_.qnodv)
+          {
+            ASSERT_BM (nodeconn_BM (_.qnodv) == k_queue_process);
+            if (nbruncmds <= nbworkjobs_BM)
+              {
+                listpopfirst_BM (pendingrunproc_list_BM);
+                _.newdirstrv = (value_tyBM)
+                  stringcast_BM ((value_tyBM) nodenthson_BM (_.qnodv, 0));
+                _.newcmdnodv = (value_tyBM)
+                  nodecast_BM ((value_tyBM) nodenthson_BM (_.qnodv, 1));
+                _.newendclosv = (value_tyBM)
+                  nodecast_BM ((value_tyBM) nodenthson_BM (_.qnodv, 2));
+                ASSERT_BM (isnode_BM (_.newcmdnodv));
+                ASSERT_BM (isclosure_BM (_.newendclosv));
+                DBGPRINTF_BM
+                  ("handle_sigchld_BM chix#%d newdirstrv %s newcmdnodv %s newendclosv %s beforefork",
+                   chix, debug_outstr_value_BM (_.newdirstrv, CURFRAME_BM,
+                                                0),
+                   debug_outstr_value_BM (_.newcmdnodv, CURFRAME_BM, 0),
+                   debug_outstr_value_BM (_.newendclosv, CURFRAME_BM, 0));
+                fork_process_at_slot_BM (chix, _.newdirstrv,
+                                         _.newcmdnodv, _.newendclosv,
+                                         CURFRAME_BM);
+                didfork = true;
+              }
+          }
+        unlockonion_runpro_mtx_at_BM (__LINE__);
+        if (chix >= 0)
+          {
+            _.choutstrv =
+              (value_tyBM)
+              makestring_BM (objstrbufferbytespayl_BM (_.chbufob));
+            DBGPRINTF_BM
+              ("handle_sigchld_BM defer-apply chclosv %s choutstrv %s wstatus %#x=%d",
+               debug_outstr_value_BM (_.chclosv, CURFRAME_BM, 0),
+               debug_outstr_value_BM (_.choutstrv, CURFRAME_BM, 0), wstatus,
+               wstatus);
+            do_main_defer_apply3_BM (_.chclosv, _.choutstrv,
+                                     taggedint_BM (wstatus), NULL,
+                                     CURFRAME_BM);
+          }
+      }
+    }
+  else
+    {
+      DBGPRINTF_BM ("handle_sigchld_BM pid%d wpid%d", (int) pid, (int) wpid);
+      char pidbuf[128];
+      memset (pidbuf, 0, sizeof (pidbuf));
+      snprintf (pidbuf, sizeof (pidbuf), "/proc/%d/cmdline", (int) pid);
+      FILE *pf = fopen (pidbuf, "r");
+      if (pf)
+        {
+          size_t ln = fread (pidbuf, sizeof (pidbuf) - 1, 1, pf);
+          if (ln > 0)
+            {
+              pidbuf[ln] = (char) 0;
+              for (int ix = 0; ix < (int) ln; ix++)
+                if (pidbuf[ix] == 0)
+                  pidbuf[ix] = ' ';
+            }
+          else
+            strcpy (pidbuf, "??");
+          fclose (pf);
+        }
+      else
+        {
+          char exepidbuf[64];
+          memset (pidbuf, 0, sizeof (pidbuf));
+          memset (exepidbuf, 0, sizeof (exepidbuf));
+          snprintf (exepidbuf, sizeof (exepidbuf), "/proc/%u/exe",
+                    (unsigned) pid);
+          if (readlink (exepidbuf, pidbuf, sizeof (pidbuf) - 1) < 0)
+            FATAL_BM ("readlink %s failed (%m)", exepidbuf);
+        }
+      WARNPRINTF_BM
+        ("handle_sigchld_BM waitpid failure pid#%d '%s' status#%d", pid,
+         pidbuf, wstatus);
+      WEAKASSERTWARN_BM ("handle_sigchld_BM failed" && false);
+    }
+  if (didfork)
+    usleep (1000);              // sleep a little bit, to let the child process start
+}                               /* end handle_sigchld_BM */
+
+
+
 void
 lockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
 {
@@ -182,6 +485,21 @@ lockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
 #endif
   pthread_mutex_lock (&pendingrunproc_mtx_BM);
 }                               /* end lockonion_runpro_mtx_at_BM */
+
+
+void
+unlockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
+{
+#if 0
+  // too verbose, so not needed
+  DBGPRINTFAT_BM (__FILE__, lineno, "unlockonion_runpro_mtx_BM thrid=%ld",
+                  (long) gettid_BM ());
+#endif
+  pthread_mutex_unlock (&pendingrunproc_mtx_BM);
+}                               /* end lockonion_runpro_mtx_at_BM */
+
+
+
 
 
 void
@@ -234,7 +552,7 @@ add_rungarbcoll_command_onion_BM (void)
                 (nbw < 0) ? strerror (errno) : "--");
     }
   FATAL_BM ("add_rungarbcoll_command_onion_BM failed");
-}                               /* end add_defer_command_onion_BM */
+}                               /* end add_rungarbcoll_command_onion_BM */
 
 
 void
@@ -263,16 +581,8 @@ add_postponetimer_command_onion_BM (void)
   FATAL_BM ("add_postponetimer_command_onion_BM failed");
 }                               /* end add_postponetimer_command_onion_BM */
 
-void
-unlockonion_runpro_mtx_at_BM (int lineno __attribute__((unused)))
-{
-#if 0
-  // too verbose, so not needed
-  DBGPRINTFAT_BM (__FILE__, lineno, "unlockonion_runpro_mtx_BM thrid=%ld",
-                  (long) gettid_BM ());
-#endif
-  pthread_mutex_unlock (&pendingrunproc_mtx_BM);
-}                               /* end lockonion_runpro_mtx_at_BM */
+
+
 
 // queue some external process; its stdin is /dev/null; both stdout &
 // stderr are merged & captured; final string is given to the closure.
@@ -469,7 +779,7 @@ fork_process_at_slot_BM (int slotpos,
     }
   else
     {                           // parent process
-      struct pendingprocesses_stBM *onproc = onionrunprocarr_BM + slotpos;
+      struct processdescr_stBM *onproc = onionrunprocarr_BM + slotpos;
       ASSERT_BM (onproc->rp_pid <= 0 && onproc->rp_outpipe <= 0);
       onproc->rp_pid = pid;
       onproc->rp_outpipe = pipfd[0];
@@ -559,7 +869,7 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
                   {
                     if (onionrunprocarr_BM[runix].rp_outpipe == curfd)
                       {
-                        struct pendingprocesses_stBM *onproc =
+                        struct processdescr_stBM *onproc =
                           onionrunprocarr_BM + runix;
                         runix++;
                         int bytcnt = 0;
