@@ -531,7 +531,8 @@ const GOptionEntry optionstab_bm[] = {
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &load_dir_bm,
-   .description = "load persistent heap from directory DIR (default is .)",
+   .description = "load persistent heap from directory DIR\n"
+   "\t .... (default is the current working directory)",
    .arg_description = "DIR"},
   //
   {.long_name = "dump",.short_name = 'd',
@@ -577,8 +578,10 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &sigusr1_dump_prefix_BM,
    .description =
-   "if given a directory prefix DUMP_PREFIX, every SIGUSR1 signal dumps the state into it\n"
-   "\t For example --sigusr1-dump-prefix=/tmp/dumpBM will make the first dump into /tmp/dumpBM1/,\n"
+   "If given a directory prefix DUMP_PREFIX,\n"
+   "\t ... every recieved SIGUSR1 signal dumps the state into it.\n"
+   "\t For example --sigusr1-dump-prefix=/tmp/dumpBM will make the\n"
+   "\t ... first dump into /tmp/dumpBM1/,  and then\n"
    "\t ... the second dump into /tmp/dumpBM2/ etc...\n",
    .arg_description = "DUMP_PREFIX"},
   //
@@ -587,7 +590,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &added_passwords_filepath_BM,
    .description =
-   "use the given PASSWORDENTRIES file (if it is -, stdin) containing lines like <username>:<password> to add passwords",
+   "Use the given PASSWORDENTRIES file (if it is -, stdin) \n"
+   "\t ... containing lines like <username>:<password> to add passwords",
    .arg_description = "PASSWORDENTRIES"},
   //
   {.long_name = "add-password-comment",.short_name = (char) 0,
@@ -595,7 +599,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &password_file_comment_BM,
    .description =
-   "append a single comment line PASSWORDCOMMENT to the password file",
+   "append a single comment line PASSWORDCOMMENT to the password\n"
+   "\t .... file.",
    .arg_description = "PASSWORDCOMMENT"},
   //
   {.long_name = "emit-has-predef",.short_name = (char) 0,
@@ -628,7 +633,7 @@ const GOptionEntry optionstab_bm[] = {
    "\t (if the pid file exists and does not start with a dot or percent,\n"
    "\t  and mentions a valid pid, its process,\n"
    "\t  presumably some other Bismon process,\n"
-   "\t  gets a SIGQUIT signal, and has one second to dump its state)\n",
+   "\t  gets a SIGQUIT signal, and has one second to dump its state)",
    .arg_description = "PATH"},
   //
   {.long_name = "run-command",.short_name = (char) 0,
@@ -673,7 +678,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &get_testplugin_after_load_bm,
    .description =
-   "run the drafts/testplugin_PLUGINAME.so (after loading) the test-plugin PLUGINAME",
+   "run the drafts/testplugin_PLUGINAME.so (after loading) the\n"
+   "\t ... test-plugin PLUGINAME",
    .arg_description = "PLUGINAME"},
 
   //
@@ -710,7 +716,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &print_contributor_of_oid_bm,
    .description =
-   "print tab-separated: (full name, objid, email, alias) of contributor of given CONTRIBOID then exit,",
+   "print tab-separated: (full name, objid, email, alias) of contributor\n"
+   "\t ... of given CONTRIBOID then exit,",
    .arg_description = "CONTRIBOID"},
 
   ////
@@ -819,7 +826,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &onion_ssl_certificate_BM,
    .description =
-   "Uses FILEPREFIX.pem & FILEPREFIX.key for SSL certificate to libonion - could be used by GCC plugins",
+   "Uses FILEPREFIX.pem & FILEPREFIX.key for SSL certificate to libonion\n"
+      "\t web services.  Could be used by GCC plugins",
    .arg_description = "FILEPREFIX"},
   //
   {.long_name = "web-base",.short_name = (char) 0,
@@ -849,7 +857,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &unix_json_socket_BM,
    .description =
    "Creates/uses/listen a unix(7) socket named UNIX_SOCKET on the local machine.\n"
-   "Input and output protocol is JSON, each message ended by double newlines or a single formfeed."
+   "Input and output protocol is JSON, each message ended by double newlines or a single formfeed.\n"
    "Usable by GCC plugins or other applications on the local machine.",
    .arg_description = "UNIX_SOCKET"},
   ///
@@ -907,9 +915,11 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &sigusr1_dump_prefix_BM,
    .description =
-   "if given a directory prefix DUMP_PREFIX, every SIGUSR1 signal dumps the state into it\n"
-   "\t For example --bismon-sigusr1-dump-prefix=/tmp/dumpBM will make the first dump into /tmp/dumpBM1/,\n"
-   "\t ... the second dump into /tmp/dumpBM2/ etc...\n",
+      "if given a directory prefix DUMP_PREFIX, every SIGUSR1 signal\n"
+      "\t ...  dumps the state into it.  For\n"
+      "\t ... example --bismon-sigusr1-dump-prefix=/tmp/dumpBM will\n"
+      "\t ...  make the first dump into /tmp/dumpBM1/, then\n"
+      "\t ... the second dump into /tmp/dumpBM2/ etc...\n",
    .arg_description = "DUMP_PREFIX"},
   //
   {.long_name = "bismon-add-passwords",.short_name = (char) 0,
@@ -917,7 +927,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &added_passwords_filepath_BM,
    .description =
-   "use the given PASSWORDENTRIES file (if it is -, stdin) containing lines like <username>:<password> to add passwords",
+      "use the given PASSWORDENTRIES file (if it is -, stdin) containing\n"
+      "\t... lines like <username>:<password> to add passwords",
    .arg_description = "PASSWORDENTRIES"},
   //
   //
@@ -1039,7 +1050,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &print_contributor_of_oid_bm,
    .description =
-   "print tab-separated: (full name, objid, email, alias) of contributor of given CONTRIBOID then exit,",
+   "print tab-separated: (full name, objid, email, alias) of contributor\n"
+      "\t ... of given CONTRIBOID then exit,",
    .arg_description = "CONTRIBOID"},
 
   ////
@@ -1048,10 +1060,10 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &remove_contributor_bm,
    .description = "remove existing contributor CONTRIBUTOR,\n"
-   "\t like 'First Lastname'\n"
-   "\t or email@example.com\n"
-   "\t or some existing contributor oid similar to _2PFRochKb3N_3e8RFFAUi9K\n"
-   "\t (this should remove personal information relevant to European GDPR in file "
+   "\t ... like 'First Lastname' or email@example.com\n"
+   "\t ... or some existing contributor oid similar to e.g.\n"
+   "\t ... _2PFRochKb3N_3e8RFFAUi9K  (this should remove personal\n"
+   "\t ...  information relevant to European GDPR in file "
    CONTRIBUTORS_FILE_BM ")",
    .arg_description = "CONTRIBUTOR"},
   ///
@@ -1161,7 +1173,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &onion_anon_web_cookie_BM,
    .description =
-   "Create an anonymous web HTTP cookie, and write its cookie in the given COOKIEFILE",
+   "Create an anonymous web HTTP cookie, and write its cookie in\n"
+      " ... the given COOKIEFILE",
    .arg_description = "COOKIEFILE"},
   //
   ///////////// unix-json socket
@@ -1170,7 +1183,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &unix_json_socket_BM,
    .description =
-   "Create/uses/listen a unix(7) socket named UNIX_SOCKET on the local machine. Same as --unix-json-socket UNIX_SOCKET",
+   "Create/uses/listen a unix(7) socket named UNIX_SOCKET on the local\n"
+      "... machine.  Same as --unix-json-socket=UNIX_SOCKET",
    .arg_description = "UNIX_SOCKET"},
   /// end of options
   {}
@@ -3164,14 +3178,16 @@ parse_program_options_BM (int argc, char **argv)
   GError *errp = NULL;
   static char summarybuf[512];
   snprintf (summarybuf, sizeof (summarybuf),
-            "BISMON is a static source code analyzer, using GCC.\n"
+            "BISMON is a static source code analyzer, related to GCC.\n"
             "see github.com/bstarynk/bismon commit %s...\n"
             "WITHOUT WARRANTY, since GPLv3+ licensed.\n"
             "A DRAFT report might be available on starynkevitch.net/Basile/bismon-doc.pdf\n"
-            "signal handling:\n"
+	    "The GCC compiler is on gcc.gnu.org.  Bismon uses GCC plugins.\n"
+            "Signal handling:\n"
             "   * SIGQUIT quit without dumping,\n"
             "   * SIGTERM dump state and stop,\n"
-            "   * SIGUSR1 (with --bismon-sigusr1-dump-prefix=DUMP_PREFIX) dump state and continue,\n"
+            "   * SIGUSR1 (with --bismon-sigusr1-dump-prefix=DUMP_PREFIX) dump state\n"
+	    "     ... and continue,\n"
             "   * SIGUSR2 toggle debugging output.\n"
             " -----\n", bismon_shortgitid);
   g_option_context_set_summary (gctx, summarybuf);
