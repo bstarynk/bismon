@@ -855,6 +855,8 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
           masterixjs = nbpoll;
           nbpoll++;
         }
+#warning accepted unix json sockets should be polled
+      //////////// POLLING BELOW
 #define POLL_DELAY_MILLISECS_BM 3750
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM
@@ -972,19 +974,46 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
       if (masterixjs > 0 && pollarr[masterixjs].revents & POLL_IN)
         {
           ASSERT_BM (pollarr[masterixjs].fd == master_unix_json_socket_fd_BM);
-          handle_master_unix_json_connection_BM (&_);
+          handle_master_unix_json_connection_BM ((struct stackframe_stBM *)
+                                                 &_);
         };
     }                           /* end while eventlooprunning */
   INFOPRINTF_BM ("plain_event_loop_BM ended loopcnt=%ld", loopcnt);
 }                               /* end plain_event_loop_BM */
+
+
 
 void
 handle_master_unix_json_connection_BM (struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  value_tyBM val);
-#warning handle_master_unix_json_connection_BM unimplemented
-  FATAL_BM ("unimplemented handle_master_unix_json_connection_BM");
+  union
+  {
+    struct sockaddr_un un_sockaddr;
+    char xtraspace[256];
+  } us;
+  ASSERT_BM (master_unix_json_socket_fd_BM > 0);
+  memset (&us, 0, sizeof (us));
+  socklen_t sa_len = sizeof (us) - sizeof (int);
+  int acceptedfd =
+    accept (master_unix_json_socket_fd_BM, &us.un_sockaddr, &sa_len);
+  DBGPRINTF_BM ("master unixjsonfd#%d acceptedfd#%d sockaddr '%s'",
+                master_unix_json_socket_fd_BM,
+                acceptedfd, us.un_sockaddr.sun_path);
+  if (acceptedfd > 0)
+    {
+    /***
+     * TODO: we need to maintain a small array of accepted unix json
+     * sockets.... and in each of them, some object with a string
+     * buffer, and a closure to process each JSON, etc...
+     ***/
+#warning handle_master_unix_json_connection_BM incomplete with acceptedfd
+      FATAL_BM
+        ("incomplete handle_master_unix_json_connection_BM for acceptedfd#%d sockaddr '%s'",
+         acceptedfd, us.un_sockaddr.sun_path);
+
+    }
 }                               /* end handle_master_unix_json_connection_BM */
 
 void
@@ -1037,6 +1066,9 @@ initialize_unix_json_socket_processing_BM (const char *ujsname)
         FATAL_BM ("unix JSON socket %s is not a genuine socket", ujsname);
     }
   atexit (stop_unix_json_socket_processing_BM);
+  if (listen (master_unix_json_socket_fd_BM, MAXNBWORKJOBS_BM) < 0)
+    FATAL_BM ("failed to listen unix json socket fd#%d %s (%m)",
+              master_unix_json_socket_fd_BM, ujsname);
   ASSERT_BM (master_unix_json_socket_fd_BM > 0);
 }                               /* end initialize_unix_json_socket_processing_BM */
 
