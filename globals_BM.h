@@ -112,32 +112,14 @@ struct onionstackinfo_stBM
 extern struct onionstackinfo_stBM onionstackinfo_BM[MAXNBWORKJOBS_BM + 1];
 extern thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
 
-//////////////////////////////////////////////////////////////////////////
-/// For process queue running processes; See comment in fundecl_BM.h
-/// about function queue_process_BM, and mutex pendingrunproc_mtx_BM for exclusive access.
-struct processdescr_stBM
-{
-  /* if the process is running its pid, otherwise 0: */
-  pid_t rp_pid;
-  /* if process is running, the file descriptor of its output pipe for its stdout/stderr, read by Bismon: */
-  int rp_outpipe;
-  /* The directory into which the process should be run before fork(2)-ing it: */
-  const stringval_tyBM *rp_dirstrv;
-  /* The node giving the strings (argv for execve(2), first string being the executable...) */
-  const node_tyBM *rp_cmdnodv;
-  /* The closure which, once the process has terminated, gets the status etc... */
-  const closure_tyBM *rp_closv;
-  /* The object containing the buffer for output */
-  objectval_tyBM *rp_bufob;
-};
-
-extern struct processdescr_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
+// Array describing currently running processes.
+extern struct processdescr_stBM running_process_descr_arr_BM[MAXNBWORKJOBS_BM + 1];
 
 /// queued process commands, of nodes (dir, cmd, clos); for processes
 /// which are not yet in the array above...
 extern struct listtop_stBM *pendingrunproc_list_BM;
 
-// lock for the structures above (both onionrunprocarr_BM & pendingrunproc_list_BM)
+// lock for the structures above (both running_process_descr_arr_BM & pendingrunproc_list_BM)
 extern pthread_mutex_t pendingrunproc_mtx_BM;
 
 

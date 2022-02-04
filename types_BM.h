@@ -822,4 +822,30 @@ struct garbcoll_stBM
   double gc_startelapsedtime;
   double gc_startcputime;
 };
+
+
+
+
+////////////////////////////////////////////////////////////////
+//// We could have a few child processes (running GCC compilation
+//// commands, shell commands, shell scripts, indenters, printers,
+//// ....) à la batch(1). Their stdin is /dev/null ...
+//////////////////////////////////////////////////////////////////////////
+/// For process queue running processes; See comment in fundecl_BM.h
+/// about function queue_process_BM, and mutex pendingrunproc_mtx_BM for exclusive access.
+struct processdescr_stBM
+{
+  /* if the process is running its pid, otherwise 0: */
+  pid_t rp_pid;
+  /* if process is running, the file descriptor of its output pipe for its stdout/stderr, read by Bismon: */
+  int rp_outpipe;
+  /* The directory into which the process should be run before fork(2)-ing it: */
+  const stringval_tyBM *rp_dirstrv;
+  /* The node giving the strings (argv for execve(2), first string being the executable...) */
+  const node_tyBM *rp_cmdnodv;
+  /* The closure which, once the process has terminated, gets the status etc... */
+  const closure_tyBM *rp_closv;
+  /* The object containing the buffer for output */
+  objectval_tyBM *rp_bufob;
+};				/* end struct processdescr_stBM */
 #endif /*TYPES_BM_INCLUDED */

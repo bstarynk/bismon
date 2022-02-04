@@ -30,18 +30,18 @@
 #include "evloop_BM.const.h"
 
 //////////////////////////////////////////////////////////////////////////
-/// For process queue running processes; similar to gtkrunprocarr_BM
-/// in newgui_GTKBM.c stuff is added into onionrunprocarr_BM &
-/// pendingrunproc_list_BM by any thread doing queue_process_BM. Stuff is
-/// removed from them only by plain_event_loop_BM which would also
-/// apply the closures.
-struct processdescr_stBM onionrunprocarr_BM[MAXNBWORKJOBS_BM];
+/// An array describing the currently running child processes (e.g. GCC
+/// compilations, printing processes, etc...).  Stuff is removed from
+/// that array only by plain_event_loop_BM which would also apply the
+/// closures.  Related to the queue of pending commands,
+/// pendingrunproc_list_BM and to our queue_process_BM function.
+struct processdescr_stBM running_process_descr_arr_BM[MAXNBWORKJOBS_BM + 1];
 
 /// queued process commands, of nodes (dir, cmd, clos); for processes
 /// which are not yet in the array above... so they are not yet running.
 struct listtop_stBM *pendingrunproc_list_BM;
 
-// lock for the structures above (both onionrunprocarr_BM & pendingrunproc_list_BM)
+// lock for the structures above (both running_process_descr_arr_BM & pendingrunproc_list_BM)
 pthread_mutex_t pendingrunproc_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 
 volatile atomic_bool eventlooprunning_BM;
@@ -378,7 +378,8 @@ handle_sigchld_BM (pid_t pid)
         lock_runproc_mtx_at_BM (__LINE__);
         for (int oix = 0; oix < MAXNBWORKJOBS_BM; oix++)
           {
-            struct processdescr_stBM *runproc = onionrunprocarr_BM + oix;
+            struct processdescr_stBM *runproc =
+              running_process_descr_arr_BM + oix;
             if (!runproc->rp_pid)
               continue;
             nbruncmds++;
@@ -660,7 +661,7 @@ onion_queue_process_BM (const stringval_tyBM * dirstrarg,
     int slotpos = -1;
     for (int ix = 0; ix < nbworkjobs_BM; ix++)
       {
-        if (onionrunprocarr_BM[ix].rp_pid == 0)
+        if (running_process_descr_arr_BM[ix].rp_pid == 0)
           {
             slotpos = ix;
             break;
@@ -785,7 +786,8 @@ fork_process_at_slot_BM (int slotpos,
     }
   else
     {                           // parent process
-      struct processdescr_stBM *onproc = onionrunprocarr_BM + slotpos;
+      struct processdescr_stBM *onproc =
+        running_process_descr_arr_BM + slotpos;
       ASSERT_BM (onproc->rp_pid <= 0 && onproc->rp_outpipe <= 0);
       onproc->rp_pid = pid;
       onproc->rp_outpipe = pipfd[0];
@@ -800,7 +802,7 @@ fork_process_at_slot_BM (int slotpos,
 
 
 /// remember that only plain_event_loop_BM is allowed to *remove*
-/// things from onionrunprocarr_BM or pendingrunproc_list_BM
+/// things from running_process_descr_arr_BM or pendingrunproc_list_BM
 void
 plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called from main)
 //// or directly from main
@@ -837,10 +839,10 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
       {
         lock_runproc_mtx_at_BM (__LINE__);
         for (int j = 0; j < nbworkjobs_BM; j++)
-          if (onionrunprocarr_BM[j].rp_pid > 0
-              && onionrunprocarr_BM[j].rp_outpipe > 0)
+          if (running_process_descr_arr_BM[j].rp_pid > 0
+              && running_process_descr_arr_BM[j].rp_outpipe > 0)
             {
-              pollarr[nbpoll].fd = onionrunprocarr_BM[j].rp_outpipe;
+              pollarr[nbpoll].fd = running_process_descr_arr_BM[j].rp_outpipe;
               pollarr[nbpoll].events = POLL_IN;
               nbpoll++;
             }
@@ -881,10 +883,11 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
                 int curfd = pollarr[ix].fd;
                 while (runix < nbworkjobs_BM)
                   {
-                    if (onionrunprocarr_BM[runix].rp_outpipe == curfd)
+                    if (running_process_descr_arr_BM[runix].rp_outpipe ==
+                        curfd)
                       {
                         struct processdescr_stBM *onproc =
-                          onionrunprocarr_BM + runix;
+                          running_process_descr_arr_BM + runix;
                         runix++;
                         int bytcnt = 0;
                         do
@@ -921,7 +924,8 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
                               {
                                 WARNPRINTF_BM
                                   ("unexpected null byte from process pid#%d command node %s in %s",
-                                   (int) onionrunprocarr_BM[runix].rp_pid,
+                                   (int)
+                                   running_process_descr_arr_BM[runix].rp_pid,
                                    OUTSTRVALUE_BM ((value_tyBM)
                                                    onproc->rp_cmdnodv),
                                    bytstring_BM (onproc->rp_dirstrv) ? :
@@ -991,7 +995,7 @@ gcmarkevloop_BM (struct garbcoll_stBM *gc)
   VALUEGCPROC_BM (gc, pendingrunproc_list_BM, 0);
   for (int oix = 0; oix < MAXNBWORKJOBS_BM; oix++)
     {
-      struct processdescr_stBM *runproc = onionrunprocarr_BM + oix;
+      struct processdescr_stBM *runproc = running_process_descr_arr_BM + oix;
       VALUEGCPROC_BM (gc, runproc->rp_dirstrv, 0);
       VALUEGCPROC_BM (gc, runproc->rp_cmdnodv, 0);
       VALUEGCPROC_BM (gc, runproc->rp_bufob, 0);
