@@ -827,7 +827,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &onion_ssl_certificate_BM,
    .description =
    "Uses FILEPREFIX.pem & FILEPREFIX.key for SSL certificate to libonion\n"
-      "\t web services.  Could be used by GCC plugins",
+   "\t web services.  Could be used by GCC plugins",
    .arg_description = "FILEPREFIX"},
   //
   {.long_name = "web-base",.short_name = (char) 0,
@@ -915,11 +915,11 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &sigusr1_dump_prefix_BM,
    .description =
-      "if given a directory prefix DUMP_PREFIX, every SIGUSR1 signal\n"
-      "\t ...  dumps the state into it.  For\n"
-      "\t ... example --bismon-sigusr1-dump-prefix=/tmp/dumpBM will\n"
-      "\t ...  make the first dump into /tmp/dumpBM1/, then\n"
-      "\t ... the second dump into /tmp/dumpBM2/ etc...\n",
+   "if given a directory prefix DUMP_PREFIX, every SIGUSR1 signal\n"
+   "\t ...  dumps the state into it.  For\n"
+   "\t ... example --bismon-sigusr1-dump-prefix=/tmp/dumpBM will\n"
+   "\t ...  make the first dump into /tmp/dumpBM1/, then\n"
+   "\t ... the second dump into /tmp/dumpBM2/ etc...\n",
    .arg_description = "DUMP_PREFIX"},
   //
   {.long_name = "bismon-add-passwords",.short_name = (char) 0,
@@ -927,8 +927,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &added_passwords_filepath_BM,
    .description =
-      "use the given PASSWORDENTRIES file (if it is -, stdin) containing\n"
-      "\t... lines like <username>:<password> to add passwords",
+   "use the given PASSWORDENTRIES file (if it is -, stdin) containing\n"
+   "\t... lines like <username>:<password> to add passwords",
    .arg_description = "PASSWORDENTRIES"},
   //
   //
@@ -1051,7 +1051,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &print_contributor_of_oid_bm,
    .description =
    "print tab-separated: (full name, objid, email, alias) of contributor\n"
-      "\t ... of given CONTRIBOID then exit,",
+   "\t ... of given CONTRIBOID then exit,",
    .arg_description = "CONTRIBOID"},
 
   ////
@@ -1174,7 +1174,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &onion_anon_web_cookie_BM,
    .description =
    "Create an anonymous web HTTP cookie, and write its cookie in\n"
-      " ... the given COOKIEFILE",
+   " ... the given COOKIEFILE",
    .arg_description = "COOKIEFILE"},
   //
   ///////////// unix-json socket
@@ -1184,7 +1184,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &unix_json_socket_BM,
    .description =
    "Create/uses/listen a unix(7) socket named UNIX_SOCKET on the local\n"
-      "... machine.  Same as --unix-json-socket=UNIX_SOCKET",
+   "... machine.  Same as --unix-json-socket=UNIX_SOCKET",
    .arg_description = "UNIX_SOCKET"},
   /// end of options
   {}
@@ -3182,12 +3182,12 @@ parse_program_options_BM (int argc, char **argv)
             "see github.com/bstarynk/bismon commit %s...\n"
             "WITHOUT WARRANTY, since GPLv3+ licensed.\n"
             "A DRAFT report might be available on starynkevitch.net/Basile/bismon-doc.pdf\n"
-	    "The GCC compiler is on gcc.gnu.org.  Bismon uses GCC plugins.\n"
+            "The GCC compiler is on gcc.gnu.org.  Bismon uses GCC plugins.\n"
             "Signal handling:\n"
             "   * SIGQUIT quit without dumping,\n"
             "   * SIGTERM dump state and stop,\n"
             "   * SIGUSR1 (with --bismon-sigusr1-dump-prefix=DUMP_PREFIX) dump state\n"
-	    "     ... and continue,\n"
+            "     ... and continue,\n"
             "   * SIGUSR2 toggle debugging output.\n"
             " -----\n", bismon_shortgitid);
   g_option_context_set_summary (gctx, summarybuf);
