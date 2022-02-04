@@ -1136,7 +1136,8 @@ objectval_tyBM *add_contributor_name_email_alias_BM
   overwrite_contributor_file_BM (fil, _.assocob, CURFRAME_BM);
   fflush (fil);
   long filen = ftell (fil);
-  ftruncate (fd, filen);
+  if (ftruncate (fd, filen) < 0)
+    FATAL_BM ("failed to ftruncate fd#%d to %ld (%m)", fd, filen);
   usleep (100);
   if (flock (fd, LOCK_UN))
     FATAL_BM ("failed to un-flock fd#%d for %s", fd, rcpath);
@@ -1605,14 +1606,21 @@ valid_password_BM (const char *passwd, char **perrmsg)
   if (!passwd)
     {
       if (perrmsg)
-        asprintf (perrmsg, "nil password");
+        {
+          if (asprintf (perrmsg, "nil password") < 0)
+            FATAL_BM ("failed asprintf / ni:l password");
+        }
       return false;
     }
   if (strlen (passwd) < MINIMAL_PASSWORD_LEN_BM)
     {
       if (perrmsg)
-        asprintf (perrmsg, "too short password, needs at least %d bytes",
-                  MINIMAL_PASSWORD_LEN_BM);
+        {
+          if (asprintf
+              (perrmsg, "too short password, needs at least %d bytes",
+               MINIMAL_PASSWORD_LEN_BM) < 0)
+            FATAL_BM ("failed asprintf / too short password %s", passwd);
+        }
       return false;
     }
   const char *end = NULL;
@@ -1652,32 +1660,46 @@ valid_password_BM (const char *passwd, char **perrmsg)
   if (nbc < MINIMAL_PASSWORD_LEN_BM)
     {
       if (perrmsg)
-        asprintf (perrmsg, "password has less than %d characters",
-                  MINIMAL_PASSWORD_LEN_BM);
+        {
+          if (asprintf (perrmsg, "password has less than %d characters",
+                        MINIMAL_PASSWORD_LEN_BM) < 0)
+            FATAL_BM ("failed asprintf too short password");
+        }
       return false;
     }
   if (nbdigits == 0)
     {
       if (perrmsg)
-        asprintf (perrmsg, "password has no digits");
+        {
+          if (asprintf (perrmsg, "password has no digits") < 0)
+            FATAL_BM ("failed asprintf no digit password");
+        }
       return false;
     }
   if (nbalphas == 0)
     {
       if (perrmsg)
-        asprintf (perrmsg, "password has no letters");
+        {
+          if (asprintf (perrmsg, "password has no letters") < 0)
+            FATAL_BM ("failed asprintf no letter password");
+        }
       return false;
     }
   if (nbpunct == 0)
     {
       if (perrmsg)
-        asprintf (perrmsg, "password has no punctuation");
+        {
+          if (asprintf (perrmsg, "password has no punctuation") < 0)
+            FATAL_BM ("failed asprintf no punctuation password");
+        }
       return false;
     }
   if (perrmsg)
     *perrmsg = NULL;
   return true;
 }                               /* end valid_password_BM */
+
+
 
 bool
 check_contributor_password_BM (objectval_tyBM * contribobarg,
