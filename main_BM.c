@@ -1771,7 +1771,8 @@ main (int argc, char **argv)
         {
           INFOPRINTF_BM
             ("Bismon (pid %d on %s git %s) disabling debug before dump after load to %s",
-             (int) getpid (), myhostname_BM, dump_after_load_dir_bm);
+             (int) getpid (), myhostname_BM, bismon_shortgitid,
+             dump_after_load_dir_bm);
           showdebugmsg_BM = false;
         }
       do_dump_after_load_BM ();
@@ -1802,7 +1803,8 @@ main (int argc, char **argv)
     }
   else if (unix_json_socket_BM && !batch_bm && nbworkjobs_BM > 0)
     {
-      initialize_unix_json_socket_processing_BM (unix_json_socket_BM);
+      initialize_unix_json_socket_processing_BM ((const char *)
+                                                 unix_json_socket_BM);
 #warning should have an event loop for Unix json socket
       FATAL_BM ("should use Unix json socket %s for %d jobs",
                 unix_json_socket_BM, nbworkjobs_BM);
