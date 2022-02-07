@@ -3,7 +3,7 @@
 /// see  https://www.gnu.org/licenses/gpl-3.0.en.html
 /// This data file, §GENERATED_PERSISTENT§ by dump_BM.c in 2022, is GPLv3+ licensed.
 /// In BISMON, see github.com/bstarynk/bismon
-/// for 65 objects
+/// for 66 objects
 
 ///‼ Notice that '«' and '!(' for object opening,
 ///‼… '»' and '!)' for object closing; 'µ' and '!^' for modules,
@@ -387,6 +387,17 @@ _7xqaZG7O86V_5YKNNopvTez
  "for JSON payloads"
 
 »_2gNQ6wSYLGz_9FkMuCIKfmv
+
+
+
+«_68YhfMdHd5l_39sNW1u6duy |=json_rpc_service|
+!~ name (~ json_rpc_service ~)
+± 1644244878.017
+∈ _0LK4TzFd6u1_0JFUsrQ4odG |=class|
+↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
+ "class for JSON RPC service"
+!~ class (~ |supercl object:| _7T9OwSFlgov_0wVJaK1eZbn ~)
+»_68YhfMdHd5l_39sNW1u6duy
 
 
 
