@@ -3057,29 +3057,6 @@ backtrace_print_BM (struct backtrace_state *state, int skip, FILE * f)
 
 ////////////////////////////////////////////////////////////////
 void
-queue_process_BM (const stringval_tyBM * dirstrarg,
-                  const node_tyBM * cmdnodarg,
-                  const closure_tyBM * endclosarg,
-                  struct stackframe_stBM *stkf)
-{
-  extern void
-    onion_queue_process_BM (const stringval_tyBM * dirstrarg,
-                            const node_tyBM * cmdnodarg,
-                            const closure_tyBM * endclosarg,
-                            struct stackframe_stBM *stkf);
-  //
-  if (web_is_running_BM)
-    {
-      onion_queue_process_BM (dirstrarg, cmdnodarg, endclosarg, stkf);
-      return;
-    }
-  /// FIXME: this is probably wrong, queue_process_BM can run with
-  /// event loop...
-#warning queue_process_BM could be wrong
-  FATAL_BM ("queue_process_BM without web ....");
-}                               /* end queue_process_BM */
-
-void
 log_begin_message_BM (void)
 {
   extern void onion_log_begin_message_BM (void);
