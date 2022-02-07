@@ -47,11 +47,6 @@ const char webonion_timestamp_BM[] =
 extern void run_onionweb_BM (int nbjobs);
 static onion *myonion_BM;
 
-extern void
-onion_queue_process_BM (const stringval_tyBM * dirstrarg,
-                        const node_tyBM * cmdnodarg,
-                        const closure_tyBM * endclosarg,
-                        struct stackframe_stBM *stkf);
 
 extern void onion_log_puts_message_BM (const char *msg);
 extern void onion_log_begin_message_BM (void);
