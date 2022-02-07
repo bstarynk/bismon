@@ -747,7 +747,7 @@ struct jsonrpcservicedata_stBM { /* for typayl_jsonrpcservice_BM */
   typedhead_tyBM jsonrpcserv_head;  // rlen is unused
   unsigned jsonrpcserv_magic;       /* always BISMON_JSONRPCSERV_MAGICNUM */
   int jsonrpcserv_sockfd;	    /* listening Unix socket */
-  char* jsonrpcserv_buffer;	    /* incoming bufer, for perhaps partial JSON... */
+  char* jsonrpcserv_buffer;	    /* incoming buffer, for perhaps partial JSON... */
   unsigned jsonrpcserv_sizbuf;	/* allocated buffer size */
   unsigned jsonrpcserv_buflen;	/* used buffer length, always less that buffer size */
   const closure_tyBM *jsonrpcserv_clos;
