@@ -1,5 +1,6 @@
 #!/bin/bash
-# file doc/genscripts/002-gimple-factinline.sh
+#:  SPDX-License-Identifier: GPL-3.0-or-later
+# file doc/genscripts/002-gimple-factinline.sh in BISMON
 # this script is running in doc/ directory and extracts the gimple of examples/factinline12.c
 printf "@@@BISMONDOC starting %s %s cwd %s:\n" "$0" "$*" $(pwd) > /dev/stderr
 
