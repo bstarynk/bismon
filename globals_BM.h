@@ -103,6 +103,9 @@ extern const char *onion_web_base_BM;
 extern const char *onion_anon_web_cookie_BM;
 /*****************************************************************/
 
+/// onion threads are related to the ONION web server infrastructure.
+/// See function custom_onion_handler_BM used in function
+/// initialize_onionweb_BM, in file web_ONIONBM.c ....
 struct onionstackinfo_stBM
 {
   pthread_t ost_thread;
