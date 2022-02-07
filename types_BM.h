@@ -3,7 +3,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -68,6 +68,8 @@ enum gctyenum_BM
   /// for webonion
   typayl_websession_BM,
   typayl_webexchange_BM,
+  // for JSONRPC service client socket
+  typayl_jsonrpcservice_BM,
   ///
   typayl_jansjson_BM,
   typayl_user_BM,
@@ -252,7 +254,7 @@ struct hashsetval_stBM          /* typayl_hashsetval_BM */
   struct hashsetvbucket_stBM *hashval_vbuckets[];
 };
 
-struct hashsetvbucket_stBM      /* typal_hashsetvbucket_BM */
+struct hashsetvbucket_stBM      /* typayl_hashsetvbucket_BM */
 {
   typedsize_tyBM pa;            // rlen is allocated size, size is used count
   value_tyBM vbuck_arr[];
@@ -275,7 +277,7 @@ struct hashmapentry_stBM
   value_tyBM hmap_valv;
 };                              /* end struct hashmapentry_stBM */
 
-struct hashmapbucket_stBM       /* typal_hashmapbucket_BM */
+struct hashmapbucket_stBM       /* typayl_hashmapbucket_BM */
 {
   typedsize_tyBM pa;            // rlen is allocated size, size is used count
   struct hashmapentry_stBM vbent_arr[];
@@ -734,6 +736,24 @@ struct decayedvectpayl_stBM     // for typayl_decayed_BM, see file sequence_BM.c
 #define DECAYEDVECTOR_ASIZ_bm(Dvec)   ((typedhead_tyBM*)(Dvec))->rlen
 // used count:
 #define DECAYEDVECTOR_UCNT_bm(Dvec)   ((typedsize_tyBM*)(Dvec))->size
+
+
+
+////////////////////////////////////////////////////////////////
+////// JsonRpc Unix Socket related payload
+
+#define BISMON_JSONRPCSERV_MAGICNUM 652590229 /*0x26e5bc95 */
+struct jsonrpcservicedata_stBM { /* for typayl_jsonrpcservice_BM */
+  typedhead_tyBM jsonrpcserv_head;  // rlen is unused
+  unsigned jsonrpcserv_magic;       /* always BISMON_JSONRPCSERV_MAGICNUM */
+  int jsonrpcserv_sockfd;	    /* listening Unix socket */
+  char* jsonrpcserv_buffer;	    /* incoming bufer, for perhaps partial JSON... */
+  unsigned jsonrpcserv_sizbuf;	/* allocated buffer size */
+  unsigned jsonrpcserv_buflen;	/* used buffer length, always less that buffer size */
+  const closure_tyBM *jsonrpcserv_clos;
+  value_tyBM jsonrpcserv_mainval;
+  value_tyBM jsonrpcserv_xtraval;
+};
 
 
 

@@ -54,7 +54,15 @@ pthread_cond_t onionstack_condchange_BM = PTHREAD_COND_INITIALIZER;
 struct onionstackinfo_stBM onionstackinfo_BM[MAXNBWORKJOBS_BM + 1];
 thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
 
+
+
+/// a mutex protecting the JSONRPC services...
+pthread_mutex_t unix_json_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 int master_unix_json_socket_fd_BM = -1;
+volatile atomic_int nb_slave_json_sockets_BM;   /// actual number of slave JSON sockets
+/// each active socket has an object of payload
+/// jsonrpcservicedata_stBM.
+objectval_tyBM *unix_json_procobarr[MAXNBWORKJOBS_BM + 2];
 
 void handle_master_unix_json_connection_BM (struct stackframe_stBM *);
 
@@ -598,10 +606,10 @@ add_postponetimer_command_onion_BM (void)
 // to run endclosv is the closure getting the status
 // stringoutput, could fail
 void
-onion_queue_process_BM (const stringval_tyBM * dirstrarg,
-                        const node_tyBM * cmdnodarg,
-                        const closure_tyBM * endclosarg,
-                        struct stackframe_stBM *stkf)
+queue_process_BM (const stringval_tyBM * dirstrarg,
+                  const node_tyBM * cmdnodarg,
+                  const closure_tyBM * endclosarg,
+                  struct stackframe_stBM *stkf)
 {
   objectval_tyBM *k_queue_process = BMK_8DQ4VQ1FTfe_5oijDYr52Pb;
   //objectval_tyBM *k_sbuf_object = BMK_77xbaw1emfK_1nhE4tp0bF3;
