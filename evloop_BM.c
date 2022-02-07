@@ -817,7 +817,8 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
 {
   //  objectval_tyBM *k_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * bufob;);
+                 objectval_tyBM * bufob;
+                 objectval_tyBM * curjsob;);
   atomic_init (&eventlooprunning_BM, true);
 
   DBGBACKTRACEPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",  //
@@ -862,8 +863,25 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
           pollarr[nbpoll].events = POLL_IN;
           masterixjs = nbpoll;
           nbpoll++;
-        }
+        };
 #warning accepted unix json sockets should be polled
+      {
+        pthread_mutex_lock (&unix_json_mtx_BM);
+        int nbjs = atomic_load (&nb_slave_json_sockets_BM);
+        if (nbjs > 0)
+          {
+            ASSERT_BM (nbjs <= MAXNBWORKJOBS_BM);
+            for (int jsix = 0; jsix < nbjs; jsix++)
+              {
+                _.curjsob = unix_json_procobarr[jsix];
+                ASSERT_BM (_.curjsob != NULL);
+#warning should use the payload of curjsob, it should be a valid struct jsonrpcservicedata_stBM
+                FATAL_BM ("unimplemented accepted unix json sockets nbjs=%d",
+                          nbjs);
+              }
+          };
+        pthread_mutex_unlock (&unix_json_mtx_BM);
+      }
       //////////// POLLING BELOW
 #define POLL_DELAY_MILLISECS_BM 3750
       if (loopcnt % 4 == 0)
@@ -1011,6 +1029,19 @@ handle_master_unix_json_connection_BM (struct stackframe_stBM *stkf)
                 acceptedfd, us.un_sockaddr.sun_path);
   if (acceptedfd > 0)
     {
+      int nbs = atomic_fetch_add (&nb_slave_json_sockets_BM, 1);
+      if (nbs >= MAXNBWORKJOBS_BM || nbs >= nbworkjobs_BM + 1)
+        {
+          atomic_fetch_add (&nbworkjobs_BM, -1);
+          WARNPRINTF_BM
+            ("too many %d slave JSON connections on masterfd#%d %s (Bismon pid %d on %s)",
+             nbs, master_unix_json_socket_fd_BM, us.un_sockaddr.sun_path,
+             (int) getpid (), myhostname_BM);
+          close (acceptedfd);
+          fflush (NULL);
+          usleep (1000);
+          return;
+        }
     /***
      * TODO: we need to maintain a small array of accepted unix json
      * sockets.... and in each of them, some object with a string
