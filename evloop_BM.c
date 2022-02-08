@@ -875,7 +875,16 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
               {
                 _.curjsob = unix_json_procobarr[jsix];
                 ASSERT_BM (_.curjsob != NULL);
+                objlock_BM (_.curjsob);
+                extendedval_tyBM curjspayl = objpayload_BM (_.curjsob);
+                if (valtype_BM (curjspayl) == typayl_jsonrpcservice_BM)
+                  {
+                    struct jsonrpcservicedata_stBM *jsonrpcpayl = curjspayl;
+                    ASSERT_BM (jsonrpcpayl->jsonrpcserv_magic ==
+                               BISMON_JSONRPCSERV_MAGICNUM);
+                  }
 #warning should use the payload of curjsob, it should be a valid struct jsonrpcservicedata_stBM
+                objunlock_BM (_.curjsob);
                 FATAL_BM ("unimplemented accepted unix json sockets nbjs=%d",
                           nbjs);
               }
