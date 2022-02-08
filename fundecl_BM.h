@@ -1479,6 +1479,8 @@ extern "C"
                                                    *stkf);
 // request some GC in the future
   extern void request_delayed_garbage_collection_BM (void);
+  // some GC has been requested but not yet done....
+  extern bool wanting_garbage_collection_BM (void);
 // names
   extern void initialize_predefined_names_BM (void);
   extern bool validname_BM (const char *nam);

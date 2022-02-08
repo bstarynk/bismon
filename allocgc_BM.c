@@ -63,12 +63,16 @@ request_delayed_garbage_collection_BM (void)
   // this should be the only place where want_garbage_collection_BM
   // becomes true
   atomic_store (&want_garbage_collection_BM, true);     // request delayed GC
-  if (web_is_running_BM)
-    {
-      add_rungarbcoll_command_BM ();
-    }
+  add_rungarbcoll_command_BM ();
   agenda_notify_BM ();
 }                               /* end request_delayed_garbage_collection_BM */
+
+
+bool
+wanting_garbage_collection_BM (void)
+{
+  return atomic_load (&want_garbage_collection_BM);
+}                               /* end garbage_collection_is_wanted_BM */
 
 void *
 allocgcty_BM (unsigned type, size_t sz)

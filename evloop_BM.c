@@ -1051,7 +1051,7 @@ handle_master_unix_json_connection_BM (struct stackframe_stBM *stkf)
       FATAL_BM
         ("incomplete handle_master_unix_json_connection_BM for acceptedfd#%d sockaddr '%s'",
          acceptedfd, us.un_sockaddr.sun_path);
-      pthread_mutex_lock(&unix_json_mtx_BM);
+      pthread_mutex_lock (&unix_json_mtx_BM);
       /***
        * TODO: create a transient object $JSOB of class
        * €_68YhfMdHd5l_39sNW1u6duy, the predefined json_rps_service.
@@ -1061,7 +1061,7 @@ handle_master_unix_json_connection_BM (struct stackframe_stBM *stkf)
        * and whose jsonrpcserv_sockfd should be the acceptedfd ....
        * That $JSOB should be added to unix_json_procobarr
        ****/
-      pthread_mutex_unlock(&unix_json_mtx_BM);
+      pthread_mutex_unlock (&unix_json_mtx_BM);
     }
 }                               /* end handle_master_unix_json_connection_BM */
 
