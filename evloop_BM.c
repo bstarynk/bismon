@@ -864,8 +864,8 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
           masterixjs = nbpoll;
           nbpoll++;
         };
-#warning accepted unix json sockets should be polled
       {
+        int firstjsonix = nbpoll;
         pthread_mutex_lock (&unix_json_mtx_BM);
         int nbjs = atomic_load (&nb_slave_json_sockets_BM);
         if (nbjs > 0)
@@ -882,16 +882,32 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
                     struct jsonrpcservicedata_stBM *jsonrpcpayl = curjspayl;
                     ASSERT_BM (jsonrpcpayl->jsonrpcserv_magic ==
                                BISMON_JSONRPCSERV_MAGICNUM);
+                    ASSERT_BM (nbpoll <
+                               sizeof (pollarr) / sizeof (pollarr[0]));
+                    if (!jsonrpcpayl->jsonrpcserv_buffer)
+                      {
+                        const int initsiz = 360;
+                        jsonrpcpayl->jsonrpcserv_buffer = calloc (initsiz, 1);
+                        if (!jsonrpcpayl->jsonrpcserv_buffer)
+                          FATAL_BM
+                            ("plain_event_loop_BM fails to allocate jsonrpcserv_buffer of %d bytes (%m)",
+                             initsiz);
+                        jsonrpcpayl->jsonrpcserv_sizbuf = (unsigned) initsiz;
+                        jsonrpcpayl->jsonrpcserv_buflen = 0;
+                      };
+                    pollarr[nbpoll].fd = jsonrpcpayl->jsonrpcserv_sockfd;
+                    pollarr[nbpoll].events = POLL_IN;
+                    nbpoll++;
                   }
-#warning should use the payload of curjsob, it should be a valid struct jsonrpcservicedata_stBM
                 objunlock_BM (_.curjsob);
-                FATAL_BM ("unimplemented accepted unix json sockets nbjs=%d",
-                          nbjs);
               }
           };
         pthread_mutex_unlock (&unix_json_mtx_BM);
       }
       //////////// POLLING BELOW
+      if (nbpoll >= sizeof (pollarr) / sizeof (pollarr[0]))
+        FATAL_BM ("too many %d file descriptors to poll loop#%ld", nbpoll,
+                  loopcnt);
 #define POLL_DELAY_MILLISECS_BM 3750
       if (loopcnt % 4 == 0)
         DBGPRINTF_BM
