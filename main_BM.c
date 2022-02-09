@@ -212,8 +212,12 @@ int count_removed_contributors_bm;
 int size_removed_contributors_bm;
 
 #define MAXPARSED_VALUES_AFTER_LOAD_BM 10
-char *parsed_values_after_loadarr_bm[MAXPARSED_VALUES_AFTER_LOAD_BM];
+char *parsed_values_after_loadarr_bm[MAXPARSED_VALUES_AFTER_LOAD_BM + 1];
 int nb_parsed_values_after_load_bm;
+
+#define MAXPARSED_FILES_AFTER_LOAD_BM 30
+char *parsed_files_after_loadarr_bm[MAXPARSED_FILES_AFTER_LOAD_BM + 1];
+int nb_parsed_files_after_load_bm;
 
 #define MAXTESTPLUGINS_AFTER_LOAD_BM 10
 char *testplugins_after_loadarr_bm[MAXTESTPLUGINS_AFTER_LOAD_BM];
@@ -426,6 +430,23 @@ get_parse_value_after_load_bm (const gchar * optname __attribute__((unused)),
   parsed_values_after_loadarr_bm[nb_parsed_values_after_load_bm++] =
     strdup (val);
 }                               /* end get_parse_value_after_load_bm */
+
+
+static void
+get_parse_file_after_load_bm (const gchar * optname __attribute__((unused)),
+                              const gchar * val,
+                              gpointer data __attribute__((unused)),
+                              GError ** perr __attribute__((unused)))
+{
+  if (nb_parsed_files_after_load_bm >= MAXPARSED_FILES_AFTER_LOAD_BM)
+    FATAL_BM ("too many %d parsed values after load with --parse-file",
+              nb_parsed_files_after_load_bm);
+  if (access ((const char *) val, R_OK))
+    FATAL_BM ("cannot access file %s to be parsed (%m)", val);
+  NONPRINTF_BM ("get_parse_file_after_load #%d.. valen=%d:\n%s",
+                nb_parsed_files_after_load_bm, (int) strlen (val), val);
+  parsed_files_after_loadarr_bm[nb_parsed_files_after_load_bm++] = val;
+}                               /* end get_parse_file_after_load_bm */
 
 
 
@@ -671,6 +692,14 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &get_parse_value_after_load_bm,
    .description = "parse (after loading) the value EXPR",
    .arg_description = "EXPR"},
+
+  //
+  {.long_name = "parse-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &get_parse_file_after_load_bm,
+   .description = "parse file (after loading) the file FILENAME",
+   .arg_description = "FILENAME"},
 
   //
   {.long_name = "test-plugin",.short_name = (char) 0,
@@ -1006,6 +1035,13 @@ const GOptionEntry optionstab_bm[] = {
    .arg_data = &get_parse_value_after_load_bm,
    .description = "parse (after loading) the value EXPR",
    .arg_description = "EXPR"},
+  //
+  {.long_name = "bismon-parse-file",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_CALLBACK,
+   .arg_data = &get_parse_file_after_load_bm,
+   .description = "parse file (after loading) the file FILENAME",
+   .arg_description = "FILENAME"},
 
   //
   {.long_name = "bismon-test-plugin",.short_name = (char) 0,
@@ -1752,6 +1788,8 @@ main (int argc, char **argv)
   DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
+  if (nb_parsed_files_after_load_bm > 0)
+    parse_files_after_load_BM ();
   if (nb_parsed_values_after_load_bm > 0)
     parse_values_after_load_BM ();
   if (nb_testplugins_after_load_bm > 0)
@@ -2250,6 +2288,43 @@ parse_values_after_load_BM (void)
   INFOPRINTF_BM ("done parsing %d values after load\n",
                  nb_parsed_values_after_load_bm);
 }                               /* end parse_values_after_load_BM */
+
+
+////////////////
+void
+parse_file_after_load_BM (const char *filepath)
+{
+  LOCALFRAME_BM ( /*prev stackf: */ NULL,       //
+                 /*descr: */ NULL,
+                 objectval_tyBM * parsob;
+                 value_tyBM parsedval;
+    );
+  FILE *pfil = fopen (filepath, "r");
+  if (!pfil)
+    FATAL_BM ("cannot fopen file to parse %s (%m)", filepath);
+  _.parsob = makeobj_BM ();
+  struct parser_stBM *pars = makeparser_of_file_BM (pfil, filepath, _.parsob);
+  int parsvalcnt = 0;
+  bool gotval = false;
+  do
+    {
+      gotval = false;
+      _.parsedval = parsergetvalue_BM (pars, CURFRAME_BM, 0, &gotval);
+      if (gotval)
+        {
+          parsvalcnt++;
+          INFOPRINTF_BM ("parsed value#%d from %s is:\n%s\n", parsvalcnt,
+                         filepath, debug_outstr_value_BM (_.parsedval,
+                                                          CURFRAME_BM, 0));
+        }
+      fflush (NULL);
+    }
+  while (gotval);
+  fclose (pfil);
+  objclearpayload_BM (_.parsob);
+  INFOPRINTF_BM ("done parsing %d values from %s after load\n",
+                 parsvalcnt, filepath);
+}                               /* end parse_file_after_load_BM */
 
 void
 run_testplugins_after_load_BM (void)
