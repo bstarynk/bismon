@@ -965,7 +965,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                  };
     );
   _.ldparsownob = makeobj_BM ();
-  struct parser_stBM *ldpars = makeparser_of_file_BM (fil, _.ldparsownob);
+  struct parser_stBM *ldpars
+    = makeparser_of_file_BM (fil, curldpath, _.ldparsownob);
   ASSERT_BM (ldpars != NULL);
   ld->ld_parsarr[ix] = ldpars;
   ldpars->pars_path = ld->ld_storepatharr[ix];

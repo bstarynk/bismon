@@ -61,7 +61,7 @@ delimstr_BM (enum lexdelim_enBM d)
 
 
 struct parser_stBM *
-makeparser_of_file_BM (FILE * f, objectval_tyBM * ownob)
+makeparser_of_file_BM (FILE * f, const char *path, objectval_tyBM * ownob)
 {
   if (!f)
     return NULL;
@@ -73,7 +73,7 @@ makeparser_of_file_BM (FILE * f, objectval_tyBM * ownob)
   pars->pars_debug = false;
   pars->pars_filemem = NULL;
   pars->pars_filesize = 0;
-  pars->pars_path = "";
+  pars->pars_path = path ? path : "?";
   pars->pars_ownob = ownob;
   unsigned inilinsiz = 256;
   char *linebuf = calloc (1, inilinsiz);
@@ -121,7 +121,7 @@ makeparser_memopen_BM (const char *filemem, long size, objectval_tyBM * ownob)
   FILE *fil = fmemopen ((void *) filemem, size, "r");
   if (!fil)
     FATAL_BM ("fmemopen failed (%m)");
-  struct parser_stBM *pars = makeparser_of_file_BM (fil, ownob);
+  struct parser_stBM *pars = makeparser_of_file_BM (fil, filemem, ownob);
   pars->pars_filemem = filemem;
   pars->pars_filesize = size;
   return pars;

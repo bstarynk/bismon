@@ -1386,6 +1386,7 @@ extern "C"
   extern const char *delimstr_BM (enum lexdelim_enBM d);
 
   extern struct parser_stBM *makeparser_of_file_BM (FILE * f,
+						    const char* path,
                                                     objectval_tyBM * owner);
   extern struct parser_stBM *makeparser_memopen_BM (const char *filemem,
                                                     long size,
