@@ -551,22 +551,32 @@ add_rungarbcoll_command_BM (void)
   DBGBACKTRACEPRINTF_BM ("add_rungarbcoll_command_BM");
   buf[0] = cmdcod_rungc_bm;     /* 'G' */
   int count = 0;
-  while (count < 256)
-    {                           /* this loop usually runs once */
-      int nbw = write (cmdpipe_wr_BM, buf, 1);
-      if (nbw < 0 && errno == EINTR)
-        continue;
-      if (nbw < 0 && errno == EWOULDBLOCK)
-        {
-          usleep (2000);
-          continue;
-        };
-      if (nbw == 1)
-        return;
-      FATAL_BM ("add_rungarbcoll_command_BM nbw %d - %s", nbw,
-                (nbw < 0) ? strerror (errno) : "--");
+  if (cmdpipe_wr_BM > 0)
+    {
+      while (count < 256)
+        {                       /* this loop usually runs once */
+          int nbw = write (cmdpipe_wr_BM, buf, 1);
+          if (nbw < 0 && errno == EINTR)
+            continue;
+          if (nbw < 0 && errno == EWOULDBLOCK)
+            {
+              usleep (2000);
+              continue;
+            };
+          if (nbw == 1)
+            return;
+          FATAL_BM ("add_rungarbcoll_command_BM nbw %d - %s", nbw,
+                    (nbw < 0) ? strerror (errno) : "--");
+        }
     }
-  FATAL_BM ("add_rungarbcoll_command_BM failed");
+  else
+    {
+      WARNPRINTF_BM ("add_rungarbcoll_command_BM no cmdpipe");
+      backtrace_print_BM ((struct backtrace_state *)
+                          backtracestate_BM, 0, stderr);
+      fflush (stderr);
+      request_delayed_garbage_collection_BM ();
+    }
 }                               /* end add_rungarbcoll_command_BM */
 
 
