@@ -59,11 +59,12 @@ initialize_garbage_collector_BM (void)
 void
 request_delayed_garbage_collection_BM (void)
 {
-  extern void add_rungarbcoll_command_onion_BM ();
   // this should be the only place where want_garbage_collection_BM
   // becomes true
+  bool gcwaswanted = atomic_load (&want_garbage_collection_BM);
   atomic_store (&want_garbage_collection_BM, true);     // request delayed GC
-  add_rungarbcoll_command_BM ();
+  if (!gcwaswanted)
+    add_rungarbcoll_command_BM ();
   agenda_notify_BM ();
 }                               /* end request_delayed_garbage_collection_BM */
 
