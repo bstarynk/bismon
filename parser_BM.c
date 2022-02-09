@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -1478,12 +1478,16 @@ parsergetvalue_BM (struct parser_stBM *pars,
     (prevstkf, NULL,            //
      value_tyBM resval;
      value_tyBM macroval;
-     objectval_tyBM * connobj; objectval_tyBM * parsob; union
-     {
-     objectval_tyBM * elemobj;
-     objectval_tyBM * compobj;
-     value_tyBM sonval;};
-     objectval_tyBM * vecobj; value_tyBM tinyargsarr[TINYARGSNUM_BM]);
+     objectval_tyBM * connobj;  //
+     objectval_tyBM * parsob;   //
+     union
+     {                          //
+     objectval_tyBM * elemobj;  //
+     objectval_tyBM * compobj;  //
+     value_tyBM sonval;         //
+     };                         //
+     objectval_tyBM * vecobj;   //
+     value_tyBM tinyargsarr[TINYARGSNUM_BM]);   /* end localframe of parsergetvalue_BM */
   _.parsob = checkedparserowner_BM (pars);
   parserskipspaces_BM (pars, CURFRAME_BM);
   unsigned lineno = parserlineno_BM (pars);
