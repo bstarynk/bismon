@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-## the Bsmon GNUmakefile - for GNU make 4
+## the Bismon GNUmakefile - for GNU make 4
 ## SPDX-License-Identifier: GPL-3.0-or-later
 ## GPLv3+ licensed, from http://github.com/bstarynk/bismon
 # 
@@ -97,7 +97,7 @@ BISMON_SHGIT2:= $(shell if git status | grep -q 'nothing to commit'; then echo; 
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config count executable clean distclean runconfig objects indent redump
+.PHONY: all config lib count executable clean distclean runconfig objects indent redump
 
 .DEFAULTS: all
 
@@ -130,10 +130,15 @@ endif
 clean:
 	$(RM) *.o BISMON-config bismon   modubin/*.so modubin/*.o *~ *% *.cc.orig
 	$(RM) gccplugins/*.so gccplugins/*~ gccplugins/*%
+	$(RM) libbismonclient/*.o  libbismonclient/*~  libbismonclient/*%
+	$(RM) libbismonclient/*.so
 
 distclean: clean
 	$(RM) *.mkd
 	$(RM) *.const.h
+
+lib: __timestamp.c
+	$(MAKE) -C libbismonclient lib
 
 _bismon-config.mk:
 	@echo you should run the Configure script in $(pwd) for $@ > /dev/stderr
