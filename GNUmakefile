@@ -137,8 +137,9 @@ distclean: clean
 	$(RM) *.mkd
 	$(RM) *.const.h
 
-lib: __timestamp.c
-	$(MAKE) -C libbismonclient lib
+lib: __timestamp.c | libbismonclient/GNUMakefile
+	@echo target lib in bismon
+	cd libbismonclient && $(MAKE) lib
 
 _bismon-config.mk:
 	@echo you should run the Configure script in $(pwd) for $@ > /dev/stderr

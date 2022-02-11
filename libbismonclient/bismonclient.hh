@@ -4,7 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /**
     BISMON 
-    Copyright ©2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch.
 
     This program is free software: you can redistribute it and/or modify
@@ -29,5 +29,8 @@
 #define _GNU_SOURCE
 #endif
 
+#include <set>
+#include <map>
+#include <chrono>
 
 #endif /*BISMONCLIENT_INCLUDED*/
