@@ -1,6 +1,5 @@
-// file bismonclient.hh
-#ifndef BISMONCLIENT_INCLUDED
-#define BISMONCLIENT_INCLUDED
+// file libbismonclient/jsonrpc_BMCL.cc in BISMON
+
 // SPDX-License-Identifier: GPL-3.0-or-later
 /**
     BISMON 
@@ -25,29 +24,13 @@
     basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 **/
 
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
+#include "bismonclient.hh"
 
-#include <set>
-#include <map>
-#include <chrono>
-
-#include "jsoncpp/json/json.h"
-
-class BMC_request {
-  std::string req_path;
-  Json::Value req_json;
-protected:
-  BMC_request(const std::string& path, const Json::Value &json);
-public:
-  virtual ~BMC_request(void);
-};				// end class BMC_request
+BMC_jsonrpc_request::BMC_jsonrpc_request(const std::string& path, const Json::Value &json)
+  : BMC_request::BMC_request(path, json) {
+} // end constructor BMC_jsonrpc_request::BMC_jsonrpc_request
 
 
-class BMC_jsonrpc_request : public BMC_request {
-protected:
-  BMC_jsonrpc_request(const std::string& path, const Json::Value &json);
-  virtual ~BMC_jsonrpc_request();
-};				// end class  BMC_jsonrpc_request
-#endif /*BISMONCLIENT_INCLUDED*/
+BMC_jsonrpc_request::~BMC_jsonrpc_request()
+{
+} // end destructor BMC_jsonrpc_request::~BMC_jsonrpc_request

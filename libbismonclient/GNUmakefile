@@ -43,7 +43,7 @@ BISMON_SHGIT2:= $(shell if git status | grep -q 'nothing to commit'; then echo; 
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
 CXXFLAGS= -O -g -fPIC -Wall -Wextra -std=gnu++11 -DBISMONCL_GITID=\"$(BISMON_SHORT_GIT)\"
-CFLAGS= -O -g  -fPIC -Wall -Wextra  -Wmissing-prototypes -std=gnu11
+CFLAGS= -O -g  -fPIC -Wall -Wextra  -Wmissing-prototypes -std=gnu11 -DBISMONCL_GITID=\"$(BISMON_SHORT_GIT)\"
 ## The short git id, such as 34ae25e8127fc354 (for a clean source)
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 
@@ -60,8 +60,12 @@ lib:
 	$(MAKE) libbismonclient.so
 
 libbismonclient.so: $(BMCL_OBJECTS)
-	$(CXX) -shared -o $@ $< -ljsoncpp
+	$(CXX) -shared -o $@ $(BMCL_OBJECTS) -ljsoncpp
 
-__timestamp.o: ../timestamp.c
+__timestamp.o: ../__timestamp.c
+	$(CC) $(CFLAGS) -c -o $@ $^
 
-%.o: %.cc
+../__timestamp.c:
+	$(MAKE) -C .. __timestamp.c
+
+
