@@ -483,6 +483,8 @@ Use it (as `stopbismon`) your own risk, if `$HOME/bismon` contains Bismon source
 # script stopbismon
 if [ -f $HOME/bismon/_bismon.pid ]; then
    kill -TERM $(/bin/head -1  $HOME/bismon/_bismon.pid)
+else
+   pkill bismon
 fi	
 ```
 
