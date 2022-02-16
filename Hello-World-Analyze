@@ -127,6 +127,12 @@ fi
 printf "\n\n\n ==== %s: starting Bismon ======\n\n" "$0"
 echo '#° ./bismon' $bismon_hello_args
 
+export BISMON_PID=$$
+
+trap "echo $0 terminating Bismon $BISMON_PID; kill -TERM $BISMON_PID" TERM
+trap "echo $0 quitting Bismon $BISMON_PID; kill -QUIT $BISMON_PID" QUIT
+trap "echo $0 interrupting Bismon $BISMON_PID; kill -INT $BISMON_PID" INT
+
 ### perhaps we should use the coproc Bash keyword?
 ### See https://www.gnu.org/software/bash/manual/html_node/Coprocesses.html
 ## 
@@ -144,10 +150,6 @@ if [ ! -d /proc/$BISMON_PID ]; then
     printf "%s: Bismon pid %d died ****\n" $0 $BISMON_PID >& /dev/stderr
     exit 1
 fi
-
-trap "echo $0 terminating Bismon $BISMON_PID; kill -TERM $BISMON_PID" TERM
-trap "echo $0 quitting Bismon $BISMON_PID; kill -QUIT $BISMON_PID" QUIT
-trap "echo $0 interrupting Bismon $BISMON_PID; kill -INT $BISMON_PID" INT
 
 ### on some Debian, there is a bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=980609
 pushd gccplugins
