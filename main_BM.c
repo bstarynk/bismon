@@ -1840,15 +1840,15 @@ main (int argc, char **argv)
           }
           run_onionweb_BM (nbworkjobs_BM);
         }
-    }
-  else if (unix_json_socket_BM && !batch_bm && nbworkjobs_BM > 0)
+    };
+  if (unix_json_socket_BM && nbworkjobs_BM > 0)
     {
       initialize_unix_json_socket_processing_BM ((const char *)
                                                  unix_json_socket_BM);
 #warning should have an event loop for Unix json socket
       FATAL_BM ("should use Unix json socket %s for %d jobs",
                 unix_json_socket_BM, nbworkjobs_BM);
-    }
+    };
   ///
   DBGPRINTF_BM
     ("main before stop_event_loop_BM run_onion_BM %s, unix_json_socket_BM=%s",
@@ -3290,6 +3290,13 @@ parse_program_options_BM (int argc, char **argv)
          argv[0], onion_web_base_BM, (int) getpid (), (int) getppid (),
          myhostname_BM);
       run_onion_BM = true;
+    };
+  if (unix_json_socket_BM)
+    {
+      INFOPRINTF_BM
+        ("%s: should serve UNIX socket %s for JSONRPC (pid #%d, host %s, git %s)",
+         argv[0], unix_json_socket_BM, (int) getpid (), myhostname_BM,
+         bismon_shortgitid);
     };
   ///
   DBGPRINTF_BM ("end parse_program_options_BM, argc wad %d now %d",
