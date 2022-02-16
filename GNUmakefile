@@ -261,4 +261,5 @@ indent:
 	/bin/bash -cx 'for csrcfile in  $(BM_C_SOURCES) ; do /bin/ls -l $$csrcfile ; $(INDENT) $(INDENTFLAGS) $$csrcfile ; done'
 	/bin/bash -cx 'for cppsrcfile in $(BM_CXX_SOURCES) ; do /bin/ls -l $$cppsrcfile ; $(ASTYLE) $(ASTYLEFLAGS) $$cppsrcfile ; done'
 	/bin/bash -cx 'for plusrcfile in gccplugins/*.{cc,hh} ; do /bin/ls -l $$plusrcfile ; $(ASTYLE) $(ASTYLEFLAGS) $$plusrcfile ; done'
+	cd libbismonclient && $(MAKE) indent
 ##### end of file bismon/GNUmakefile
