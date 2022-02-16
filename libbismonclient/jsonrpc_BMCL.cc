@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: GPL-3.0-or-later
 /**
-    BISMON 
+    BISMON
     Copyright © 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch.
 
@@ -27,10 +27,18 @@
 #include "bismonclient.hh"
 
 BMC_jsonrpc_request::BMC_jsonrpc_request(const std::string& path, const Json::Value &json)
-  : BMC_request::BMC_request(path, json) {
+  : BMC_request::BMC_request(path, json)
+{
 } // end constructor BMC_jsonrpc_request::BMC_jsonrpc_request
 
 
 BMC_jsonrpc_request::~BMC_jsonrpc_request()
 {
 } // end destructor BMC_jsonrpc_request::~BMC_jsonrpc_request
+
+
+Json::Value
+BMC_jsonrpc_request::do_request()
+{
+  std::lock_guard<std::mutex> gu(req_mtx);
+} // end BMC_jsonrpc_request::run_request
