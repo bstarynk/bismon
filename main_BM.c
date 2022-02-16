@@ -2292,9 +2292,9 @@ parse_values_after_load_BM (void)
 
 ////////////////
 void
-parse_file_after_load_BM (const char *filepath)
+parse_a_file_after_load_BM (const char *filepath, struct stackframe_stBM* fram)
 {
-  LOCALFRAME_BM ( /*prev stackf: */ NULL,       //
+  LOCALFRAME_BM ( /*prev stackf: */ fram,       //
                  /*descr: */ NULL,
                  objectval_tyBM * parsob;
                  value_tyBM parsedval;
@@ -2324,7 +2324,23 @@ parse_file_after_load_BM (const char *filepath)
   objclearpayload_BM (_.parsob);
   INFOPRINTF_BM ("done parsing %d values from %s after load\n",
                  parsvalcnt, filepath);
-}                               /* end parse_file_after_load_BM */
+}                               /* end parse_a_file_after_load_BM */
+
+
+void
+parse_files_after_load_BM(void)
+{
+  
+  LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
+                 value_tyBM filnamv;  //
+    );
+  ASSERT_BM(nb_parsed_files_after_load_bm > 0);
+  if (nb_parsed_files_after_load_bm > MAXPARSED_FILES_AFTER_LOAD_BM)
+    FATAL_BM("too many files (%d) to parse after load", nb_parsed_files_after_load_bm);
+#warning parse_files_after_load_BM unimplemented
+  FATAL_BM("unimplemented parse_files_after_load_BM");
+} /* end parse_files_after_load_BM */
+
 
 void
 run_testplugins_after_load_BM (void)
