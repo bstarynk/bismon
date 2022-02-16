@@ -939,6 +939,7 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
         }
       {
         char pipbuf[1024 + 4];
+        memset (pipbuf, 0, sizeof (pipbuf) / 4);
         lock_runproc_mtx_at_BM (__LINE__);
         int runix = 0;
         for (int ix = pollix__last; ix < nbpoll; ix++)
