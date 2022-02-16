@@ -1841,7 +1841,7 @@ main (int argc, char **argv)
           run_onionweb_BM (nbworkjobs_BM);
         }
     };
-  if (unix_json_socket_BM && nbworkjobs_BM > 0)
+  if (unix_json_socket_BM)
     {
       initialize_unix_json_socket_processing_BM ((const char *)
                                                  unix_json_socket_BM);
