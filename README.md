@@ -474,6 +474,18 @@ This `git` repository also contains, for convenience, the
 [jqueryui](http://jqueryui.com/) 1.12 framework (which has a different
 MIT license) under `webroot/jquery-ui`
 
+#### A shell script to stop Bismon
+
+Use it (as `stopbismon`) your own risk, if `$HOME/bismon` contains Bismon source code and executable:
+
+```
+#!/bin/bash -x
+# script stopbismon
+if [ -f $HOME/bismon/_bismon.pid ]; then
+   kill -TERM $(/bin/head -1  $HOME/bismon/_bismon.pid)
+fi	
+```
+
 #### N.B.
 
 
