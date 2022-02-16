@@ -837,7 +837,7 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
   int masterixjs = -1;
   INFOPRINTF_BM
     ("start loop of plain_event_loop_BM for %s, bismon pid %d git %s host %s\n",
-     onion_web_base_BM, (int) getpid (), bismon_shortgit, myhostname_BM);
+     onion_web_base_BM, (int) getpid (), bismon_shortgitid, myhostname_BM);
   fflush (NULL);
   while (atomic_load (&eventlooprunning_BM))
     {
