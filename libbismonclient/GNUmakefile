@@ -24,7 +24,7 @@
 #   Contact me (Basile Starynkevitch) by email
 #   basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 ######
-.PHONY: lib clean
+.PHONY: lib clean indent
 
 # for GNU make only, see https://www.gnu.org/software/make
 GXX= g++
@@ -48,7 +48,7 @@ CFLAGS= -O -g  -fPIC -Wall -Wextra  -Wmissing-prototypes -std=gnu11 -DBISMONCL_G
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 
 ## CONVENTION: handwritten libbismonclient headers are...
-BMCL_HEADERS= $(wildcard [a-z]*BMCL.hh)
+BMCL_HEADERS= $(wildcard [a-z]*BMCL.hh) bismonclient.hh
 
 
 ## CONVENTION: handwritten C++ files are...
@@ -58,6 +58,11 @@ BMCL_OBJECTS= $(patsubst %.cc,%.o,$(BMCL_CXX_SOURCES)) __timestamp.o
 lib:
 	@echo target lib in libbismonclient CXXFLAGS= $(CXXFLAGS)
 	$(MAKE) libbismonclient.so
+
+indent:
+	@echo indenting libbismonclient
+	for hf in $(BMCL_HEADERS) ; do  $(ASTYLE) $(ASTYLEFLAGS) $$hf ; done
+	for sf in $(BMCL_CXX_SOURCES) ; do  $(ASTYLE) $(ASTYLEFLAGS) $$sf ; done
 
 libbismonclient.so: $(BMCL_OBJECTS)
 	$(CXX) -shared -o $@ $(BMCL_OBJECTS) -ljsoncpp
