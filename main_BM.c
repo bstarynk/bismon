@@ -1792,6 +1792,7 @@ main (int argc, char **argv)
     parse_files_after_load_BM ();
   if (nb_parsed_values_after_load_bm > 0)
     parse_values_after_load_BM ();
+  fflush (NULL);
   if (nb_testplugins_after_load_bm > 0)
     run_testplugins_after_load_BM ();
   if (count_added_contributors_bm > 0)
@@ -1801,6 +1802,7 @@ main (int argc, char **argv)
   fill_the_system_with_bismon_BM (NULL);
   if (module_to_emit_bm != NULL)
     do_emit_module_from_main_BM ();
+  fflush (NULL);
   if (count_init_afterload_bm > 0)
     init_afterload_bm ();
   if (dump_after_load_dir_bm)
@@ -2292,7 +2294,8 @@ parse_values_after_load_BM (void)
 
 ////////////////
 void
-parse_a_file_after_load_BM (const char *filepath, struct stackframe_stBM* fram)
+parse_a_file_after_load_BM (const char *filepath,
+                            struct stackframe_stBM *fram)
 {
   LOCALFRAME_BM ( /*prev stackf: */ fram,       //
                  /*descr: */ NULL,
@@ -2328,18 +2331,29 @@ parse_a_file_after_load_BM (const char *filepath, struct stackframe_stBM* fram)
 
 
 void
-parse_files_after_load_BM(void)
+parse_files_after_load_BM (void)
 {
-  
+
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 value_tyBM filnamv;  //
+                 value_tyBM filnamv;    //
     );
-  ASSERT_BM(nb_parsed_files_after_load_bm > 0);
+  ASSERT_BM (nb_parsed_files_after_load_bm > 0);
+  INFOPRINTF_BM ("before parsing %d files", nb_parsed_files_after_load_bm);
   if (nb_parsed_files_after_load_bm > MAXPARSED_FILES_AFTER_LOAD_BM)
-    FATAL_BM("too many files (%d) to parse after load", nb_parsed_files_after_load_bm);
-#warning parse_files_after_load_BM unimplemented
-  FATAL_BM("unimplemented parse_files_after_load_BM");
-} /* end parse_files_after_load_BM */
+    FATAL_BM ("too many files (%d) to parse after load",
+              nb_parsed_files_after_load_bm);
+  for (int fix = 0; fix < nb_parsed_files_after_load_bm; fix++)
+    {
+      char *curpath = parsed_files_after_loadarr_bm[fix];
+      ASSERT_BM (curpath != NULL);
+      if (access (curpath, R_OK))
+        FATAL_BM ("cannot access file#%d to parse %s (%m)", fix, curpath);
+      parse_a_file_after_load_BM (curpath, &_);
+    }
+  INFOPRINTF_BM ("done parsing %d files (pid %d on %s git %s)\n",
+                 nb_parsed_files_after_load_bm, (int) getpid (),
+                 myhostname_BM, bismon_shortgitid);
+}                               /* end parse_files_after_load_BM */
 
 
 void
