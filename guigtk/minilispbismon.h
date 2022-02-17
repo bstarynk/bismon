@@ -109,7 +109,7 @@ __attribute ((noreturn))
          // Forwarding pointer
          void *moved;
        };
-     } Obj;
+     } Obj;                     // end struct Obj
 
 // Constants
      extern Obj *True;
@@ -149,4 +149,9 @@ __attribute ((noreturn))
 
 // Returns ((x . y) . a)
      extern Obj *acons (void *root, Obj ** x, Obj ** y, Obj ** a);
+
+
+//// reader
+     extern Obj *fread_expr (FILE * fil, void *root);
+
 #endif /*MINILISPBISMON_HEADER */

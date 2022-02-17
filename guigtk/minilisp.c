@@ -140,7 +140,9 @@ alloc (void *root, int type, size_t size)
     gc (root);
 
   // Otherwise, run GC only when the available memory is not large enough, or once every GC_ALLOCATION_PERIOD
-  if (!always_gc && (MEMORY_SIZE < mem_nused + size || allocation_counter % GC_ALLOCATION_PERIOD == 0))
+  if (!always_gc
+      && (MEMORY_SIZE < mem_nused + size
+          || allocation_counter % GC_ALLOCATION_PERIOD == 0))
     gc (root);
 
   // Terminate the program if we couldn't satisfy the memory request. This can happen if the
@@ -378,13 +380,13 @@ acons (void *root, Obj ** x, Obj ** y, Obj ** a)
 #define SYMBOL_MAX_LEN 200
 const char symbol_chars[] = "~!@#$%^&*-_=+:/?<>";
 
-Obj *read_expr (void *root);
+Obj *fread_expr (FILE * f, void *root);
 
 int
-peek (void)
+fpeek (FILE * f)
 {
-  int c = getchar ();
-  ungetc (c, stdin);
+  int c = fgetc (f);
+  ungetc (c, f);
   return c;
 }
 
@@ -405,17 +407,17 @@ reverse (Obj * p)
 
 // Skips the input until newline is found. Newline is one of \r, \r\n or \n.
 void
-skip_line (void)
+skip_line (FILE * f)
 {
   for (;;)
     {
-      int c = getchar ();
+      int c = fgetc (f);
       if (c == EOF || c == '\n')
         return;
       if (c == '\r')
         {
-          if (peek () == '\n')
-            getchar ();
+          if (fpeek (f) == '\n')
+            fgetc (f);
           return;
         }
     }
@@ -423,21 +425,21 @@ skip_line (void)
 
 // Reads a list. Note that '(' has already been read.
 Obj *
-read_list (void *root)
+fread_list (FILE * f, void *root)
 {
   DEFINE3 (obj, head, last);
   *head = Nil;
   for (;;)
     {
-      *obj = read_expr (root);
+      *obj = fread_expr (f, root);
       if (!*obj)
         error ("Unclosed parenthesis");
       if (*obj == Cparen)
         return reverse (*head);
       if (*obj == Dot)
         {
-          *last = read_expr (root);
-          if (read_expr (root) != Cparen)
+          *last = fread_expr (f, root);
+          if (fread_expr (f, root) != Cparen)
             error ("Closed parenthesis expected after dot");
           Obj *ret = reverse (*head);
           (*head)->cdr = *last;
@@ -463,69 +465,69 @@ intern (void *root, char *name)
 
 // Reader marcro ' (single quote). It reads an expression and returns (quote <expr>).
 Obj *
-read_quote (void *root)
+fread_quote (FILE * f, void *root)
 {
   DEFINE2 (sym, tmp);
   *sym = intern (root, "quote");
-  *tmp = read_expr (root);
+  *tmp = fread_expr (f, root);
   *tmp = cons (root, tmp, &Nil);
   *tmp = cons (root, sym, tmp);
   return *tmp;
 }
 
 int
-read_number (int val)
+fread_number (FILE * f, int val)
 {
-  while (isdigit (peek ()))
-    val = val * 10 + (getchar () - '0');
+  while (isdigit (fpeek (f)))
+    val = val * 10 + (fgetc (f) - '0');
   return val;
 }
 
 Obj *
-read_symbol (void *root, char c)
+fread_symbol (FILE * f, void *root, char c)
 {
   char buf[SYMBOL_MAX_LEN + 1];
   buf[0] = c;
   int len = 1;
-  while (isalnum (peek ()) || strchr (symbol_chars, peek ()))
+  while (isalnum (fpeek (f)) || strchr (symbol_chars, fpeek (f)))
     {
       if (SYMBOL_MAX_LEN <= len)
         error ("Symbol name too long");
-      buf[len++] = getchar ();
+      buf[len++] = fgetc (f);
     }
   buf[len] = '\0';
   return intern (root, buf);
 }
 
 Obj *
-read_expr (void *root)
+fread_expr (FILE * f, void *root)
 {
   for (;;)
     {
-      int c = getchar ();
+      int c = fgetc (f);
       if (c == ' ' || c == '\n' || c == '\r' || c == '\t')
         continue;
       if (c == EOF)
         return NULL;
       if (c == ';')
         {
-          skip_line ();
+          skip_line (f);
           continue;
         }
       if (c == '(')
-        return read_list (root);
+        return fread_list (f, root);
       if (c == ')')
         return Cparen;
       if (c == '.')
         return Dot;
       if (c == '\'')
-        return read_quote (root);
+        return fread_quote (f, root);
       if (isdigit (c))
-        return make_int (root, read_number (c - '0'));
-      if (c == '-' && isdigit (peek ()))
-        return make_int (root, -read_number (0));
+        return make_int (root, fread_number (f, c - '0'));
+      if (c == '-' && isdigit (fpeek (f)))
+        return make_int (root, -fread_number (f, 0));
       if (isalpha (c) || strchr (symbol_chars, c))
-        return read_symbol (root, c);
+        return fread_symbol (f, root, c);
       error ("Don't know how to handle %c", c);
     }
 }                               /* end read_expr */
@@ -1101,7 +1103,7 @@ main (int argc, char **argv)
   // The main loop
   for (;;)
     {
-      *expr = read_expr (root);
+      *expr = fread_expr (stdin, root);
       if (!*expr)
         return 0;
       if (*expr == Cparen)
