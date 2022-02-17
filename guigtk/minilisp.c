@@ -107,10 +107,18 @@ roundup (size_t var, size_t size)
   return (var + size - 1) & ~(size - 1);
 }
 
+long allocation_counter;
+
+//// every 1024 allocations force a GC
+#define GC_ALLOCATION_PERIOD 1024
+
 // Allocates memory block. This may start GC if we don't have enough memory.
 Obj *
 alloc (void *root, int type, size_t size)
 {
+
+  allocation_counter++;
+
   // The object must be large enough to contain a pointer for the forwarding pointer. Make it
   // larger if it's smaller than that.
   size = roundup (size, sizeof (void *));
@@ -131,8 +139,8 @@ alloc (void *root, int type, size_t size)
   if (always_gc && !gc_running)
     gc (root);
 
-  // Otherwise, run GC only when the available memory is not large enough.
-  if (!always_gc && MEMORY_SIZE < mem_nused + size)
+  // Otherwise, run GC only when the available memory is not large enough, or once every GC_ALLOCATION_PERIOD
+  if (!always_gc && (MEMORY_SIZE < mem_nused + size || allocation_counter % GC_ALLOCATION_PERIOD == 0))
     gc (root);
 
   // Terminate the program if we couldn't satisfy the memory request. This can happen if the
