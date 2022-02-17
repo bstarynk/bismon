@@ -1,0 +1,5 @@
+For BISMON on https://github.com/bstarynk/bismon/
+
+A graphical user interface for Linux, using GTK and some adaptation of
+the public-domain minilisp interpreter on
+https://github.com/rui314/minilisp/ (commit c83b57126759ef34908a5f259e)
