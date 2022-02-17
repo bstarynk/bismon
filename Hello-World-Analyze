@@ -142,11 +142,11 @@ trap "echo $0 interrupting Bismon $BISMON_PID; kill -INT $BISMON_PID" INT
 ## https://stackoverflow.com/q/69251163/841108
 ./bismon "${bismon_hello_args[@]}" &
 export BISMON_PID=$!
-
-sleep 1.8
+sleep 0.8
 
 printf "\n%s: Bismon pid is %s\n" $0 $BISMON_PID
 
+sleep 1.2
 if [ ! -d /proc/$BISMON_PID ]; then
     printf "%s: Bismon pid %d died ****\n" $0 $BISMON_PID >& /dev/stderr
     exit 1
