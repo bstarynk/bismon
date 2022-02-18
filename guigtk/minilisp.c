@@ -124,7 +124,7 @@ alloc (void *root, int type, size_t size)
   size = roundup (size, sizeof (void *));
 
   // Add the size of the type tag and size fields.
-  size += offsetof (Obj, value);
+  size += offsetof (Obj, lvalue);
 
   // Round up the object size to the nearest alignment boundary, so that the next object will be
   // allocated at the proper alignment boundary. Currently we align the object at the same
@@ -281,10 +281,10 @@ gc (void *root)
 //======================================================================
 
 Obj *
-make_int (void *root, int value)
+make_int (void *root, long lval)
 {
-  Obj *r = alloc (root, TINT, sizeof (int));
-  r->value = value;
+  Obj *r = alloc (root, TINT, sizeof (long));
+  r->lvalue = lval;
   return r;
 }
 
@@ -358,7 +358,7 @@ make_function (void *root, Obj ** env, int type, Obj ** params, Obj ** body)
 {
   static long fun_counter;
   assert (type == TFUNCTION || type == TMACRO);
-  Obj *r = alloc (root, type, sizeof (Obj *) * 3 + sizeof(long));
+  Obj *r = alloc (root, type, sizeof (Obj *) * 3 + sizeof (long));
   r->params = *params;
   r->body = *body;
   r->env = *env;
@@ -391,7 +391,7 @@ acons (void *root, Obj ** x, Obj ** y, Obj ** a)
 //======================================================================
 
 #define SYMBOL_MAX_LEN 200
-const char symbol_chars[] = "~!@#$%^&*-_=+:/?<>";
+const char symbol_chars[] = "~!@$%^&*-_=+:/?<>";
 
 Obj *fread_expr (FILE * f, void *root);
 
@@ -512,6 +512,15 @@ fread_symbol (FILE * f, void *root, char c)
   return intern (root, buf);
 }
 
+/// Basile syntax extension; after a # ...
+Obj *
+fread_hash (FILE * f, void *root)
+{
+  int c = fpeek (f);
+  if ((c >= '0' && c <'9') || c=='+' || c=='-') {
+  }
+}                               /* end fread_hash */
+
 Obj *
 fread_expr (FILE * f, void *root)
 {
@@ -535,6 +544,8 @@ fread_expr (FILE * f, void *root)
         return Dot;
       if (c == '\'')
         return fread_quote (f, root);
+      if (c == '#')
+        return fread_hash (f, root);
       if (isdigit (c))
         return make_int (root, fread_number (f, c - '0'));
       if (c == '-' && isdigit (fpeek (f)))
@@ -666,7 +677,7 @@ file_print (FILE * fil, Obj * obj, unsigned depth)
       case type:				\
 	fprintf(fil,__VA_ARGS__);		\
         return
-      CASE (TINT, "%d", obj->value);
+      CASE (TINT, "%ld", obj->lvalue);
       CASE (TSYMBOL, "%s", obj->name);
       CASE (TPRIMITIVE, "<primitive-%s>", obj->prim_name);
       CASE (TFUNCTION, "<function#%ld>", obj->fun_number);
@@ -971,7 +982,7 @@ prim_plus (void *root, Obj ** env, Obj ** list)
     {
       if (args->car->type != TINT)
         error ("+ takes only numbers");
-      sum += args->car->value;
+      sum += args->car->lvalue;
     }
   return make_int (root, sum);
 }
@@ -985,10 +996,10 @@ prim_minus (void *root, Obj ** env, Obj ** list)
     if (p->car->type != TINT)
       error ("- takes only numbers");
   if (args->cdr == Nil)
-    return make_int (root, -args->car->value);
-  int r = args->car->value;
+    return make_int (root, -args->car->lvalue);
+  long r = args->car->lvalue;
   for (Obj * p = args->cdr; p != Nil; p = p->cdr)
-    r -= p->car->value;
+    r -= p->car->lvalue;
   return make_int (root, r);
 }
 
@@ -1003,7 +1014,7 @@ prim_lt (void *root, Obj ** env, Obj ** list)
   Obj *y = args->cdr->car;
   if (x->type != TINT || y->type != TINT)
     error ("< takes only numbers");
-  return x->value < y->value ? True : Nil;
+  return x->lvalue < y->lvalue ? True : Nil;
 }
 
 Obj *
@@ -1123,7 +1134,7 @@ prim_num_eq (void *root, Obj ** env, Obj ** list)
   Obj *y = values->cdr->car;
   if (x->type != TINT || y->type != TINT)
     error ("= only takes numbers");
-  return x->value == y->value ? True : Nil;
+  return x->lvalue == y->lvalue ? True : Nil;
 }
 
 // (eq expr expr)
@@ -1193,6 +1204,11 @@ getEnvFlag (char *name)
 int
 main (int argc, char **argv)
 {
+  if (argc == 2 && !strcmp(argv[1], "--version")) {
+    printf("%s git %s built on %s at %s (see github.com/btarynk/bismon/ ....)\n",
+	   argv[0], BISMON_GIT, __DATE__, __TIME__);
+    exit(EXIT_SUCCESS);
+  }
   // Debug flags
   debug_gc = getEnvFlag ("MINILISP_DEBUG_GC");
   always_gc = getEnvFlag ("MINILISP_ALWAYS_GC");

@@ -33,6 +33,7 @@ enum
 {
   // Regular objects visible from the user
   TINT = 1,
+  TDOUBLE,
   TCELL,
   TSYMBOL,
   TSTRING,
@@ -67,22 +68,25 @@ typedef struct Obj
   // needs to check its type first, then access the following union members.
   int type;
 
-  // The total size of the object, including "type" field, this field, the contents, and the
-  // padding at the end of the object.
+  // The total size in bytes of the object, including "type" field,
+  // this field, the contents, and the padding at the end of the
+  // object.
   int size;
 
   // Object values.
   union
   {
-    // Int
-    int value;
-    // Cell
+    // Int °TINT
+    long lvalue;
+    // Double °TDOUBLE
+    double dvalue;
+    // Cons Cell °TCELL
     struct
     {
       struct Obj *car;
       struct Obj *cdr;
     };
-    // Symbol
+    // Symbol °TSYMB
     char name[1];
     // strings
     struct
@@ -107,7 +111,7 @@ typedef struct Obj
       struct Obj *params;
       struct Obj *body;
       struct Obj *env;
-      long fun_number;		/* unique number, to ease printing */
+      long fun_number;          /* unique number, to ease printing */
     };
     // Environment frame. This is a linked list of association lists
     // containing the mapping from symbols to their value.
@@ -145,7 +149,7 @@ extern void gc (void *root);
 // Constructors
 //======================================================================
 
-extern Obj *make_int (void *root, int value);
+extern Obj *make_int (void *root, long ivalue);
 extern Obj *cons (void *root, Obj ** car, Obj ** cdr);
 extern Obj *make_symbol (void *root, char *name);
 extern Obj *make_string (void *root, char *buf);
