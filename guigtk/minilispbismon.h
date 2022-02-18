@@ -88,24 +88,24 @@ typedef struct Obj
     };
     // Symbol °TSYMB
     char name[1];
-    // strings
+    // strings °TSTRING
     struct
     {
       unsigned utf8_len;        // number of UTF8 characters (not bytes)
       char utf8_cstring[1];
     };
-    // JSON reference
+    // JSON reference for °TJSONREF
     int json_index;
-    // GTK reference
+    // GTK reference for °TGTKREF
     int gtk_index;
     // 
-    // Primitive
+    // Primitive °TPRIMITIVE
     struct
     {
       Primitive *prim_fn;
       const char *prim_name;
     };
-    // Function or Macro
+    // Function °TFUNCTION or Macro °TMACRO
     struct
     {
       struct Obj *params;
@@ -113,14 +113,14 @@ typedef struct Obj
       struct Obj *env;
       long fun_number;          /* unique number, to ease printing */
     };
-    // Environment frame. This is a linked list of association lists
+    // Environment frame °TENV. This is a linked list of association lists
     // containing the mapping from symbols to their value.
     struct
     {
       struct Obj *vars;
       struct Obj *up;
     };
-    // Forwarding pointer
+    // Forwarding pointer, internal to GC, see °°TMOVED
     void *moved;
   };
 } Obj;                          // end struct Obj
@@ -142,7 +142,10 @@ extern Obj *alloc (void *root, int type, size_t size);
 // http://en.wikipedia.org/wiki/Cheney%27s_algorithm
 extern void gc (void *root);
 
-
+extern void clear_gtk_json_marks (void *root);
+extern void mark_json_ref (void *root, Obj * jsob);
+extern void mark_gtk_ref (void *root, Obj * gtkob);
+extern void clean_gc_json_gtk (void *root);
 
 
 //======================================================================

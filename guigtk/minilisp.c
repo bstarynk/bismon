@@ -224,6 +224,8 @@ gc (void *root)
   assert (!gc_running);
   gc_running = true;
 
+  clear_gtk_json_marks (root);
+
   // Allocate a new semi-space.
   from_space = memory;
   memory = alloc_semispace ();
@@ -241,10 +243,20 @@ gc (void *root)
     {
       switch (scan1->type)
         {
+          /// scalar values
         case TINT:
         case TSYMBOL:
         case TPRIMITIVE:
+        case TDOUBLE:
+        case TSTRING:
           // Any of the above types does not contain a pointer to a GC-managed object.
+          break;
+          /// reference values
+        case TJSONREF:
+          mark_json_ref (root, scan1);
+          break;
+        case TGTKREF:
+          mark_gtk_ref (root, scan1);
           break;
         case TCELL:
           scan1->car = forward (scan1->car);
@@ -265,6 +277,8 @@ gc (void *root)
         }
       scan1 = (Obj *) ((uint8_t *) scan1 + scan1->size);
     }
+
+  clean_gc_json_gtk (scan1);
 
   // Finish up GC.
   munmap (from_space, MEMORY_SIZE);
@@ -517,8 +531,9 @@ Obj *
 fread_hash (FILE * f, void *root)
 {
   int c = fpeek (f);
-  if ((c >= '0' && c <'9') || c=='+' || c=='-') {
-  }
+  if ((c >= '0' && c < '9') || c == '+' || c == '-')
+    {
+    }
 }                               /* end fread_hash */
 
 Obj *
@@ -678,6 +693,7 @@ file_print (FILE * fil, Obj * obj, unsigned depth)
 	fprintf(fil,__VA_ARGS__);		\
         return
       CASE (TINT, "%ld", obj->lvalue);
+      CASE (TDOUBLE, "%g", obj->dvalue);
       CASE (TSYMBOL, "%s", obj->name);
       CASE (TPRIMITIVE, "<primitive-%s>", obj->prim_name);
       CASE (TFUNCTION, "<function#%ld>", obj->fun_number);
@@ -841,6 +857,8 @@ eval (void *root, Obj ** env, Obj ** obj)
   switch ((*obj)->type)
     {
     case TINT:
+    case TDOUBLE:
+    case TSTRING:
     case TPRIMITIVE:
     case TFUNCTION:
     case TTRUE:
@@ -1204,11 +1222,13 @@ getEnvFlag (char *name)
 int
 main (int argc, char **argv)
 {
-  if (argc == 2 && !strcmp(argv[1], "--version")) {
-    printf("%s git %s built on %s at %s (see github.com/btarynk/bismon/ ....)\n",
-	   argv[0], BISMON_GIT, __DATE__, __TIME__);
-    exit(EXIT_SUCCESS);
-  }
+  if (argc == 2 && !strcmp (argv[1], "--version"))
+    {
+      printf
+        ("%s git %s built on %s at %s (see github.com/btarynk/bismon/ ....)\n",
+         argv[0], BISMON_GIT, __DATE__, __TIME__);
+      exit (EXIT_SUCCESS);
+    }
   // Debug flags
   debug_gc = getEnvFlag ("MINILISP_DEBUG_GC");
   always_gc = getEnvFlag ("MINILISP_ALWAYS_GC");

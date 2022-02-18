@@ -25,6 +25,41 @@
 **/
 #include "minilispbismon.h"
 
+
+void
+clear_gtk_json_marks (void *root)
+{
+  assert (root != NULL);
+#warning unimplemented clear_gtk_json_marks
+}                               /* end clear_gtk_json_marks */
+
+
+void
+mark_json_ref (void *root, Obj * jsob)
+{
+  assert (root != NULL);
+  assert (jsob != NULL && jsob->type == TJSONREF);
+#warning unimplemented mark_json_ref
+}                               /* end mark_json_ref */
+
+
+void
+mark_gtk_ref (void *root, Obj * gtkob)
+{
+  assert (root != NULL);
+  assert (gtkob != NULL && gtkob->type == TGTKREF);
+#warning unimplemented mark_gtk_ref
+}                               /* end mark_gtk_ref */
+
+
+
+void
+clean_gc_json_gtk (void *root)
+{
+  assert (root != NULL);
+#warning clean_gc_json_gtk unimplemented
+}                               /* end clean_gc_json_gtk */
+
 /************
  ** for Emacs:
  ** Local Variables: ;;
