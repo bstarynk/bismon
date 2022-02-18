@@ -174,4 +174,6 @@ extern Obj *fread_expr (FILE * fil, void *root);
 /// printer
 extern void print (Obj * obj);
 extern void file_print (FILE * fil, Obj * obj, unsigned depth);
+extern void file_json_print (FILE * fil, Obj * obj, unsigned depth);
+extern void file_gtk_print (FILE * fil, Obj * obj, unsigned depth);
 #endif /*MINILISPBISMON_HEADER */

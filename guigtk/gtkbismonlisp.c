@@ -60,6 +60,27 @@ clean_gc_json_gtk (void *root)
 #warning clean_gc_json_gtk unimplemented
 }                               /* end clean_gc_json_gtk */
 
+void
+file_json_print (FILE * fil, Obj * obj, unsigned depth)
+{
+  assert (fil != NULL);
+  assert (obj != NULL && obj->type == TJSONREF);
+  fprintf (fil, "<json#%d", obj->json_index);
+#warning file_json_print unimplemented
+  fprintf (fil, ">");
+}                               /* end file_json_print */
+
+
+void
+file_gtk_print (FILE * fil, Obj * obj, unsigned depth)
+{
+  assert (fil != NULL);
+  assert (obj != NULL && obj->type == TGTKREF);
+  fprintf (fil, "<gtk#%d", obj->gtk_index);
+#warning file_gtk_print unimplemented
+  fprintf (fil, ">");
+}
+
 /************
  ** for Emacs:
  ** Local Variables: ;;

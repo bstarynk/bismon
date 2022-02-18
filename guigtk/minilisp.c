@@ -582,7 +582,8 @@ fread_string (FILE * f, void *root)
         error ("unterminated single-line string starting with %s", buf);
       if (c == '\\')
         {
-          c = fgetc (f);
+          c = fgetc (f);        // consume the backslash
+          c = fgetc (f);        // get the next ...
           switch (c)
             {
             case '"':
@@ -798,7 +799,10 @@ file_print (FILE * fil, Obj * obj, unsigned depth)
         fputc ('"', fil);
       }
       return;
-
+    case TJSONREF:
+      return file_json_print (fil, obj, depth);
+    case TGTKREF:
+      return file_gtk_print (fil, obj, depth);
 #define CASE(type, ...)                         \
       case type:				\
 	fprintf(fil,__VA_ARGS__);		\
