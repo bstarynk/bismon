@@ -4,16 +4,16 @@
 
 #include "minilispbismon.h"
 
-__attribute ((noreturn))
-     void error (char *fmt, ...)
+void
+error (char *fmt, ...)
 {
   va_list ap;
   va_start (ap, fmt);
   vfprintf (stderr, fmt, ap);
   fprintf (stderr, "\n");
   va_end (ap);
-  exit (1);
-}
+  exit (EXIT_FAILURE);
+}                               /* end error */
 
 // Constants
 Obj *True = &(Obj) {.type = TTRUE,.size = 0 };
@@ -308,11 +308,25 @@ make_symbol (void *root, char *name)
 Obj *
 make_string (void *root, char *str)
 {
-  Obj *strv = alloc (root, TSTRING, (str ? strlen (str) : 0) + 1);
+  long slen = str ? strlen (str) : 0;
+  long utlen = 0;
+  if (slen > 0)
+    {
+      if (slen > MEMORY_SIZE / 3)
+        error ("too long string of %ld bytes starting with %.16s", slen, str);
+      if (!g_utf8_validate (str, slen, NULL))
+        error ("invalid non UTF8 string of %ld bytes starting with %.16s",
+               slen, str);
+      utlen = g_utf8_strlen (str, slen);
+    }
+  Obj *strv = alloc (root, TSTRING, slen + 1);
   if (str)
-    strcpy (strv->cstring, str);
+    {
+      strcpy (strv->utf8_cstring, str);
+      strv->utf8_len = utlen;
+    }
   return strv;
-}
+}                               /* end make_string */
 
 Obj *
 make_sprintf (void *root, const char *fmt, ...)
@@ -324,14 +338,11 @@ make_sprintf (void *root, const char *fmt, ...)
   va_start (args, fmt);
   buflen = vasprintf (&buf, fmt, args);
   if (buflen >= 0 && buf)
-    {
-      strv = alloc (root, TSTRING, buflen + 1);
-      strncpy (strv->cstring, buf, buflen);
-      free (buf);
-    }
+    strv = make_string (root, buf);
   va_end (args);
   return strv;
-}
+}                               /* end make_sprintf */
+
 
 Obj *
 make_primitive (void *root, Primitive * fn, const char *name)
@@ -558,7 +569,7 @@ print (Obj * obj)
       return;
     case TSTRING:
 #warning unimplemented print of string
-      error ("unimplemented print of string %s", obj->cstring);
+      error ("unimplemented print of string %s", obj->utf8_cstring);
 
 #define CASE(type, ...)                         \
     case type:                                  \

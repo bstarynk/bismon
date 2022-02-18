@@ -3,6 +3,9 @@
 #ifndef MINILISPBISMON_HEADER
 #define MINILISPBISMON_HEADER 1
 
+// adapted from github.com/rui314/minilisp/ (commit c83b57126759ef3)
+// for the BISMON project
+
 #define _GNU_SOURCE 1
 
 #include <assert.h>
@@ -16,8 +19,12 @@
 #include <string.h>
 #include <sys/mman.h>
 
-__attribute ((noreturn))
-     void error (char *fmt, ...);
+#include <glib.h>
+
+
+extern void
+error (char *fmt, ...)
+__attribute ((noreturn));
 
 //======================================================================
 // Lisp objects
@@ -80,7 +87,11 @@ __attribute ((noreturn))
          // Symbol
          char name[1];
          // strings
-         char cstring[1];
+         struct
+         {
+           unsigned utf8_len;   // number of UTF8 characters (not bytes)
+           char utf8_cstring[1];
+         };
          // JSON reference
          int json_index;
          // GTK reference
