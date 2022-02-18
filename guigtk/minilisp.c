@@ -172,7 +172,7 @@ Obj *scan2;
 
 // Moves one object from the from-space to the to-space. Returns the object's new address. If the
 // object has already been moved, does nothing but just returns the new address.
-inline Obj *
+static inline Obj *
 forward (Obj * obj)
 {
   // If the object's address is not in the from-space, the object is not managed by GC nor it
@@ -197,6 +197,12 @@ forward (Obj * obj)
   obj->moved = newloc;
   return newloc;
 }
+
+Obj *
+forward_for_gc (Obj * ob)
+{
+  return forward (ob);
+}                               /* end forward_for_gc */
 
 void *
 alloc_semispace ()
@@ -258,6 +264,7 @@ gc (void *root)
         case TGTKREF:
           mark_gtk_ref (root, scan1);
           break;
+          /// composite values
         case TCELL:
           scan1->car = forward (scan1->car);
           scan1->cdr = forward (scan1->cdr);
@@ -333,10 +340,12 @@ make_string (void *root, char *str)
                slen, str);
       utlen = g_utf8_strlen (str, slen);
     }
-  Obj *strv = alloc (root, TSTRING, slen + 1);
+  Obj *strv = alloc (root, TSTRING,
+                     (slen | 7) + 1 + sizeof (strv->utf8_cstring) +
+                     sizeof (strv->utf8_len));
   if (str)
     {
-      strcpy (strv->utf8_cstring, str);
+      strncpy (strv->utf8_cstring, str, slen);
       strv->utf8_len = utlen;
     }
   return strv;
@@ -536,6 +545,103 @@ fread_hash (FILE * f, void *root)
     }
 }                               /* end fread_hash */
 
+//// read a single-lined string, whose initial double-quote °" has been read
+Obj *
+fread_string (FILE * f, void *root)
+{
+  Obj *obs = NULL;
+  int c = -2;
+  char smallbuf[64];
+  memset (smallbuf, 0, sizeof (smallbuf));
+  char *buf = smallbuf;
+  int blen = 0;
+  int bsiz = sizeof (smallbuf) - 1;
+  char *lastb = buf;
+#define APPEND_BYTE(By) do {					\
+    char by = By;						\
+    if (blen >= bsiz) {						\
+      char*oldbuf = buf;					\
+      int newsiz = ((3*bsiz/2+2)|0x1f)+1;			\
+      buf = calloc(newsiz, 1);					\
+      if (!buf)							\
+	error("out of memory reading string of %d bytes",	\
+	      blen);						\
+      memcpy(buf, oldbuf, blen);				\
+      bsiz = newsiz;						\
+    };								\
+    buf[blen++] = by;						\
+  } while(0)
+  while ((c = fpeek (f)) > 0)
+    {
+      if (c == '"')
+        {
+          fgetc (f);
+          break;
+        };
+      if (c == '\n' || c == '\r')
+        error ("unterminated single-line string starting with %s", buf);
+      if (c == '\\')
+        {
+          c = fgetc (f);
+          switch (c)
+            {
+            case '"':
+              APPEND_BYTE ('\"');
+              break;
+            case '\'':
+              APPEND_BYTE ('\'');
+              break;
+            case '\\':
+              APPEND_BYTE ('\\');
+              break;
+            case 'a':
+              APPEND_BYTE ('\a');
+              break;
+            case 'b':
+              APPEND_BYTE ('\b');
+              break;
+            case 'e':
+              APPEND_BYTE ('\e');
+              break;
+            case 'f':
+              APPEND_BYTE ('\f');
+              break;
+            case 'n':
+              APPEND_BYTE ('\n');
+              break;
+            case 'r':
+              APPEND_BYTE ('\r');
+              break;
+            case 't':
+              APPEND_BYTE ('\t');
+              break;
+            case 'v':
+              APPEND_BYTE ('\v');
+              break;
+            case 'x':
+              {
+                int h = 0;
+                if (fscanf (f, "%02x", &h) < 0)
+                  error ("failed to read backslash-x escape for buffer %s",
+                         buf);
+                APPEND_BYTE ((char) h);
+                break;
+              }
+            }
+        }
+      else if (c != 0)
+        {
+          APPEND_BYTE (c);
+          c = fgetc (f);
+          continue;
+        }
+    }
+  obs = make_string (root, buf);
+  if (buf != smallbuf)
+    free (buf);
+  return obs;
+}                               /* end fread_string */
+
 Obj *
 fread_expr (FILE * f, void *root)
 {
@@ -561,6 +667,8 @@ fread_expr (FILE * f, void *root)
         return fread_quote (f, root);
       if (c == '#')
         return fread_hash (f, root);
+      if (c == '"')
+        return fread_string (f, root);
       if (isdigit (c))
         return make_int (root, fread_number (f, c - '0'));
       if (c == '-' && isdigit (fpeek (f)))
@@ -629,6 +737,9 @@ file_print (FILE * fil, Obj * obj, unsigned depth)
                 break;
               case '\n':
                 fputs ("\\n", fil);
+                break;
+              case '\a':
+                fputs ("\\a", fil);
                 break;
               case '\r':
                 fputs ("\\r", fil);

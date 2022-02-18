@@ -141,6 +141,7 @@ extern Obj *alloc (void *root, int type, size_t size);
 // Implements Cheney's copying garbage collection algorithm.
 // http://en.wikipedia.org/wiki/Cheney%27s_algorithm
 extern void gc (void *root);
+extern Obj *forward_for_gc (Obj *);
 
 extern void clear_gtk_json_marks (void *root);
 extern void mark_json_ref (void *root, Obj * jsob);
