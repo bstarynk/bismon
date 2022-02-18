@@ -358,7 +358,7 @@ make_function (void *root, Obj ** env, int type, Obj ** params, Obj ** body)
 {
   static long fun_counter;
   assert (type == TFUNCTION || type == TMACRO);
-  Obj *r = alloc (root, type, sizeof (Obj *) * 3);
+  Obj *r = alloc (root, type, sizeof (Obj *) * 3 + sizeof(long));
   r->params = *params;
   r->body = *body;
   r->env = *env;

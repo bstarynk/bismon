@@ -107,7 +107,7 @@ typedef struct Obj
       struct Obj *params;
       struct Obj *body;
       struct Obj *env;
-      long fun_number;
+      long fun_number;		/* unique number, to ease printing */
     };
     // Environment frame. This is a linked list of association lists
     // containing the mapping from symbols to their value.
