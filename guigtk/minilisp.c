@@ -356,11 +356,13 @@ make_primitive (void *root, Primitive * fn, const char *name)
 Obj *
 make_function (void *root, Obj ** env, int type, Obj ** params, Obj ** body)
 {
+  static long fun_counter;
   assert (type == TFUNCTION || type == TMACRO);
   Obj *r = alloc (root, type, sizeof (Obj *) * 3);
   r->params = *params;
   r->body = *body;
   r->env = *env;
+  r->fun_number = ++fun_counter;
   return r;
 }
 
@@ -545,41 +547,130 @@ fread_expr (FILE * f, void *root)
 
 // Prints the given object.
 void
-print (Obj * obj)
+file_print (FILE * fil, Obj * obj, unsigned depth)
 {
+  assert (fil != NULL);
+  assert (obj != NULL);
+  long loff = ftell (fil);
+#define LINE_WIDTH 72
+#define MAYBE_NEWLINE() do {				\
+    if (ftell(fil) > loff + LINE_WIDTH) {		\
+      fputc('\n', fil);					\
+      for (int i = (int)(depth & 0xf); i>0; i--)	\
+	fputc(' ', fil);				\
+      loff = ftell(fil);				\
+    }							\
+  } while(0)
   switch (obj->type)
     {
     case TCELL:
-      printf ("(");
+      fputc ('(', fil);
       for (;;)
         {
-          print (obj->car);
+          file_print (fil, obj->car, depth + 1);
           if (obj->cdr == Nil)
             break;
+          MAYBE_NEWLINE ();
           if (obj->cdr->type != TCELL)
             {
-              printf (" . ");
-              print (obj->cdr);
+              fputs (" . ", fil);
+              file_print (fil, obj->cdr, depth + 1);
               break;
             }
-          printf (" ");
+          fputs (" ", fil);
           obj = obj->cdr;
         }
-      printf (")");
+      fputc (')', fil);
       return;
     case TSTRING:
-#warning unimplemented print of string
-      error ("unimplemented print of string %s", obj->utf8_cstring);
+      {
+        const char *cstr = obj->utf8_cstring;
+        unsigned ulen = obj->utf8_len;
+        unsigned ucnt = 0;
+        fputc ('"', fil);
+        for (const char *pc = cstr; *pc; ucnt++, (pc = g_utf8_next_char (pc)))
+          {
+            if (ucnt % 8 == 0 && ucnt + 2 < ulen
+                && ftell (fil) > loff + LINE_WIDTH)
+              {
+                fputs ("\\\n", fil);
+                loff = ftell (fil);
+              };
+            switch (*pc)
+              {
+              case '\\':
+                fputs ("\\\\", fil);
+                break;
+              case '\n':
+                fputs ("\\n", fil);
+                break;
+              case '\r':
+                fputs ("\\r", fil);
+                break;
+              case '\t':
+                fputs ("\\t", fil);
+                break;
+              case '\v':
+                fputs ("\\v", fil);
+                break;
+              case '\f':
+                fputs ("\\f", fil);
+                break;
+              case '\e':
+                fputs ("\\e", fil);
+                break;
+              case '"':
+                fputs ("\\\"", fil);
+                break;
+              case ' ':
+                fputc (' ', fil);
+                break;
+              case 'a' ... 'z':
+              case 'A' ... 'Z':
+              case '\'':
+              case '+':
+              case '-':
+              case '*':
+              case '/':
+              case '(':
+              case ')':
+              case '[':
+              case ']':
+              case '@':
+              case '~':
+              case '&':
+              case '$':
+              case '%':
+              case '?':
+              case ';':
+              case '0' ... '9':
+                fputc (*pc, fil);
+                break;
+              default:
+                {
+                  const char *nc = g_utf8_next_char (pc);
+                  char buf[8];
+                  memset (buf, 0, sizeof (buf));
+                  strncpy (buf, pc, nc - pc);
+                  fputs (buf, fil);
+                }
+                break;
+              }
+          }
+
+        fputc ('"', fil);
+      }
+      return;
 
 #define CASE(type, ...)                         \
-    case type:                                  \
-        printf(__VA_ARGS__);                    \
+      case type:				\
+	fprintf(fil,__VA_ARGS__);		\
         return
       CASE (TINT, "%d", obj->value);
       CASE (TSYMBOL, "%s", obj->name);
       CASE (TPRIMITIVE, "<primitive-%s>", obj->prim_name);
-      CASE (TFUNCTION, "<function>");
-      CASE (TMACRO, "<macro>");
+      CASE (TFUNCTION, "<function#%ld>", obj->fun_number);
+      CASE (TMACRO, "<macro#%ld>", obj->fun_number);
       CASE (TMOVED, "<moved>");
       CASE (TTRUE, "t");
       CASE (TNIL, "()");
@@ -587,7 +678,13 @@ print (Obj * obj)
     default:
       error ("Bug: print: Unknown tag type: %d", obj->type);
     }
-}
+}                               /* end file_print */
+
+void
+print (Obj * obj)
+{
+  file_print (stdout, obj, 0);
+}                               /* end print */
 
 // Returns the length of the given list. -1 if it's not a proper list.
 int
