@@ -154,6 +154,7 @@ extern void clean_gc_json_gtk (void *root);
 //======================================================================
 
 extern Obj *make_int (void *root, long ivalue);
+extern Obj *make_double (void *root, double dvalue);
 extern Obj *cons (void *root, Obj ** car, Obj ** cdr);
 extern Obj *make_symbol (void *root, char *name);
 extern Obj *make_string (void *root, char *buf);

@@ -352,6 +352,15 @@ make_string (void *root, char *str)
 }                               /* end make_string */
 
 Obj *
+make_double (void *root, double dbl)
+{
+  Obj *res = NULL;
+  res = alloc (root, TDOUBLE, sizeof (double));
+  res->dvalue = dbl;
+  return res;
+}                               /* end make_double */
+
+Obj *
 make_sprintf (void *root, const char *fmt, ...)
 {
   char *buf = NULL;
@@ -542,8 +551,18 @@ fread_hash (FILE * f, void *root)
   int c = fpeek (f);
   if ((c >= '0' && c < '9') || c == '+' || c == '-')
     {
+      int pos = -1;
+      double db = 0.0;
+      if (fscanf (f, "%lg%n", &db, &pos) > 0 && pos > 0)
+        {
+          return make_double (root, db);
+        }
     }
+#warning incomplete fread_hash
+  error ("unimplemented hash syntax #%c", (char) c);
 }                               /* end fread_hash */
+
+
 
 //// read a single-lined string, whose initial double-quote °" has been read
 Obj *
@@ -808,7 +827,7 @@ file_print (FILE * fil, Obj * obj, unsigned depth)
 	fprintf(fil,__VA_ARGS__);		\
         return
       CASE (TINT, "%ld", obj->lvalue);
-      CASE (TDOUBLE, "%g", obj->dvalue);
+      CASE (TDOUBLE, "#%g", obj->dvalue);
       CASE (TSYMBOL, "%s", obj->name);
       CASE (TPRIMITIVE, "<primitive-%s>", obj->prim_name);
       CASE (TFUNCTION, "<function#%ld>", obj->fun_number);
@@ -1105,36 +1124,83 @@ prim_gensym (void *root, Obj ** env, Obj ** list)
   return make_symbol (root, buf);
 }
 
-// (+ <integer> ...)
+// (+ <number> ...)
 Obj *
 prim_plus (void *root, Obj ** env, Obj ** list)
 {
   int sum = 0;
-  for (Obj * args = eval_list (root, env, list); args != Nil;
-       args = args->cdr)
+  double dsum = 0.0;
+  bool dblres = false;
+  for (Obj * args = eval_list (root, env, list);
+       args && args != Nil; args = args->cdr)
     {
-      if (args->car->type != TINT)
+      if (args->car->type != TINT || args->car->type != TDOUBLE)
         error ("+ takes only numbers");
-      sum += args->car->lvalue;
+      if (args->car->type == TDOUBLE)
+        dblres = true;
+      if (dblres)
+        {
+          if (args->car->type == TINT)
+            dsum += (double) args->car->lvalue;
+          else
+            dsum += args->car->dvalue;
+        }
+      else
+        sum += args->car->lvalue;
     }
-  return make_int (root, sum);
-}
+  if (dblres)
+    return make_double (root, dsum);
+  else
+    return make_int (root, sum);
+}                               /* end prim_plus */
 
-// (- <integer> ...)
+
+
+// (- <number> ...)
 Obj *
 prim_minus (void *root, Obj ** env, Obj ** list)
 {
+  long sub = 0;
+  double dbsub = 0.0;
+  bool dblres = false;
   Obj *args = eval_list (root, env, list);
   for (Obj * p = args; p != Nil; p = p->cdr)
-    if (p->car->type != TINT)
-      error ("- takes only numbers");
+    {
+      if (p->car->type != TINT && p->car->type != TDOUBLE)
+        error ("- takes only numbers");
+      if (p->car->type == TDOUBLE)
+        dblres = true;
+    };
   if (args->cdr == Nil)
-    return make_int (root, -args->car->lvalue);
-  long r = args->car->lvalue;
+    {
+      return dblres
+        ? make_double (root, -args->car->dvalue)
+        : make_int (root, -args->car->lvalue);
+    };
+  if (dblres)
+    {
+      if (args->car->type == TINT)
+        dbsub = (double) args->car->lvalue;
+      else
+        dbsub = args->car->dvalue;
+    }
+  else
+    sub = args->car->lvalue;
   for (Obj * p = args->cdr; p != Nil; p = p->cdr)
-    r -= p->car->lvalue;
-  return make_int (root, r);
-}
+    {
+      if (p->type == TINT)
+        {
+          if (dblres)
+            dbsub -= (double) p->car->lvalue;
+          else
+            sub -= p->car->lvalue;
+        }
+      else
+        dbsub -= p->car->dvalue;
+    }
+  return dblres ? make_double (root, dbsub) : make_int (root, sub);
+}                               /* end prim_minus */
+
 
 // (< <integer> <integer>)
 Obj *
