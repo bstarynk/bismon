@@ -102,7 +102,39 @@ file_gtk_print (FILE * fil, Obj * obj, unsigned depth)
   fprintf (fil, "<gtk#%d", obj->gtk_index);
 #warning file_gtk_print unimplemented
   fprintf (fil, ">");
-}
+}                               /* end file_gtk_print */
+
+Obj *
+prim_json_eq (void *root, Obj ** env, Obj ** list)
+{
+  if (length (*list) != 2)
+    error ("Malformed = (json)");
+  Obj *values = eval_list (root, env, list);
+  Obj *x = values->car;
+  Obj *y = values->cdr->car;
+  if (x->type == TJSONREF && y->type == TJSONREF)
+    {
+#warning prim_json_eq unimplemented
+      error ("prim_json_eq unimplemented");
+    }
+  return Nil;
+}                               /* end prim_json_eq */
+
+Obj *
+prim_gtk_eq (void *root, Obj ** env, Obj ** list)
+{
+  if (length (*list) != 2)
+    error ("Malformed = (gtk)");
+  Obj *values = eval_list (root, env, list);
+  Obj *x = values->car;
+  Obj *y = values->cdr->car;
+  if (x->type == TJSONREF && y->type == TJSONREF)
+    {
+#warning prim_gtk_eq unimplemented
+      error ("prim_gtk_eq unimplemented");
+    }
+  return Nil;
+}                               /* end prim_json_eq */
 
 /************
  ** for Emacs:

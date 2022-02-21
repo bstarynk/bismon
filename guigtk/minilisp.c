@@ -1518,18 +1518,40 @@ prim_if (void *root, Obj ** env, Obj ** list)
   return *els == Nil ? Nil : progn (root, env, els);
 }
 
-// (= <integer> <integer>)
+// (= <scalar> <scalar>)
 Obj *
-prim_num_eq (void *root, Obj ** env, Obj ** list)
+prim_scalar_eq (void *root, Obj ** env, Obj ** list)
 {
   if (length (*list) != 2)
     error ("Malformed =");
   Obj *values = eval_list (root, env, list);
   Obj *x = values->car;
   Obj *y = values->cdr->car;
-  if (x->type != TINT || y->type != TINT)
-    error ("= only takes numbers");
-  return x->lvalue == y->lvalue ? True : Nil;
+  if (x->type == TINT)
+    {
+      if (y->type == TINT)
+        return x->lvalue == y->lvalue ? True : Nil;
+      else if (y->type == TDOUBLE)
+        return (double) x->lvalue == y->dvalue ? True : Nil;
+      else
+        goto fail;
+    }
+  else if (x->type == TDOUBLE)
+    {
+      if (y->type == TINT)
+        return x->dvalue == (double) y->lvalue ? True : Nil;
+      else if (y->type == TDOUBLE)
+        return x->dvalue == y->dvalue ? True : Nil;
+      else
+        goto fail;
+    }
+  else if (x->type == TJSONREF && y->type == TJSONREF)
+    return prim_json_eq (root, env, list);
+  else if (x->type == TGTKREF && y->type == TGTKREF)
+    return prim_gtk_eq (root, env, list);
+fail:
+  error ("= only takes scalars");
+
 }
 
 // (eq expr expr)
@@ -1582,10 +1604,12 @@ define_primitives (void *root, Obj ** env)
   add_primitive (root, env, "macroexpand", prim_macroexpand);
   add_primitive (root, env, "lambda", prim_lambda);
   add_primitive (root, env, "if", prim_if);
-  add_primitive (root, env, "=", prim_num_eq);
+  add_primitive (root, env, "=", prim_scalar_eq);
+  add_primitive (root, env, "json_eq", prim_json_eq);
+  add_primitive (root, env, "gtk_eq", prim_gtk_eq);
   add_primitive (root, env, "eq", prim_eq);
   add_primitive (root, env, "println", prim_println);
-}
+}                               /* end define_primitives */
 
 //======================================================================
 // Entry point

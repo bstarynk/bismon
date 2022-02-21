@@ -147,7 +147,9 @@ extern void clear_gtk_json_marks (void *root);
 extern void mark_json_ref (void *root, Obj * jsob);
 extern void mark_gtk_ref (void *root, Obj * gtkob);
 extern void clean_gc_json_gtk (void *root);
-
+extern Obj *prim_scalar_eq (void *root, Obj ** env, Obj ** list);
+extern Obj *prim_json_eq (void *root, Obj ** env, Obj ** list);
+extern Obj *prim_gtk_eq (void *root, Obj ** env, Obj ** list);
 
 //======================================================================
 // Constructors
@@ -172,6 +174,10 @@ extern Obj *acons (void *root, Obj ** x, Obj ** y, Obj ** a);
 
 //// reader
 extern Obj *fread_expr (FILE * fil, void *root);
+
+
+// Evaluates all the list elements and returns their return values as a new list.
+extern Obj *eval_list (void *root, Obj ** env, Obj ** list);
 
 /// printer
 extern void print (Obj * obj);
