@@ -186,6 +186,10 @@ forward (Obj * obj)
   if (obj->type == TMOVED)
     return obj->moved;
 
+  /// magic JSON references for {null, true, false} JSON values
+  if (obj->type == TJSONREF
+      && (obj == Jsonv_True || obj == Jsonv_False || obj == Jsonv_Null))
+    return obj;
   // Otherwise, the object has not been moved yet. Move it.
   Obj *newloc = scan2;
   memcpy (newloc, obj, obj->size);
@@ -953,19 +957,19 @@ apply (void *root, Obj ** env, Obj ** fn, Obj ** args)
   switch ((*fn)->type)
     {
     case TINT:
-      error ("cannot apply integer %ld", fn->lvalue);
+      error ("cannot apply integer %ld", (*fn)->lvalue);
     case TDOUBLE:
-      error ("cannot apply double %g", fn->dvalue);
+      error ("cannot apply double %g", (*fn)->dvalue);
     case TCELL:
       error ("cannot apply cons cell");
     case TSYMBOL:
-      error ("cannot apply symbol %s", fn->sy_name);
+      error ("cannot apply symbol %s", (*fn)->sy_name);
     case TSTRING:
-      error ("cannot apply string %s", fn->utf8_cstring);
+      error ("cannot apply string %s", (*fn)->utf8_cstring);
     case TJSONREF:
-      error ("cannot apply json ref#%d", fn->json_index);
+      error ("cannot apply json ref#%d", (*fn)->json_index);
     case TGTKREF:
-      error ("cannot apply gtk ref#%d", fn->json_index);
+      error ("cannot apply gtk ref#%d", (*fn)->json_index);
     case TPRIMITIVE:
       return (*fn)->prim_fn (root, env, args);
     case TFUNCTION:
@@ -975,7 +979,7 @@ apply (void *root, Obj ** env, Obj ** fn, Obj ** args)
         return apply_func (root, env, fn, eargs);
       }
     case TMACRO:
-      error ("cannot apply macro #%ld", fn->fun_number);
+      error ("cannot apply macro #%ld", (*fn)->fun_number);
     case TENV:
       error ("cannot apply environment");
     default:
