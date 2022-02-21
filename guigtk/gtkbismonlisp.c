@@ -25,6 +25,29 @@
 **/
 #include "minilispbismon.h"
 
+#include <jansson.h>
+#include <gtk/gtk.h>
+
+Obj *
+make_json (void *root, json_t * js)
+{
+  Obj *res = NULL;
+  if (!js)
+    error ("make_json with null JSON pointer");
+  switch (js->type)
+    {
+    case JSON_OBJECT:
+    case JSON_ARRAY:
+    case JSON_STRING:
+    case JSON_INTEGER:
+    case JSON_REAL:
+    case JSON_TRUE:
+    case JSON_FALSE:
+    case JSON_NULL:
+    default:
+      error ("make_json with invalid Jansson type %d", (int) js->type);
+    };
+}                               /* end make_json */
 
 void
 clear_gtk_json_marks (void *root)

@@ -87,7 +87,7 @@ typedef struct Obj
       struct Obj *cdr;
     };
     // Symbol °TSYMB
-    char name[1];
+    char sy_name[1];
     // strings °TSTRING
     struct
     {
@@ -158,6 +158,7 @@ extern Obj *make_double (void *root, double dvalue);
 extern Obj *cons (void *root, Obj ** car, Obj ** cdr);
 extern Obj *make_symbol (void *root, char *name);
 extern Obj *make_string (void *root, char *buf);
+extern Obj *make_json (void *root, json_t * json);
 extern Obj *make_sprintf (void *root, const char *fmt, ...)
   __attribute__((format (printf, 2, 3)));
 extern Obj *make_primitive (void *root, Primitive * fn, const char *name);

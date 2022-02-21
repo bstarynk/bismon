@@ -322,7 +322,7 @@ Obj *
 make_symbol (void *root, char *name)
 {
   Obj *sym = alloc (root, TSYMBOL, strlen (name) + 1);
-  strcpy (sym->name, name);
+  strcpy (sym->sy_name, name);
   return sym;
 }
 
@@ -379,7 +379,7 @@ make_sprintf (void *root, const char *fmt, ...)
 Obj *
 make_primitive (void *root, Primitive * fn, const char *name)
 {
-  Obj *r = alloc (root, TPRIMITIVE, sizeof (Primitive *));
+  Obj *r = alloc (root, TPRIMITIVE, sizeof (Primitive *) + sizeof (char *));
   r->prim_fn = fn;
   r->prim_name = name;
   return r;
@@ -500,7 +500,7 @@ Obj *
 intern (void *root, char *name)
 {
   for (Obj * p = Symbols; p != Nil; p = p->cdr)
-    if (strcmp (name, p->car->name) == 0)
+    if (strcmp (name, p->car->sy_name) == 0)
       return p->car;
   DEFINE1 (sym);
   *sym = make_symbol (root, name);
@@ -545,18 +545,27 @@ fread_symbol (FILE * f, void *root, char c)
 }
 
 /// Basile syntax extension; after a # ...
+/// Examples:
+
+/***
+ * #3.14  ; a double value
+ * #json { "a": 2 } ; a JSON value
+ ***/
 Obj *
 fread_hash (FILE * f, void *root)
 {
   int c = fpeek (f);
+  int pos = -1;
   if ((c >= '0' && c < '9') || c == '+' || c == '-')
     {
-      int pos = -1;
       double db = 0.0;
       if (fscanf (f, "%lg%n", &db, &pos) > 0 && pos > 0)
         {
           return make_double (root, db);
         }
+    }
+  else if (c == 'j' && fscanf (f, "json%n", &pos) && pos > 0)
+    {
     }
 #warning incomplete fread_hash
   error ("unimplemented hash syntax #%c", (char) c);
@@ -575,7 +584,6 @@ fread_string (FILE * f, void *root)
   char *buf = smallbuf;
   int blen = 0;
   int bsiz = sizeof (smallbuf) - 1;
-  char *lastb = buf;
 #define APPEND_BYTE(By) do {					\
     char by = By;						\
     if (blen >= bsiz) {						\
@@ -828,7 +836,7 @@ file_print (FILE * fil, Obj * obj, unsigned depth)
         return
       CASE (TINT, "%ld", obj->lvalue);
       CASE (TDOUBLE, "#%g", obj->dvalue);
-      CASE (TSYMBOL, "%s", obj->name);
+      CASE (TSYMBOL, "%s", obj->sy_name);
       CASE (TPRIMITIVE, "<primitive-%s>", obj->prim_name);
       CASE (TFUNCTION, "<function#%ld>", obj->fun_number);
       CASE (TMACRO, "<macro#%ld>", obj->fun_number);
@@ -1004,7 +1012,7 @@ eval (void *root, Obj ** env, Obj ** obj)
         // Variable
         Obj *bind = find (env, *obj);
         if (!bind)
-          error ("Undefined symbol: %s", (*obj)->name);
+          error ("Undefined symbol: %s", (*obj)->sy_name);
         return bind->cdr;
       }
     case TCELL:
@@ -1079,7 +1087,7 @@ prim_setq (void *root, Obj ** env, Obj ** list)
   DEFINE2 (bind, value);
   *bind = find (env, (*list)->car);
   if (!*bind)
-    error ("Unbound variable %s", (*list)->car->name);
+    error ("Unbound variable %s", (*list)->car->sy_name);
   *value = (*list)->cdr->car;
   *value = eval (root, env, value);
   (*bind)->cdr = *value;
@@ -1134,7 +1142,7 @@ prim_plus (void *root, Obj ** env, Obj ** list)
   for (Obj * args = eval_list (root, env, list);
        args && args != Nil; args = args->cdr)
     {
-      if (args->car->type != TINT || args->car->type != TDOUBLE)
+      if (args->car->type != TINT && args->car->type != TDOUBLE)
         error ("+ takes only numbers");
       if (args->car->type == TDOUBLE)
         dblres = true;
@@ -1202,7 +1210,7 @@ prim_minus (void *root, Obj ** env, Obj ** list)
 }                               /* end prim_minus */
 
 
-// (< <integer> <integer>)
+// (< <number> <number>)    or    (< <string> <string>)   or (< <symbol> <symbol>)
 Obj *
 prim_lt (void *root, Obj ** env, Obj ** list)
 {
@@ -1211,10 +1219,198 @@ prim_lt (void *root, Obj ** env, Obj ** list)
     error ("malformed <");
   Obj *x = args->car;
   Obj *y = args->cdr->car;
-  if (x->type != TINT || y->type != TINT)
-    error ("< takes only numbers");
-  return x->lvalue < y->lvalue ? True : Nil;
-}
+  if (x->type == TINT)
+    {
+      if (y->type == TINT)
+        {
+          return x->lvalue < y->lvalue ? True : Nil;
+        }
+      else if (y->type == TDOUBLE)
+        {
+          return ((double) x->lvalue < y->dvalue) ? True : Nil;
+        }
+      else
+        goto fail;
+    }
+  else if (x->type == TDOUBLE)
+    {
+      if (y->type == TINT)
+        {
+          return (x->dvalue < (double) y->lvalue) ? True : Nil;
+        }
+      else if (y->type == TDOUBLE)
+        {
+          return (x->dvalue < y->dvalue) ? True : Nil;
+        }
+      else
+        goto fail;
+    }
+  else if (x->type == TSTRING && y->type == TSTRING)
+    {
+      int cmp = strcmp (x->utf8_cstring, y->utf8_cstring);
+      return (cmp < 0) ? True : Nil;
+    }
+  else if (x->type == TSYMBOL && y->type == TSYMBOL)
+    {
+      int cmp = strcmp (x->sy_name, y->sy_name);
+      return (cmp < 0) ? True : Nil;
+    }
+fail:
+  error ("< takes only two numbers or two strings or two symbols");
+}                               /* end prim_lt */
+
+// (<= <number> <number>)   or  (<= <string> <string>)  or  (<= <symbol> <symbol>)
+Obj *
+prim_lessequal (void *root, Obj ** env, Obj ** list)
+{
+  Obj *args = eval_list (root, env, list);
+  if (length (args) != 2)
+    error ("malformed <=");
+  Obj *x = args->car;
+  Obj *y = args->cdr->car;
+  if (x->type == TINT)
+    {
+      if (y->type == TINT)
+        {
+          return x->lvalue <= y->lvalue ? True : Nil;
+        }
+      else if (y->type == TDOUBLE)
+        {
+          return ((double) x->lvalue <= y->dvalue) ? True : Nil;
+        }
+      else
+        goto fail;
+    }
+  else if (x->type == TDOUBLE)
+    {
+      if (y->type == TINT)
+        {
+          return (x->dvalue <= (double) y->lvalue) ? True : Nil;
+        }
+      else if (y->type == TDOUBLE)
+        {
+          return (x->dvalue <= y->dvalue) ? True : Nil;
+        }
+      else
+        goto fail;
+    }
+  else if (x->type == TSTRING && y->type == TSTRING)
+    {
+      int cmp = strcmp (x->utf8_cstring, y->utf8_cstring);
+      return (cmp <= 0) ? True : Nil;
+    }
+  else if (x->type == TSYMBOL && y->type == TSYMBOL)
+    {
+      int cmp = strcmp (x->sy_name, y->sy_name);
+      return (cmp <= 0) ? True : Nil;
+    }
+fail:
+  error ("<= takes only two numbers or two strings");
+}                               /* end prim_lessequal */
+
+
+
+// (> <number> <number>)   or  (> <string> <string>)  or (> <symbol> <symbol>)
+Obj *
+prim_gt (void *root, Obj ** env, Obj ** list)
+{
+  Obj *args = eval_list (root, env, list);
+  if (length (args) != 2)
+    error ("malformed >");
+  Obj *x = args->car;
+  Obj *y = args->cdr->car;
+  if (x->type == TINT)
+    {
+      if (y->type == TINT)
+        {
+          return x->lvalue > y->lvalue ? True : Nil;
+        }
+      else if (y->type == TDOUBLE)
+        {
+          return ((double) x->lvalue > y->dvalue) ? True : Nil;
+        }
+      else
+        goto fail;
+    }
+  else if (x->type == TDOUBLE)
+    {
+      if (y->type == TINT)
+        {
+          return (x->dvalue > (double) y->lvalue) ? True : Nil;
+        }
+      else if (y->type == TDOUBLE)
+        {
+          return (x->dvalue > y->dvalue) ? True : Nil;
+        }
+      else
+        goto fail;
+    }
+  else if (x->type == TSTRING && y->type == TSTRING)
+    {
+      int cmp = strcmp (x->utf8_cstring, y->utf8_cstring);
+      return (cmp > 0) ? True : Nil;
+    }
+  else if (x->type == TSYMBOL && y->type == TSYMBOL)
+    {
+      int cmp = strcmp (x->sy_name, y->sy_name);
+      return (cmp > 0) ? True : Nil;
+    }
+fail:
+  error ("> takes only two numbers or two strings or two symbols");
+}                               /* end prim_gt */
+
+
+
+// (>= <number> <number>)  or  (>= <string> <string>)  or (>= <symbol> <symbol>)
+Obj *
+prim_greaterequal (void *root, Obj ** env, Obj ** list)
+{
+  Obj *args = eval_list (root, env, list);
+  if (length (args) != 2)
+    error ("malformed >=");
+  Obj *x = args->car;
+  Obj *y = args->cdr->car;
+  if (x->type == TINT)
+    {
+      if (y->type == TINT)
+        {
+          return x->lvalue >= y->lvalue ? True : Nil;
+        }
+      else if (y->type == TDOUBLE)
+        {
+          return ((double) x->lvalue >= y->dvalue) ? True : Nil;
+        }
+      else
+        goto fail;
+    }
+  else if (x->type == TDOUBLE)
+    {
+      if (y->type == TINT)
+        {
+          return (x->dvalue >= (double) y->lvalue) ? True : Nil;
+        }
+      else if (y->type == TDOUBLE)
+        {
+          return (x->dvalue >= y->dvalue) ? True : Nil;
+        }
+      else
+        goto fail;
+    }
+  else if (x->type == TSTRING && y->type == TSTRING)
+    {
+      int cmp = strcmp (x->utf8_cstring, y->utf8_cstring);
+      return (cmp >= 0) ? True : Nil;
+    }
+  else if (x->type == TSYMBOL && y->type == TSYMBOL)
+    {
+      int cmp = strcmp (x->sy_name, y->sy_name);
+      return (cmp > 0) ? True : Nil;
+    }
+fail:
+  error (">= takes only two numbers or two strings or two symbols");
+}                               /* end prim_greaterequal */
+
+
 
 Obj *
 handle_function (void *root, Obj ** env, Obj ** list, int type)
@@ -1377,6 +1573,9 @@ define_primitives (void *root, Obj ** env)
   add_primitive (root, env, "+", prim_plus);
   add_primitive (root, env, "-", prim_minus);
   add_primitive (root, env, "<", prim_lt);
+  add_primitive (root, env, ">", prim_gt);
+  add_primitive (root, env, "<=", prim_lessequal);
+  add_primitive (root, env, ">=", prim_greaterequal);
   add_primitive (root, env, "define", prim_define);
   add_primitive (root, env, "defun", prim_defun);
   add_primitive (root, env, "defmacro", prim_defmacro);
