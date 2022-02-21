@@ -28,27 +28,67 @@
 #include <jansson.h>
 #include <gtk/gtk.h>
 
+Obj *Jsonv_True = &(Obj) {.type = TJSONREF,.size = 0,   //
+  .json_index = JSONMAG_true
+};
+
+Obj *Jsonv_False = &(Obj) {.type = TJSONREF,.size = 0,  //
+  .json_index = JSONMAG_false
+};
+
+Obj *Jsonv_Null = &(Obj) {.type = TJSONREF,.size = 0,   //
+  .json_index = JSONMAG_null
+};
+
 Obj *
 make_json (void *root, json_t * js)
 {
   Obj *res = NULL;
+  assert (root != NULL);
   if (!js)
     error ("make_json with null JSON pointer");
   switch (js->type)
     {
+    case JSON_TRUE:
+      return Jsonv_True;
+    case JSON_FALSE:
+      return Jsonv_False;
+    case JSON_NULL:
+      return Jsonv_Null;
+#warning make_json unimplemented for composite JSON
     case JSON_OBJECT:
     case JSON_ARRAY:
     case JSON_STRING:
     case JSON_INTEGER:
     case JSON_REAL:
-    case JSON_TRUE:
-    case JSON_FALSE:
-    case JSON_NULL:
     default:
       error ("make_json with invalid Jansson type %d", (int) js->type);
     };
 }                               /* end make_json */
 
+json_t *
+json_in_obj (Obj * obj)
+{
+  assert (obj != NULL);
+  if (obj->type != TJSONREF)
+    return NULL;
+  int jsix = obj->json_index;
+  switch (jsix)
+    {
+    case JSONMAG_true:
+      return json_true ();
+    case JSONMAG_false:
+      return json_false ();
+    case JSONMAG_null:
+      return json_null ();
+    default:
+      break;
+    }
+#warning unimplemented json_in_obj
+  error ("json_in_obj unimplemented for JSON ref#%d", jsix);
+}                               /* end json_in_obj */
+
+/// this routine is called at start of the garbage collector to clear the GC marks for GTK and JSON references
 void
 clear_gtk_json_marks (void *root)
 {
@@ -60,8 +100,13 @@ clear_gtk_json_marks (void *root)
 void
 mark_json_ref (void *root, Obj * jsob)
 {
+  int jsix = -1;
   assert (root != NULL);
   assert (jsob != NULL && jsob->type == TJSONREF);
+  if (jsob == Jsonv_True || jsob == Jsonv_False || jsob == Jsonv_Null)
+    return;
+  jsix = jsob->json_index;
+  error ("mark_json_ref unimplemented for JSON ref#%d", jsix);
 #warning unimplemented mark_json_ref
 }                               /* end mark_json_ref */
 
@@ -69,13 +114,16 @@ mark_json_ref (void *root, Obj * jsob)
 void
 mark_gtk_ref (void *root, Obj * gtkob)
 {
+  int gtkix = -1;
   assert (root != NULL);
   assert (gtkob != NULL && gtkob->type == TGTKREF);
+  gtkix = gtkob->gtk_index;
+  error ("mark_json_ref unimplemented for GTK ref#%d", gtkix);
 #warning unimplemented mark_gtk_ref
 }                               /* end mark_gtk_ref */
 
 
-
+/// this routine is called by the garbage collector to clean useless GTK or JSON references
 void
 clean_gc_json_gtk (void *root)
 {

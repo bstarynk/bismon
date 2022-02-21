@@ -125,11 +125,22 @@ typedef struct Obj
   };
 } Obj;                          // end struct Obj
 
+
+enum json_magic_en
+{
+  JSONMAG_true = -1,
+  JSONMAG_false = -2,
+  JSONMAG_null = -3
+};
+
 // Constants
 extern Obj *True;
 extern Obj *Nil;
 extern Obj *Dot;
 extern Obj *Cparen;
+extern Obj *Jsonv_True;
+extern Obj *Jsonv_False;
+extern Obj *Jsonv_Null;
 
 // The list containing all symbols. Such data structure is traditionally called the "obarray", but I
 // avoid using it as a variable name as this is not an array but a list.
@@ -186,4 +197,9 @@ extern void print (Obj * obj);
 extern void file_print (FILE * fil, Obj * obj, unsigned depth);
 extern void file_json_print (FILE * fil, Obj * obj, unsigned depth);
 extern void file_gtk_print (FILE * fil, Obj * obj, unsigned depth);
+
+
+/// gives the JSON value inside some Obj, or else NULL; inverse of make_json
+extern json_t *json_in_obj (Obj * obj);
+
 #endif /*MINILISPBISMON_HEADER */
