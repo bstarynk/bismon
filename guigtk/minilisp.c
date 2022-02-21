@@ -950,16 +950,39 @@ apply (void *root, Obj ** env, Obj ** fn, Obj ** args)
 {
   if (!is_list (*args))
     error ("argument must be a list");
-  if ((*fn)->type == TPRIMITIVE)
-    return (*fn)->prim_fn (root, env, args);
-  if ((*fn)->type == TFUNCTION)
+  switch ((*fn)->type)
     {
-      DEFINE1 (eargs);
-      *eargs = eval_list (root, env, args);
-      return apply_func (root, env, fn, eargs);
+    case TINT:
+      error ("cannot apply integer %ld", fn->lvalue);
+    case TDOUBLE:
+      error ("cannot apply double %g", fn->dvalue);
+    case TCELL:
+      error ("cannot apply cons cell");
+    case TSYMBOL:
+      error ("cannot apply symbol %s", fn->sy_name);
+    case TSTRING:
+      error ("cannot apply string %s", fn->utf8_cstring);
+    case TJSONREF:
+      error ("cannot apply json ref#%d", fn->json_index);
+    case TGTKREF:
+      error ("cannot apply gtk ref#%d", fn->json_index);
+    case TPRIMITIVE:
+      return (*fn)->prim_fn (root, env, args);
+    case TFUNCTION:
+      {
+        DEFINE1 (eargs);
+        *eargs = eval_list (root, env, args);
+        return apply_func (root, env, fn, eargs);
+      }
+    case TMACRO:
+      error ("cannot apply macro #%ld", fn->fun_number);
+    case TENV:
+      error ("cannot apply environment");
+    default:
+      error ("unexpected type#%d to apply", (*fn)->type);
     }
-  error ("not supported");
-}
+}                               /* end function apply */
+
 
 // Searches for a variable by symbol. Returns null if not found.
 Obj *
