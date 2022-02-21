@@ -40,6 +40,10 @@ Obj *Jsonv_Null = &(Obj) {.type = TJSONREF,.size = 0,   //
   .json_index = JSONMAG_null
 };
 
+
+GHashTable *json_ghtbl;         /* an hashtable associating json_t pointers to intptr_t ranks */
+#warning we probably need a vector associating indexes to json_t*
+
 Obj *
 make_json (void *root, json_t * js)
 {
@@ -55,12 +59,15 @@ make_json (void *root, json_t * js)
       return Jsonv_False;
     case JSON_NULL:
       return Jsonv_Null;
-#warning make_json unimplemented for composite JSON
+#warning make_json unimplemented for composite JSON; use g_hash_table_insert on json_ghtbl
     case JSON_OBJECT:
     case JSON_ARRAY:
     case JSON_STRING:
     case JSON_INTEGER:
     case JSON_REAL:
+      if (json_ghtbl == NULL)
+        error ("make_json without JSON initialization");
+      /* use g_hash_table_insert, but think about json_t* refcount... */
     default:
       error ("make_json with invalid Jansson type %d", (int) js->type);
     };
@@ -82,6 +89,9 @@ json_in_obj (Obj * obj)
     case JSONMAG_null:
       return json_null ();
     default:
+      if (!json_ghtbl)
+        error ("no JSON hashtable");
+      ///return (json_t*)g_hash_table_lookup(json_ghtbl, (intptr_t)obj->json_index);
       break;
     }
 #warning unimplemented json_in_obj
@@ -162,8 +172,14 @@ prim_json_eq (void *root, Obj ** env, Obj ** list)
   Obj *y = values->cdr->car;
   if (x->type == TJSONREF && y->type == TJSONREF)
     {
+      int xix = x->json_index;
+      int yix = y->json_index;
+      if (xix == yix)
+        return True;
+      if (xix < 0 || yix < 0)
+        return Nil;             /* some json_magic_en */
 #warning prim_json_eq unimplemented
-      error ("prim_json_eq unimplemented");
+      error ("prim_json_eq unimplemented json#%d & json#%d", xix, yix);
     }
   return Nil;
 }                               /* end prim_json_eq */
@@ -176,13 +192,59 @@ prim_gtk_eq (void *root, Obj ** env, Obj ** list)
   Obj *values = eval_list (root, env, list);
   Obj *x = values->car;
   Obj *y = values->cdr->car;
-  if (x->type == TJSONREF && y->type == TJSONREF)
+  if (x->type == TGTKREF && y->type == TGTKREF)
     {
+      int xix = x->gtk_index;
+      int yix = y->gtk_index;
+      if (xix == yix)
+        return True;
 #warning prim_gtk_eq unimplemented
-      error ("prim_gtk_eq unimplemented");
+      error ("prim_gtk_eq unimplemented gtk#%d & gtk#%d");
     }
   return Nil;
 }                               /* end prim_json_eq */
+
+
+//// For JSON notation; example #json { "a" : 1, "b" : [true,false,null]}
+//// the #json has been read
+Obj *
+fread_json (FILE * fil, void *root)
+{
+  assert (fil != NULL);
+  assert (root != NULL);
+  if (!json_ghtbl)
+    error ("fread_json without JSON initialization");
+#warning fread_json unimplemented
+  error ("fread_json unimplemented");
+}                               /* end fread_json */
+
+
+void
+finalize_json (void)
+{
+  static bool finalized;
+  if (finalized)
+    return;
+  if (!json_ghtbl)
+    return;
+  g_hash_table_destroy (json_ghtbl);
+  finalized = true;
+}                               /* end finalize_json */
+
+void
+initialize_json (void)
+{
+  if (json_ghtbl)
+    return;
+  json_ghtbl = g_hash_table_new (g_direct_hash, g_direct_equal);
+  atexit (finalize_json);
+}                               /* end initialize_json */
+
+
+void
+initialize_gtk (int *pargc, char **argv)
+{
+}                               /* end initialize_gtk */
 
 /************
  ** for Emacs:

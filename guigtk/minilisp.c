@@ -200,7 +200,7 @@ forward (Obj * obj)
   obj->type = TMOVED;
   obj->moved = newloc;
   return newloc;
-}
+}                               /* end inline routine forward */
 
 Obj *
 forward_for_gc (Obj * ob)
@@ -570,6 +570,7 @@ fread_hash (FILE * f, void *root)
     }
   else if (c == 'j' && fscanf (f, "json%n", &pos) && pos > 0)
     {
+      return fread_json (f, root);
     }
 #warning incomplete fread_hash
   error ("unimplemented hash syntax #%c", (char) c);

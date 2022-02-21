@@ -185,6 +185,8 @@ extern Obj *acons (void *root, Obj ** x, Obj ** y, Obj ** a);
 
 //// reader
 extern Obj *fread_expr (FILE * fil, void *root);
+//// for JSON notation; example #json { "a" : 1, "b" : [true,false,null]}
+extern Obj *fread_json (FILE * fil, void *root);
 
 
 // Evaluates all the list elements and returns their return values as a new list.
@@ -202,4 +204,12 @@ extern void file_gtk_print (FILE * fil, Obj * obj, unsigned depth);
 /// gives the JSON value inside some Obj, or else NULL; inverse of make_json
 extern json_t *json_in_obj (Obj * obj);
 
+
+
+/// initialize support got JSON references
+extern void initialize_json (void);
+
+
+/// initialize support for GTK
+extern void initialize_gtk (int *pargc, char **argv);
 #endif /*MINILISPBISMON_HEADER */
