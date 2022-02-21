@@ -179,6 +179,8 @@ extern Obj *fread_expr (FILE * fil, void *root);
 // Evaluates all the list elements and returns their return values as a new list.
 extern Obj *eval_list (void *root, Obj ** env, Obj ** list);
 
+// Returns the length of the given list. -1 if it's not a proper list.
+extern int length (Obj * list);
 /// printer
 extern void print (Obj * obj);
 extern void file_print (FILE * fil, Obj * obj, unsigned depth);
