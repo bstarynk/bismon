@@ -205,6 +205,9 @@ extern Obj *eval_list (void *root, Obj **env, Obj **list);
 
 // Returns the length of the given list. -1 if it's not a proper list.
 extern int length (Obj *list);
+
+/// if jsob is a TJSON, get it; otherwise NULL
+extern json_t *get_json (Obj *jsob);
 /// printer
 extern void print (Obj *obj);
 extern void file_print (FILE * fil, Obj *obj, unsigned depth);

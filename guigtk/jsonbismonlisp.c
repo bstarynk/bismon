@@ -282,6 +282,28 @@ clean_gc_json (void *root)
 #warning unimplemented clean_gc_json
 }                               /* end clean_gc_json */
 
+json_t *
+get_json (Obj *jsob)
+{
+  if (!jsob)
+    return NULL;
+  if (jsob->type != TJSONREF)
+    return NULL;
+  if (jsob == Jsonv_True)
+    return json_true ();
+  if (jsob == Jsonv_False)
+    return json_false ();
+  if (jsob == Jsonv_Null)
+    return json_null ();
+  int jsix = jsob->json_index;
+  if (jsix > 0 && jsix <= json_vect.jsv_count)
+    {
+      assert (json_vect.jsv_arr);
+      return json_vect.jsv_arr[jsix];
+    }
+  return NULL;
+}                               /* end get_json */
+
 void
 mark_json_ref (void *root, Obj *jsob)
 {
@@ -300,7 +322,7 @@ Obj *
 prim_json_eq (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2)
-    error ("Malformed = (json)");
+    error ("Malformed json_eq (%d args)", length (*list));
   Obj *values = eval_list (root, env, list);
   Obj *x = values->car;
   Obj *y = values->cdr->car;
@@ -320,18 +342,78 @@ prim_json_eq (void *root, Obj **env, Obj **list)
   return Nil;
 }                               /* end prim_json_eq */
 
+Obj *
+prim_json_type (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed json_type (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *jv = values->car;
+  json_t *js = get_json (jv);
+  if (!js)
+    return Nil;
+  switch (json_typeof (js))
+    {
+    case JSON_OBJECT:
+      return intern (root, "json_object");
+    case JSON_ARRAY:
+      return intern (root, "json_array");
+    case JSON_STRING:
+      return intern (root, "json_string");
+    case JSON_TRUE:
+      return intern (root, "json_true");
+    case JSON_FALSE:
+      return intern (root, "json_false");
+    case JSON_INTEGER:
+      return intern (root, "json_integer");
+    case JSON_REAL:
+      return intern (root, "json_real");
+    case JSON_NULL:
+      return intern (root, "json_null");
+    default:
+      error ("corrupted json type#%d", json_typeof (js));
+      return Nil;
+    }
+}                               /* end prim_json_type */
+
 void
 define_json_primitives (void *root, Obj **env)
 {
   add_primitive (root, env, "json_eq", prim_json_eq);
+  add_primitive (root, env, "json_type", prim_json_type);
 }                               /* end define_json_primitives */
 
-/// this routine is called by the garbage collector to clean useless GTK or JSON references
+/// this routine is called by the garbage collector to clean useless
+/// JSON references
 void
-clean_gc_json_gtk (void *root)
+clean_gc_json (void *root)
 {
   assert (root != NULL);
-#warning clean_gc_json_gtk unimplemented
+  int nbjsv = (int) json_vect.jsv_count;
+  if (nbjsv == 0)
+    return;
+  assert (nbjsv < json_vect.jsv_size);
+  assert (json_vect.jsv_arr != NULL);
+  assert (json_vect.jsv_markarr != NULL);
+  assert (json_vect.jsv_decrefarr != NULL);
+  for (int jix = 1; jix <= nbjsv; jix++)
+    {
+      json_t *curjs = json_vect.jsv_arr[jix];
+      if (!curjs)
+        continue;
+      if (json_vect.jsv_markarr[jix])
+        continue;
+      if (json_vect.jsv_decrefarr[jix])
+        json_decref (curjs);
+      json_vect.jsv_arr[jix] = NULL;
+    }
+  while (json_vect.jsv_count > 0
+         && json_vect.jsv_arr[json_vect.jsv_count] == NULL)
+    {
+      json_vect.jsv_markarr[json_bect.jsv_count] = false;
+      json_vect.jsv_decrefarr[json_bect.jsv_count] = false;
+      json_vect.jsv_count--;
+    }
 }                               /* end clean_gc_json_gtk */
 
 void
