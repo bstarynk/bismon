@@ -154,6 +154,7 @@ extern Obj *alloc (void *root, int type, size_t size);
 extern void gc (void *root);
 extern Obj *forward_for_gc (Obj *);
 
+extern void add_primitive (void *root, Obj **env, char *name, Primitive * fn);
 extern void define_primitives (void *root, Obj **env);
 extern void define_json_primitives (void *root, Obj **env);
 extern void define_gtk_primitives (void *root, Obj **env);

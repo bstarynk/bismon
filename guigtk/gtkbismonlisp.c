@@ -51,27 +51,6 @@ file_gtk_print (FILE * fil, Obj *obj, unsigned depth)
   fprintf (fil, ">");
 }                               /* end file_gtk_print */
 
-Obj *
-prim_json_eq (void *root, Obj **env, Obj **list)
-{
-  if (length (*list) != 2)
-    error ("Malformed = (json)");
-  Obj *values = eval_list (root, env, list);
-  Obj *x = values->car;
-  Obj *y = values->cdr->car;
-  if (x->type == TJSONREF && y->type == TJSONREF)
-    {
-      int xix = x->json_index;
-      int yix = y->json_index;
-      if (xix == yix)
-        return True;
-      if (xix < 0 || yix < 0)
-        return Nil;             /* some json_magic_en */
-#warning prim_json_eq unimplemented
-      error ("prim_json_eq unimplemented json#%d & json#%d", xix, yix);
-    }
-  return Nil;
-}                               /* end prim_json_eq */
 
 Obj *
 prim_gtk_eq (void *root, Obj **env, Obj **list)

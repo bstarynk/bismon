@@ -45,7 +45,85 @@ Obj *Jsonv_Null = &(Obj)
 
 
 GHashTable *json_ghtbl;         /* an hashtable associating json_t pointers to intptr_t ranks */
-GSequence *json_gseq;           /* a sequence of json_t pointers */
+
+
+struct
+{
+  json_t **jsv_arr;             /* array of pointers */
+  bool *jsv_markarr;            /* array of GC marks */
+  bool *jsv_decrefarr;          /* array of flags to json_decref */
+  unsigned jsv_size;            /* allocated size */
+  unsigned jsv_count;           /* used count */
+} json_vect;
+
+void
+finalize_json (void)
+{
+  static bool finalized;
+  if (finalized)
+    return;
+  if (!json_ghtbl)
+    return;
+  g_hash_table_destroy (json_ghtbl);
+  json_ghtbl = NULL;
+  if (json_vect.jsv_size > 0)
+    {
+      assert (json_vect.jsv_markarr != NULL);
+      assert (json_vect.jsv_decrefarr != NULL);
+      for (int ix = 0; ix < (int) json_vect.jsv_size; ix++)
+        {
+          json_t *curjs = json_vect.jsv_arr[ix];
+          if (!curjs)
+            continue;
+          if (json_vect.jsv_decrefarr[ix])
+            {
+              json_vect.jsv_decrefarr[ix] = false;
+              json_decref (curjs);
+            }
+        }
+    }
+  free (json_vect.jsv_arr), json_vect.jsv_arr = NULL;
+  free (json_vect.jsv_markarr), json_vect.jsv_markarr = NULL;
+  free (json_vect.jsv_decrefarr), json_vect.jsv_decrefarr = NULL;
+  finalized = true;
+}                               /* end finalize_json */
+
+void
+initialize_json (void)
+{
+  if (json_ghtbl)
+    return;
+  json_ghtbl = g_hash_table_new (g_direct_hash, g_direct_equal);
+  unsigned inisiz = 128;
+  json_vect.jsv_arr = calloc (inisiz, sizeof (json_t *));
+  if (!json_vect.jsv_arr)
+    {
+      fprintf (stderr, "calloc failed for %u json_t* pointers (%s)", inisiz,
+               strerror (errno));
+      exit (EXIT_FAILURE);
+    };
+  json_vect.jsv_markarr = calloc (inisiz, sizeof (bool));
+  if (!json_vect.jsv_markarr)
+    {
+      fprintf (stderr, "calloc failed for %u mark flags (%s)", inisiz,
+               strerror (errno));
+      free (json_vect.jsv_arr), json_vect.jsv_arr = NULL;
+      exit (EXIT_FAILURE);
+    };
+  json_vect.jsv_decrefarr = calloc (inisiz, sizeof (bool));
+  if (!json_vect.jsv_decrefarr)
+    {
+      fprintf (stderr, "calloc failed for %u jansson decref flags (%s)",
+               inisiz, strerror (errno));
+      free (json_vect.jsv_arr), json_vect.jsv_arr = NULL;
+      free (json_vect.jsv_markarr), json_vect.jsv_markarr = NULL;
+      exit (EXIT_FAILURE);
+    };
+  json_vect.jsv_count = 0;
+  json_vect.jsv_size = inisiz;
+  atexit (finalize_json);
+}                               /* end initialize_json */
+
 
 Obj *
 make_json (void *root, json_t *js, bool doincref)
@@ -68,7 +146,7 @@ make_json (void *root, json_t *js, bool doincref)
     case JSON_STRING:
     case JSON_INTEGER:
     case JSON_REAL:
-      if (json_ghtbl == NULL || json_gseq == NULL)
+      if (json_ghtbl == NULL || json_vect.jsv_size == 0)
         {
           error ("make_json without JSON initialization");
           return NULL;
@@ -79,19 +157,66 @@ make_json (void *root, json_t *js, bool doincref)
         if (doincref)
           json_incref (js);
         assert ((unsigned) g_hash_table_size (json_ghtbl) ==
-                (unsigned) g_sequence_get_length (json_gseq));
-        int nbjs = (int) g_sequence_get_length (json_gseq);
+                json_vect.jsv_count);
+        int nbjs = (int) json_vect.jsv_count;
         gpointer jgptr = g_hash_table_lookup (json_ghtbl, js);
         if (jgptr)
           {
             jix = (int) (intptr_t) jgptr;
-            assert (jix > 0);
+            assert (jix > 0 && json_vect.jsv_arr[jix] == js);
+            json_vect.jsv_markarr[jix] = true;
           }
         else
           {
+            if (json_vect.jsv_count + 2 >= json_vect.jsv_size)
+              {
+                unsigned newsiz =
+                  ((4 * json_vect.jsv_count / 3 + 10) | 7) + 1;
+                assert (newsiz > json_vect.jsv_size);
+                json_t **newjsarr = calloc (newsiz, sizeof (json_t *));
+                if (!newjsarr)
+                  {
+                    fprintf (stderr, "failed to grow json array to %u (%s)",
+                             newsiz, strerror (errno));
+                    exit (EXIT_FAILURE);
+                  };
+                memcpy (newjsarr, json_vect.jsv_arr,
+                        sizeof (json_t *) * json_vect.jsv_count);
+                bool *newmarkarr = calloc (newsiz, sizeof (bool));
+                if (!newjsarr)
+                  {
+                    free (newjsarr);
+                    fprintf (stderr,
+                             "failed to grow jsonmark array to %u (%s)",
+                             newsiz, strerror (errno));
+                    exit (EXIT_FAILURE);
+                  };
+                memcpy (newmarkarr, json_vect.jsv_markarr,
+                        sizeof (bool) * json_vect.jsv_count);
+                bool *newdecrefarr = calloc (newsiz, sizeof (bool));
+                if (!newjsarr)
+                  {
+                    free (newjsarr);
+                    free (newmarkarr);
+                    fprintf (stderr,
+                             "failed to grow jsondecref array to %u (%s)",
+                             newsiz, strerror (errno));
+                    exit (EXIT_FAILURE);
+                  };
+                memcpy (newdecrefarr, json_vect.jsv_decrefarr,
+                        sizeof (bool) * json_vect.jsv_count);
+                free (json_vect.jsv_arr), json_vect.jsv_arr = newjsarr;
+                free (json_vect.jsv_markarr), json_vect.jsv_markarr =
+                  newmarkarr;
+                free (json_vect.jsv_decrefarr), json_vect.jsv_decrefarr =
+                  newdecrefarr;
+                json_vect.jsv_size = newsiz;
+              }
             jix = nbjs + 1;
-            g_sequence_append (json_gseq, js);
             g_hash_table_insert (json_ghtbl, js, (gpointer) jix);
+            json_vect.jsv_arr[jix] = js;
+            json_vect.jsv_decrefarr[jix] = doincref;
+            json_vect.jsv_markarr[jix] = true;
           }
         res = alloc (root, TJSONREF, sizeof (res->json_index));
         res->json_index = jix;
@@ -121,20 +246,11 @@ json_in_obj (Obj *obj)
       return json_null ();
     default:
       {
-        gpointer ptr = NULL;
-        GSequenceIter *sqit = NULL;
-        if (!json_ghtbl)
-          error ("no JSON hashtable");
-        if (!json_gseq)
-          error ("no JSON sequence");
-        int nbjs = (int) g_sequence_get_length (json_gseq);
-        if (jsix > 0 && jsix <= nbjs)
-          sqit = g_sequence_get_iter_at_pos (json_gseq, (gint) (jsix - 1));
-        if (sqit)
-          ptr = g_sequence_get (sqit);
-        return (json_t *) ptr;
+        if (jsix > 0 && jsix < json_vect.jsv_count)
+          return json_vect.jsv_arr[jsix];
       }
     }
+  return NULL;
 }                               /* end json_in_obj */
 
 /// this routine is called at start of the garbage collector to clear the GC marks for JSON references
@@ -142,10 +258,13 @@ void
 clear_json_marks (void *root)
 {
   assert (root != NULL);
+  for (unsigned jix = 0; jix < json_vect.jsv_count; jix++)
+    json_vect.jsv_markarr[jix] = false;
 #warning unimplemented clear_json_marks
 }                               /* end clear_gtk_json_marks */
 
-
+// this routine is called by the garbage collector to clean all the
+// json_t* which have not been marked by mark_json_ref
 void
 clean_gc_json (void *root)
 {
@@ -162,10 +281,34 @@ mark_json_ref (void *root, Obj *jsob)
   if (jsob == Jsonv_True || jsob == Jsonv_False || jsob == Jsonv_Null)
     return;
   jsix = jsob->json_index;
-  error ("mark_json_ref unimplemented for JSON ref#%d", jsix);
+  if (jsix > 0 && jsix <= json_vect.jsv_count)
+    json_vect.jsv_markarr[jsix] = true;
 #warning unimplemented mark_json_ref
 }                               /* end mark_json_ref */
 
+Obj *
+prim_json_eq (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 2)
+    error ("Malformed = (json)");
+  Obj *values = eval_list (root, env, list);
+  Obj *x = values->car;
+  Obj *y = values->cdr->car;
+  if (x->type == TJSONREF && y->type == TJSONREF)
+    {
+      int xix = x->json_index;
+      int yix = y->json_index;
+      if (xix == yix)
+        return True;
+      if (xix < 0 || yix < 0)
+        return Nil;             /* some json_magic_en */
+      assert (xix > 0 && xix <= (int) json_vect.jsv_count);
+      assert (yix > 0 && yix <= (int) json_vect.jsv_count);
+      if (json_vect.jsv_arr[xix] == json_vect.jsv_arr[yix])
+        return True;
+    }
+  return Nil;
+}                               /* end prim_json_eq */
 
 void
 define_json_primitives (void *root, Obj **env)
@@ -221,38 +364,12 @@ fread_json (FILE * fil, void *root)
 
 
 void
-finalize_json (void)
-{
-  static bool finalized;
-  if (finalized)
-    return;
-  if (!json_ghtbl || !json_gseq)
-    return;
-  g_hash_table_destroy (json_ghtbl);
-  g_sequence_free (json_gseq);
-  json_ghtbl = NULL;
-  json_gseq = NULL;
-  finalized = true;
-}                               /* end finalize_json */
-
-void
 json_seq_remove (gpointer ptr)
 {
   json_t *js = (json_t *) ptr;
   if (js == NULL)
     return;
 }                               /* end json_seq_remove */
-
-void
-initialize_json (void)
-{
-  if (json_ghtbl)
-    return;
-  json_ghtbl = g_hash_table_new (g_direct_hash, g_direct_equal);
-  json_gseq = g_sequence_new ((GDestroyNotify *) json_seq_remove);
-  atexit (finalize_json);
-}                               /* end initialize_json */
-
 
 /************
  ** for Emacs:
