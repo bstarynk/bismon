@@ -186,9 +186,23 @@ file_json_print (FILE * fil, Obj *obj, unsigned depth)
 {
   assert (fil != NULL);
   assert (obj != NULL && obj->type == TJSONREF);
-  fprintf (fil, "<json#%d", obj->json_index);
+  switch (obj->json_index)
+    {
+    case JSONMAG_true:
+      fputs ("<json-true>", fil);
+      break;
+    case JSONMAG_false:
+      fputs ("<json-false>", fil);
+      break;
+    case JSONMAG_null:
+      fputs ("<json-null>", fil);
+      break;
+    default:
+      fprintf (fil, "<json#%d:", obj->json_index);
+      fputs (">", fil);
+      break;
+    }
 #warning file_json_print unimplemented
-  fprintf (fil, ">");
 }                               /* end file_json_print */
 
 
