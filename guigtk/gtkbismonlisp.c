@@ -85,6 +85,7 @@ make_json (void *root, json_t *js, bool doincref)
         if (jgptr)
           {
             jix = (int) (intptr_t) jgptr;
+	    assert (jix > 0);
           }
         else
           {
