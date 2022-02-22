@@ -577,9 +577,12 @@ fread_hash (FILE * f, void *root)
           return make_double (root, db);
         }
     }
-  else if (c == 'j' && fscanf (f, "json%n", &pos) && pos > 0)
+  else if (c == 'j')
     {
-      return fread_json (f, root);
+      if (fscanf (f, "json%n", &pos) >= 0 && pos > 0)
+        {
+          return fread_json (f, root);
+        }
     }
 #warning incomplete fread_hash
   error ("unimplemented hash syntax #%c", (char) c);
@@ -1679,6 +1682,8 @@ main (int argc, char **argv)
   // Debug flags
   debug_gc = getEnvFlag ("MINILISP_DEBUG_GC");
   always_gc = getEnvFlag ("MINILISP_ALWAYS_GC");
+
+  initialize_json ();
 
   // Memory allocation
   memory = alloc_semispace ();
