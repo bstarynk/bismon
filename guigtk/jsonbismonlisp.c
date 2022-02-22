@@ -217,6 +217,7 @@ make_json (void *root, json_t *js, bool doincref)
             json_vect.jsv_arr[jix] = js;
             json_vect.jsv_decrefarr[jix] = doincref;
             json_vect.jsv_markarr[jix] = true;
+            json_vect.jsv_count++;
           }
         res = alloc (root, TJSONREF, sizeof (res->json_index));
         res->json_index = jix;
