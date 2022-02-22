@@ -46,10 +46,9 @@ Obj *Jsonv_Null = &(Obj)
 
 GHashTable *json_ghtbl;         /* an hashtable associating json_t pointers to intptr_t ranks */
 GSequence *json_gseq;           /* a sequence of json_t pointers */
-#warning we probably need a vector associating indexes to json_t*
 
 Obj *
-make_json (void *root, json_t *js)
+make_json (void *root, json_t *js, bool doincref)
 {
   Obj *res = NULL;
   assert (root != NULL);
@@ -73,8 +72,30 @@ make_json (void *root, json_t *js)
         {
           error ("make_json without JSON initialization");
           return NULL;
-        }
-      /* use g_hash_table_insert, but think about json_t* refcount... */
+        };
+      {
+        /* use g_hash_table_insert, but think about json_t* refcount... */
+        int jix = -99;
+        if (doincref)
+          json_incref (js);
+        assert ((unsigned) g_hash_table_size (json_ghtbl) ==
+                (unsigned) g_sequence_get_length (json_gseq));
+        int nbjs = (int) g_sequence_get_length (json_gseq);
+        gpointer jgptr = g_hash_table_lookup (json_ghtbl, js);
+        if (jgptr)
+          {
+            jix = (int) (intptr_t) jgptr;
+          }
+        else
+          {
+            jix = nbjs + 1;
+            g_sequence_append (json_gseq, js);
+            g_hash_table_insert (json_ghtbl, js, (gpointer) jix);
+          }
+        res = alloc (root, TJSONREF, sizeof (res->json_index));
+        res->json_index = jix;
+        return res;
+      }
     default:
       error ("make_json with invalid Jansson type %d", (int) js->type);
     };
@@ -98,13 +119,21 @@ json_in_obj (Obj *obj)
     case JSONMAG_null:
       return json_null ();
     default:
-      if (!json_ghtbl)
-        error ("no JSON hashtable");
-      ///return (json_t*)g_hash_table_lookup(json_ghtbl, (intptr_t)obj->json_index);
-      break;
+      {
+        gpointer ptr = NULL;
+        GSequenceIter *sqit = NULL;
+        if (!json_ghtbl)
+          error ("no JSON hashtable");
+        if (!json_gseq)
+          error ("no JSON sequence");
+        int nbjs = (int) g_sequence_get_length (json_gseq);
+        if (jsix > 0 && jsix <= nbjs)
+          sqit = g_sequence_get_iter_at_pos (json_gseq, (gint) (jsix - 1));
+        if (sqit)
+          ptr = g_sequence_get (sqit);
+        return (json_t *) ptr;
+      }
     }
-#warning unimplemented json_in_obj
-  error ("json_in_obj unimplemented for JSON ref#%d", jsix);
 }                               /* end json_in_obj */
 
 /// this routine is called at start of the garbage collector to clear the GC marks for GTK and JSON references
