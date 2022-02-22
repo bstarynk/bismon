@@ -213,7 +213,7 @@ make_json (void *root, json_t *js, bool doincref)
                 json_vect.jsv_size = newsiz;
               }
             jix = nbjs + 1;
-            g_hash_table_insert (json_ghtbl, js, (gpointer) jix);
+            g_hash_table_insert (json_ghtbl, js, (gpointer) (intptr_t) jix);
             json_vect.jsv_arr[jix] = js;
             json_vect.jsv_decrefarr[jix] = doincref;
             json_vect.jsv_markarr[jix] = true;
@@ -246,7 +246,7 @@ json_in_obj (Obj *obj)
       return json_null ();
     default:
       {
-        if (jsix > 0 && jsix < json_vect.jsv_count)
+        if (jsix > 0 && jsix < (int) json_vect.jsv_count)
           return json_vect.jsv_arr[jsix];
       }
     }
@@ -260,7 +260,6 @@ clear_json_marks (void *root)
   assert (root != NULL);
   for (unsigned jix = 0; jix < json_vect.jsv_count; jix++)
     json_vect.jsv_markarr[jix] = false;
-#warning unimplemented clear_json_marks
 }                               /* end clear_gtk_json_marks */
 
 // this routine is called by the garbage collector to clean all the
@@ -269,6 +268,16 @@ void
 clean_gc_json (void *root)
 {
   assert (root != NULL);
+  int lastix = -1;
+  assert (json_vect.jsv_count < json_vect.jsv_size);
+  for (unsigned jix = 1; jix <= json_vect.jsv_count; jix++)
+    {
+      if (!json_vect.jsv_arr[jix])
+        continue;
+      if (json_vect.jsv_markarr[jix] == false)
+        {
+        }
+    }
 #warning unimplemented clean_gc_json
 }                               /* end clean_gc_json */
 
@@ -329,7 +338,8 @@ file_json_print (FILE * fil, Obj *obj, unsigned depth)
 {
   assert (fil != NULL);
   assert (obj != NULL && obj->type == TJSONREF);
-  switch (obj->json_index)
+  int jix = obj->json_index;
+  switch (jix)
     {
     case JSONMAG_true:
       fputs ("<json-true>", fil);
@@ -341,11 +351,32 @@ file_json_print (FILE * fil, Obj *obj, unsigned depth)
       fputs ("<json-null>", fil);
       break;
     default:
-      fprintf (fil, "<json#%d:", obj->json_index);
-      fputs (">", fil);
+      {
+        json_t *js = NULL;
+        fprintf (fil, "<json#%d:", jix);
+        if (jix > 0 && jix <= (int) json_vect.jsv_count)
+          {
+            assert (json_vect.jsv_count < json_vect.jsv_size);
+            assert (json_vect.jsv_arr != NULL);
+            assert (json_vect.jsv_markarr != NULL);
+            js = json_vect.jsv_arr[jix];
+            if (js)
+              json_vect.jsv_markarr[jix] = true;
+          }
+        if (!js)
+          fprintf (fil, "<json#%d??>", jix);
+        else
+          {
+            fprintf (fil, "<json#%d:", jix);
+            json_dumpf (js, fil,
+                        JSON_INDENT (depth)
+                        | JSON_SORT_KEYS | JSON_REAL_PRECISION (8)
+                        | JSON_COMPACT);
+            fputs (">", fil);
+          }
+      }
       break;
     }
-#warning file_json_print unimplemented
 }                               /* end file_json_print */
 
 
@@ -354,22 +385,28 @@ file_json_print (FILE * fil, Obj *obj, unsigned depth)
 Obj *
 fread_json (FILE * fil, void *root)
 {
+  json_t *js = NULL;
   assert (fil != NULL);
   assert (root != NULL);
-  if (!json_ghtbl)
+  if (!json_ghtbl || json_vect.jsv_arr == NULL)
     error ("fread_json without JSON initialization");
-#warning fread_json unimplemented
-  error ("fread_json unimplemented");
+  json_error_t jerr = { };
+  js = json_loadf (fil, JSON_DECODE_ANY
+                   | JSON_DISABLE_EOF_CHECK | JSON_REJECT_DUPLICATES, &jerr);
+  if (!js)
+    {
+      char errmsg[80];
+      memset (errmsg, 0, sizeof (errmsg));
+      strncpy (errmsg, jerr.text, sizeof (errmsg) - 1);
+      if (strlen (errmsg) > 0)
+        errmsg[strlen (errmsg) - 1] = (char) 0; // remove json_error_code
+      error ("fread_json failed %s", errmsg);
+      return NULL;
+    };
+  return make_json (root, js, KEEP_REFCNT_JANSSON);
 }                               /* end fread_json */
 
 
-void
-json_seq_remove (gpointer ptr)
-{
-  json_t *js = (json_t *) ptr;
-  if (js == NULL)
-    return;
-}                               /* end json_seq_remove */
 
 /************
  ** for Emacs:
