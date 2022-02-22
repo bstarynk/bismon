@@ -16,10 +16,17 @@ error (char *fmt, ...)
 }                               /* end error */
 
 // Constants
-Obj *True = &(Obj) {.type = TTRUE,.size = 0 };
-Obj *Nil = &(Obj) {.type = TNIL,.size = 0 };
-Obj *Dot = &(Obj) {.type = TDOT,.size = 0 };
-Obj *Cparen = &(Obj) {.type = TCPAREN,.size = 0 };
+Obj *True = &(Obj)
+{.type = TTRUE,.size = 0 };
+
+Obj *Nil = &(Obj)
+{.type = TNIL,.size = 0 };
+
+Obj *Dot = &(Obj)
+{.type = TDOT,.size = 0 };
+
+Obj *Cparen = &(Obj)
+{.type = TCPAREN,.size = 0 };
 
 // The list containing all symbols. Such data structure is traditionally called the "obarray", but I
 // avoid using it as a variable name as this is not an array but a list.
@@ -173,7 +180,7 @@ Obj *scan2;
 // Moves one object from the from-space to the to-space. Returns the object's new address. If the
 // object has already been moved, does nothing but just returns the new address.
 static inline Obj *
-forward (Obj * obj)
+forward (Obj *obj)
 {
   // If the object's address is not in the from-space, the object is not managed by GC nor it
   // has already been moved to the to-space.
@@ -203,7 +210,7 @@ forward (Obj * obj)
 }                               /* end inline routine forward */
 
 Obj *
-forward_for_gc (Obj * ob)
+forward_for_gc (Obj *ob)
 {
   return forward (ob);
 }                               /* end forward_for_gc */
@@ -314,7 +321,7 @@ make_int (void *root, long lval)
 }
 
 Obj *
-cons (void *root, Obj ** car, Obj ** cdr)
+cons (void *root, Obj **car, Obj **cdr)
 {
   Obj *cell = alloc (root, TCELL, sizeof (Obj *) * 2);
   cell->car = *car;
@@ -390,7 +397,7 @@ make_primitive (void *root, Primitive * fn, const char *name)
 }
 
 Obj *
-make_function (void *root, Obj ** env, int type, Obj ** params, Obj ** body)
+make_function (void *root, Obj **env, int type, Obj **params, Obj **body)
 {
   static long fun_counter;
   assert (type == TFUNCTION || type == TMACRO);
@@ -403,7 +410,7 @@ make_function (void *root, Obj ** env, int type, Obj ** params, Obj ** body)
 }
 
 struct Obj *
-make_env (void *root, Obj ** vars, Obj ** up)
+make_env (void *root, Obj **vars, Obj **up)
 {
   Obj *r = alloc (root, TENV, sizeof (Obj *) * 2);
   r->vars = *vars;
@@ -413,7 +420,7 @@ make_env (void *root, Obj ** vars, Obj ** up)
 
 // Returns ((x . y) . a)
 Obj *
-acons (void *root, Obj ** x, Obj ** y, Obj ** a)
+acons (void *root, Obj **x, Obj **y, Obj **a)
 {
   DEFINE1 (cell);
   *cell = cons (root, x, y);
@@ -441,7 +448,7 @@ fpeek (FILE * f)
 
 // Destructively reverses the given list.
 Obj *
-reverse (Obj * p)
+reverse (Obj *p)
 {
   Obj *ret = Nil;
   while (p != Nil)
@@ -503,7 +510,7 @@ fread_list (FILE * f, void *root)
 Obj *
 intern (void *root, char *name)
 {
-  for (Obj * p = Symbols; p != Nil; p = p->cdr)
+  for (Obj *p = Symbols; p != Nil; p = p->cdr)
     if (strcmp (name, p->car->sy_name) == 0)
       return p->car;
   DEFINE1 (sym);
@@ -714,7 +721,7 @@ fread_expr (FILE * f, void *root)
 
 // Prints the given object.
 void
-file_print (FILE * fil, Obj * obj, unsigned depth)
+file_print (FILE * fil, Obj *obj, unsigned depth)
 {
   assert (fil != NULL);
   assert (obj != NULL);
@@ -855,14 +862,14 @@ file_print (FILE * fil, Obj * obj, unsigned depth)
 }                               /* end file_print */
 
 void
-print (Obj * obj)
+print (Obj *obj)
 {
   file_print (stdout, obj, 0);
 }                               /* end print */
 
 // Returns the length of the given list. -1 if it's not a proper list.
 int
-length (Obj * list)
+length (Obj *list)
 {
   int len = 0;
   for (; list->type == TCELL; list = list->cdr)
@@ -874,10 +881,10 @@ length (Obj * list)
 // Evaluator
 //======================================================================
 
-Obj *eval (void *root, Obj ** env, Obj ** obj);
+Obj *eval (void *root, Obj **env, Obj **obj);
 
 void
-add_variable (void *root, Obj ** env, Obj ** sym, Obj ** val)
+add_variable (void *root, Obj **env, Obj **sym, Obj **val)
 {
   DEFINE2 (vars, tmp);
   *vars = (*env)->vars;
@@ -887,7 +894,7 @@ add_variable (void *root, Obj ** env, Obj ** sym, Obj ** val)
 
 // Returns a newly created environment frame.
 Obj *
-push_env (void *root, Obj ** env, Obj ** vars, Obj ** vals)
+push_env (void *root, Obj **env, Obj **vars, Obj **vals)
 {
   DEFINE3 (map, sym, val);
   *map = Nil;
@@ -906,7 +913,7 @@ push_env (void *root, Obj ** env, Obj ** vars, Obj ** vals)
 
 // Evaluates the list elements from head and returns the last return value.
 Obj *
-progn (void *root, Obj ** env, Obj ** list)
+progn (void *root, Obj **env, Obj **list)
 {
   DEFINE2 (lp, r);
   for (*lp = *list; *lp != Nil; *lp = (*lp)->cdr)
@@ -919,7 +926,7 @@ progn (void *root, Obj ** env, Obj ** list)
 
 // Evaluates all the list elements and returns their return values as a new list.
 Obj *
-eval_list (void *root, Obj ** env, Obj ** list)
+eval_list (void *root, Obj **env, Obj **list)
 {
   DEFINE4 (head, lp, expr, result);
   *head = Nil;
@@ -933,13 +940,13 @@ eval_list (void *root, Obj ** env, Obj ** list)
 }
 
 bool
-is_list (Obj * obj)
+is_list (Obj *obj)
 {
   return obj == Nil || obj->type == TCELL;
 }
 
 Obj *
-apply_func (void *root, Obj ** env, Obj ** fn, Obj ** args)
+apply_func (void *root, Obj **env, Obj **fn, Obj **args)
 {
   DEFINE3 (params, newenv, body);
   *params = (*fn)->params;
@@ -951,7 +958,7 @@ apply_func (void *root, Obj ** env, Obj ** fn, Obj ** args)
 
 // Apply fn with args.
 Obj *
-apply (void *root, Obj ** env, Obj ** fn, Obj ** args)
+apply (void *root, Obj **env, Obj **fn, Obj **args)
 {
   if (!is_list (*args))
     error ("argument must be a list");
@@ -991,11 +998,11 @@ apply (void *root, Obj ** env, Obj ** fn, Obj ** args)
 
 // Searches for a variable by symbol. Returns null if not found.
 Obj *
-find (Obj ** env, Obj * sym)
+find (Obj **env, Obj *sym)
 {
-  for (Obj * p = *env; p != Nil; p = p->up)
+  for (Obj *p = *env; p != Nil; p = p->up)
     {
-      for (Obj * cell = p->vars; cell != Nil; cell = cell->cdr)
+      for (Obj *cell = p->vars; cell != Nil; cell = cell->cdr)
         {
           Obj *bind = cell->car;
           if (sym == bind->car)
@@ -1007,7 +1014,7 @@ find (Obj ** env, Obj * sym)
 
 // Expands the given macro application form.
 Obj *
-macroexpand (void *root, Obj ** env, Obj ** obj)
+macroexpand (void *root, Obj **env, Obj **obj)
 {
   if ((*obj)->type != TCELL || (*obj)->car->type != TSYMBOL)
     return *obj;
@@ -1022,7 +1029,7 @@ macroexpand (void *root, Obj ** env, Obj ** obj)
 
 // Evaluates the S expression.
 Obj *
-eval (void *root, Obj ** env, Obj ** obj)
+eval (void *root, Obj **env, Obj **obj)
 {
   switch ((*obj)->type)
     {
@@ -1068,7 +1075,7 @@ eval (void *root, Obj ** env, Obj ** obj)
 
 // 'expr
 Obj *
-prim_quote (void *root, Obj ** env, Obj ** list)
+prim_quote (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 1)
     error ("Malformed quote");
@@ -1077,7 +1084,7 @@ prim_quote (void *root, Obj ** env, Obj ** list)
 
 // (cons expr expr)
 Obj *
-prim_cons (void *root, Obj ** env, Obj ** list)
+prim_cons (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2)
     error ("Malformed cons");
@@ -1088,7 +1095,7 @@ prim_cons (void *root, Obj ** env, Obj ** list)
 
 // (car <cell>)
 Obj *
-prim_car (void *root, Obj ** env, Obj ** list)
+prim_car (void *root, Obj **env, Obj **list)
 {
   Obj *args = eval_list (root, env, list);
   if (args->car->type != TCELL || args->cdr != Nil)
@@ -1098,7 +1105,7 @@ prim_car (void *root, Obj ** env, Obj ** list)
 
 // (cdr <cell>)
 Obj *
-prim_cdr (void *root, Obj ** env, Obj ** list)
+prim_cdr (void *root, Obj **env, Obj **list)
 {
   Obj *args = eval_list (root, env, list);
   if (args->car->type != TCELL || args->cdr != Nil)
@@ -1108,7 +1115,7 @@ prim_cdr (void *root, Obj ** env, Obj ** list)
 
 // (setq <symbol> expr)
 Obj *
-prim_setq (void *root, Obj ** env, Obj ** list)
+prim_setq (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2 || (*list)->car->type != TSYMBOL)
     error ("Malformed setq");
@@ -1124,7 +1131,7 @@ prim_setq (void *root, Obj ** env, Obj ** list)
 
 // (setcar <cell> expr)
 Obj *
-prim_setcar (void *root, Obj ** env, Obj ** list)
+prim_setcar (void *root, Obj **env, Obj **list)
 {
   DEFINE1 (args);
   *args = eval_list (root, env, list);
@@ -1136,7 +1143,7 @@ prim_setcar (void *root, Obj ** env, Obj ** list)
 
 // (while cond expr ...)
 Obj *
-prim_while (void *root, Obj ** env, Obj ** list)
+prim_while (void *root, Obj **env, Obj **list)
 {
   if (length (*list) < 2)
     error ("Malformed while");
@@ -1152,7 +1159,7 @@ prim_while (void *root, Obj ** env, Obj ** list)
 
 // (gensym)
 Obj *
-prim_gensym (void *root, Obj ** env, Obj ** list)
+prim_gensym (void *root, Obj **env, Obj **list)
 {
   static int count = 0;
   char buf[10];
@@ -1162,19 +1169,19 @@ prim_gensym (void *root, Obj ** env, Obj ** list)
 
 // (gitid)
 Obj *
-prim_gitid (void *root, Obj ** env, Obj ** list)
+prim_gitid (void *root, Obj **env, Obj **list)
 {
   return make_string (root, BISMON_GIT);
 }
 
 // (+ <number> ...)
 Obj *
-prim_plus (void *root, Obj ** env, Obj ** list)
+prim_plus (void *root, Obj **env, Obj **list)
 {
   int sum = 0;
   double dsum = 0.0;
   bool dblres = false;
-  for (Obj * args = eval_list (root, env, list);
+  for (Obj *args = eval_list (root, env, list);
        args && args != Nil; args = args->cdr)
     {
       if (args->car->type != TINT && args->car->type != TDOUBLE)
@@ -1201,13 +1208,13 @@ prim_plus (void *root, Obj ** env, Obj ** list)
 
 // (- <number> ...)
 Obj *
-prim_minus (void *root, Obj ** env, Obj ** list)
+prim_minus (void *root, Obj **env, Obj **list)
 {
   long sub = 0;
   double dbsub = 0.0;
   bool dblres = false;
   Obj *args = eval_list (root, env, list);
-  for (Obj * p = args; p != Nil; p = p->cdr)
+  for (Obj *p = args; p != Nil; p = p->cdr)
     {
       if (p->car->type != TINT && p->car->type != TDOUBLE)
         error ("- takes only numbers");
@@ -1229,7 +1236,7 @@ prim_minus (void *root, Obj ** env, Obj ** list)
     }
   else
     sub = args->car->lvalue;
-  for (Obj * p = args->cdr; p != Nil; p = p->cdr)
+  for (Obj *p = args->cdr; p != Nil; p = p->cdr)
     {
       if (p->type == TINT)
         {
@@ -1247,7 +1254,7 @@ prim_minus (void *root, Obj ** env, Obj ** list)
 
 // (< <number> <number>)    or    (< <string> <string>)   or (< <symbol> <symbol>)
 Obj *
-prim_lt (void *root, Obj ** env, Obj ** list)
+prim_lt (void *root, Obj **env, Obj **list)
 {
   Obj *args = eval_list (root, env, list);
   if (length (args) != 2)
@@ -1296,7 +1303,7 @@ fail:
 
 // (<= <number> <number>)   or  (<= <string> <string>)  or  (<= <symbol> <symbol>)
 Obj *
-prim_lessequal (void *root, Obj ** env, Obj ** list)
+prim_lessequal (void *root, Obj **env, Obj **list)
 {
   Obj *args = eval_list (root, env, list);
   if (length (args) != 2)
@@ -1347,7 +1354,7 @@ fail:
 
 // (> <number> <number>)   or  (> <string> <string>)  or (> <symbol> <symbol>)
 Obj *
-prim_gt (void *root, Obj ** env, Obj ** list)
+prim_gt (void *root, Obj **env, Obj **list)
 {
   Obj *args = eval_list (root, env, list);
   if (length (args) != 2)
@@ -1398,7 +1405,7 @@ fail:
 
 // (>= <number> <number>)  or  (>= <string> <string>)  or (>= <symbol> <symbol>)
 Obj *
-prim_greaterequal (void *root, Obj ** env, Obj ** list)
+prim_greaterequal (void *root, Obj **env, Obj **list)
 {
   Obj *args = eval_list (root, env, list);
   if (length (args) != 2)
@@ -1448,7 +1455,7 @@ fail:
 
 
 Obj *
-handle_function (void *root, Obj ** env, Obj ** list, int type)
+handle_function (void *root, Obj **env, Obj **list, int type)
 {
   if ((*list)->type != TCELL || !is_list ((*list)->car)
       || (*list)->cdr->type != TCELL)
@@ -1467,13 +1474,13 @@ handle_function (void *root, Obj ** env, Obj ** list, int type)
 
 // (lambda (<symbol> ...) expr ...)
 Obj *
-prim_lambda (void *root, Obj ** env, Obj ** list)
+prim_lambda (void *root, Obj **env, Obj **list)
 {
   return handle_function (root, env, list, TFUNCTION);
 }
 
 Obj *
-handle_defun (void *root, Obj ** env, Obj ** list, int type)
+handle_defun (void *root, Obj **env, Obj **list, int type)
 {
   if ((*list)->car->type != TSYMBOL || (*list)->cdr->type != TCELL)
     error ("Malformed defun");
@@ -1487,14 +1494,14 @@ handle_defun (void *root, Obj ** env, Obj ** list, int type)
 
 // (defun <symbol> (<symbol> ...) expr ...)
 Obj *
-prim_defun (void *root, Obj ** env, Obj ** list)
+prim_defun (void *root, Obj **env, Obj **list)
 {
   return handle_defun (root, env, list, TFUNCTION);
 }
 
 // (define <symbol> expr)
 Obj *
-prim_define (void *root, Obj ** env, Obj ** list)
+prim_define (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2 || (*list)->car->type != TSYMBOL)
     error ("Malformed define");
@@ -1508,14 +1515,14 @@ prim_define (void *root, Obj ** env, Obj ** list)
 
 // (defmacro <symbol> (<symbol> ...) expr ...)
 Obj *
-prim_defmacro (void *root, Obj ** env, Obj ** list)
+prim_defmacro (void *root, Obj **env, Obj **list)
 {
   return handle_defun (root, env, list, TMACRO);
 }
 
 // (macroexpand expr)
 Obj *
-prim_macroexpand (void *root, Obj ** env, Obj ** list)
+prim_macroexpand (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 1)
     error ("Malformed macroexpand");
@@ -1526,7 +1533,7 @@ prim_macroexpand (void *root, Obj ** env, Obj ** list)
 
 // (println expr)
 Obj *
-prim_println (void *root, Obj ** env, Obj ** list)
+prim_println (void *root, Obj **env, Obj **list)
 {
   DEFINE1 (tmp);
   *tmp = (*list)->car;
@@ -1537,7 +1544,7 @@ prim_println (void *root, Obj ** env, Obj ** list)
 
 // (if expr expr expr ...)
 Obj *
-prim_if (void *root, Obj ** env, Obj ** list)
+prim_if (void *root, Obj **env, Obj **list)
 {
   if (length (*list) < 2)
     error ("Malformed if");
@@ -1555,7 +1562,7 @@ prim_if (void *root, Obj ** env, Obj ** list)
 
 // (= <scalar> <scalar>)
 Obj *
-prim_scalar_eq (void *root, Obj ** env, Obj ** list)
+prim_scalar_eq (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2)
     error ("Malformed =");
@@ -1591,7 +1598,7 @@ fail:
 
 // (eq expr expr)
 Obj *
-prim_eq (void *root, Obj ** env, Obj ** list)
+prim_eq (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2)
     error ("Malformed eq");
@@ -1600,7 +1607,7 @@ prim_eq (void *root, Obj ** env, Obj ** list)
 }
 
 void
-add_primitive (void *root, Obj ** env, char *name, Primitive * fn)
+add_primitive (void *root, Obj **env, char *name, Primitive * fn)
 {
   DEFINE2 (sym, prim);
   *sym = intern (root, name);
@@ -1609,7 +1616,7 @@ add_primitive (void *root, Obj ** env, char *name, Primitive * fn)
 }
 
 void
-define_constants (void *root, Obj ** env)
+define_constants (void *root, Obj **env)
 {
   DEFINE1 (sym);
   *sym = intern (root, "t");
@@ -1617,7 +1624,7 @@ define_constants (void *root, Obj ** env)
 }
 
 void
-define_primitives (void *root, Obj ** env)
+define_primitives (void *root, Obj **env)
 {
   add_primitive (root, env, "quote", prim_quote);
   add_primitive (root, env, "cons", prim_cons);

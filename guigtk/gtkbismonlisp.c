@@ -28,20 +28,24 @@
 #include <jansson.h>
 #include <gtk/gtk.h>
 
-Obj *Jsonv_True = &(Obj) {.type = TJSONREF,.size = 0,   //
+Obj *Jsonv_True = &(Obj)
+{.type = TJSONREF,.size = 0,    //
   .json_index = JSONMAG_true
 };
 
-Obj *Jsonv_False = &(Obj) {.type = TJSONREF,.size = 0,  //
+Obj *Jsonv_False = &(Obj)
+{.type = TJSONREF,.size = 0,    //
   .json_index = JSONMAG_false
 };
 
-Obj *Jsonv_Null = &(Obj) {.type = TJSONREF,.size = 0,   //
+Obj *Jsonv_Null = &(Obj)
+{.type = TJSONREF,.size = 0,    //
   .json_index = JSONMAG_null
 };
 
 
 GHashTable *json_ghtbl;         /* an hashtable associating json_t pointers to intptr_t ranks */
+GSequence *json_gseq;           /* a sequence of json_t pointers */
 #warning we probably need a vector associating indexes to json_t*
 
 Obj *
@@ -65,8 +69,11 @@ make_json (void *root, json_t * js)
     case JSON_STRING:
     case JSON_INTEGER:
     case JSON_REAL:
-      if (json_ghtbl == NULL)
-        error ("make_json without JSON initialization");
+      if (json_ghtbl == NULL || json_gseq == NULL)
+        {
+          error ("make_json without JSON initialization");
+          return NULL;
+        }
       /* use g_hash_table_insert, but think about json_t* refcount... */
     default:
       error ("make_json with invalid Jansson type %d", (int) js->type);
@@ -74,7 +81,7 @@ make_json (void *root, json_t * js)
 }                               /* end make_json */
 
 json_t *
-json_in_obj (Obj * obj)
+json_in_obj (Obj *obj)
 {
   assert (obj != NULL);
   if (obj->type != TJSONREF)
@@ -108,7 +115,7 @@ clear_gtk_json_marks (void *root)
 
 
 void
-mark_json_ref (void *root, Obj * jsob)
+mark_json_ref (void *root, Obj *jsob)
 {
   int jsix = -1;
   assert (root != NULL);
@@ -122,7 +129,7 @@ mark_json_ref (void *root, Obj * jsob)
 
 
 void
-mark_gtk_ref (void *root, Obj * gtkob)
+mark_gtk_ref (void *root, Obj *gtkob)
 {
   int gtkix = -1;
   assert (root != NULL);
@@ -142,7 +149,7 @@ clean_gc_json_gtk (void *root)
 }                               /* end clean_gc_json_gtk */
 
 void
-file_json_print (FILE * fil, Obj * obj, unsigned depth)
+file_json_print (FILE * fil, Obj *obj, unsigned depth)
 {
   assert (fil != NULL);
   assert (obj != NULL && obj->type == TJSONREF);
@@ -153,7 +160,7 @@ file_json_print (FILE * fil, Obj * obj, unsigned depth)
 
 
 void
-file_gtk_print (FILE * fil, Obj * obj, unsigned depth)
+file_gtk_print (FILE * fil, Obj *obj, unsigned depth)
 {
   assert (fil != NULL);
   assert (obj != NULL && obj->type == TGTKREF);
@@ -163,7 +170,7 @@ file_gtk_print (FILE * fil, Obj * obj, unsigned depth)
 }                               /* end file_gtk_print */
 
 Obj *
-prim_json_eq (void *root, Obj ** env, Obj ** list)
+prim_json_eq (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2)
     error ("Malformed = (json)");
@@ -185,7 +192,7 @@ prim_json_eq (void *root, Obj ** env, Obj ** list)
 }                               /* end prim_json_eq */
 
 Obj *
-prim_gtk_eq (void *root, Obj ** env, Obj ** list)
+prim_gtk_eq (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2)
     error ("Malformed = (gtk)");
@@ -225,11 +232,22 @@ finalize_json (void)
   static bool finalized;
   if (finalized)
     return;
-  if (!json_ghtbl)
+  if (!json_ghtbl || !json_gseq)
     return;
   g_hash_table_destroy (json_ghtbl);
+  g_sequence_free (json_gseq);
+  json_ghtbl = NULL;
+  json_gseq = NULL;
   finalized = true;
 }                               /* end finalize_json */
+
+void
+json_seq_remove (gpointer ptr)
+{
+  json_t *js = (json_t *) ptr;
+  if (js == NULL)
+    return;
+}                               /* end json_seq_remove */
 
 void
 initialize_json (void)
@@ -237,6 +255,7 @@ initialize_json (void)
   if (json_ghtbl)
     return;
   json_ghtbl = g_hash_table_new (g_direct_hash, g_direct_equal);
+  json_gseq = g_sequence_new ((GDestroyNotify *) json_seq_remove);
   atexit (finalize_json);
 }                               /* end initialize_json */
 

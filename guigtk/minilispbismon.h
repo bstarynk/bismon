@@ -155,12 +155,12 @@ extern void gc (void *root);
 extern Obj *forward_for_gc (Obj *);
 
 extern void clear_gtk_json_marks (void *root);
-extern void mark_json_ref (void *root, Obj * jsob);
-extern void mark_gtk_ref (void *root, Obj * gtkob);
+extern void mark_json_ref (void *root, Obj *jsob);
+extern void mark_gtk_ref (void *root, Obj *gtkob);
 extern void clean_gc_json_gtk (void *root);
-extern Obj *prim_scalar_eq (void *root, Obj ** env, Obj ** list);
-extern Obj *prim_json_eq (void *root, Obj ** env, Obj ** list);
-extern Obj *prim_gtk_eq (void *root, Obj ** env, Obj ** list);
+extern Obj *prim_scalar_eq (void *root, Obj **env, Obj **list);
+extern Obj *prim_json_eq (void *root, Obj **env, Obj **list);
+extern Obj *prim_gtk_eq (void *root, Obj **env, Obj **list);
 
 //======================================================================
 // Constructors
@@ -168,19 +168,19 @@ extern Obj *prim_gtk_eq (void *root, Obj ** env, Obj ** list);
 
 extern Obj *make_int (void *root, long ivalue);
 extern Obj *make_double (void *root, double dvalue);
-extern Obj *cons (void *root, Obj ** car, Obj ** cdr);
+extern Obj *cons (void *root, Obj **car, Obj **cdr);
 extern Obj *make_symbol (void *root, char *name);
 extern Obj *make_string (void *root, char *buf);
 extern Obj *make_json (void *root, json_t * json);
 extern Obj *make_sprintf (void *root, const char *fmt, ...)
   __attribute__((format (printf, 2, 3)));
 extern Obj *make_primitive (void *root, Primitive * fn, const char *name);
-extern Obj *make_function (void *root, Obj ** env, int type,
-                           Obj ** params, Obj ** body);
-struct Obj *make_env (void *root, Obj ** vars, Obj ** up);
+extern Obj *make_function (void *root, Obj **env, int type,
+                           Obj **params, Obj **body);
+struct Obj *make_env (void *root, Obj **vars, Obj **up);
 
 // Returns ((x . y) . a)
-extern Obj *acons (void *root, Obj ** x, Obj ** y, Obj ** a);
+extern Obj *acons (void *root, Obj **x, Obj **y, Obj **a);
 
 
 //// reader
@@ -190,19 +190,19 @@ extern Obj *fread_json (FILE * fil, void *root);
 
 
 // Evaluates all the list elements and returns their return values as a new list.
-extern Obj *eval_list (void *root, Obj ** env, Obj ** list);
+extern Obj *eval_list (void *root, Obj **env, Obj **list);
 
 // Returns the length of the given list. -1 if it's not a proper list.
-extern int length (Obj * list);
+extern int length (Obj *list);
 /// printer
-extern void print (Obj * obj);
-extern void file_print (FILE * fil, Obj * obj, unsigned depth);
-extern void file_json_print (FILE * fil, Obj * obj, unsigned depth);
-extern void file_gtk_print (FILE * fil, Obj * obj, unsigned depth);
+extern void print (Obj *obj);
+extern void file_print (FILE * fil, Obj *obj, unsigned depth);
+extern void file_json_print (FILE * fil, Obj *obj, unsigned depth);
+extern void file_gtk_print (FILE * fil, Obj *obj, unsigned depth);
 
 
 /// gives the JSON value inside some Obj, or else NULL; inverse of make_json
-extern json_t *json_in_obj (Obj * obj);
+extern json_t *json_in_obj (Obj *obj);
 
 
 
