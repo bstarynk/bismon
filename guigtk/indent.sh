@@ -1,5 +1,5 @@
 #!/bin/bash -x
-indent  --gnu-style --no-tabs --honour-newlines -T Obj minilispbismon.h
-indent  --gnu-style --no-tabs --honour-newlines -T Obj -T GHashTable -T GSequence gtkbismonlisp.c
-indent  --gnu-style --no-tabs --honour-newlines -T Obj minilisp.c
+indent  --gnu-style --no-tabs --honour-newlines -T Obj -T json_t minilispbismon.h
+indent  --gnu-style --no-tabs --honour-newlines -T Obj -T GHashTable -T GSequence -T json_t gtkbismonlisp.c
+indent  --gnu-style --no-tabs --honour-newlines -T Obj -T json_t minilisp.c
 

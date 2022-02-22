@@ -171,7 +171,7 @@ extern Obj *make_double (void *root, double dvalue);
 extern Obj *cons (void *root, Obj **car, Obj **cdr);
 extern Obj *make_symbol (void *root, char *name);
 extern Obj *make_string (void *root, char *buf);
-extern Obj *make_json (void *root, json_t * json);
+extern Obj *make_json (void *root, json_t *json);
 extern Obj *make_sprintf (void *root, const char *fmt, ...)
   __attribute__((format (printf, 2, 3)));
 extern Obj *make_primitive (void *root, Primitive * fn, const char *name);
@@ -213,3 +213,4 @@ extern void initialize_json (void);
 /// initialize support for GTK
 extern void initialize_gtk (int *pargc, char **argv);
 #endif /*MINILISPBISMON_HEADER */
+///// end of file bismon/gtkgui/minilispbismon.h

@@ -49,7 +49,7 @@ GSequence *json_gseq;           /* a sequence of json_t pointers */
 #warning we probably need a vector associating indexes to json_t*
 
 Obj *
-make_json (void *root, json_t * js)
+make_json (void *root, json_t *js)
 {
   Obj *res = NULL;
   assert (root != NULL);
@@ -79,6 +79,8 @@ make_json (void *root, json_t * js)
       error ("make_json with invalid Jansson type %d", (int) js->type);
     };
 }                               /* end make_json */
+
+
 
 json_t *
 json_in_obj (Obj *obj)
@@ -271,3 +273,5 @@ initialize_gtk (int *pargc, char **argv)
  ** compile-command: "./build.sh" ;;
  ** End: ;;
  ************/
+
+///// end of file bismon/gtkgui/gtkbismonlisp.c
