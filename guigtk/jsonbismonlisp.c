@@ -206,10 +206,10 @@ make_json (void *root, json_t *js, bool doincref)
                 memcpy (newdecrefarr, json_vect.jsv_decrefarr,
                         sizeof (bool) * json_vect.jsv_count);
                 free (json_vect.jsv_arr), json_vect.jsv_arr = newjsarr;
-                free (json_vect.jsv_markarr), json_vect.jsv_markarr =
-                  newmarkarr;
-                free (json_vect.jsv_decrefarr), json_vect.jsv_decrefarr =
-                  newdecrefarr;
+                free (json_vect.jsv_markarr),   //
+                  json_vect.jsv_markarr = newmarkarr;
+                free (json_vect.jsv_decrefarr), //
+                  json_vect.jsv_decrefarr = newdecrefarr;
                 json_vect.jsv_size = newsiz;
               }
             jix = nbjs + 1;
@@ -354,7 +354,6 @@ file_json_print (FILE * fil, Obj *obj, unsigned depth)
     default:
       {
         json_t *js = NULL;
-        fprintf (fil, "<json#%d:", jix);
         if (jix > 0 && jix <= (int) json_vect.jsv_count)
           {
             assert (json_vect.jsv_count < json_vect.jsv_size);
@@ -365,19 +364,19 @@ file_json_print (FILE * fil, Obj *obj, unsigned depth)
               json_vect.jsv_markarr[jix] = true;
           }
         if (!js)
-          fprintf (fil, "<json#%d?-?>", jix);
+          fprintf (fil, "<json#%d?nojs?>", jix);
         else
           {
             fprintf (fil, "<json#%d:", jix);
-	    fflush (fil);
-            int failedj =
-	      json_dumpf (js, fil,
-			  JSON_INDENT (depth)
-			  | JSON_SORT_KEYS | JSON_REAL_PRECISION (8)
-			  | JSON_COMPACT | JSON_ENCODE_ANY);
+            fflush (fil);
+            int failedj = json_dumpf (js, fil,
+                                      JSON_INDENT (depth)
+                                      | JSON_SORT_KEYS |
+                                      JSON_REAL_PRECISION (8) | JSON_COMPACT |
+                                      JSON_ENCODE_ANY);
             fputs (">", fil);
-	    if (failedj)
-	      error("json_dumpf failed for json#%d", jix);
+            if (failedj)
+              error ("json_dumpf failed for json#%d", jix);
           }
       }
       break;
