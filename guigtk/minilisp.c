@@ -241,7 +241,8 @@ gc (void *root)
   assert (!gc_running);
   gc_running = true;
 
-  clear_gtk_json_marks (root);
+  clear_gtk_marks (root);
+  clear_json_marks (root);
 
   // Allocate a new semi-space.
   from_space = memory;
@@ -296,7 +297,8 @@ gc (void *root)
       scan1 = (Obj *) ((uint8_t *) scan1 + scan1->size);
     }
 
-  clean_gc_json_gtk (scan1);
+  clean_gc_json (scan1);
+  clean_gc_gtk (scan1);
 
   // Finish up GC.
   munmap (from_space, MEMORY_SIZE);
@@ -1648,8 +1650,6 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "lambda", prim_lambda);
   add_primitive (root, env, "if", prim_if);
   add_primitive (root, env, "=", prim_scalar_eq);
-  add_primitive (root, env, "json_eq", prim_json_eq);
-  add_primitive (root, env, "gtk_eq", prim_gtk_eq);
   add_primitive (root, env, "eq", prim_eq);
   add_primitive (root, env, "println", prim_println);
 }                               /* end define_primitives */
@@ -1690,6 +1690,8 @@ main (int argc, char **argv)
   *env = make_env (root, &Nil, &Nil);
   define_constants (root, env);
   define_primitives (root, env);
+  define_json_primitives (root, env);
+  define_gtk_primitives (root, env);
 
   // The main loop
   for (;;)

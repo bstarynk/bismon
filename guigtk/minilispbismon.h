@@ -154,10 +154,16 @@ extern Obj *alloc (void *root, int type, size_t size);
 extern void gc (void *root);
 extern Obj *forward_for_gc (Obj *);
 
-extern void clear_gtk_json_marks (void *root);
+extern void define_primitives (void *root, Obj **env);
+extern void define_json_primitives (void *root, Obj **env);
+extern void define_gtk_primitives (void *root, Obj **env);
+
+extern void clear_json_marks (void *root);
+extern void clear_gtk_marks (void *root);
 extern void mark_json_ref (void *root, Obj *jsob);
 extern void mark_gtk_ref (void *root, Obj *gtkob);
-extern void clean_gc_json_gtk (void *root);
+extern void clean_gc_json (void *root);
+extern void clean_gc_gtk (void *root);
 extern Obj *prim_scalar_eq (void *root, Obj **env, Obj **list);
 extern Obj *prim_json_eq (void *root, Obj **env, Obj **list);
 extern Obj *prim_gtk_eq (void *root, Obj **env, Obj **list);
