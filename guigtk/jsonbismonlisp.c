@@ -365,19 +365,24 @@ file_json_print (FILE * fil, Obj *obj, unsigned depth)
               json_vect.jsv_markarr[jix] = true;
           }
         if (!js)
-          fprintf (fil, "<json#%d??>", jix);
+          fprintf (fil, "<json#%d?-?>", jix);
         else
           {
             fprintf (fil, "<json#%d:", jix);
-            json_dumpf (js, fil,
-                        JSON_INDENT (depth)
-                        | JSON_SORT_KEYS | JSON_REAL_PRECISION (8)
-                        | JSON_COMPACT);
+	    fflush (fil);
+            int failedj =
+	      json_dumpf (js, fil,
+			  JSON_INDENT (depth)
+			  | JSON_SORT_KEYS | JSON_REAL_PRECISION (8)
+			  | JSON_COMPACT | JSON_ENCODE_ANY);
             fputs (">", fil);
+	    if (failedj)
+	      error("json_dumpf failed for json#%d", jix);
           }
       }
       break;
     }
+  fflush (fil);
 }                               /* end file_json_print */
 
 
