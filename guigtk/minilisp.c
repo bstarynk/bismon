@@ -1045,6 +1045,8 @@ eval (void *root, Obj **env, Obj **obj)
     case TFUNCTION:
     case TTRUE:
     case TNIL:
+    case TGTKREF:
+    case TJSONREF:
       // Self-evaluating objects
       return *obj;
     case TSYMBOL:
