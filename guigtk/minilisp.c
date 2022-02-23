@@ -1258,8 +1258,8 @@ prim_vector_put_flavor (void *root, Obj **env, Obj **list)
 }                               /* end prim_vector_put_flavor */
 
 // (vector_slice <expr-vect> <expr-startpos> <expr-endpos>)
-Obj*
-prim_vector_slice(void *root, Obj **env, Obj **list)
+Obj *
+prim_vector_slice (void *root, Obj **env, Obj **list)
 {
   Obj *vec = NULL;
   Obj *args = eval_list (root, env, list);
@@ -1278,13 +1278,16 @@ prim_vector_slice(void *root, Obj **env, Obj **list)
     error ("vector_slice requires an endpos as third arg");
   int startix = startp->lvalue;
   int endix = endp->lvalue;
-  if (startix<0) startix += vln;
-  if (endix<0) endix += vln;
-  if (endix>=vln) endix=vln-1;
-  if (startix>=0 && startix<=endix && endix<vln)
-    return make_vector(root, endix-startix, vec->vec_comparr+startix);
+  if (startix < 0)
+    startix += vln;
+  if (endix < 0)
+    endix += vln;
+  if (endix >= vln)
+    endix = vln - 1;
+  if (startix >= 0 && startix <= endix && endix < vln)
+    return make_vector (root, endix - startix, vec->vec_comparr + startix);
   return Nil;
-} /* end prim_vector_slice */
+}                               /* end prim_vector_slice */
 
 
 
