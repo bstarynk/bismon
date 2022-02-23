@@ -281,6 +281,13 @@ gc (void *root)
           scan1->car = forward (scan1->car);
           scan1->cdr = forward (scan1->cdr);
           break;
+        case TVECTOR:
+          {
+            unsigned vlen = scan1->vec_len;
+            for (int vix = 0; vix < (int) vlen; vix++)
+              scan1->vec_comparr[vix] = forward (scan1->vec_comparr[vix]);
+          }
+          break;
         case TFUNCTION:
         case TMACRO:
           scan1->params = forward (scan1->params);
@@ -308,7 +315,7 @@ gc (void *root)
     fprintf (stderr, "GC: %zu bytes out of %zu bytes copied.\n", mem_nused,
              old_nused);
   gc_running = false;
-}
+}                               /* end function gc */
 
 //======================================================================
 // Constructors
@@ -330,6 +337,26 @@ cons (void *root, Obj **car, Obj **cdr)
   cell->cdr = *cdr;
   return cell;
 }
+
+Obj *
+make_vector (void *root, unsigned len, Obj **comparr)
+{
+  if (len > MAX_VECTOR_LEN)
+    error ("too big vector %u", len);
+  Obj *vec =
+    alloc (root, TVECTOR, 2 * sizeof (unsigned) + len * sizeof (Obj *));
+  vec->vec_len = len;
+  vec->vec_flavor = 0;
+  if (comparr)
+    {
+      for (int ix = 0; ix < (int) len; ix++)
+        vec->vec_comparr[ix] = comparr[ix];
+    }
+  else
+    for (int ix = 0; ix < (int) len; ix++)
+      vec->vec_comparr[ix] = Nil;
+  return vec;
+}                               /* end make_vector */
 
 Obj *
 make_symbol (void *root, char *name)
@@ -724,6 +751,7 @@ fread_expr (FILE * f, void *root)
     }
 }                               /* end read_expr */
 
+#define MAX_PRINT_DEPTH 20
 // Prints the given object.
 void
 file_print (FILE * fil, Obj *obj, unsigned depth)
@@ -731,6 +759,11 @@ file_print (FILE * fil, Obj *obj, unsigned depth)
   assert (fil != NULL);
   assert (obj != NULL);
   long loff = ftell (fil);
+  if (depth > MAX_PRINT_DEPTH)
+    {
+      fputs ("…", fil);
+      return;
+    }
 #define LINE_WIDTH 72
 #define MAYBE_NEWLINE() do {				\
     if (ftell(fil) > loff + LINE_WIDTH) {		\
@@ -760,6 +793,28 @@ file_print (FILE * fil, Obj *obj, unsigned depth)
           obj = obj->cdr;
         }
       fputc (')', fil);
+      return;
+    case TVECTOR:
+      fputs ("#[", fil);
+      if (obj->vec_flavor != 0)
+        {
+          fprintf (fil, "°%d", obj->vec_flavor);
+          if (obj->vec_len > 0)
+            fputc (' ', fil);
+        };
+      {
+        unsigned vlen = obj->vec_len;
+        for (int vix = 0; vix < (int) vlen; vix++)
+          {
+            if (vix > 0)
+              {
+                fputs (" ", fil);
+                MAYBE_NEWLINE ();
+              }
+            file_print (fil, obj->vec_comparr[vix], depth + 1);
+          }
+      }
+      fputs ("]#", fil);
       return;
     case TSTRING:
       {
@@ -975,6 +1030,8 @@ apply (void *root, Obj **env, Obj **fn, Obj **args)
       error ("cannot apply double %g", (*fn)->dvalue);
     case TCELL:
       error ("cannot apply cons cell");
+    case TVECTOR:
+      error ("cannot apply vector sized %u", (*fn)->vec_len);
     case TSYMBOL:
       error ("cannot apply symbol %s", (*fn)->sy_name);
     case TSTRING:
@@ -1099,6 +1156,36 @@ prim_cons (void *root, Obj **env, Obj **list)
   cell->cdr = cell->cdr->car;
   return cell;
 }
+
+#define SMALL_SIZE 64
+// (vector <expr....>)
+Obj *
+prim_vector (void *root, Obj **env, Obj **list)
+{
+  Obj *vec = NULL;
+  Obj *args = eval_list (root, env, list);
+  unsigned ln = length (args);
+  if (ln > MAX_VECTOR_LEN)
+    error ("too big vector %u to make", ln);
+  if (ln < SMALL_SIZE)
+    {
+      Obj *comparr[SMALL_SIZE];
+      memset (comparr, 0, sizeof (comparr));
+      for (int ix = 0; args && args != Nil; args = args->cdr, ix++)
+        comparr[ix] = args->car;
+      vec = make_vector (root, ln, comparr);
+      return vec;
+    }
+  else
+    {
+      vec = make_vector (root, ln, NULL);
+      for (int ix = 0; args && args != Nil; args = args->cdr, ix++)
+        vec->vec_comparr[ix] = args->car;
+      return vec;
+    }
+}                               /* end prim_vector */
+
+
 
 // (car <cell>)
 Obj *
@@ -1657,6 +1744,7 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "=", prim_scalar_eq);
   add_primitive (root, env, "eq", prim_eq);
   add_primitive (root, env, "println", prim_println);
+  add_primitive (root, env, "vector", prim_vector);
 }                               /* end define_primitives */
 
 //======================================================================

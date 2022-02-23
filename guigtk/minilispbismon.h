@@ -35,6 +35,7 @@ enum
   TINT = 1,
   TDOUBLE,
   TCELL,
+  TVECTOR,
   TSYMBOL,
   TSTRING,
   TJSONREF,
@@ -86,6 +87,13 @@ typedef struct Obj
       struct Obj *car;
       struct Obj *cdr;
     };
+    // vector °TVECTOR
+    struct
+    {
+      unsigned vec_len;
+      unsigned vec_flavor;
+      struct Obj *vec_comparr[];
+    };
     // Symbol °TSYMB
     char sy_name[1];
     // strings °TSTRING
@@ -125,6 +133,8 @@ typedef struct Obj
   };
 } Obj;                          // end struct Obj
 
+
+#define MAX_VECTOR_LEN (128*1024)
 
 enum json_magic_en
 {
@@ -178,6 +188,10 @@ extern Obj *make_double (void *root, double dvalue);
 extern Obj *cons (void *root, Obj **car, Obj **cdr);
 extern Obj *make_symbol (void *root, char *name);
 extern Obj *make_string (void *root, char *buf);
+
+// May create a new symbol. If there's a symbol with the same name, it will not create a new symbol
+// but return the existing one.
+extern Obj *intern (void *root, char *name);
 
 // if doincref is set, jansson's function json_incref is called.
 extern Obj *make_json (void *root, json_t *json, bool doincref);

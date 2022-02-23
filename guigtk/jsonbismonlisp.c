@@ -263,24 +263,6 @@ clear_json_marks (void *root)
     json_vect.jsv_markarr[jix] = false;
 }                               /* end clear_gtk_json_marks */
 
-// this routine is called by the garbage collector to clean all the
-// json_t* which have not been marked by mark_json_ref
-void
-clean_gc_json (void *root)
-{
-  assert (root != NULL);
-  int lastix = -1;
-  assert (json_vect.jsv_count < json_vect.jsv_size);
-  for (unsigned jix = 1; jix <= json_vect.jsv_count; jix++)
-    {
-      if (!json_vect.jsv_arr[jix])
-        continue;
-      if (json_vect.jsv_markarr[jix] == false)
-        {
-        }
-    }
-#warning unimplemented clean_gc_json
-}                               /* end clean_gc_json */
 
 json_t *
 get_json (Obj *jsob)
@@ -296,7 +278,7 @@ get_json (Obj *jsob)
   if (jsob == Jsonv_Null)
     return json_null ();
   int jsix = jsob->json_index;
-  if (jsix > 0 && jsix <= json_vect.jsv_count)
+  if (jsix > 0 && jsix <= (int) json_vect.jsv_count)
     {
       assert (json_vect.jsv_arr);
       return json_vect.jsv_arr[jsix];
@@ -313,7 +295,7 @@ mark_json_ref (void *root, Obj *jsob)
   if (jsob == Jsonv_True || jsob == Jsonv_False || jsob == Jsonv_Null)
     return;
   jsix = jsob->json_index;
-  if (jsix > 0 && jsix <= json_vect.jsv_count)
+  if (jsix > 0 && jsix <= (int) json_vect.jsv_count)
     json_vect.jsv_markarr[jsix] = true;
 #warning unimplemented mark_json_ref
 }                               /* end mark_json_ref */
@@ -384,7 +366,7 @@ define_json_primitives (void *root, Obj **env)
 }                               /* end define_json_primitives */
 
 /// this routine is called by the garbage collector to clean useless
-/// JSON references
+/// JSON references which have not been marked by mark_json_ref
 void
 clean_gc_json (void *root)
 {
@@ -392,7 +374,7 @@ clean_gc_json (void *root)
   int nbjsv = (int) json_vect.jsv_count;
   if (nbjsv == 0)
     return;
-  assert (nbjsv < json_vect.jsv_size);
+  assert (nbjsv < (int) json_vect.jsv_size);
   assert (json_vect.jsv_arr != NULL);
   assert (json_vect.jsv_markarr != NULL);
   assert (json_vect.jsv_decrefarr != NULL);
@@ -410,8 +392,8 @@ clean_gc_json (void *root)
   while (json_vect.jsv_count > 0
          && json_vect.jsv_arr[json_vect.jsv_count] == NULL)
     {
-      json_vect.jsv_markarr[json_bect.jsv_count] = false;
-      json_vect.jsv_decrefarr[json_bect.jsv_count] = false;
+      json_vect.jsv_markarr[json_vect.jsv_count] = false;
+      json_vect.jsv_decrefarr[json_vect.jsv_count] = false;
       json_vect.jsv_count--;
     }
 }                               /* end clean_gc_json_gtk */
