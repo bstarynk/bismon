@@ -1295,7 +1295,6 @@ prim_vector_slice (void *root, Obj **env, Obj **list)
 Obj *
 prim_vector_fetch (void *root, Obj **env, Obj **list)
 {
-  Obj *vec = NULL;
   Obj *args = eval_list (root, env, list);
   unsigned ln = length (args);
   if (ln != 2)
@@ -1310,7 +1309,7 @@ prim_vector_fetch (void *root, Obj **env, Obj **list)
   int rk = rankarg->lvalue;
   if (rk < 0)
     rk += vln;
-  if (rk >= 0 && rk < vln)
+  if (rk >= 0 && rk < (int) vln)
     return vectarg->vec_comparr[rk];
   error ("vector_fetch out of bounds: rk=%d, vln=%u", rk, vln);
 }                               /* end prim_vector_fetch */
@@ -1320,7 +1319,6 @@ prim_vector_fetch (void *root, Obj **env, Obj **list)
 Obj *
 prim_vector_put (void *root, Obj **env, Obj **list)
 {
-  Obj *vec = NULL;
   Obj *args = eval_list (root, env, list);
   unsigned ln = length (args);
   if (ln != 3)
@@ -1337,7 +1335,7 @@ prim_vector_put (void *root, Obj **env, Obj **list)
   int rk = rankarg->lvalue;
   if (rk < 0)
     rk += vln;
-  if (rk >= 0 && rk < vln)
+  if (rk >= 0 && rk < (int) vln)
     {
       Obj *old = vectarg->vec_comparr[rk];
       vectarg->vec_comparr[rk] = comparg;
