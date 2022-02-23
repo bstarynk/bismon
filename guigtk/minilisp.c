@@ -1185,6 +1185,26 @@ prim_vector (void *root, Obj **env, Obj **list)
     }
 }                               /* end prim_vector */
 
+/// (vector_make <length>)
+Obj *
+prim_vector_make (void *root, Obj **env, Obj **list)
+{
+  Obj *vec = NULL;
+  Obj *args = eval_list (root, env, list);
+  unsigned ln = length (args);
+  if (ln != 1)
+    error ("vector_make expects a single argument - the length");
+  Obj *lenarg = args->car;
+  if (lenarg->type != TINT)
+    error ("vector_make expects an integer length");
+  int vlen = lenarg->lvalue;
+  if (vlen < 0 || vlen > MAX_VECTOR_LEN)
+    error ("vector_make with bad length %d", vlen);
+  vec = make_vector (root, vlen, NULL);
+  return vec;
+}                               /* end prim_vector_make */
+
+
 // (vector_length <expr>)
 Obj *
 prim_vector_length (void *root, Obj **env, Obj **list)
@@ -1852,10 +1872,12 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "eq", prim_eq);
   add_primitive (root, env, "println", prim_println);
   add_primitive (root, env, "vector", prim_vector);
+  add_primitive (root, env, "vector_make", prim_vector_make);
   add_primitive (root, env, "vector_length", prim_vector_length);
   add_primitive (root, env, "vector_flavor", prim_vector_flavor);
   add_primitive (root, env, "vector_fetch", prim_vector_fetch);
   add_primitive (root, env, "vector_put", prim_vector_put);
+  add_primitive (root, env, "vector_put_flavor", prim_vector_put_flavor);
 }                               /* end define_primitives */
 
 //======================================================================
