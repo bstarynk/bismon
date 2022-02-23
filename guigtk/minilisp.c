@@ -359,7 +359,7 @@ make_vector (void *root, unsigned len, Obj **comparr)
 }                               /* end make_vector */
 
 Obj *
-make_symbol (void *root, char *name)
+make_symbol (void *root, const char *name)
 {
   Obj *sym = alloc (root, TSYMBOL, strlen (name) + 1);
   strcpy (sym->sy_name, name);
@@ -367,7 +367,7 @@ make_symbol (void *root, char *name)
 }
 
 Obj *
-make_string (void *root, char *str)
+make_string (void *root, const char *str)
 {
   long slen = str ? strlen (str) : 0;
   long utlen = 0;

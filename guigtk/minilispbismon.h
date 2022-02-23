@@ -189,8 +189,8 @@ extern Obj *prim_gtk_eq (void *root, Obj **env, Obj **list);
 extern Obj *make_int (void *root, long ivalue);
 extern Obj *make_double (void *root, double dvalue);
 extern Obj *cons (void *root, Obj **car, Obj **cdr);
-extern Obj *make_symbol (void *root, char *name);
-extern Obj *make_string (void *root, char *buf);
+extern Obj *make_symbol (void *root, const char *name);
+extern Obj *make_string (void *root, const char *buf);
 
 // May create a new symbol. If there's a symbol with the same name, it will not create a new symbol
 // but return the existing one.
