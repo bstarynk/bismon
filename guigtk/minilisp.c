@@ -1157,7 +1157,6 @@ prim_cons (void *root, Obj **env, Obj **list)
   return cell;
 }
 
-#define SMALL_SIZE 64
 // (vector <expr....>)
 Obj *
 prim_vector (void *root, Obj **env, Obj **list)

@@ -159,6 +159,9 @@ extern Obj *Symbols;
 // Allocates memory block. This may start GC if we don't have enough memory.
 extern Obj *alloc (void *root, int type, size_t size);
 
+/// some function are special casing small size less than...
+#define SMALL_SIZE 64
+
 // Implements Cheney's copying garbage collection algorithm.
 // http://en.wikipedia.org/wiki/Cheney%27s_algorithm
 extern void gc (void *root);
