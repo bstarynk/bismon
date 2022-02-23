@@ -1793,6 +1793,15 @@ prim_println (void *root, Obj **env, Obj **list)
   return Nil;
 }
 
+
+// (list ....)
+Obj*
+prim_list (void *root, Obj **env, Obj **list)
+{
+  Obj *values = eval_list (root, env, list);
+  return values;
+} /* end prim_list */
+
 // (if expr expr expr ...)
 Obj *
 prim_if (void *root, Obj **env, Obj **list)
@@ -1897,6 +1906,7 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "defmacro", prim_defmacro);
   add_primitive (root, env, "macroexpand", prim_macroexpand);
   add_primitive (root, env, "lambda", prim_lambda);
+  add_primitive (root, env, "list", prim_list);
   add_primitive (root, env, "if", prim_if);
   add_primitive (root, env, "=", prim_scalar_eq);
   add_primitive (root, env, "eq", prim_eq);
