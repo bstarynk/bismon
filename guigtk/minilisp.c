@@ -1185,6 +1185,113 @@ prim_vector (void *root, Obj **env, Obj **list)
     }
 }                               /* end prim_vector */
 
+// (vector_length <expr>)
+Obj *
+prim_vector_length (void *root, Obj **env, Obj **list)
+{
+  Obj *vec = NULL;
+  Obj *args = eval_list (root, env, list);
+  unsigned ln = length (args);
+  if (ln != 1)
+    error ("vector_length expects a single argument");
+  vec = args->car;
+  if (vec->type != TVECTOR)
+    return Nil;
+  unsigned vln = vec->vec_len;
+  return make_int (root, (int) vln);
+}                               /* end prim_vector_length */
+
+// (vector_flavor <expr>)
+Obj *
+prim_vector_flavor (void *root, Obj **env, Obj **list)
+{
+  Obj *vec = NULL;
+  Obj *args = eval_list (root, env, list);
+  unsigned ln = length (args);
+  if (ln != 1)
+    error ("vector_flavor expects a single argument");
+  vec = args->car;
+  if (vec->type != TVECTOR)
+    return Nil;
+  unsigned flav = vec->vec_flavor;
+  return make_int (root, (int) flav);
+}                               /* end prim_vector_flavor */
+
+
+// (vector_put_flavor <expr-vec> <expr-flavor>)
+Obj *
+prim_vector_put_flavor (void *root, Obj **env, Obj **list)
+{
+  Obj *vec = NULL;
+  Obj *args = eval_list (root, env, list);
+  unsigned ln = length (args);
+  if (ln != 2)
+    error ("vector_put_flavor expects two arguments: vector & flavor#");
+  vec = args->car;
+  Obj *flav = args->cdr->car;
+  if (vec->type != TVECTOR)
+    error ("vector_put_flavor requires a vector as first arg");
+  if (flav->type != TINT)
+    error ("vector_put_flavor requires a flavor# as second arg");
+  vec->vec_flavor = (unsigned) flav->lvalue;
+  return vec;
+}                               /* end prim_vector_put_flavor */
+
+
+// (vector_fetch <expr-vec> <expr-rank>)
+Obj *
+prim_vector_fetch (void *root, Obj **env, Obj **list)
+{
+  Obj *vec = NULL;
+  Obj *args = eval_list (root, env, list);
+  unsigned ln = length (args);
+  if (ln != 2)
+    error ("vector_fetch expects two arguments: the vector and the rank");
+  Obj *vectarg = args->car;
+  Obj *rankarg = args->cdr->car;
+  if (vectarg->type != TVECTOR)
+    error ("vector_fetch with non-vector first argument");
+  if (rankarg->type != TINT)
+    error ("vector_fetch with non-int rank second argument");
+  unsigned vln = vectarg->vec_len;
+  int rk = rankarg->lvalue;
+  if (rk < 0)
+    rk += vln;
+  if (rk >= 0 && rk < vln)
+    return vectarg->vec_comparr[rk];
+  error ("vector_fetch out of bounds: rk=%d, vln=%u", rk, vln);
+}                               /* end prim_vector_fetch */
+
+
+// (vector_put <expr-vec> <expr-rank> <expr-comp>) => oldcomp
+Obj *
+prim_vector_put (void *root, Obj **env, Obj **list)
+{
+  Obj *vec = NULL;
+  Obj *args = eval_list (root, env, list);
+  unsigned ln = length (args);
+  if (ln != 3)
+    error
+      ("vector_put expects three arguments: the vector, the rank, the component");
+  Obj *vectarg = args->car;
+  Obj *rankarg = args->cdr->car;
+  Obj *comparg = args->cdr->cdr->car;
+  if (vectarg->type != TVECTOR)
+    error ("vector_put with non-vector first argument");
+  if (rankarg->type != TINT)
+    error ("vector_put with non-int rank second argument");
+  unsigned vln = vectarg->vec_len;
+  int rk = rankarg->lvalue;
+  if (rk < 0)
+    rk += vln;
+  if (rk >= 0 && rk < vln)
+    {
+      Obj *old = vectarg->vec_comparr[rk];
+      vectarg->vec_comparr[rk] = comparg;
+      return old;
+    };
+  error ("vector_put out of bounds: rk=%d, ln=%u", rk, ln);
+}                               /* end prim_vector_put */
 
 
 // (car <cell>)
@@ -1745,6 +1852,10 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "eq", prim_eq);
   add_primitive (root, env, "println", prim_println);
   add_primitive (root, env, "vector", prim_vector);
+  add_primitive (root, env, "vector_length", prim_vector_length);
+  add_primitive (root, env, "vector_flavor", prim_vector_flavor);
+  add_primitive (root, env, "vector_fetch", prim_vector_fetch);
+  add_primitive (root, env, "vector_put", prim_vector_put);
 }                               /* end define_primitives */
 
 //======================================================================
