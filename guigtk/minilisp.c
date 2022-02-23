@@ -1257,6 +1257,36 @@ prim_vector_put_flavor (void *root, Obj **env, Obj **list)
   return vec;
 }                               /* end prim_vector_put_flavor */
 
+// (vector_slice <expr-vect> <expr-startpos> <expr-endpos>)
+Obj*
+prim_vector_slice(void *root, Obj **env, Obj **list)
+{
+  Obj *vec = NULL;
+  Obj *args = eval_list (root, env, list);
+  unsigned ln = length (args);
+  if (ln != 3)
+    error ("vector_slice expects three arguments: vector startpos endpos");
+  vec = args->car;
+  Obj *startp = args->cdr->car;
+  Obj *endp = args->cdr->cdr->car;
+  if (vec->type != TVECTOR)
+    error ("vector_slice requires a vector as first arg");
+  int vln = vec->vec_len;
+  if (startp->type != TINT)
+    error ("vector_slice requires a startpos as second arg");
+  if (endp->type != TINT)
+    error ("vector_slice requires an endpos as third arg");
+  int startix = startp->lvalue;
+  int endix = endp->lvalue;
+  if (startix<0) startix += vln;
+  if (endix<0) endix += vln;
+  if (endix>=vln) endix=vln-1;
+  if (startix>=0 && startix<=endix && endix<vln)
+    return make_vector(root, endix-startix, vec->vec_comparr+startix);
+  return Nil;
+} /* end prim_vector_slice */
+
+
 
 // (vector_fetch <expr-vec> <expr-rank>)
 Obj *
@@ -1878,6 +1908,7 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "vector_fetch", prim_vector_fetch);
   add_primitive (root, env, "vector_put", prim_vector_put);
   add_primitive (root, env, "vector_put_flavor", prim_vector_put_flavor);
+  add_primitive (root, env, "vector_slice", prim_vector_slice);
 }                               /* end define_primitives */
 
 //======================================================================
