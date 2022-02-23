@@ -492,6 +492,7 @@ prim_json_object_size (void *root, Obj **env, Obj **list)
 json_t *
 as_json (Obj *ob, unsigned depth)
 {
+  json_t *jres = NULL;
   if (!ob)
     return NULL;
   if (depth > MAX_JSON_DEPTH)
@@ -502,26 +503,76 @@ as_json (Obj *ob, unsigned depth)
   if (ob->type == TINT)
     return json_integer (ob->lvalue);
   if (ob->type == TDOUBLE)
-    return json_real_value (ob->dvalue);
+    return json_real (ob->dvalue);
   if (ob->type == TJSONREF)
     return get_json (ob);
   else if (ob->type == TSYMBOL)
     {
       if (ob == True)
         return json_true ();
-      if (!strcmp (arg->sy_name, "json_false"))
+      if (!strcmp (ob->sy_name, "json_false"))
         return json_false ();
-      if (!strcmp (arg->sy_name, "json_true"))
+      if (!strcmp (ob->sy_name, "json_true"))
         return json_true ();
-      if (!strcmp (arg->sy_name, "json_null"))
+      if (!strcmp (ob->sy_name, "json_null"))
         return json_null ();
-      return json_string (arg->sy_name);
+      return json_string (ob->sy_name);
     }
   else if (ob->type == TSTRING)
-    return json_string (arg->utf8_cstring);
+    return json_string (ob->utf8_cstring);
   else if (ob->type == TVECTOR)
     {
-#warning as_json incomplete for vector and lists
+      jres = json_array ();
+      unsigned vlen = ob->vec_len;
+      for (int vix = 0; vix < (int) vlen; vix++)
+        {
+          json_t *jcomp = as_json (ob->vec_comparr[vix], depth + 1);
+          if (jcomp)
+            json_array_append_new (jres, jcomp);
+        };
+      return jres;
+    }
+  else if (ob->type == TCELL)
+    {
+      int ln = length (ob);
+
+      if (ln % 2 == 0)
+        {
+          Obj *atob = NULL;
+          Obj *valob = NULL;
+          Obj *next = NULL;
+          jres = json_object ();
+          while (ob && ob != Nil && ob->type == TCELL)
+            {
+              atob = NULL;
+              valob = NULL;
+              next = NULL;
+              json_t *jval = NULL;
+              if (ob->type == TCELL)
+                {
+                  atob = ob->car;
+                  next = ob->cdr;
+                  if (next && next != Nil && next->type == TCELL)
+                    {
+                      valob = next->car;
+                      ob = next->cdr;
+                    };
+                }
+              else
+                break;
+              char *atname = NULL;
+              if (atob->type == TSYMBOL)
+                atname = atob->sy_name;
+              else if (atob->type == TSTRING)
+                atname = atob->utf8_cstring;
+              if (!atname)
+                continue;
+              jval = as_json (valob, depth + 1);
+              if (atname && jval)
+                json_object_set_new (jres, atname, jval);
+            }
+        }
+      return jres;
     }
   return NULL;
 }                               /* end as_json */
@@ -560,6 +611,19 @@ prim_make_scalar_json (void *root, Obj **env, Obj **list)
   return Nil;
 }                               /* end prim_make_scalar_json */
 
+Obj *
+prim_make_composite_json (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed make_scalar_json (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *arg = values->car;
+  if (arg->type == TJSONREF)
+    return arg;
+  json_t *js = as_json (arg, 0);
+  return make_json (root, js, KEEP_REFCNT_JANSSON);
+}                               /* end prim_make_composite_json */
+
 void
 define_json_primitives (void *root, Obj **env)
 {
@@ -573,6 +637,7 @@ define_json_primitives (void *root, Obj **env)
   add_primitive (root, env, "json_array_size", prim_json_array_size);
   add_primitive (root, env, "json_object_size", prim_json_object_size);
   add_primitive (root, env, "make_scalar_json", prim_make_scalar_json);
+  add_primitive (root, env, "make_composite_json", prim_make_composite_json);
 }                               /* end define_json_primitives */
 
 
