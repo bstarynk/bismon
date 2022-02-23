@@ -1981,14 +1981,17 @@ main (int argc, char **argv)
         {
           memset (linbuf, 0, sizeof (linbuf));
           fgets (linbuf, sizeof (linbuf) - 1, fscript);
-          if (strncmp (linbuf, ";;;+++", 6))
-            continue;
+          if (!strncmp (linbuf, ";;;+++", 6))
+            break;
         }
       while (!feof (fscript));
+      int nbexpr = 0;
+      printf ("%s git %s start reading at offset #%ld of scriptfile %s\n",
+              argv[0], BISMON_GIT, ftell (fscript), scriptfile);
       while (!feof (fscript))
         {
           long off = ftell (fscript);
-          *expr = fread_expr (stdin, root);
+          *expr = fread_expr (fscript, root);
           if (!*expr)
             return 0;
           if (*expr == Cparen)
@@ -2001,10 +2004,11 @@ main (int argc, char **argv)
           printf ("  => ");
           print_val (eval (root, env, expr));
           printf ("\n");
+          nbexpr++;
         }
       printf
         ("%s git %s evaluated %d expressions in scriptfile %s (offset %ld)\n",
-         argv[0], BISMON_GIT, scriptfile, ftell (fscript));
+         argv[0], BISMON_GIT, nbexpr, scriptfile, ftell (fscript));
       fclose (fscript);
     }
   else
