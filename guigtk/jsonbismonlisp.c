@@ -140,7 +140,6 @@ make_json (void *root, json_t *js, bool doincref)
       return Jsonv_False;
     case JSON_NULL:
       return Jsonv_Null;
-#warning make_json unimplemented for composite JSON; use g_hash_table_insert on json_ghtbl
     case JSON_OBJECT:
     case JSON_ARRAY:
     case JSON_STRING:
@@ -358,12 +357,225 @@ prim_json_type (void *root, Obj **env, Obj **list)
     }
 }                               /* end prim_json_type */
 
+Obj *
+prim_json_string (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed json_string (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *jv = values->car;
+  json_t *js = get_json (jv);
+  if (!js)
+    return Nil;
+  if (json_is_string (js))
+    return make_string (root, json_string_value (js));
+  return Nil;
+}                               /* end prim_json_string */
+
+Obj *
+prim_json_integer (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed json_string (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *jv = values->car;
+  json_t *js = get_json (jv);
+  if (!js)
+    return Nil;
+  if (json_is_integer (js))
+    return make_int (root, json_integer_value (js));
+  return Nil;
+}                               /* end prim_json_integer */
+
+Obj *
+prim_json_real (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed json_real (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *jv = values->car;
+  json_t *js = get_json (jv);
+  if (!js)
+    return Nil;
+  if (json_is_real (js))
+    return make_double (root, json_real_value (js));
+  return Nil;
+}                               /* end prim_json_real */
+
+
+
+Obj *
+prim_json_true (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed json_true (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *jv = values->car;
+  if (jv == Jsonv_True)
+    return True;
+  json_t *js = get_json (jv);
+  if (!js)
+    return Nil;
+  if (json_is_true (js))
+    return True;
+  return Nil;
+}                               /* end prim_json_true */
+
+
+Obj *
+prim_json_false (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed json_false (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *jv = values->car;
+  if (jv == Jsonv_False)
+    return True;
+  json_t *js = get_json (jv);
+  if (!js)
+    return Nil;
+  if (json_is_true (js))
+    return True;
+  return Nil;
+}                               /* end prim_json_false */
+
+Obj *
+prim_json_null (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed json_null (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *jv = values->car;
+  if (jv == Jsonv_Null)
+    return True;
+  json_t *js = get_json (jv);
+  if (!js)
+    return Nil;
+  if (json_is_null (js))
+    return True;
+  return Nil;
+}                               /* end prim_json_null */
+
+
+Obj *
+prim_json_array_size (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed json_array_size (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *jv = values->car;
+  json_t *js = get_json (jv);
+  if (!js)
+    return Nil;
+  if (json_is_array (js))
+    return make_int (root, json_array_size (js));
+  return Nil;
+}                               /* end prim_json_array_size */
+
+Obj *
+prim_json_object_size (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed json_object_size (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *jv = values->car;
+  json_t *js = get_json (jv);
+  if (!js)
+    return Nil;
+  if (json_is_array (js))
+    return make_int (root, json_object_size (js));
+  return Nil;
+}                               /* end prim_json_object_size */
+
+
+#define MAX_JSON_DEPTH 64
+json_t *
+as_json (Obj *ob, unsigned depth)
+{
+  if (!ob)
+    return NULL;
+  if (depth > MAX_JSON_DEPTH)
+    {
+      fprintf (stderr, "jsonbismonlisp: as_json too deep %u\n", depth);
+      abort ();
+    }
+  if (ob->type == TINT)
+    return json_integer (ob->lvalue);
+  if (ob->type == TDOUBLE)
+    return json_real_value (ob->dvalue);
+  if (ob->type == TJSONREF)
+    return get_json (ob);
+  else if (ob->type == TSYMBOL)
+    {
+      if (ob == True)
+        return json_true ();
+      if (!strcmp (arg->sy_name, "json_false"))
+        return json_false ();
+      if (!strcmp (arg->sy_name, "json_true"))
+        return json_true ();
+      if (!strcmp (arg->sy_name, "json_null"))
+        return json_null ();
+      return json_string (arg->sy_name);
+    }
+  else if (ob->type == TSTRING)
+    return json_string (arg->utf8_cstring);
+  else if (ob->type == TVECTOR)
+    {
+#warning as_json incomplete for vector and lists
+    }
+  return NULL;
+}                               /* end as_json */
+
+Obj *
+prim_make_scalar_json (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed make_scalar_json (%d args)", length (*list));
+  Obj *values = eval_list (root, env, list);
+  Obj *arg = values->car;
+  if (arg == Nil)
+    return Jsonv_Null;
+  else if (arg == True)
+    return Jsonv_True;
+  else if (arg->type == TINT)
+    return make_json (root, json_integer (arg->lvalue), KEEP_REFCNT_JANSSON);
+  else if (arg->type == TSYMBOL)
+    {
+      if (!strcmp (arg->sy_name, "json_false"))
+        return Jsonv_False;
+      if (!strcmp (arg->sy_name, "json_true"))
+        return Jsonv_False;
+      if (!strcmp (arg->sy_name, "json_null"))
+        return Jsonv_Null;
+      return make_json (root, json_string (arg->sy_name),
+                        KEEP_REFCNT_JANSSON);
+    }
+  else if (arg->type == TSTRING)
+    return make_json (root, json_string (arg->utf8_cstring),
+                      KEEP_REFCNT_JANSSON);
+  else if (arg->type == TDOUBLE)
+    return make_json (root, json_real (arg->dvalue), KEEP_REFCNT_JANSSON);
+  else if (arg->type == TJSONREF)
+    return arg;
+  return Nil;
+}                               /* end prim_make_scalar_json */
+
 void
 define_json_primitives (void *root, Obj **env)
 {
   add_primitive (root, env, "json_eq", prim_json_eq);
   add_primitive (root, env, "json_type", prim_json_type);
+  add_primitive (root, env, "json_string", prim_json_string);
+  add_primitive (root, env, "json_integer", prim_json_integer);
+  add_primitive (root, env, "json_real", prim_json_real);
+  add_primitive (root, env, "json_true", prim_json_true);
+  add_primitive (root, env, "json_false", prim_json_false);
+  add_primitive (root, env, "json_array_size", prim_json_array_size);
+  add_primitive (root, env, "json_object_size", prim_json_object_size);
+  add_primitive (root, env, "make_scalar_json", prim_make_scalar_json);
 }                               /* end define_json_primitives */
+
+
 
 /// this routine is called by the garbage collector to clean useless
 /// JSON references which have not been marked by mark_json_ref
