@@ -295,9 +295,9 @@ mark_json_ref (void *root, Obj *jsob)
   if (jsob == Jsonv_True || jsob == Jsonv_False || jsob == Jsonv_Null)
     return;
   jsix = jsob->json_index;
-  if (jsix > 0 && jsix <= (int) json_vect.jsv_count)
+  if (jsix > 0 && jsix <= (int) json_vect.jsv_count
+      && json_vect.jsv_arr[jsix])
     json_vect.jsv_markarr[jsix] = true;
-#warning unimplemented mark_json_ref
 }                               /* end mark_json_ref */
 
 Obj *
