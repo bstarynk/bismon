@@ -226,7 +226,7 @@ extern int length (Obj *list);
 /// if jsob is a TJSON, get it; otherwise NULL
 extern json_t *get_json (Obj *jsob);
 /// printer
-extern void print (Obj *obj);
+extern void print_val (Obj *obj);
 extern void file_print (FILE * fil, Obj *obj, unsigned depth);
 extern void file_json_print (FILE * fil, Obj *obj, unsigned depth);
 extern void file_gtk_print (FILE * fil, Obj *obj, unsigned depth);

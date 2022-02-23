@@ -917,15 +917,15 @@ file_print (FILE * fil, Obj *obj, unsigned depth)
       CASE (TNIL, "()");
 #undef CASE
     default:
-      error ("Bug: print: Unknown tag type: %d", obj->type);
+      error ("Bug: file_print: Unknown tag type: %d", obj->type);
     }
 }                               /* end file_print */
 
 void
-print (Obj *obj)
+print_val (Obj *obj)
 {
   file_print (stdout, obj, 0);
-}                               /* end print */
+}                               /* end print_val */
 
 // Returns the length of the given list. -1 if it's not a proper list.
 int
@@ -1788,19 +1788,19 @@ prim_println (void *root, Obj **env, Obj **list)
 {
   DEFINE1 (tmp);
   *tmp = (*list)->car;
-  print (eval (root, env, tmp));
+  print_val (eval (root, env, tmp));
   printf ("\n");
   return Nil;
 }
 
 
 // (list ....)
-Obj*
+Obj *
 prim_list (void *root, Obj **env, Obj **list)
 {
   Obj *values = eval_list (root, env, list);
   return values;
-} /* end prim_list */
+}                               /* end prim_list */
 
 // (if expr expr expr ...)
 Obj *
@@ -1936,6 +1936,7 @@ getEnvFlag (char *name)
 int
 main (int argc, char **argv)
 {
+  const char *scriptfile = NULL;
   if (argc == 2 && !strcmp (argv[1], "--version"))
     {
       printf
@@ -1943,6 +1944,9 @@ main (int argc, char **argv)
          argv[0], BISMON_GIT, __DATE__, __TIME__);
       exit (EXIT_SUCCESS);
     }
+  if (argc > 2 && (!strcmp (argv[1], "-s") || !strcmp (argv[1], "--script")))
+    scriptfile = argv[2];
+
   // Debug flags
   debug_gc = getEnvFlag ("MINILISP_DEBUG_GC");
   always_gc = getEnvFlag ("MINILISP_ALWAYS_GC");
@@ -1962,18 +1966,62 @@ main (int argc, char **argv)
   define_json_primitives (root, env);
   define_gtk_primitives (root, env);
 
-  // The main loop
-  for (;;)
+  if (scriptfile)
     {
-      *expr = fread_expr (stdin, root);
-      if (!*expr)
-        return 0;
-      if (*expr == Cparen)
-        error ("Stray close parenthesis");
-      if (*expr == Dot)
-        error ("Stray dot");
-      print (eval (root, env, expr));
-      printf ("\n");
+      FILE *fscript = fopen (scriptfile, "r");
+      if (!fscript)
+        {
+          perror (scriptfile);
+          exit (EXIT_FAILURE);
+        };
+      printf ("%s git %s reading scriptfile %s\n", argv[0], BISMON_GIT,
+              scriptfile);
+      char linbuf[256];
+      do
+        {
+          memset (linbuf, 0, sizeof (linbuf));
+          fgets (linbuf, sizeof (linbuf) - 1, fscript);
+          if (strncmp (linbuf, ";;;+++", 6))
+            continue;
+        }
+      while (!feof (fscript));
+      while (!feof (fscript))
+        {
+          long off = ftell (fscript);
+          *expr = fread_expr (stdin, root);
+          if (!*expr)
+            return 0;
+          if (*expr == Cparen)
+            error ("Stray close parenthesis");
+          if (*expr == Dot)
+            error ("Stray dot");
+          printf ("%s git %s at offset #%ld of scriptfile %s expression...\n",
+                  argv[0], BISMON_GIT, off, scriptfile);
+          print_val (expr);
+          printf ("  => ");
+          print_val (eval (root, env, expr));
+          printf ("\n");
+        }
+      printf
+        ("%s git %s evaluated %d expressions in scriptfile %s (offset %ld)\n",
+         argv[0], BISMON_GIT, scriptfile, ftell (fscript));
+      fclose (fscript);
+    }
+  else
+    {
+      // The main loop
+      for (;;)
+        {
+          *expr = fread_expr (stdin, root);
+          if (!*expr)
+            return 0;
+          if (*expr == Cparen)
+            error ("Stray close parenthesis");
+          if (*expr == Dot)
+            error ("Stray dot");
+          print_val (eval (root, env, expr));
+          printf ("\n");
+        }
     }
 }
 
