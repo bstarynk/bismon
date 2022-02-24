@@ -2069,7 +2069,7 @@ static1_file_name (FILE * f)
       memset (fbuf, 0, sizeof (fbuf));
       memset (nambuf1, 0, sizeof (nambuf1));
       snprintf (fbuf, sizeof (fbuf), "/proc/self/fd/%d", fino);
-      if (!readlink (fbuf, nambuf1, sizeof (nambuf1) - 1))
+      if (readlink (fbuf, nambuf1, sizeof (nambuf1) - 1) > 0)
         return nambuf1;
       snprintf (nambuf1, sizeof (nambuf1) - 1, "[fd#%d]", fino);
     }
@@ -2098,7 +2098,7 @@ static2_file_name (FILE * f)
       memset (fbuf, 0, sizeof (fbuf));
       memset (nambuf2, 0, sizeof (nambuf2));
       snprintf (fbuf, sizeof (fbuf), "/proc/self/fd/%d", fino);
-      if (!readlink (fbuf, nambuf2, sizeof (nambuf2) - 1))
+      if (readlink (fbuf, nambuf2, sizeof (nambuf2) - 1) > 0)
         return nambuf2;
       snprintf (nambuf2, sizeof (nambuf2) - 1, "[fd#%d]", fino);
     }
