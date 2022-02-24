@@ -2000,7 +2000,7 @@ main (int argc, char **argv)
             error ("Stray dot");
           printf ("%s git %s at offset #%ld of scriptfile %s expression...\n",
                   argv[0], BISMON_GIT, off, scriptfile);
-          print_val (expr);
+          print_val (*expr);
           printf ("  => ");
           print_val (eval (root, env, expr));
           printf ("\n");
