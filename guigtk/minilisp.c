@@ -2029,6 +2029,66 @@ main (int argc, char **argv)
     }
 }
 
+/// Linux specific, see proc(5)
+const char *
+static1_file_name (FILE * f)
+{
+  static char nambuf1[256];
+  if (!f)
+    return "[no-file]";
+  if (f == stdin)
+    return "[stdin]";
+  if (f == stdout)
+    return "[stdout]";
+  if (f == stderr)
+    return "[stderr]";
+  int fino = fileno (f);
+  if (fino > 0)
+    {
+      char fbuf[64];
+      memset (fbuf, 0, sizeof (fbuf));
+      memset (nambuf1, 0, sizeof (nambuf1));
+      snprintf (fbuf, sizeof (fbuf), "/proc/self/fd/%d", fino);
+      if (!readlink (fbuf, nambuf1, sizeof (nambuf1) - 1))
+        return nambuf1;
+      snprintf (nambuf1, sizeof (nambuf1) - 1, "[fd#%d]", fino);
+    }
+  else
+    snprintf (nambuf1, sizeof (nambuf1) - 1, "[FILE@%p]", f);
+  return nambuf1;
+}                               /// end static1_file_name
+
+
+const char *
+static2_file_name (FILE * f)
+{
+  static char nambuf2[256];
+  if (!f)
+    return "[no-file]";
+  if (f == stdin)
+    return "[stdin]";
+  if (f == stdout)
+    return "[stdout]";
+  if (f == stderr)
+    return "[stderr]";
+  int fino = fileno (f);
+  if (fino > 0)
+    {
+      char fbuf[64];
+      memset (fbuf, 0, sizeof (fbuf));
+      memset (nambuf2, 0, sizeof (nambuf2));
+      snprintf (fbuf, sizeof (fbuf), "/proc/self/fd/%d", fino);
+      if (!readlink (fbuf, nambuf2, sizeof (nambuf2) - 1))
+        return nambuf2;
+      snprintf (nambuf2, sizeof (nambuf2) - 1, "[fd#%d]", fino);
+    }
+  else
+    snprintf (nambuf2, sizeof (nambuf2) - 1, "[FILE@%p]", f);
+  return nambuf2;
+}                               /// end static2_file_name
+
+
+
 /************
  ** for Emacs:
  ** Local Variables: ;;

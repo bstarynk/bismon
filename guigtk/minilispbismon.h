@@ -243,5 +243,12 @@ extern void initialize_json (void);
 
 /// initialize support for GTK
 extern void initialize_gtk (int *pargc, char **argv);
+
+
+//// two unsafe and non-reentrant utilities to print file names; usable
+//// with error(...)
+extern const char *static1_file_name (FILE * f);
+extern const char *static2_file_name (FILE * f);
+
 #endif /*MINILISPBISMON_HEADER */
 ///// end of file bismon/gtkgui/minilispbismon.h
