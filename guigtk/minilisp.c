@@ -155,7 +155,7 @@ alloc (void *root, int type, size_t size)
   // Terminate the program if we couldn't satisfy the memory request. This can happen if the
   // requested size was too large or the from-space was filled with too many live objects.
   if (MEMORY_SIZE < mem_nused + size)
-    error ("Memory exhausted");
+    error ("Memory exhausted, requested %zd", size);
 
   // Allocate the object.
   Obj *obj = memory + mem_nused;
@@ -299,7 +299,8 @@ gc (void *root)
           scan1->up = forward (scan1->up);
           break;
         default:
-          error ("Bug: copy: unknown type %d", scan1->type);
+          error ("Bug: copy: unknown type %d @%p",
+                 scan1->type, (void *) scan1);
         }
       scan1 = (Obj *) ((uint8_t *) scan1 + scan1->size);
     }
@@ -513,26 +514,31 @@ Obj *
 fread_list (FILE * f, void *root)
 {
   DEFINE3 (obj, head, last);
+  long ofs = -1;
+  assert (f != NULL);
   *head = Nil;
   for (;;)
     {
+      ofs = ftell (f);
       *obj = fread_expr (f, root);
       if (!*obj)
-        error ("Unclosed parenthesis");
+        error ("Unclosed parenthesis in %s offset %ld",
+               static1_file_name (f), ofs);
       if (*obj == Cparen)
         return reverse (*head);
       if (*obj == Dot)
         {
           *last = fread_expr (f, root);
           if (fread_expr (f, root) != Cparen)
-            error ("Closed parenthesis expected after dot");
+            error ("Closed parenthesis expected after dot in %s offset %ld",
+                   static1_file_name (f), ofs);
           Obj *ret = reverse (*head);
           (*head)->cdr = *last;
           return ret;
         }
       *head = cons (root, obj, head);
     }
-}
+}                               /* end fread_list */
 
 // May create a new symbol. If there's a symbol with the same name, it will not create a new symbol
 // but return the existing one.
@@ -572,12 +578,15 @@ Obj *
 fread_symbol (FILE * f, void *root, char c)
 {
   char buf[SYMBOL_MAX_LEN + 1];
+  assert (f != NULL);
   buf[0] = c;
   int len = 1;
+  long ofs = ftell (f);
   while (isalnum (fpeek (f)) || strchr (symbol_chars, fpeek (f)))
     {
       if (SYMBOL_MAX_LEN <= len)
-        error ("Symbol name too long");
+        error ("Symbol name too long '%c%s' at %s offset %ld",
+               c, buf, static1_file_name (f), ofs);
       buf[len++] = fgetc (f);
     }
   buf[len] = '\0';
@@ -596,6 +605,8 @@ fread_hash (FILE * f, void *root)
 {
   int c = fpeek (f);
   int pos = -1;
+  assert (f != NULL);
+  long ofs = ftell (f);
   if ((c >= '0' && c < '9') || c == '+' || c == '-')
     {
       double db = 0.0;
@@ -612,7 +623,8 @@ fread_hash (FILE * f, void *root)
         }
     }
 #warning incomplete fread_hash
-  error ("unimplemented hash syntax #%c", (char) c);
+  error ("unimplemented hash syntax #%c at %s offset %ld",
+         (char) c, static1_file_name (f), ofs);
 }                               /* end fread_hash */
 
 
@@ -625,9 +637,11 @@ fread_string (FILE * f, void *root)
   int c = -2;
   char smallbuf[64];
   memset (smallbuf, 0, sizeof (smallbuf));
+  assert (f != NULL);
   char *buf = smallbuf;
   int blen = 0;
   int bsiz = sizeof (smallbuf) - 1;
+  long ofs = ftell (f);
 #define APPEND_BYTE(By) do {					\
     char by = By;						\
     if (blen >= bsiz) {						\
@@ -635,8 +649,9 @@ fread_string (FILE * f, void *root)
       int newsiz = ((3*bsiz/2+2)|0x1f)+1;			\
       buf = calloc(newsiz, 1);					\
       if (!buf)							\
-	error("out of memory reading string of %d bytes",	\
-	      blen);						\
+	error("out of memory reading string of %d bytes"	\
+	      " at %s offset %ld (%m)",				\
+	      blen, static1_file_name(f), ofs);			\
       memcpy(buf, oldbuf, blen);				\
       bsiz = newsiz;						\
     };								\
@@ -650,7 +665,8 @@ fread_string (FILE * f, void *root)
           break;
         };
       if (c == '\n' || c == '\r')
-        error ("unterminated single-line string starting with %s", buf);
+        error ("unterminated single-line string starting with %s"
+               " at %s offset %ld (%m)", buf, static1_file_name (f), ofs);
       if (c == '\\')
         {
           c = fgetc (f);        // consume the backslash
@@ -694,8 +710,9 @@ fread_string (FILE * f, void *root)
               {
                 int h = 0;
                 if (fscanf (f, "%02x", &h) < 0)
-                  error ("failed to read backslash-x escape for buffer %s",
-                         buf);
+                  error ("failed to read backslash-x escape for buffer %s"
+                         " at %s offset %ld",
+                         buf, static1_file_name (f), ofs);
                 APPEND_BYTE ((char) h);
                 break;
               }
@@ -717,8 +734,10 @@ fread_string (FILE * f, void *root)
 Obj *
 fread_expr (FILE * f, void *root)
 {
+  assert (f != NULL);
   for (;;)
     {
+      long off = ftell (f);
       int c = fgetc (f);
       if (c == ' ' || c == '\n' || c == '\r' || c == '\t')
         continue;
@@ -747,7 +766,8 @@ fread_expr (FILE * f, void *root)
         return make_int (root, -fread_number (f, 0));
       if (isalpha (c) || strchr (symbol_chars, c))
         return fread_symbol (f, root, c);
-      error ("Don't know how to handle %c", c);
+      error ("Don't know how to handle %c at %s offset %ld",
+             c, static1_file_name (f), off);
     }
 }                               /* end read_expr */
 
