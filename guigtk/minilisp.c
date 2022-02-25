@@ -1926,7 +1926,9 @@ recursive_equal (Obj *x, Obj *y, unsigned depth)
         return true;
       else
         {
-#warning recursive_equal unimplemented for TJSONREF
+          extern bool jsonref_recursive_equal (Obj *x, Obj *y,
+                                               unsigned depth);
+          return jsonref_recursive_equal (x, y, depth);
         };
       return false;
     case TGTKREF:
@@ -1934,6 +1936,8 @@ recursive_equal (Obj *x, Obj *y, unsigned depth)
         return true;
       else
         {
+          extern bool gtkref_recursive_equal (Obj *x, Obj *y, unsigned depth);
+          return gtkref_recursive_equal (x, y, depth);
 #warning recursive_equal unimplemented for TGTKREF
         };
       return false;
@@ -2167,6 +2171,8 @@ main (int argc, char **argv)
          argv[0], BISMON_GIT, __DATE__, __TIME__);
       exit (EXIT_SUCCESS);
     }
+  initialize_json ();
+  initialize_gtk (&argc, &argv);
   if (argc > 2 && (!strcmp (argv[1], "-s") || !strcmp (argv[1], "--script")))
     scriptfile = argv[2];
 
@@ -2174,7 +2180,6 @@ main (int argc, char **argv)
   debug_gc = getEnvFlag ("MINILISP_DEBUG_GC");
   always_gc = getEnvFlag ("MINILISP_ALWAYS_GC");
 
-  initialize_json ();
 
   // Memory allocation
   memory = alloc_semispace ();
