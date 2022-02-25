@@ -1869,14 +1869,21 @@ prim_scalar_eq (void *root, Obj **env, Obj **list)
       else
         goto fail;
     }
+  else if (x->type == TSTRING && y->type == TSTRING)
+    {
+      if (x->utf8_len == y->utf8_len
+          && !strcmp (x->utf8_cstring, y->utf8_cstring))
+        return True;
+      else
+        return Nil;
+    }
   else if (x->type == TJSONREF && y->type == TJSONREF)
     return prim_json_eq (root, env, list);
   else if (x->type == TGTKREF && y->type == TGTKREF)
     return prim_gtk_eq (root, env, list);
 fail:
   error ("= only takes scalars");
-
-}
+}                               /* end prim_scalar_eq for = */
 
 // (eq expr expr)
 Obj *
@@ -1887,6 +1894,27 @@ prim_eq (void *root, Obj **env, Obj **list)
   Obj *values = eval_list (root, env, list);
   return values->car == values->cdr->car ? True : Nil;
 }
+
+// (load "filename")
+Obj *
+prim_load (void *root, Obj **env, Obj **list)
+{
+  char filnam[256];
+  memset (filnam, 0, sizeof (filnam));
+  if (length (*list) != 1)
+    error ("load requires a single argument");
+  Obj *values = eval_list (root, env, list);
+  Obj *firstarg = values->car;
+  if (firstarg->type == TSTRING
+      && firstarg->utf8_len < 3 * sizeof (filnam) / 4
+      && strlen (firstarg->utf8_cstring) < sizeof (filnam))
+    {
+      strcpy (filnam, firstarg->utf8_cstring);
+    }
+  else
+    return Nil;
+}                               /* end prim_load */
+
 
 void
 add_primitive (void *root, Obj **env, char *name, Primitive * fn)
