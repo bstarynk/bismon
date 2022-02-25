@@ -78,7 +78,7 @@ prim_gtk_eq (void *root, Obj **env, Obj **list)
   Obj *x = values->car;
   Obj *y = values->cdr->car;
   if (x->type == TGTKREF && y->type == TGTKREF)
-    return gtkref_recursive_equal (x, y, 0) ? true : Nil;
+    return gtkref_recursive_equal (x, y, 0) ? True : Nil;
   return Nil;
 }                               /* end prim_gtk_eq */
 
@@ -86,7 +86,8 @@ prim_gtk_eq (void *root, Obj **env, Obj **list)
 void
 initialize_gtk (int *pargc, char ***pargv)
 {
-  gtk_init ();
+#warning notice that gtk_init is different in GTK 3 and GTK 4
+  gtk_init (pargc, pargv);      /*the GTK3 one */
 }                               /* end initialize_gtk */
 
 /// this routine is called at start of the garbage collector to clear the GC marks for GTK references
