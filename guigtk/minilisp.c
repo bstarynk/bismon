@@ -1842,6 +1842,119 @@ prim_if (void *root, Obj **env, Obj **list)
   return *els == Nil ? Nil : progn (root, env, els);
 }
 
+
+bool
+recursive_equal (Obj *x, Obj *y, unsigned depth)
+{
+  if (x == y)
+    return true;
+  if (depth > MAX_RECURSIVE_DEPTH)
+    return false;
+  if (x->type == TINT)
+    {
+      if (y->type == TINT)
+        return x->lvalue == y->lvalue;
+      else if (y->type == TDOUBLE)
+        return (double) x->lvalue == y->dvalue;
+      else
+        return false;
+    }
+  else if (x->type == TDOUBLE)
+    {
+      if (y->type == TINT)
+        return x->dvalue == (double) y->lvalue;
+      else if (y->type == TDOUBLE)
+        return x->dvalue == y->dvalue;
+      else
+        return false;
+    }
+  if (x->type != y->type)
+    return false;
+  switch (x->type)
+    {
+    case TSTRING:
+      if (x->utf8_len == y->utf8_len
+          && !strcmp (x->utf8_cstring, y->utf8_cstring))
+        return true;
+      else
+        return false;
+    case TSYMBOL:
+    case TTRUE:
+    case TNIL:
+    case TDOT:
+    case TCPAREN:
+      return false;
+    case TCELL:
+      if (length (x) != length (y))
+        return false;
+      {
+        Obj *curx = x;
+        Obj *cury = y;
+        int count = 0;
+        while (curx && cury)
+          {
+            if (!recursive_equal (curx->car, cury->car, depth + 1))
+              return false;
+            if (count++ > 2 * MAX_VECTOR_LEN)
+              return false;
+            curx = x->cdr;
+            cury = y->cdr;
+          }
+      }
+      return true;
+    case TVECTOR:
+      if (x->vec_len != y->vec_len)
+        return false;
+      if (x->vec_flavor != y->vec_flavor)
+        return false;
+      {
+        unsigned ln = x->vec_len;
+        for (int i = 0; i < (int) ln; i++)
+          if (!recursive_equal
+              (x->vec_comparr[i], y->vec_comparr[i], depth + 1))
+            return false;
+        return true;
+      }
+    case TENV:
+      if (recursive_equal (x->vars, y->vars, depth + 1))
+        return true;
+      if (recursive_equal (x->up, y->up, depth + 1))
+        return true;
+      return false;
+    case TJSONREF:
+      if (x->json_index == y->json_index)
+        return true;
+      else
+        {
+#warning recursive_equal unimplemented for TJSONREF
+        };
+      return false;
+    case TGTKREF:
+      if (x->gtk_index == y->gtk_index)
+        return true;
+      else
+        {
+#warning recursive_equal unimplemented for TGTKREF
+        };
+      return false;
+    case TPRIMITIVE:
+    case TFUNCTION:
+    case TMACRO:
+      if (!recursive_equal (x->params, y->params, depth + 1))
+        return false;
+      if (!recursive_equal (x->body, y->body, depth + 1))
+        return false;
+      if (!recursive_equal (x->env, y->env, depth + 1))
+        return false;
+      return true;
+    default:
+      return false;
+    }
+#warning recursive_equal is incomplete
+  return false;
+}                               /* end recursive_equal */
+
+
 // (= <scalar> <scalar>)
 Obj *
 prim_scalar_eq (void *root, Obj **env, Obj **list)
