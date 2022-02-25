@@ -21,6 +21,7 @@
 
 #include <glib.h>
 
+extern char *program_name;
 
 extern void error (char *fmt, ...) __attribute__((noreturn));
 
@@ -244,6 +245,12 @@ extern void initialize_json (void);
 /// initialize support for GTK
 extern void initialize_gtk (int *pargc, char **argv);
 
+
+/// load a file, evaluating each s-expr, and return -1 on error, and
+/// the number of evaluated expressions otherwise. If skiphead is
+/// true, ignore first lines up to a line like ;;;+++
+extern int load_file (const char *filnam, bool skiphead, void *root,
+                      Obj **env);
 
 //// two unsafe and non-reentrant utilities to print file names; usable
 //// with error(...)

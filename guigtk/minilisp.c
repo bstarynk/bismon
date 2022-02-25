@@ -4,6 +4,8 @@
 
 #include "minilispbismon.h"
 
+char *program_name;
+
 void
 error (char *fmt, ...)
 {
@@ -1941,6 +1943,65 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "vector_slice", prim_vector_slice);
 }                               /* end define_primitives */
 
+
+/// load a file, evaluating each s-expr, and return -1 on error, and
+/// the number of evaluated expressions otherwise. If skiphead is
+/// true, ignore first lines up to a line like ;;;+++
+int
+load_file (const char *filnam, bool skiphead, void *root, Obj **env)
+{
+  FILE *fil = filnam ? fopen (filnam, "r") : stdin;
+  if (!fil)
+    {
+      fprintf (stderr, "%s: cannot open file %s to load - %m", program_name,
+               filnam);
+      return -1;
+    };
+  DEFINE1 (expr);
+  if (skiphead)
+    {
+      printf ("%s git %s reading scriptfile %s\n", program_name, BISMON_GIT,
+              filnam);
+      char linbuf[256];
+      do
+        {
+          memset (linbuf, 0, sizeof (linbuf));
+          fgets (linbuf, sizeof (linbuf) - 1, fil);
+          if (!strncmp (linbuf, ";;;+++", 6))
+            break;
+        }
+      while (!feof (fil));
+    }
+  int nbexpr = 0;
+  if (skiphead)
+    printf ("%s git %s start reading at offset #%ld of scriptfile %s\n",
+            program_name, BISMON_GIT, ftell (fil), filnam);
+  while (!feof (fil))
+    {
+      long off = ftell (fil);
+      *expr = fread_expr (fil, root);
+      if (!*expr)
+        return nbexpr;
+      if (*expr == Cparen)
+        error ("Stray close parenthesis in %s offset %ld", filnam, off);
+      if (*expr == Dot)
+        error ("Stray dot in %s offset %ld", filnam, off);
+      printf ("%s git %s at offset #%ld of scriptfile %s expression...\n",
+              program_name, BISMON_GIT, off, filnam);
+      print_val (*expr);
+      printf ("  => ");
+      print_val (eval (root, env, expr));
+      printf ("\n");
+      nbexpr++;
+    }
+  if (skiphead)
+    printf ("%s git %s evaluated %d expressions in file %s (offset %ld)\n",
+            program_name, BISMON_GIT, nbexpr, filnam, ftell (fil));
+  if (fil != stdin)
+    fclose (fil);
+  return nbexpr;
+}                               /* end load_file */
+
 //======================================================================
 // Entry point
 //======================================================================
@@ -1956,6 +2017,7 @@ getEnvFlag (char *name)
 int
 main (int argc, char **argv)
 {
+  program_name = argv[0];
   const char *scriptfile = NULL;
   if (argc == 2 && !strcmp (argv[1], "--version"))
     {
@@ -1988,66 +2050,13 @@ main (int argc, char **argv)
 
   if (scriptfile)
     {
-      FILE *fscript = fopen (scriptfile, "r");
-      if (!fscript)
-        {
-          perror (scriptfile);
-          exit (EXIT_FAILURE);
-        };
-      printf ("%s git %s reading scriptfile %s\n", argv[0], BISMON_GIT,
-              scriptfile);
-      char linbuf[256];
-      do
-        {
-          memset (linbuf, 0, sizeof (linbuf));
-          fgets (linbuf, sizeof (linbuf) - 1, fscript);
-          if (!strncmp (linbuf, ";;;+++", 6))
-            break;
-        }
-      while (!feof (fscript));
-      int nbexpr = 0;
-      printf ("%s git %s start reading at offset #%ld of scriptfile %s\n",
-              argv[0], BISMON_GIT, ftell (fscript), scriptfile);
-      while (!feof (fscript))
-        {
-          long off = ftell (fscript);
-          *expr = fread_expr (fscript, root);
-          if (!*expr)
-            return 0;
-          if (*expr == Cparen)
-            error ("Stray close parenthesis");
-          if (*expr == Dot)
-            error ("Stray dot");
-          printf ("%s git %s at offset #%ld of scriptfile %s expression...\n",
-                  argv[0], BISMON_GIT, off, scriptfile);
-          print_val (*expr);
-          printf ("  => ");
-          print_val (eval (root, env, expr));
-          printf ("\n");
-          nbexpr++;
-        }
-      printf
-        ("%s git %s evaluated %d expressions in scriptfile %s (offset %ld)\n",
-         argv[0], BISMON_GIT, nbexpr, scriptfile, ftell (fscript));
-      fclose (fscript);
+      int nbscrexpr = load_file (scriptfile, true, root, env);
     }
   else
     {
-      // The main loop
-      for (;;)
-        {
-          *expr = fread_expr (stdin, root);
-          if (!*expr)
-            return 0;
-          if (*expr == Cparen)
-            error ("Stray close parenthesis");
-          if (*expr == Dot)
-            error ("Stray dot");
-          print_val (eval (root, env, expr));
-          printf ("\n");
-        }
+      int nbreplexpr = load_file (NULL, true, root, env);
     }
-}
+}                               /* end main */
 
 /// Linux specific, see proc(5)
 const char *
