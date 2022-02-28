@@ -4,6 +4,8 @@
 
 #include "minilispbismon.h"
 
+char *program_name;
+
 void
 error (char *fmt, ...)
 {
@@ -155,7 +157,7 @@ alloc (void *root, int type, size_t size)
   // Terminate the program if we couldn't satisfy the memory request. This can happen if the
   // requested size was too large or the from-space was filled with too many live objects.
   if (MEMORY_SIZE < mem_nused + size)
-    error ("Memory exhausted");
+    error ("Memory exhausted, requested %zd", size);
 
   // Allocate the object.
   Obj *obj = memory + mem_nused;
@@ -299,7 +301,8 @@ gc (void *root)
           scan1->up = forward (scan1->up);
           break;
         default:
-          error ("Bug: copy: unknown type %d", scan1->type);
+          error ("Bug: copy: unknown type %d @%p",
+                 scan1->type, (void *) scan1);
         }
       scan1 = (Obj *) ((uint8_t *) scan1 + scan1->size);
     }
@@ -513,26 +516,31 @@ Obj *
 fread_list (FILE * f, void *root)
 {
   DEFINE3 (obj, head, last);
+  long ofs = -1;
+  assert (f != NULL);
   *head = Nil;
   for (;;)
     {
+      ofs = ftell (f);
       *obj = fread_expr (f, root);
       if (!*obj)
-        error ("Unclosed parenthesis");
+        error ("Unclosed parenthesis in %s offset %ld",
+               static1_file_name (f), ofs);
       if (*obj == Cparen)
         return reverse (*head);
       if (*obj == Dot)
         {
           *last = fread_expr (f, root);
           if (fread_expr (f, root) != Cparen)
-            error ("Closed parenthesis expected after dot");
+            error ("Closed parenthesis expected after dot in %s offset %ld",
+                   static1_file_name (f), ofs);
           Obj *ret = reverse (*head);
           (*head)->cdr = *last;
           return ret;
         }
       *head = cons (root, obj, head);
     }
-}
+}                               /* end fread_list */
 
 // May create a new symbol. If there's a symbol with the same name, it will not create a new symbol
 // but return the existing one.
@@ -572,12 +580,15 @@ Obj *
 fread_symbol (FILE * f, void *root, char c)
 {
   char buf[SYMBOL_MAX_LEN + 1];
+  assert (f != NULL);
   buf[0] = c;
   int len = 1;
+  long ofs = ftell (f);
   while (isalnum (fpeek (f)) || strchr (symbol_chars, fpeek (f)))
     {
       if (SYMBOL_MAX_LEN <= len)
-        error ("Symbol name too long");
+        error ("Symbol name too long '%c%s' at %s offset %ld",
+               c, buf, static1_file_name (f), ofs);
       buf[len++] = fgetc (f);
     }
   buf[len] = '\0';
@@ -596,6 +607,8 @@ fread_hash (FILE * f, void *root)
 {
   int c = fpeek (f);
   int pos = -1;
+  assert (f != NULL);
+  long ofs = ftell (f);
   if ((c >= '0' && c < '9') || c == '+' || c == '-')
     {
       double db = 0.0;
@@ -612,7 +625,8 @@ fread_hash (FILE * f, void *root)
         }
     }
 #warning incomplete fread_hash
-  error ("unimplemented hash syntax #%c", (char) c);
+  error ("unimplemented hash syntax #%c at %s offset %ld",
+         (char) c, static1_file_name (f), ofs);
 }                               /* end fread_hash */
 
 
@@ -625,9 +639,11 @@ fread_string (FILE * f, void *root)
   int c = -2;
   char smallbuf[64];
   memset (smallbuf, 0, sizeof (smallbuf));
+  assert (f != NULL);
   char *buf = smallbuf;
   int blen = 0;
   int bsiz = sizeof (smallbuf) - 1;
+  long ofs = ftell (f);
 #define APPEND_BYTE(By) do {					\
     char by = By;						\
     if (blen >= bsiz) {						\
@@ -635,8 +651,9 @@ fread_string (FILE * f, void *root)
       int newsiz = ((3*bsiz/2+2)|0x1f)+1;			\
       buf = calloc(newsiz, 1);					\
       if (!buf)							\
-	error("out of memory reading string of %d bytes",	\
-	      blen);						\
+	error("out of memory reading string of %d bytes"	\
+	      " at %s offset %ld (%m)",				\
+	      blen, static1_file_name(f), ofs);			\
       memcpy(buf, oldbuf, blen);				\
       bsiz = newsiz;						\
     };								\
@@ -650,7 +667,8 @@ fread_string (FILE * f, void *root)
           break;
         };
       if (c == '\n' || c == '\r')
-        error ("unterminated single-line string starting with %s", buf);
+        error ("unterminated single-line string starting with %s"
+               " at %s offset %ld (%m)", buf, static1_file_name (f), ofs);
       if (c == '\\')
         {
           c = fgetc (f);        // consume the backslash
@@ -694,8 +712,9 @@ fread_string (FILE * f, void *root)
               {
                 int h = 0;
                 if (fscanf (f, "%02x", &h) < 0)
-                  error ("failed to read backslash-x escape for buffer %s",
-                         buf);
+                  error ("failed to read backslash-x escape for buffer %s"
+                         " at %s offset %ld",
+                         buf, static1_file_name (f), ofs);
                 APPEND_BYTE ((char) h);
                 break;
               }
@@ -717,8 +736,10 @@ fread_string (FILE * f, void *root)
 Obj *
 fread_expr (FILE * f, void *root)
 {
+  assert (f != NULL);
   for (;;)
     {
+      long off = ftell (f);
       int c = fgetc (f);
       if (c == ' ' || c == '\n' || c == '\r' || c == '\t')
         continue;
@@ -747,7 +768,8 @@ fread_expr (FILE * f, void *root)
         return make_int (root, -fread_number (f, 0));
       if (isalpha (c) || strchr (symbol_chars, c))
         return fread_symbol (f, root, c);
-      error ("Don't know how to handle %c", c);
+      error ("Don't know how to handle %c at %s offset %ld",
+             c, static1_file_name (f), off);
     }
 }                               /* end read_expr */
 
@@ -1820,6 +1842,123 @@ prim_if (void *root, Obj **env, Obj **list)
   return *els == Nil ? Nil : progn (root, env, els);
 }
 
+
+bool
+recursive_equal (Obj *x, Obj *y, unsigned depth)
+{
+  if (x == y)
+    return true;
+  if (depth > MAX_RECURSIVE_DEPTH)
+    return false;
+  if (x->type == TINT)
+    {
+      if (y->type == TINT)
+        return x->lvalue == y->lvalue;
+      else if (y->type == TDOUBLE)
+        return (double) x->lvalue == y->dvalue;
+      else
+        return false;
+    }
+  else if (x->type == TDOUBLE)
+    {
+      if (y->type == TINT)
+        return x->dvalue == (double) y->lvalue;
+      else if (y->type == TDOUBLE)
+        return x->dvalue == y->dvalue;
+      else
+        return false;
+    }
+  if (x->type != y->type)
+    return false;
+  switch (x->type)
+    {
+    case TSTRING:
+      if (x->utf8_len == y->utf8_len
+          && !strcmp (x->utf8_cstring, y->utf8_cstring))
+        return true;
+      else
+        return false;
+    case TSYMBOL:
+    case TTRUE:
+    case TNIL:
+    case TDOT:
+    case TCPAREN:
+      return false;
+    case TCELL:
+      if (length (x) != length (y))
+        return false;
+      {
+        Obj *curx = x;
+        Obj *cury = y;
+        int count = 0;
+        while (curx && cury)
+          {
+            if (!recursive_equal (curx->car, cury->car, depth + 1))
+              return false;
+            if (count++ > 2 * MAX_VECTOR_LEN)
+              return false;
+            curx = x->cdr;
+            cury = y->cdr;
+          }
+      }
+      return true;
+    case TVECTOR:
+      if (x->vec_len != y->vec_len)
+        return false;
+      if (x->vec_flavor != y->vec_flavor)
+        return false;
+      {
+        unsigned ln = x->vec_len;
+        for (int i = 0; i < (int) ln; i++)
+          if (!recursive_equal
+              (x->vec_comparr[i], y->vec_comparr[i], depth + 1))
+            return false;
+        return true;
+      }
+    case TENV:
+      if (recursive_equal (x->vars, y->vars, depth + 1))
+        return true;
+      if (recursive_equal (x->up, y->up, depth + 1))
+        return true;
+      return false;
+    case TJSONREF:
+      if (x->json_index == y->json_index)
+        return true;
+      else
+        {
+          extern bool jsonref_recursive_equal (Obj *x, Obj *y,
+                                               unsigned depth);
+          return jsonref_recursive_equal (x, y, depth);
+        };
+      return false;
+    case TGTKREF:
+      if (x->gtk_index == y->gtk_index)
+        return true;
+      else
+        {
+          extern bool gtkref_recursive_equal (Obj *x, Obj *y, unsigned depth);
+          return gtkref_recursive_equal (x, y, depth);
+#warning recursive_equal unimplemented for TGTKREF
+        };
+      return false;
+    case TPRIMITIVE:
+    case TFUNCTION:
+    case TMACRO:
+      if (!recursive_equal (x->params, y->params, depth + 1))
+        return false;
+      if (!recursive_equal (x->body, y->body, depth + 1))
+        return false;
+      if (!recursive_equal (x->env, y->env, depth + 1))
+        return false;
+      return true;
+    default:
+      return false;
+    }
+#warning recursive_equal is incomplete
+  return false;
+}                               /* end recursive_equal */
+
+
 // (= <scalar> <scalar>)
 Obj *
 prim_scalar_eq (void *root, Obj **env, Obj **list)
@@ -1847,14 +1986,21 @@ prim_scalar_eq (void *root, Obj **env, Obj **list)
       else
         goto fail;
     }
+  else if (x->type == TSTRING && y->type == TSTRING)
+    {
+      if (x->utf8_len == y->utf8_len
+          && !strcmp (x->utf8_cstring, y->utf8_cstring))
+        return True;
+      else
+        return Nil;
+    }
   else if (x->type == TJSONREF && y->type == TJSONREF)
     return prim_json_eq (root, env, list);
   else if (x->type == TGTKREF && y->type == TGTKREF)
     return prim_gtk_eq (root, env, list);
 fail:
   error ("= only takes scalars");
-
-}
+}                               /* end prim_scalar_eq for = */
 
 // (eq expr expr)
 Obj *
@@ -1865,6 +2011,27 @@ prim_eq (void *root, Obj **env, Obj **list)
   Obj *values = eval_list (root, env, list);
   return values->car == values->cdr->car ? True : Nil;
 }
+
+// (load "filename")
+Obj *
+prim_load (void *root, Obj **env, Obj **list)
+{
+  char filnam[256];
+  memset (filnam, 0, sizeof (filnam));
+  if (length (*list) != 1)
+    error ("load requires a single argument");
+  Obj *values = eval_list (root, env, list);
+  Obj *firstarg = values->car;
+  if (firstarg->type == TSTRING
+      && firstarg->utf8_len < 3 * sizeof (filnam) / 4
+      && strlen (firstarg->utf8_cstring) < sizeof (filnam))
+    {
+      strcpy (filnam, firstarg->utf8_cstring);
+    }
+  else
+    return Nil;
+}                               /* end prim_load */
+
 
 void
 add_primitive (void *root, Obj **env, char *name, Primitive * fn)
@@ -1921,6 +2088,65 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "vector_slice", prim_vector_slice);
 }                               /* end define_primitives */
 
+
+/// load a file, evaluating each s-expr, and return -1 on error, and
+/// the number of evaluated expressions otherwise. If skiphead is
+/// true, ignore first lines up to a line like ;;;+++
+int
+load_file (const char *filnam, bool skiphead, void *root, Obj **env)
+{
+  FILE *fil = filnam ? fopen (filnam, "r") : stdin;
+  if (!fil)
+    {
+      fprintf (stderr, "%s: cannot open file %s to load - %m", program_name,
+               filnam);
+      return -1;
+    };
+  DEFINE1 (expr);
+  if (skiphead)
+    {
+      printf ("%s git %s reading scriptfile %s\n", program_name, BISMON_GIT,
+              filnam);
+      char linbuf[256];
+      do
+        {
+          memset (linbuf, 0, sizeof (linbuf));
+          fgets (linbuf, sizeof (linbuf) - 1, fil);
+          if (!strncmp (linbuf, ";;;+++", 6))
+            break;
+        }
+      while (!feof (fil));
+    }
+  int nbexpr = 0;
+  if (skiphead)
+    printf ("%s git %s start reading at offset #%ld of scriptfile %s\n",
+            program_name, BISMON_GIT, ftell (fil), filnam);
+  while (!feof (fil))
+    {
+      long off = ftell (fil);
+      *expr = fread_expr (fil, root);
+      if (!*expr)
+        return nbexpr;
+      if (*expr == Cparen)
+        error ("Stray close parenthesis in %s offset %ld", filnam, off);
+      if (*expr == Dot)
+        error ("Stray dot in %s offset %ld", filnam, off);
+      printf ("%s git %s at offset #%ld of scriptfile %s expression...\n",
+              program_name, BISMON_GIT, off, filnam);
+      print_val (*expr);
+      printf ("  => ");
+      print_val (eval (root, env, expr));
+      printf ("\n");
+      nbexpr++;
+    }
+  if (skiphead)
+    printf ("%s git %s evaluated %d expressions in file %s (offset %ld)\n",
+            program_name, BISMON_GIT, nbexpr, filnam, ftell (fil));
+  if (fil != stdin)
+    fclose (fil);
+  return nbexpr;
+}                               /* end load_file */
+
 //======================================================================
 // Entry point
 //======================================================================
@@ -1936,6 +2162,7 @@ getEnvFlag (char *name)
 int
 main (int argc, char **argv)
 {
+  program_name = argv[0];
   const char *scriptfile = NULL;
   if (argc == 2 && !strcmp (argv[1], "--version"))
     {
@@ -1944,6 +2171,8 @@ main (int argc, char **argv)
          argv[0], BISMON_GIT, __DATE__, __TIME__);
       exit (EXIT_SUCCESS);
     }
+  initialize_json ();
+  initialize_gtk (&argc, &argv);
   if (argc > 2 && (!strcmp (argv[1], "-s") || !strcmp (argv[1], "--script")))
     scriptfile = argv[2];
 
@@ -1951,7 +2180,6 @@ main (int argc, char **argv)
   debug_gc = getEnvFlag ("MINILISP_DEBUG_GC");
   always_gc = getEnvFlag ("MINILISP_ALWAYS_GC");
 
-  initialize_json ();
 
   // Memory allocation
   memory = alloc_semispace ();
@@ -1968,72 +2196,73 @@ main (int argc, char **argv)
 
   if (scriptfile)
     {
-      FILE *fscript = fopen (scriptfile, "r");
-      if (!fscript)
-        {
-          perror (scriptfile);
-          exit (EXIT_FAILURE);
-        };
-      printf ("%s git %s reading scriptfile %s\n", argv[0], BISMON_GIT,
-              scriptfile);
-      char linbuf[256];
-      do
-        {
-          memset (linbuf, 0, sizeof (linbuf));
-          if (!fgets (linbuf, sizeof (linbuf) - 1, fscript))
-            {
-              fprintf (stderr,
-                       "%s: git %s failed to read first lines in scriptfile %s (%m)\n",
-                       argv[0], BISMON_GIT, scriptfile);
-              exit (EXIT_FAILURE);
-            }
-          if (!strncmp (linbuf, ";;;+++", 6))
-            break;
-        }
-      while (!feof (fscript));
-      int nbexpr = 0;
-      printf ("%s git %s start reading at offset #%ld of scriptfile %s\n",
-              argv[0], BISMON_GIT, ftell (fscript), scriptfile);
-      while (!feof (fscript))
-        {
-          long off = ftell (fscript);
-          *expr = fread_expr (fscript, root);
-          if (!*expr)
-            return 0;
-          if (*expr == Cparen)
-            error ("Stray close parenthesis");
-          if (*expr == Dot)
-            error ("Stray dot");
-          printf ("%s git %s at offset #%ld of scriptfile %s expression...\n",
-                  argv[0], BISMON_GIT, off, scriptfile);
-          print_val (*expr);
-          printf ("  => ");
-          print_val (eval (root, env, expr));
-          printf ("\n");
-          nbexpr++;
-        }
-      printf
-        ("%s git %s evaluated %d expressions in scriptfile %s (offset %ld)\n",
-         argv[0], BISMON_GIT, nbexpr, scriptfile, ftell (fscript));
-      fclose (fscript);
+      int nbscrexpr = load_file (scriptfile, true, root, env);
     }
   else
     {
-      // The main loop
-      for (;;)
-        {
-          *expr = fread_expr (stdin, root);
-          if (!*expr)
-            return 0;
-          if (*expr == Cparen)
-            error ("Stray close parenthesis");
-          if (*expr == Dot)
-            error ("Stray dot");
-          print_val (eval (root, env, expr));
-          printf ("\n");
-        }
+      int nbreplexpr = load_file (NULL, true, root, env);
     }
-}
+}                               /* end main */
+
+/// Linux specific, see proc(5)
+const char *
+static1_file_name (FILE * f)
+{
+  static char nambuf1[256];
+  if (!f)
+    return "[no-file]";
+  if (f == stdin)
+    return "[stdin]";
+  if (f == stdout)
+    return "[stdout]";
+  if (f == stderr)
+    return "[stderr]";
+  int fino = fileno (f);
+  if (fino > 0)
+    {
+      char fbuf[64];
+      memset (fbuf, 0, sizeof (fbuf));
+      memset (nambuf1, 0, sizeof (nambuf1));
+      snprintf (fbuf, sizeof (fbuf), "/proc/self/fd/%d", fino);
+      if (readlink (fbuf, nambuf1, sizeof (nambuf1) - 1) > 0)
+        return nambuf1;
+      snprintf (nambuf1, sizeof (nambuf1) - 1, "[fd#%d]", fino);
+    }
+  else
+    snprintf (nambuf1, sizeof (nambuf1) - 1, "[FILE@%p]", f);
+  return nambuf1;
+}                               /// end static1_file_name
+
+
+const char *
+static2_file_name (FILE * f)
+{
+  static char nambuf2[256];
+  if (!f)
+    return "[no-file]";
+  if (f == stdin)
+    return "[stdin]";
+  if (f == stdout)
+    return "[stdout]";
+  if (f == stderr)
+    return "[stderr]";
+  int fino = fileno (f);
+  if (fino > 0)
+    {
+      char fbuf[64];
+      memset (fbuf, 0, sizeof (fbuf));
+      memset (nambuf2, 0, sizeof (nambuf2));
+      snprintf (fbuf, sizeof (fbuf), "/proc/self/fd/%d", fino);
+      if (readlink (fbuf, nambuf2, sizeof (nambuf2) - 1) > 0)
+        return nambuf2;
+      snprintf (nambuf2, sizeof (nambuf2) - 1, "[fd#%d]", fino);
+    }
+  else
+    snprintf (nambuf2, sizeof (nambuf2) - 1, "[FILE@%p]", f);
+  return nambuf2;
+}                               /// end static2_file_name
+
+
 
 /************
  ** for Emacs:

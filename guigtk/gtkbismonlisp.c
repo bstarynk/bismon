@@ -52,6 +52,23 @@ file_gtk_print (FILE * fil, Obj *obj, unsigned depth)
 }                               /* end file_gtk_print */
 
 
+bool
+gtkref_recursive_equal (Obj *x, Obj *y, unsigned depth)
+{
+  if (x == y)
+    return true;
+  if (depth > MAX_RECURSIVE_DEPTH)
+    return false;
+  if (x->type == TGTKREF && y->type == TGTKREF)
+    {
+      int xix = x->gtk_index;
+      int yix = y->gtk_index;
+      if (xix == yix)
+        return True;
+    }
+  return false;
+}                               /* end gtkref_recursive_equal */
+
 Obj *
 prim_gtk_eq (void *root, Obj **env, Obj **list)
 {
@@ -61,21 +78,16 @@ prim_gtk_eq (void *root, Obj **env, Obj **list)
   Obj *x = values->car;
   Obj *y = values->cdr->car;
   if (x->type == TGTKREF && y->type == TGTKREF)
-    {
-      int xix = x->gtk_index;
-      int yix = y->gtk_index;
-      if (xix == yix)
-        return True;
-#warning prim_gtk_eq unimplemented
-      error ("prim_gtk_eq unimplemented gtk#%d & gtk#%d");
-    }
+    return gtkref_recursive_equal (x, y, 0) ? True : Nil;
   return Nil;
-}                               /* end prim_json_eq */
+}                               /* end prim_gtk_eq */
 
 
 void
-initialize_gtk (int *pargc, char **argv)
+initialize_gtk (int *pargc, char ***pargv)
 {
+#warning notice that gtk_init is different in GTK 3 and GTK 4
+  gtk_init (pargc, pargv);      /*the GTK3 one */
 }                               /* end initialize_gtk */
 
 /// this routine is called at start of the garbage collector to clear the GC marks for GTK references

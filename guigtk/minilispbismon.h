@@ -21,6 +21,7 @@
 
 #include <glib.h>
 
+extern char *program_name;
 
 extern void error (char *fmt, ...) __attribute__((noreturn));
 
@@ -136,6 +137,8 @@ typedef struct Obj
 
 #define MAX_VECTOR_LEN (128*1024)
 
+extern bool recursive_equal (Obj *x, Obj *y, unsigned depth);
+
 enum json_magic_en
 {
   JSONMAG_true = -1,
@@ -151,6 +154,8 @@ extern Obj *Cparen;
 extern Obj *Jsonv_True;
 extern Obj *Jsonv_False;
 extern Obj *Jsonv_Null;
+
+#define MAX_RECURSIVE_DEPTH 64
 
 // The list containing all symbols. Such data structure is traditionally called the "obarray", but I
 // avoid using it as a variable name as this is not an array but a list.
@@ -230,7 +235,7 @@ extern void print_val (Obj *obj);
 extern void file_print (FILE * fil, Obj *obj, unsigned depth);
 extern void file_json_print (FILE * fil, Obj *obj, unsigned depth);
 extern void file_gtk_print (FILE * fil, Obj *obj, unsigned depth);
-
+extern bool recursive_equal (Obj *x, Obj *y, unsigned depth);
 
 /// gives the JSON value inside some Obj, or else NULL; inverse of make_json
 extern json_t *json_in_obj (Obj *obj);
@@ -242,6 +247,19 @@ extern void initialize_json (void);
 
 
 /// initialize support for GTK
-extern void initialize_gtk (int *pargc, char **argv);
+extern void initialize_gtk (int *pargc, char ***pargv);
+
+
+/// load a file, evaluating each s-expr, and return -1 on error, and
+/// the number of evaluated expressions otherwise. If skiphead is
+/// true, ignore first lines up to a line like ;;;+++
+extern int load_file (const char *filnam, bool skiphead, void *root,
+                      Obj **env);
+
+//// two unsafe and non-reentrant utilities to print file names; usable
+//// with error(...)
+extern const char *static1_file_name (FILE * f);
+extern const char *static2_file_name (FILE * f);
+
 #endif /*MINILISPBISMON_HEADER */
 ///// end of file bismon/gtkgui/minilispbismon.h

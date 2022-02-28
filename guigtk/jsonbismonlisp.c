@@ -285,6 +285,25 @@ get_json (Obj *jsob)
   return NULL;
 }                               /* end get_json */
 
+
+bool
+jsonref_recursive_equal (Obj *x, Obj *y, unsigned depth)
+{
+  json_t *jx = get_json (x);
+  json_t *jy = get_json (y);
+  if (jx == jy)
+    return true;
+  if (depth > MAX_RECURSIVE_DEPTH)
+    return false;
+  if (!jx || !jy)
+    return false;
+  if (json_typeof (jx) != json_typeof (jy))
+    return false;
+  return json_equal (jx, jy);
+}                               /* end jsonref_recursive_equal */
+
+
+
 void
 mark_json_ref (void *root, Obj *jsob)
 {
