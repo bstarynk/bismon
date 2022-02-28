@@ -1980,7 +1980,13 @@ main (int argc, char **argv)
       do
         {
           memset (linbuf, 0, sizeof (linbuf));
-          fgets (linbuf, sizeof (linbuf) - 1, fscript);
+          if (!fgets (linbuf, sizeof (linbuf) - 1, fscript))
+            {
+              fprintf (stderr,
+                       "%s: git %s failed to read first lines in scriptfile %s (%m)\n",
+                       argv[0], BISMON_GIT, scriptfile);
+              exit (EXIT_FAILURE);
+            }
           if (!strncmp (linbuf, ";;;+++", 6))
             break;
         }
@@ -2000,7 +2006,7 @@ main (int argc, char **argv)
             error ("Stray dot");
           printf ("%s git %s at offset #%ld of scriptfile %s expression...\n",
                   argv[0], BISMON_GIT, off, scriptfile);
-          print_val (expr);
+          print_val (*expr);
           printf ("  => ");
           print_val (eval (root, env, expr));
           printf ("\n");
