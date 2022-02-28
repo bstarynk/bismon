@@ -2223,13 +2223,14 @@ main (int argc, char **argv)
 
   if (scriptfile)
     {
-      int nbscrexpr = load_file (scriptfile, true, root, env);
+      int nbscrexpr =
+        load_file (scriptfile, SKIP_HEAD_LOADED_FILE, root, env);
       if (nbscrexpr <= 0)
         exit (EXIT_FAILURE);
     }
   else
     {
-      int nbreplexpr = load_file (NULL, true, root, env);
+      int nbreplexpr = load_file (NULL, LOAD_FULL_LOADED_FILE, root, env);
       if (nbreplexpr <= 0)
         exit (EXIT_FAILURE);
     }
