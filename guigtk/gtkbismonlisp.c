@@ -113,7 +113,7 @@ initialize_gtk (int *pargc, char ***pargv)
   g_application_add_main_option (G_APPLICATION (app_minilisp),
                                  /*long_name: */ "script",
                                  /*short_name: */ 'S',
-                                 /*flags: */ G_OPTION_FLAG_FILENAME,
+                                 /*flags: */ G_OPTION_FLAG_NONE,
                                  /*arg: */ G_OPTION_ARG_FILENAME,
                                  /*description: */
                                  "load script file SCRIPTFILE",
