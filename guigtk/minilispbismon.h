@@ -253,6 +253,8 @@ extern void initialize_gtk (int *pargc, char ***pargv);
 /// load a file, evaluating each s-expr, and return -1 on error, and
 /// the number of evaluated expressions otherwise. If skiphead is
 /// true, ignore first lines up to a line like ;;;+++
+#define SKIP_HEAD_LOADED_FILE true
+#define LOAD_FULL_LOADED_FILE false
 extern int load_file (const char *filnam, bool skiphead, void *root,
                       Obj **env);
 

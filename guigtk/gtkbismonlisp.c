@@ -28,6 +28,9 @@
 #include <jansson.h>
 #include <gtk/gtk.h>
 
+GtkApplication *app_minilisp;
+int *minilisp_pargc;
+char **minilisp_argv;
 
 void
 mark_gtk_ref (void *root, Obj *gtkob)
@@ -82,12 +85,31 @@ prim_gtk_eq (void *root, Obj **env, Obj **list)
   return Nil;
 }                               /* end prim_gtk_eq */
 
+Obj *
+prim_gtk_loop (void *root, Obj **env, Obj **list)
+{
+  if (!app_minilisp)
+    error ("gtk_loop: no GTK application");
+  if (length (*list) != 1)
+    error ("gtk_loop needs no extra arguments");
+  Obj *values = eval_list (root, env, list);
+  int status =                  //
+    g_application_run (G_APPLICATION (app_minilisp),
+                       *minilisp_pargc, minilisp_argv);
+  if (status == 0)
+    return Nil;
+  else
+    return make_int (root, status);
+}                               /* end prim_gtk_loop */
 
 void
 initialize_gtk (int *pargc, char ***pargv)
 {
 #warning notice that gtk_init is different in GTK 3 and GTK 4
   gtk_init (pargc, pargv);      /*the GTK3 one */
+  minilisp_pargc = pargc;
+  minilisp_argv = *pargv;
+  app_minilisp = gtk_application_new ("fr.cea.www-list.bismon.guigtk", 0);
 }                               /* end initialize_gtk */
 
 /// this routine is called at start of the garbage collector to clear the GC marks for GTK references
@@ -110,6 +132,7 @@ void
 define_gtk_primitives (void *root, Obj **env)
 {
   add_primitive (root, env, "gtk_eq", prim_gtk_eq);
+  add_primitive (root, env, "gtk_loop", prim_gtk_loop);
 }                               /* end define_gtk_primitives */
 
 

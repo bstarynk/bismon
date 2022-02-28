@@ -2027,10 +2027,35 @@ prim_load (void *root, Obj **env, Obj **list)
       && strlen (firstarg->utf8_cstring) < sizeof (filnam))
     {
       strcpy (filnam, firstarg->utf8_cstring);
+      int nbscrexpr = load_file (filnam, LOAD_FULL_LOADED_FILE, root, env);
+      if (nbscrexpr >= 0)
+        return make_int (root, nbscrexpr);
     }
-  else
-    return Nil;
+  return Nil;
 }                               /* end prim_load */
+
+
+// (load_skipped "filename")
+Obj *
+prim_load_skipped (void *root, Obj **env, Obj **list)
+{
+  char filnam[256];
+  memset (filnam, 0, sizeof (filnam));
+  if (length (*list) != 1)
+    error ("load_skipped requires a single argument");
+  Obj *values = eval_list (root, env, list);
+  Obj *firstarg = values->car;
+  if (firstarg->type == TSTRING
+      && firstarg->utf8_len < 3 * sizeof (filnam) / 4
+      && strlen (firstarg->utf8_cstring) < sizeof (filnam))
+    {
+      strcpy (filnam, firstarg->utf8_cstring);
+      int nbscrexpr = load_file (filnam, SKIP_HEAD_LOADED_FILE, root, env);
+      if (nbscrexpr >= 0)
+        return make_int (root, nbscrexpr);
+    }
+  return Nil;
+}                               /* end prim_load_skipped */
 
 
 void
@@ -2111,7 +2136,9 @@ load_file (const char *filnam, bool skiphead, void *root, Obj **env)
       do
         {
           memset (linbuf, 0, sizeof (linbuf));
-          fgets (linbuf, sizeof (linbuf) - 1, fil);
+          char *li = fgets (linbuf, sizeof (linbuf) - 1, fil);
+          if (!li)
+            break;
           if (!strncmp (linbuf, ";;;+++", 6))
             break;
         }
@@ -2187,7 +2214,7 @@ main (int argc, char **argv)
   // Constants and primitives
   Symbols = Nil;
   void *root = NULL;
-  DEFINE2 (env, expr);
+  DEFINE1 (env);
   *env = make_env (root, &Nil, &Nil);
   define_constants (root, env);
   define_primitives (root, env);
@@ -2197,10 +2224,14 @@ main (int argc, char **argv)
   if (scriptfile)
     {
       int nbscrexpr = load_file (scriptfile, true, root, env);
+      if (nbscrexpr <= 0)
+        exit (EXIT_FAILURE);
     }
   else
     {
       int nbreplexpr = load_file (NULL, true, root, env);
+      if (nbreplexpr <= 0)
+        exit (EXIT_FAILURE);
     }
 }                               /* end main */
 
