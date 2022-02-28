@@ -5,6 +5,7 @@
 #include "minilispbismon.h"
 
 char *program_name;
+char *scriptfile;
 
 void
 error (char *fmt, ...)
@@ -2190,7 +2191,6 @@ int
 main (int argc, char **argv)
 {
   program_name = argv[0];
-  const char *scriptfile = NULL;
   if (argc == 2 && !strcmp (argv[1], "--version"))
     {
       printf

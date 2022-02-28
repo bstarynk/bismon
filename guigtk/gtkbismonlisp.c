@@ -90,8 +90,8 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
 {
   if (!app_minilisp)
     error ("gtk_loop: no GTK application");
-  if (length (*list) != 1)
-    error ("gtk_loop needs no extra arguments");
+  if (length (*list) > 0)
+    error ("gtk_loop needs no extra arguments, got %d", (int) length (*list));
   Obj *values = eval_list (root, env, list);
   int status =                  //
     g_application_run (G_APPLICATION (app_minilisp),
@@ -110,6 +110,14 @@ initialize_gtk (int *pargc, char ***pargv)
   minilisp_pargc = pargc;
   minilisp_argv = *pargv;
   app_minilisp = gtk_application_new ("fr.cea.www-list.bismon.guigtk", 0);
+  g_application_add_main_option (G_APPLICATION (app_minilisp),
+                                 /*long_name: */ "script",
+                                 /*short_name: */ 'S',
+                                 /*flags: */ G_OPTION_FLAG_FILENAME,
+                                 /*arg: */ G_OPTION_ARG_FILENAME,
+                                 /*description: */
+                                 "load script file SCRIPTFILE",
+                                 /*arg_description: */ "SCRIPTFILE");
 }                               /* end initialize_gtk */
 
 /// this routine is called at start of the garbage collector to clear the GC marks for GTK references

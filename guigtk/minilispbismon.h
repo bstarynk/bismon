@@ -22,6 +22,7 @@
 #include <glib.h>
 
 extern char *program_name;
+extern char *scriptfile;
 
 extern void error (char *fmt, ...) __attribute__((noreturn));
 
