@@ -768,6 +768,11 @@ fread_json (FILE * fil, void *root)
       error ("fread_json failed %s", errmsg);
       return NULL;
     };
+  long off = ftell(fil);
+  /// in commit after b89c248e3d2 ther test01.sh requires this...
+  /// since json_loadf has consumed one extra byte.
+  if (off > 0)
+    fseek(fil, -1, SEEK_CUR);
   return make_json (root, js, KEEP_REFCNT_JANSSON);
 }                               /* end fread_json */
 
