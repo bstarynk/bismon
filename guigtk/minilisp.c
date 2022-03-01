@@ -1587,6 +1587,64 @@ prim_mult (void *root, Obj **env, Obj **list)
 }                               /* end prim_mult */
 
 
+// (/ <number> ...)
+Obj *
+prim_div (void *root, Obj **env, Obj **list)
+{
+  long idiv = 0;
+  double dbdiv = 0.0;
+  bool dblres = false;
+  DEFINE1 (evalargs);
+  *evalargs = eval_list (root, env, list);
+  if (*evalargs == Nil || !*evalargs)
+    return Nil;
+  // is the result a double or an integer?
+  for (Obj *args = *evalargs; args && args != Nil; args = args->cdr)
+    {
+      if (args->car->type != TINT && args->car->type != TDOUBLE)
+        error ("- takes only numbers");
+      if (args->car->type == TDOUBLE)
+        dblres = true;
+    };
+  if (dblres)
+    {
+      if ((*evalargs)->car->type == TINT)
+        dbdiv = (double) ((*evalargs)->car->lvalue);
+      else
+        dbdiv = (*evalargs)->car->dvalue;
+      for (Obj *args = (*evalargs)->cdr;
+           args && args != Nil; args = args->cdr)
+        {
+          if (args->car->type == TINT)
+            {
+              if (args->car->lvalue == 0)
+                return Nil;
+              dbdiv /= (double) args->car->lvalue;
+            }
+          else if (args->car->type == TDOUBLE)
+            {
+              if (args->car->dvalue == 0.0)
+                return Nil;
+              dbdiv /= args->car->dvalue;
+            }
+        };
+      return make_double (root, dbdiv);
+    }
+  else                          /*no dblres */
+    {
+      idiv = (*evalargs)->car->lvalue;
+      for (Obj *args = (*evalargs)->cdr;
+           args && args != Nil; args = args->cdr)
+        {
+          if (args->car->lvalue == 0)
+            return Nil;
+          idiv /= args->car->lvalue;
+        };
+      return make_int (root, idiv);
+    };
+}                               /* end prim_div */
+
+
 
 
 // (< <number> <number>)    or    (< <string> <string>)   or (< <symbol> <symbol>)
@@ -2154,6 +2212,7 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "+", prim_plus);
   add_primitive (root, env, "-", prim_minus);
   add_primitive (root, env, "*", prim_mult);
+  add_primitive (root, env, "/", prim_div);
   add_primitive (root, env, "<", prim_lt);
   add_primitive (root, env, ">", prim_gt);
   add_primitive (root, env, "<=", prim_lessequal);
