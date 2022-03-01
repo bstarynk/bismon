@@ -1452,30 +1452,42 @@ prim_gitid (void *root, Obj **env, Obj **list)
 Obj *
 prim_plus (void *root, Obj **env, Obj **list)
 {
-  int sum = 0;
+  long sum = 0;
   double dsum = 0.0;
   bool dblres = false;
-  for (Obj *args = eval_list (root, env, list);
-       args && args != Nil; args = args->cdr)
+  DEFINE1 (evalargs);
+  *evalargs = eval_list (root, env, list);
+  for (Obj *args = *evalargs; args && args != Nil; args = args->cdr)
     {
       if (args->car->type != TINT && args->car->type != TDOUBLE)
         error ("+ takes only numbers");
       if (args->car->type == TDOUBLE)
         dblres = true;
-      if (dblres)
+    };
+  if (dblres)
+    {
+      for (Obj *args = *evalargs; args && args != Nil; args = args->cdr)
         {
           if (args->car->type == TINT)
-            dsum += (double) args->car->lvalue;
-          else
-            dsum += args->car->dvalue;
-        }
-      else
-        sum += args->car->lvalue;
+            {
+              dsum += (double) args->car->lvalue;
+            }
+          else if (args->car->type == TDOUBLE)
+            {
+              dsum += args->car->dvalue;
+            }
+        };
+      return make_double (root, dsum);
     }
-  if (dblres)
-    return make_double (root, dsum);
-  else
-    return make_int (root, sum);
+  else                          /*no dblres */
+    {
+      for (Obj *args = eval_list (root, env, list);
+           args && args != Nil; args = args->cdr)
+        {
+          sum += args->car->lvalue;
+        };
+      return make_int (root, sum);
+    };
 }                               /* end prim_plus */
 
 
@@ -1487,43 +1499,90 @@ prim_minus (void *root, Obj **env, Obj **list)
   long sub = 0;
   double dbsub = 0.0;
   bool dblres = false;
-  Obj *args = eval_list (root, env, list);
-  for (Obj *p = args; p != Nil; p = p->cdr)
+  DEFINE1 (evalargs);
+  *evalargs = eval_list (root, env, list);
+  if (*evalargs == Nil || !*evalargs)
+    return Nil;
+  // is the result a double or an integer?
+  for (Obj *args = *evalargs; args && args != Nil; args = args->cdr)
     {
-      if (p->car->type != TINT && p->car->type != TDOUBLE)
+      if (args->car->type != TINT && args->car->type != TDOUBLE)
         error ("- takes only numbers");
-      if (p->car->type == TDOUBLE)
+      if (args->car->type == TDOUBLE)
         dblres = true;
-    };
-  if (args->cdr == Nil)
-    {
-      return dblres
-        ? make_double (root, -args->car->dvalue)
-        : make_int (root, -args->car->lvalue);
     };
   if (dblres)
     {
-      if (args->car->type == TINT)
-        dbsub = (double) args->car->lvalue;
-      else
-        dbsub = args->car->dvalue;
-    }
-  else
-    sub = args->car->lvalue;
-  for (Obj *p = args->cdr; p != Nil; p = p->cdr)
-    {
-      if (p->type == TINT)
+      dbsub = (*evalargs)->car->dvalue;
+      for (Obj *args = (*evalargs)->cdr;
+           args && args != Nil; args = args->cdr)
         {
-          if (dblres)
-            dbsub -= (double) p->car->lvalue;
-          else
-            sub -= p->car->lvalue;
-        }
-      else
-        dbsub -= p->car->dvalue;
+          if (args->car->type == TINT)
+            {
+              dbsub -= (double) args->car->lvalue;
+            }
+          else if (args->car->type == TDOUBLE)
+            {
+              dbsub -= args->car->dvalue;
+            }
+        };
+      return make_double (root, dbsub);
     }
-  return dblres ? make_double (root, dbsub) : make_int (root, sub);
+  else                          /*no dblres */
+    {
+      sub = (*evalargs)->car->lvalue;
+      for (Obj *args = (*evalargs)->cdr;
+           args && args != Nil; args = args->cdr)
+        {
+          sub -= args->car->lvalue;
+        };
+      return make_int (root, sub);
+    };
 }                               /* end prim_minus */
+
+// (* <number> ...)
+Obj *
+prim_mult (void *root, Obj **env, Obj **list)
+{
+  long iprod = 1;
+  double dprod = 1.0;
+  bool dblres = false;
+  DEFINE1 (evalargs);
+  *evalargs = eval_list (root, env, list);
+  for (Obj *args = *evalargs; args && args != Nil; args = args->cdr)
+    {
+      if (args->car->type != TINT && args->car->type != TDOUBLE)
+        error ("* takes only numbers");
+      if (args->car->type == TDOUBLE)
+        dblres = true;
+    };
+  if (dblres)
+    {
+      for (Obj *args = *evalargs; args && args != Nil; args = args->cdr)
+        {
+          if (args->car->type == TINT)
+            {
+              dprod *= (double) args->car->lvalue;
+            }
+          else if (args->car->type == TDOUBLE)
+            {
+              dprod *= args->car->dvalue;
+            }
+        };
+      return make_double (root, dprod);
+    }
+  else                          /*no dblres */
+    {
+      for (Obj *args = *evalargs; args && args != Nil; args = args->cdr)
+        {
+          iprod *= args->car->lvalue;
+        };
+      return make_int (root, iprod);
+    };
+  return &Nil;
+}                               /* end prim_mult */
+
+
 
 
 // (< <number> <number>)    or    (< <string> <string>)   or (< <symbol> <symbol>)
@@ -2090,6 +2149,7 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "gitid", prim_gitid);
   add_primitive (root, env, "+", prim_plus);
   add_primitive (root, env, "-", prim_minus);
+  add_primitive (root, env, "*", prim_mult);
   add_primitive (root, env, "<", prim_lt);
   add_primitive (root, env, ">", prim_gt);
   add_primitive (root, env, "<=", prim_lessequal);
