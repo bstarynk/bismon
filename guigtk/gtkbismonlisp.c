@@ -25,12 +25,23 @@
 **/
 #include "minilispbismon.h"
 
-#include <jansson.h>
 #include <gtk/gtk.h>
 
 GtkApplication *app_minilisp;
 int *minilisp_pargc;
 char **minilisp_argv;
+
+GHashTable *gtk_ghtbl;          /* an hashtable associating Gtk pointers to intptr_t ranks */
+
+
+struct
+{
+  void **gtkv_arr;              /* array of pointers */
+  bool *gtkv_markarr;           /* array of GC marks */
+  bool *gtkv_decrefarr;         /* array of flags to json_decref */
+  unsigned gtkv_size;           /* allocated size */
+  unsigned gtkv_count;          /* used count */
+} gtk_vect;
 
 void
 mark_gtk_ref (void *root, Obj *gtkob)
@@ -77,9 +88,10 @@ prim_gtk_eq (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2)
     error ("Malformed = (gtk)");
-  Obj *values = eval_list (root, env, list);
-  Obj *x = values->car;
-  Obj *y = values->cdr->car;
+  DEFINE2 (args, res);
+  *args = eval_list (root, env, list);
+  Obj *x = (*args)->car;
+  Obj *y = (*args)->cdr->car;
   if (x->type == TGTKREF && y->type == TGTKREF)
     return gtkref_recursive_equal (x, y, 0) ? True : Nil;
   return Nil;
@@ -102,6 +114,7 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
     return make_int (root, status);
 }                               /* end prim_gtk_loop */
 
+extern void finalize_gtk (void);
 void
 initialize_gtk (int *pargc, char ***pargv)
 {
@@ -118,6 +131,7 @@ initialize_gtk (int *pargc, char ***pargv)
                                  /*description: */
                                  "load script file SCRIPTFILE",
                                  /*arg_description: */ "SCRIPTFILE");
+  atexit (finalize_gtk);
 }                               /* end initialize_gtk */
 
 /// this routine is called at start of the garbage collector to clear the GC marks for GTK references
@@ -142,6 +156,13 @@ define_gtk_primitives (void *root, Obj **env)
   add_primitive (root, env, "gtk_eq", prim_gtk_eq);
   add_primitive (root, env, "gtk_loop", prim_gtk_loop);
 }                               /* end define_gtk_primitives */
+
+
+void
+finalize_gtk (void)
+{
+}                               /* end finalize_gtk */
+
 
 
 /************
