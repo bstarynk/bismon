@@ -1645,6 +1645,46 @@ prim_div (void *root, Obj **env, Obj **list)
 }                               /* end prim_div */
 
 
+// (% <number> ...) - modulus
+Obj *
+prim_mod (void *root, Obj **env, Obj **list)
+{
+  long imod = 0;
+  DEFINE1 (evalargs);
+  *evalargs = eval_list (root, env, list);
+  if (*evalargs == Nil || !*evalargs)
+    return Nil;
+  // fail if some argument are not numbers
+  for (Obj *args = *evalargs; args && args != Nil; args = args->cdr)
+    {
+      if (args->car->type != TINT && args->car->type != TDOUBLE)
+        error ("% takes only numbers");
+    };
+  if ((*evalargs)->car->type == TINT)
+    imod = (*evalargs)->car->lvalue;
+  else imod = (long)((*evalargs)->car->dvalue);
+  for (Obj *args = (*evalargs)->cdr;
+       args && args != Nil; args = args->cdr)
+    {
+      if (args->car->type == TINT) {
+	if (args->car->lvalue == 0)
+	  return Nil;
+	imod %= args->car->lvalue;
+      }
+      else if (args->car->type == TDOUBLE) {
+	if (args->car->dvalue == 0.0)
+	  return Nil;
+	if (isnan(args->car->dvalue))
+	  return Nil;
+	if (isinf(args->car->dvalue))
+	  return Nil;
+	imod %= (long)args->car->dvalue;
+      };
+    }
+  return make_int (root, imod);
+}                               /* end prim_mod */
+
+
 
 
 // (< <number> <number>)    or    (< <string> <string>)   or (< <symbol> <symbol>)
@@ -2213,6 +2253,7 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "-", prim_minus);
   add_primitive (root, env, "*", prim_mult);
   add_primitive (root, env, "/", prim_div);
+  add_primitive (root, env, "%", prim_mod);
   add_primitive (root, env, "<", prim_lt);
   add_primitive (root, env, ">", prim_gt);
   add_primitive (root, env, "<=", prim_lessequal);
