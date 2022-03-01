@@ -27,18 +27,26 @@
 
 #include <gtk/gtk.h>
 
+#include <math.h>
+
 GtkApplication *app_minilisp;
 int *minilisp_pargc;
 char **minilisp_argv;
 
 GHashTable *gtk_ghtbl;          /* an hashtable associating Gtk pointers to intptr_t ranks */
 
+enum gtk_pointer_kind_en
+{
+  MINILISPGTK_none,
+  MINILISPGTK_WIDGET,           /* a GtkWidget* pointer */
+  MINILISPGTK_GOBJECT,          /* some GObject* pointer */
+};
 
 struct
 {
   void **gtkv_arr;              /* array of pointers */
   bool *gtkv_markarr;           /* array of GC marks */
-  bool *gtkv_decrefarr;         /* array of flags to json_decref */
+  enum gtk_pointer_kind_en *gtkv_kindarr;
   unsigned gtkv_size;           /* allocated size */
   unsigned gtkv_count;          /* used count */
 } gtk_vect;
@@ -49,19 +57,44 @@ mark_gtk_ref (void *root, Obj *gtkob)
   int gtkix = -1;
   assert (root != NULL);
   assert (gtkob != NULL && gtkob->type == TGTKREF);
+  assert (gtk_vect.gtkv_count <= gtk_vect.gtkv_size);
   gtkix = gtkob->gtk_index;
-  error ("mark_json_ref unimplemented for GTK ref#%d", gtkix);
-#warning unimplemented mark_gtk_ref
+  if (gtkix > 0 && gtkix < (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr)
+    {
+      gtk_vect.gtkv_markarr[gtkix] = true;
+    }
 }                               /* end mark_gtk_ref */
 
 
 void
-file_gtk_print (FILE * fil, Obj *obj, unsigned depth)
+file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
 {
+  int gtkix = -1;
   assert (fil != NULL);
-  assert (obj != NULL && obj->type == TGTKREF);
-  fprintf (fil, "<gtk#%d", obj->gtk_index);
-#warning file_gtk_print unimplemented
+  assert (gtkob != NULL && gtkob->type == TGTKREF);
+  gtkix = gtkob->gtk_index;
+  assert (gtkix > 0 && gtkix < gtk_vect.gtkv_count && gtk_vect.gtkv_arr
+          && gtk_vect.gtkv_kindarr);
+  switch (gtk_vect.gtkv_kindarr[gtkix])
+    {
+    case MINILISPGTK_WIDGET:
+      {
+        fprintf (fil, "<gtkw#%d", gtkix);
+        GtkWidget *widg = gtk_vect.gtkv_arr[gtkix];
+        assert (widg != NULL);
+        const gchar *widname = gtk_widget_get_name (widg);
+        if (widname)
+          fprintf (fil, "/%s", widname);
+      };
+      break;
+    case MINILISPGTK_GOBJECT:
+      {
+        fprintf (fil, "<gobj#%d", gtkix);
+      }
+      break;
+    default:
+      assert (false);
+    }
   fprintf (fil, ">");
 }                               /* end file_gtk_print */
 
@@ -79,6 +112,14 @@ gtkref_recursive_equal (Obj *x, Obj *y, unsigned depth)
       int yix = y->gtk_index;
       if (xix == yix)
         return True;
+      assert (xix > 0 && xix < gtk_vect.gtkv_count && gtk_vect.gtkv_arr);
+      assert (yix > 0 && yix < gtk_vect.gtkv_count && gtk_vect.gtkv_arr);
+      if (gtk_vect.gtkv_kindarr[xix] == MINILISPGTK_WIDGET
+          && gtk_vect.gtkv_kindarr[yix] == MINILISPGTK_WIDGET)
+        return gtk_vect.gtkv_arr[xix] == gtk_vect.gtkv_arr[yix];
+      if (gtk_vect.gtkv_kindarr[xix] == MINILISPGTK_GOBJECT
+          && gtk_vect.gtkv_kindarr[yix] == MINILISPGTK_GOBJECT)
+        return gtk_vect.gtkv_arr[xix] == gtk_vect.gtkv_arr[yix];
     }
   return false;
 }                               /* end gtkref_recursive_equal */
@@ -139,7 +180,14 @@ void
 clear_gtk_marks (void *root)
 {
   assert (root != NULL);
-#warning unimplemented clear_gtk_marks
+  if (gtk_vect.gtkv_markarr == NULL)
+    return;
+  for (int gix = 0; gix < (int) gtk_vect.gtkv_count; gix++)
+    {
+      if (gtk_vect.gtkv_arr[gix] == NULL)
+        continue;
+      gtk_vect.gtkv_markarr[gix] = false;
+    }
 }                               /* end clear_gtk_marks */
 
 void
