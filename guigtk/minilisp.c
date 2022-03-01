@@ -1481,8 +1481,7 @@ prim_plus (void *root, Obj **env, Obj **list)
     }
   else                          /*no dblres */
     {
-      for (Obj *args = eval_list (root, env, list);
-           args && args != Nil; args = args->cdr)
+      for (Obj *args = *evalargs; args && args != Nil; args = args->cdr)
         {
           sum += args->car->lvalue;
         };
@@ -1513,7 +1512,10 @@ prim_minus (void *root, Obj **env, Obj **list)
     };
   if (dblres)
     {
-      dbsub = (*evalargs)->car->dvalue;
+      if ((*evalargs)->car->type == TINT)
+        dbsub = (double) ((*evalargs)->car->lvalue);
+      else
+        dbsub = (*evalargs)->car->dvalue;
       for (Obj *args = (*evalargs)->cdr;
            args && args != Nil; args = args->cdr)
         {
@@ -1539,6 +1541,8 @@ prim_minus (void *root, Obj **env, Obj **list)
       return make_int (root, sub);
     };
 }                               /* end prim_minus */
+
+
 
 // (* <number> ...)
 Obj *
