@@ -65,6 +65,47 @@ mark_gtk_ref (void *root, Obj *gtkob)
     }
 }                               /* end mark_gtk_ref */
 
+GtkWidget *
+get_gtk_widget (Obj *ob)
+{
+  int gtkix = -1;
+  if (ob == NULL)
+    return NULL;
+  if (ob->type != TGTKREF)
+    return NULL;
+  gtkix = ob->gtk_index;
+  assert (gtkix > 0 && gtkix < gtk_vect.gtkv_count && gtk_vect.gtkv_arr
+          && gtk_vect.gtkv_kindarr);
+  switch (gtk_vect.gtkv_kindarr[gtkix])
+    {
+    case MINILISPGTK_WIDGET:
+      return (GtkWidget *) gtk_vect.gtkv_arr[gtkix];
+    default:
+      return NULL;
+    }
+  return NULL;
+}                               /* end get_gtk_widget */
+
+
+
+GObject *
+get_g_object (Obj *ob)
+{
+  int gtkix = -1;
+  if (ob == NULL)
+    return NULL;
+  if (ob->type != TGTKREF)
+    return NULL;
+  gtkix = ob->gtk_index;
+  assert (gtkix > 0 && gtkix < gtk_vect.gtkv_count && gtk_vect.gtkv_arr
+          && gtk_vect.gtkv_kindarr);
+  switch (gtk_vect.gtkv_kindarr[gtkix])
+    {
+    case MINILISPGTK_GOBJECT:
+      return (GObject *) gtk_vect.gtkv_arr[gtkix];
+    }
+  return NULL;
+}                               /* end get_g_object */
 
 void
 file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
@@ -85,11 +126,22 @@ file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
         const gchar *widname = gtk_widget_get_name (widg);
         if (widname)
           fprintf (fil, "/%s", widname);
+        else
+          fprintf (fil, "@%p", (void *) widname);
+        const gchar *cssname =
+          gtk_widget_class_get_css_name (GTK_WIDGET_GET_CLASS (widg));
+        if (cssname)
+          fprintf (fil, ".%s", cssname);
       };
       break;
     case MINILISPGTK_GOBJECT:
       {
         fprintf (fil, "<gobj#%d", gtkix);
+        GObject *gob = gtk_vect.gtkv_arr[gtkix];
+        assert (gob != NULL);
+        const gchar *nam = G_OBJECT_TYPE_NAME (gob);
+        if (nam)
+          fprintf (fil, ":%s", nam);
       }
       break;
     default:
@@ -209,6 +261,31 @@ define_gtk_primitives (void *root, Obj **env)
 void
 finalize_gtk (void)
 {
+  if (gtk_vect.gtkv_count > 0)
+    {
+      assert (gtk_vect.gtkv_markarr != NULL);
+      assert (gtk_vect.gtkv_arr != NULL);
+      assert (gtk_vect.gtkv_kindarr != NULL);
+      for (int ix = 0; ix < (int) gtk_vect.gtkv_count; ix++)
+        {
+          if (gtk_vect.gtkv_kindarr[ix] == MINILISPGTK_WIDGET)
+            {
+              if (gtk_vect.gtkv_arr[ix])
+                gtk_widget_destroy ((GtkWidget *) gtk_vect.gtkv_arr[ix]);
+              gtk_vect.gtkv_arr[ix] = NULL;
+            }
+          else if (gtk_vect.gtkv_kindarr[ix] == MINILISPGTK_GOBJECT)
+            {
+              if (gtk_vect.gtkv_arr[ix])
+                g_object_unref ((GObject *) gtk_vect.gtkv_arr[ix]);
+              gtk_vect.gtkv_arr[ix] = NULL;
+            }
+        }
+      free (gtk_vect.gtkv_markarr);
+      free (gtk_vect.gtkv_arr);
+      free (gtk_vect.gtkv_kindarr);
+      memset (&gtk_vect, 0, sizeof (gtk_vect));
+    }
 }                               /* end finalize_gtk */
 
 

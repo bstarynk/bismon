@@ -28,6 +28,8 @@ extern char *scriptfile;
 
 extern void error (char *fmt, ...) __attribute__((noreturn));
 
+
+
 //======================================================================
 // Lisp objects
 //======================================================================
@@ -304,6 +306,19 @@ extern int length (Obj *list);
 
 /// if jsob is a TJSON, get it; otherwise NULL
 extern json_t *get_json (Obj *jsob);
+
+/// this is in <gtk/gtk.h> which we want to avoid including
+typedef struct _GtkWidget GtkWidget;
+/// if ob is a GTK widget get it, else NULL
+extern GtkWidget *get_gtk_widget (Obj *ob);
+
+
+/// this is in <gobject.h>
+typedef struct _GObject GObject;
+/// if ob is a GObject, get it
+extern GObject *get_g_object (Obj *);
+
+
 /// printer
 extern void print_val (Obj *obj);
 extern void file_print (FILE * fil, Obj *obj, unsigned depth);
