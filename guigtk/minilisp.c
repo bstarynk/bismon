@@ -49,6 +49,8 @@ Obj *Cparen = &(Obj)
 // avoid using it as a variable name as this is not an array but a list.
 Obj *Symbols;
 
+const char *static1_file_name (FILE * f);
+const char *static2_file_name (FILE * f);
 //======================================================================
 // Memory management
 //======================================================================
@@ -551,9 +553,12 @@ fread_symbol (FILE * f, void *root, char c)
 Obj *
 fread_hash (FILE * f, void *root)
 {
+  Obj *res = NULL;
   int c = fpeek (f);
   int pos = -1;
   assert (f != NULL);
+  char prefix[8];
+  memset (prefix, 0, sizeof (prefix));
   long ofs = ftell (f);
   if ((c >= '0' && c < '9') || c == '+' || c == '-')
     {
@@ -569,6 +574,71 @@ fread_hash (FILE * f, void *root)
         {
           return fread_json (f, root);
         }
+    }
+  /* raw string, perhaps multiline, e.g. #"ABC(xxy\tk)ABC" is the string of 6 characters xxy\tk */
+  else if (c == '\'' && fscanf (f, "\"%6[A-Za-z0-9](%n", prefix, &pos) >= 1
+           && prefix[1] && pos > 0)
+    {
+      char endb[12];
+      memset (endb, 0, sizeof (endb));
+      snprintf (endb, sizeof (endb), ")%s\"", prefix);
+      int bsiz = 256;
+      int blen = 0;
+      char *buf = calloc (blen, 1);
+      if (!buf)
+        {
+          fprintf (stderr,
+                   "calloc failed for raw string buffer of %d bytes (%m) - file %s offset %ld",
+                   bsiz, static1_file_name (f), ftell (f));
+          exit (EXIT_FAILURE);
+        }
+      size_t linsiz = 128;
+      ssize_t linlen = 0;
+      char *linbuf = calloc (linsiz, 1);
+      bool ended = false;
+      if (!linbuf)
+        fprintf (stderr,
+                 "calloc failed for line buffer of %zd bytes (%m) - file %s offset %ld",
+                 linsiz, static1_file_name (f), ftell (f));
+      while (!ended)
+        {
+          long off = ftell (f);
+          memset (linbuf, 0, linsiz);
+          linlen = getline (&linbuf, &linsiz, f);
+          if (linlen > 0)
+            linbuf[linlen] = (char) 0;
+          else
+            error ("unterminated raw string literal at %s offset %ld",
+                   (char) c, static1_file_name (f), ofs);
+          char *ends = strstr (linbuf, endb);
+          if (ends)
+            {
+              ended = true;
+              fseek (f, -strlen (endb), SEEK_CUR);
+              *ends = (char) 0;
+              linlen -= strlen (endb);
+            };
+          if (blen + linlen >= bsiz)
+            {
+              int newsiz = ((bsiz + linlen + bsiz / 16 + 5) | 0x1f) + 1;
+              char *newbuf = calloc (newsiz, 1);
+              if (!newbuf)
+                {
+                  fprintf (stderr,
+                           "calloc failed for new raw string buffer of %d bytes (%m) - file %s offset %ld",
+                           newsiz, static1_file_name (f), ftell (f));
+                  exit (EXIT_FAILURE);
+                };
+              memcpy (newbuf, buf, blen);
+              free (buf), newbuf = buf;
+              bsiz = newsiz;
+            };
+          strcpy (buf + blen, linbuf);
+          blen += linlen;
+        };                      /* end while !ended */
+      res = make_string (root, buf);
+      free (buf), buf = NULL;
+      return res;
     }
 #warning incomplete fread_hash
   error ("unimplemented hash syntax #%c at %s offset %ld",
