@@ -164,8 +164,10 @@ gtkref_recursive_equal (Obj *x, Obj *y, unsigned depth)
       int yix = y->gtk_index;
       if (xix == yix)
         return True;
-      assert (xix > 0 && xix < gtk_vect.gtkv_count && gtk_vect.gtkv_arr);
-      assert (yix > 0 && yix < gtk_vect.gtkv_count && gtk_vect.gtkv_arr);
+      assert (xix > 0 && xix < (int) gtk_vect.gtkv_count
+              && gtk_vect.gtkv_arr);
+      assert (yix > 0 && yix < (int) gtk_vect.gtkv_count
+              && gtk_vect.gtkv_arr);
       if (gtk_vect.gtkv_kindarr[xix] == MINILISPGTK_WIDGET
           && gtk_vect.gtkv_kindarr[yix] == MINILISPGTK_WIDGET)
         return gtk_vect.gtkv_arr[xix] == gtk_vect.gtkv_arr[yix];
@@ -181,7 +183,7 @@ prim_gtk_eq (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2)
     error ("Malformed = (gtk)");
-  DEFINE2 (args, res);
+  DEFINE1 (args);
   *args = eval_list (root, env, list);
   Obj *x = (*args)->car;
   Obj *y = (*args)->cdr->car;
