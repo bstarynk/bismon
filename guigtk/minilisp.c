@@ -2282,6 +2282,8 @@ define_primitives (void *root, Obj **env)
   add_primitive (root, env, "macroexpand", prim_macroexpand);
   add_primitive (root, env, "lambda", prim_lambda);
   add_primitive (root, env, "list", prim_list);
+  add_primitive (root, env, "load", prim_load);
+  add_primitive (root, env, "load_skipped", prim_load_skipped);
   add_primitive (root, env, "if", prim_if);
   add_primitive (root, env, "=", prim_scalar_eq);
   add_primitive (root, env, "eq", prim_eq);
