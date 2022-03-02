@@ -576,7 +576,7 @@ fread_hash (FILE * f, void *root)
         }
     }
   /* raw string, perhaps multiline, e.g. #"ABC(xxy\tk)ABC" is the string of 6 characters xxy\tk */
-  else if (c == '\'' && fscanf (f, "\"%6[A-Za-z0-9](%n", prefix, &pos) >= 1
+  else if (c == '"' && fscanf (f, "\"%6[A-Za-z0-9](%n", prefix, &pos) >= 1
            && prefix[1] && pos > 0)
     {
       char endb[12];
@@ -614,7 +614,10 @@ fread_hash (FILE * f, void *root)
           if (ends)
             {
               ended = true;
-              fseek (f, -strlen (endb), SEEK_CUR);
+              int delta = linlen - (ends - linbuf);
+              fseek (f, -delta, SEEK_CUR);
+              int pos = ftell (f);
+              assert (pos > 0);
               *ends = (char) 0;
               linlen -= strlen (endb);
             };

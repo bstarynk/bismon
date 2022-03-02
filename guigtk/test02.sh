@@ -4,7 +4,7 @@
 
 ;
 
-#"ABC(xxy\tk)ABC"
+#"ABC(xxy\tk)ABC"  34
 
 (gtk_loop)
 
