@@ -35,7 +35,7 @@ extern void error (char *fmt, ...) __attribute__((noreturn));
 //======================================================================
 
 // The Lisp object type
-enum
+enum objtype_en
 {
   // Regular objects visible from the user
   TINT = 1,
