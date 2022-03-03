@@ -29,6 +29,7 @@
 
 #include <math.h>
 
+
 GtkApplication *app_minilisp;
 int *minilisp_pargc;
 char **minilisp_argv;
@@ -74,7 +75,8 @@ get_gtk_widget (Obj *ob)
   if (ob->type != TGTKREF)
     return NULL;
   gtkix = ob->gtk_index;
-  assert (gtkix > 0 && gtkix < gtk_vect.gtkv_count && gtk_vect.gtkv_arr
+  assert (gtkix > 0
+          && gtkix < (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr
           && gtk_vect.gtkv_kindarr);
   switch (gtk_vect.gtkv_kindarr[gtkix])
     {
@@ -97,7 +99,8 @@ get_g_object (Obj *ob)
   if (ob->type != TGTKREF)
     return NULL;
   gtkix = ob->gtk_index;
-  assert (gtkix > 0 && gtkix < gtk_vect.gtkv_count && gtk_vect.gtkv_arr
+  assert (gtkix > 0
+          && gtkix < (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr
           && gtk_vect.gtkv_kindarr);
   switch (gtk_vect.gtkv_kindarr[gtkix])
     {
