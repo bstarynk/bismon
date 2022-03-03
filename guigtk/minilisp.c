@@ -20,7 +20,7 @@ size_t mem_nused;
 bool gc_running;
 bool debug_gc;
 bool always_gc;
-
+bool verbose_ilisp;
 void
 error (char *fmt, ...)
 {
@@ -2364,22 +2364,24 @@ load_file (const char *filnam, bool skiphead, void *root, Obj **env)
     {
       long off = ftell (fil);
       *expr = fread_expr (fil, root);
+      nbexpr++;
+      if (verbose_ilisp)
+        printf (";; %s: expression#%d at offset %ld of file %s\n",
+                nbexpr, off, filnam);
       if (!*expr)
         return nbexpr;
       if (*expr == Cparen)
         error ("Stray close parenthesis in %s offset %ld", filnam, off);
       if (*expr == Dot)
         error ("Stray dot in %s offset %ld", filnam, off);
-      printf ("%s git %s at offset #%ld of scriptfile %s expression...\n",
+      printf (";; %s git %s at offset #%ld of scriptfile %s expression...\n",
               program_name, BISMON_GIT, off, filnam);
       print_val (*expr);
       printf ("  => ");
-      print_val (eval (root, env, expr));
-      printf ("\n");
-      nbexpr++;
+      print_val_nl (eval (root, env, expr));
     }
   if (skiphead)
-    printf ("%s git %s evaluated %d expressions in file %s (offset %ld)\n",
+    printf (";; %s git %s evaluated %d expressions in file %s (offset %ld)\n",
             program_name, BISMON_GIT, nbexpr, filnam, ftell (fil));
   if (fil != stdin)
     fclose (fil);
@@ -2414,6 +2416,9 @@ main (int argc, char **argv)
   if (argc > 2 && (!strcmp (argv[1], "-s") || !strcmp (argv[1], "--script")))
     scriptfile = argv[2];
 
+  for (int i = 1; i < argc; i++)
+    if (!strcmp (argv[i], "-v") || !strcmp (argv[1], "--verbose"))
+      verbose_ilisp = true;
   // Debug flags
   debug_gc = getEnvFlag ("MINILISP_DEBUG_GC");
   always_gc = getEnvFlag ("MINILISP_ALWAYS_GC");

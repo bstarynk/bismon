@@ -178,6 +178,7 @@ extern size_t mem_nused;
 extern bool gc_running;
 extern bool debug_gc;
 extern bool always_gc;
+extern bool verbose_ilisp;
 
 void gc (void *root);
 
