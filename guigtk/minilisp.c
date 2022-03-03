@@ -2404,6 +2404,7 @@ int
 main (int argc, char **argv)
 {
   program_name = argv[0];
+  bool help_wanted = false;
   if (argc == 2 && !strcmp (argv[1], "--version"))
     {
       printf
@@ -2413,12 +2414,44 @@ main (int argc, char **argv)
     }
   initialize_json ();
   initialize_gtk (&argc, &argv);
-  if (argc > 2 && (!strcmp (argv[1], "-s") || !strcmp (argv[1], "--script")))
-    scriptfile = argv[2];
-
-  for (int i = 1; i < argc; i++)
+  for (int i = 1; i < argc; i++) {
+    if (!argv[i])
+      continue;
     if (!strcmp (argv[i], "-v") || !strcmp (argv[1], "--verbose"))
       verbose_ilisp = true;
+    else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help"))
+      help_wanted = true;
+    else if (!strcmp(argv[i], "--debug-gc"))
+      debug_gc = true;
+    else if (!strcmp(argv[i], "--always-gc"))
+      always_gc = true;
+    if (i+1 < argc
+	&& argv[i+1] != NULL
+	&& (!strcmp (argv[i], "-s") || !strcmp (argv[i], "--script"))
+	) {
+      scriptfile = argv[i+1];
+      i++;
+    }
+  }
+
+  if (help_wanted) {
+    printf("%s (a minilisp interpreter) usage:\n", argv[0]);
+    printf("\t -v | --verbose     # verbose interaction\n");
+    printf("\t -h | --help        # this help\n");
+    printf("\t --debug-gc         # debug garbage collector\n");
+    printf("\t --always-gc        # always run a GC\n");
+    printf("See source code on github.com/bstarynk/bismon/ in\n"
+	   "\t its guigtk/ subdirectory\n");
+    printf("*NO WARRANTY* since GPLv3+ licensed; see www.gnu.org/licenses/\n");
+    printf("Environment variables:\n"
+	   "\t MINILISP_DEBUG_GC same as --debug-gc\n"
+	   "\t MINILISP_ALWAYS_GC same as --always-gc\n");
+    printf("git %s built at %s@%s\n", BISMON_GIT, __DATE__, __TIME__);
+    printf("Contact <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>\n");
+    printf("Adapted for BISMON from github.com/rui314/minilisp/ (public domain)\n");
+    fflush(NULL);
+    exit(EXIT_SUCCESS);
+  }
   // Debug flags
   debug_gc = getEnvFlag ("MINILISP_DEBUG_GC");
   always_gc = getEnvFlag ("MINILISP_ALWAYS_GC");
