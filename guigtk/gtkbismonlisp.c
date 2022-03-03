@@ -106,7 +106,9 @@ get_g_object (Obj *ob)
     {
     case MINILISPGTK_GOBJECT:
       return (GObject *) gtk_vect.gtkv_arr[gtkix];
-    }
+    default:
+      break;
+    };
   return NULL;
 }                               /* end get_g_object */
 
@@ -213,7 +215,8 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
     error ("gtk_loop: no GTK application");
   if (length (*list) > 0)
     error ("gtk_loop needs no extra arguments, got %d", (int) length (*list));
-  Obj *values = eval_list (root, env, list);
+  // not needed, since no arguments:
+  // Obj *values = eval_list (root, env, list);
   int status =                  //
     g_application_run (G_APPLICATION (app_minilisp),
                        *minilisp_pargc, minilisp_argv);
@@ -222,6 +225,7 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
   else
     return make_int (root, status);
 }                               /* end prim_gtk_loop */
+
 
 extern void finalize_gtk (void);
 void
