@@ -966,7 +966,19 @@ void
 print_val (Obj *obj)
 {
   file_print (stdout, obj, 0);
+  fflush (stdout);
 }                               /* end print_val */
+
+void
+print_val_nl (Obj *obj)
+{
+  if (obj == NULL)
+    fputs ("*nulobj*", stdout);
+  else
+    file_print (stdout, obj, 0);
+  fputc ('\n', stdout);
+  fflush (stdout);
+}                               /* end print_val_nl */
 
 // Returns the length of the given list. -1 if it's not a proper list.
 int

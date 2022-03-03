@@ -321,6 +321,7 @@ extern GObject *get_g_object (Obj *);
 
 /// printer
 extern void print_val (Obj *obj);
+extern void print_val_nl (Obj *obj);
 extern void file_print (FILE * fil, Obj *obj, unsigned depth);
 extern void file_json_print (FILE * fil, Obj *obj, unsigned depth);
 extern void file_gtk_print (FILE * fil, Obj *obj, unsigned depth);
