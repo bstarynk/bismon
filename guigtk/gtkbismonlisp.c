@@ -114,13 +114,18 @@ file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
   assert (fil != NULL);
   assert (gtkob != NULL && gtkob->type == TGTKREF);
   gtkix = gtkob->gtk_index;
-  assert (gtkix > 0 && gtkix < gtk_vect.gtkv_count && gtk_vect.gtkv_arr
+  assert (gtkix > 0 && gtkix < (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr
           && gtk_vect.gtkv_kindarr);
   switch (gtk_vect.gtkv_kindarr[gtkix])
     {
     case MINILISPGTK_WIDGET:
       {
         fprintf (fil, "<gtkw#%d", gtkix);
+        if (depth > MAX_RECURSIVE_DEPTH)
+          {
+            fputs ("…", fil);
+            goto end;
+          }
         GtkWidget *widg = gtk_vect.gtkv_arr[gtkix];
         assert (widg != NULL);
         const gchar *widname = gtk_widget_get_name (widg);
@@ -138,6 +143,11 @@ file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
       {
         fprintf (fil, "<gobj#%d", gtkix);
         GObject *gob = gtk_vect.gtkv_arr[gtkix];
+        if (depth > MAX_RECURSIVE_DEPTH)
+          {
+            fputs ("…", fil);
+            goto end;
+          }
         assert (gob != NULL);
         const gchar *nam = G_OBJECT_TYPE_NAME (gob);
         if (nam)
@@ -147,6 +157,7 @@ file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
     default:
       assert (false);
     }
+end:
   fprintf (fil, ">");
 }                               /* end file_gtk_print */
 
