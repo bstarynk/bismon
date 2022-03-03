@@ -1,5 +1,6 @@
 #!./minilisp-bismongtk --script
 ## BISMON file guigtk/test02.sh
+## see https://github.com/bstarynk/bismon/
 ;;;+++
 
 ;
