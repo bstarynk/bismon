@@ -3,7 +3,11 @@
 BISMON_SHGIT1=$(git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
 BISMON_SHGIT2=$(if git status | grep -q 'nothing to commit'; then echo; else echo +; fi)
 export BISMON_SHGIT=$(printf %s%s $BISMON_SHGIT1 $BISMON_SHGIT2)
-/bin/mv minilisp-bismongtk minilisp-bismongtk~
+
+if [ -f minilisp-bismongtk ]; then
+    /bin/mv -v minilisp-bismongtk minilisp-bismongtk~
+    /bin/chmod a-x minilisp-bismongtk~
+fi
 
 if [ -z "$BISMON_OPTIM" ]; then
     BISMON_OPTIM="-O1"
