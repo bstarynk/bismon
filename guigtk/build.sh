@@ -4,8 +4,19 @@ BISMON_SHGIT1=$(git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | h
 BISMON_SHGIT2=$(if git status | grep -q 'nothing to commit'; then echo; else echo +; fi)
 export BISMON_SHGIT=$(printf %s%s $BISMON_SHGIT1 $BISMON_SHGIT2)
 /bin/mv minilisp-bismongtk minilisp-bismongtk~
-gcc -Wall -Wextra -g -Og minilisp.c gtkbismonlisp.c jsonbismonlisp.c -DBISMON_GIT=\"$BISMON_SHGIT\" \
+errbase=0
+for cfile in minilisp.c gtkbismonlisp.c jsonbismonlisp.c ; do
+    gcc -Wall -Wextra -g -Og -c $cfile -DBISMON_GIT=\"$BISMON_SHGIT\" \
+	-DERROR_BASE_NUM=$errbase \
     -I . \
     -I /usr/local/include $(pkg-config --cflags gtk+-3.0 jansson) \
+    $cfile
+    if [ $? -gt 0 ]; then
+	exit $?
+    fi
+    errbase=$[errbase+1000]
+done
+
+gcc -Wall -Wextra -g -Og minilisp.o gtkbismonlisp.o jsonbismonlisp.o \
     -L /usr/local/lib $(pkg-config --libs gtk+-3.0 jansson) \
     -o minilisp-bismongtk
