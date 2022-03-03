@@ -943,6 +943,18 @@ file_print (FILE * fil, Obj *obj, unsigned depth)
       return file_json_print (fil, obj, depth);
     case TGTKREF:
       return file_gtk_print (fil, obj, depth);
+    case TDOT:
+      if (obj == Dot)
+        fprintf (fil, "<Dot>");
+      else
+        fprintf (fil, "<?dot@%p?>", obj);
+      break;
+    case TCPAREN:
+      if (obj == Cparen)
+        fprintf (fil, "<ClosParen>");
+      else
+        fprintf (fil, "<?closparen@%p?>", obj);
+      break;
 #define CASE(type, ...)                         \
       case type:				\
 	fprintf(fil,__VA_ARGS__);		\
