@@ -208,18 +208,78 @@ prim_gtk_eq (void *root, Obj **env, Obj **list)
   return Nil;
 }                               /* end prim_gtk_eq */
 
+static void *gtk_cur_root;
+static Obj **gtk_cur_env;
+static Obj **gtk_cur_list;
+
+Obj *
+eval_in_gtk_callback (Obj **obj)
+{
+  if (pthread_self () != main_pthread)
+    {
+      fprintf (stderr, "eval_in_gtk_callback called from non-main pthread\n");
+      return Nil;
+    }
+  if (!gtk_cur_root || !gtk_cur_env || !gtk_cur_list)
+    {
+      fprintf (stderr, "eval_in_gtk_callback badly called\n");
+      return Nil;
+    }
+  return eval (gtk_cur_root, gtk_cur_env, obj);
+}                               /* end eval_in_gtk_callback */
+
+Obj *
+eval_list_in_gtk_callback (Obj **env, Obj **list)
+{
+  if (pthread_self () != main_pthread)
+    {
+      fprintf (stderr,
+               "eval_list_in_gtk_callback called from non-main pthread\n");
+      return Nil;
+    }
+  if (gtk_cur_root == NULL)
+    {
+      fprintf (stderr,
+               "eval_list_in_gtk_callback called without gtk_cur_root\n");
+      return Nil;
+    }
+  if (!env)
+    env = gtk_cur_env;
+  if (!list)
+    list = gtk_cur_list;
+  return eval_list (gtk_cur_root, env, list);
+}                               /* end eval_list_in_gtk_callback */
+
+
 Obj *
 prim_gtk_loop (void *root, Obj **env, Obj **list)
 {
+  if (pthread_self () != main_pthread)
+    {
+      fprintf (stderr, "gtk_loop primitive called from non-main pthread\n");
+      return Nil;
+    }
   if (!app_minilisp)
     error ("gtk_loop: no GTK application");
   if (length (*list) > 0)
     error ("gtk_loop needs no extra arguments, got %d", (int) length (*list));
   // not needed, since no arguments:
   // Obj *values = eval_list (root, env, list);
+  DEFINE2 (prev_env, prev_list);
+  *prev_env = *env;
+  *prev_list = *list;
+  void *old_gtk_root = gtk_cur_root;
+  Obj **old_gtk_env = gtk_cur_env;
+  Obj **old_gtk_cur_list = gtk_cur_list;
+  gtk_cur_root = root;
+  gtk_cur_env = env;
+  gtk_cur_list = list;
   int status =                  //
     g_application_run (G_APPLICATION (app_minilisp),
                        *minilisp_pargc, minilisp_argv);
+  gtk_cur_root = old_gtk_root;
+  gtk_cur_env = old_gtk_env;
+  gtk_cur_list = old_gtk_cur_list;
   if (status == 0)
     return Nil;
   else
@@ -235,6 +295,7 @@ initialize_gtk (int *pargc, char ***pargv)
   gtk_init (pargc, pargv);      /*the GTK3 one */
   minilisp_pargc = pargc;
   minilisp_argv = *pargv;
+  main_pthread = pthread_self ();
   app_minilisp = gtk_application_new ("fr.cea.www-list.bismon.guigtk", 0);
   g_application_add_main_option (G_APPLICATION (app_minilisp),
                                  /*long_name: */ "script",

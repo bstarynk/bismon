@@ -6,6 +6,7 @@
 
 char *program_name;
 char *scriptfile;
+pthread_t main_pthread;
 
 // The pointer pointing to the beginning of the current heap
 void *memory;
@@ -2404,6 +2405,8 @@ int
 main (int argc, char **argv)
 {
   program_name = argv[0];
+  main_pthread = pthread_self ();
+
   bool help_wanted = false;
   if (argc == 2 && !strcmp (argv[1], "--version"))
     {

@@ -20,11 +20,13 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include <math.h>
+#include <pthread.h>
 
 #include <glib.h>
 
 extern char *program_name;
 extern char *scriptfile;
+extern pthread_t main_pthread;
 
 extern void error (char *fmt, ...) __attribute__((noreturn));
 
@@ -301,6 +303,12 @@ extern Obj *fread_json (FILE * fil, void *root);
 
 // Evaluates all the list elements and returns their return values as a new list.
 extern Obj *eval_list (void *root, Obj **env, Obj **list);
+
+// Evaluate inside a GTK callback, using env & list from prim_gtk_loop
+extern Obj *eval_in_gtk_callback (Obj **obj);
+
+// Evaluates all the list elements and returns their return values as a new list, in  GTK callback
+extern Obj *eval_list_in_gtk_callback (Obj **env, Obj **list);
 
 // Returns the length of the given list. -1 if it's not a proper list.
 extern int length (Obj *list);
