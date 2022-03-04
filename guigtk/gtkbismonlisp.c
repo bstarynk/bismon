@@ -247,7 +247,8 @@ initialize_gtk (int *pargc, char ***pargv)
   atexit (finalize_gtk);
 }                               /* end initialize_gtk */
 
-/// this routine is called at start of the garbage collector to clear the GC marks for GTK references
+/// this routine is called at start of the garbage collector to clear
+/// the GC marks for GTK references
 void
 clear_gtk_marks (void *root)
 {
@@ -262,10 +263,34 @@ clear_gtk_marks (void *root)
     }
 }                               /* end clear_gtk_marks */
 
+
+//// This routine is called from garbage collector (function gc in
+//// file minilisp.c), and should remove GTK objects or Glib gobjects
+//// which have not been marked.
 void
 clean_gc_gtk (void *root)
 {
   assert (root != NULL);
+  if (gtk_vect.gtkv_markarr == NULL)
+    return;
+  for (int gix = 0; gix < (int) gtk_vect.gtkv_count; gix++)
+    {
+      void *curad = gtk_vect.gtkv_arr[gix];
+      if (curad == NULL)
+        continue;
+      if (gtk_vect.gtkv_markarr[gix])
+        continue;
+      if (gtk_vect.gtkv_kindarr[gix] == MINILISPGTK_WIDGET)
+        {
+          gtk_vect.gtkv_arr[gix] = NULL;
+          gtk_widget_destroy ((GtkWidget *) curad);
+        }
+      else if (gtk_vect.gtkv_kindarr[gix] == MINILISPGTK_GOBJECT)
+        {
+          gtk_vect.gtkv_arr[gix] = NULL;
+          g_object_unref ((GObject *) curad);
+        };
+    }
 #warning unimplemented clean_gc_gtk
 }                               /* end clean_gc_gtk */
 
