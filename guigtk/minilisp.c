@@ -30,6 +30,7 @@ error (char *fmt, ...)
   vfprintf (stderr, fmt, ap);
   fprintf (stderr, "\n");
   va_end (ap);
+  show_backtrace_stderr ();
   exit (EXIT_FAILURE);
 }                               /* end error */
 
@@ -114,7 +115,9 @@ alloc (void *root, int type, size_t size)
   obj->size = size;
   mem_nused += size;
   return obj;
-}
+}                               /* end alloc */
+
+
 
 //======================================================================
 // Garbage collector
@@ -264,8 +267,11 @@ gc (void *root)
   size_t old_nused = mem_nused;
   mem_nused = (size_t) ((uint8_t *) scan1 - (uint8_t *) memory);
   if (debug_gc)
-    fprintf (stderr, "GC: %zu bytes out of %zu bytes copied.\n", mem_nused,
-             old_nused);
+    {
+      fprintf (stderr, "GC: %zu bytes out of %zu bytes copied.\n", mem_nused,
+               old_nused);
+      show_backtrace_stderr ();
+    }
   gc_running = false;
 }                               /* end function gc */
 
@@ -591,16 +597,21 @@ fread_hash (FILE * f, void *root)
           fprintf (stderr,
                    "calloc failed for raw string buffer of %d bytes (%m) - file %s offset %ld",
                    bsiz, static1_file_name (f), ftell (f));
+          show_backtrace_stderr ();
           exit (EXIT_FAILURE);
-        }
+        };
       size_t linsiz = 128;
       ssize_t linlen = 0;
       char *linbuf = calloc (linsiz, 1);
       bool ended = false;
       if (!linbuf)
-        fprintf (stderr,
-                 "calloc failed for line buffer of %zd bytes (%m) - file %s offset %ld",
-                 linsiz, static1_file_name (f), ftell (f));
+        {
+          fprintf (stderr,
+                   "calloc failed for line buffer of %zd bytes (%m) - file %s offset %ld",
+                   linsiz, static1_file_name (f), ftell (f));
+          show_backtrace_stderr ();
+          exit (EXIT_FAILURE);
+        };
       while (!ended)
         {
           long off = ftell (f);
@@ -631,6 +642,7 @@ fread_hash (FILE * f, void *root)
                   fprintf (stderr,
                            "calloc failed for new raw string buffer of %d bytes (%m) - file %s offset %ld",
                            newsiz, static1_file_name (f), ftell (f));
+                  show_backtrace_stderr ();
                   exit (EXIT_FAILURE);
                 };
               memcpy (newbuf, buf, blen);
@@ -2338,6 +2350,7 @@ load_file (const char *filnam, bool skiphead, void *root, Obj **env)
     {
       fprintf (stderr, "%s: cannot open file %s to load - %m", program_name,
                filnam);
+      show_backtrace_stderr ();
       return -1;
     };
   DEFINE1 (expr);
@@ -2375,15 +2388,17 @@ load_file (const char *filnam, bool skiphead, void *root, Obj **env)
         error ("Stray close parenthesis in %s offset %ld", filnam, off);
       if (*expr == Dot)
         error ("Stray dot in %s offset %ld", filnam, off);
-      printf (";; %s git %s at offset #%ld of scriptfile %s expression...\n",
-              program_name, BISMON_GIT, off, filnam);
+      printf
+        (";; %s git %s at offset #%ld of scriptfile %s expression...\n",
+         program_name, BISMON_GIT, off, filnam);
       print_val (*expr);
       printf ("  => ");
       print_val_nl (eval (root, env, expr));
     }
   if (skiphead)
-    printf (";; %s git %s evaluated %d expressions in file %s (offset %ld)\n",
-            program_name, BISMON_GIT, nbexpr, filnam, ftell (fil));
+    printf
+      (";; %s git %s evaluated %d expressions in file %s (offset %ld)\n",
+       program_name, BISMON_GIT, nbexpr, filnam, ftell (fil));
   if (fil != stdin)
     fclose (fil);
   return nbexpr;
@@ -2552,6 +2567,19 @@ static2_file_name (FILE * f)
 }                               /// end static2_file_name
 
 
+void
+show_backtrace_stderr (void)
+{
+  void *backbuf[MAX_RECURSIVE_DEPTH + 2];
+  memset (backbuf, 0, sizeof (backbuf));
+  fflush (NULL);
+  int nb = backtrace (backbuf, MAX_RECURSIVE_DEPTH);
+  if (nb < 0)
+    nb = 0;
+  else if (nb > MAX_RECURSIVE_DEPTH)
+    nb = MAX_RECURSIVE_DEPTH;
+  backtrace_symbols_fd (backbuf, nb, STDERR_FILENO);
+}                               /* end show_backtrace_stderr */
 
 /************
  ** for Emacs:

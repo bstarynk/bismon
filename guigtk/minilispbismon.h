@@ -362,5 +362,8 @@ extern int load_file (const char *filnam, bool skiphead, void *root,
 extern const char *static1_file_name (FILE * f);
 extern const char *static2_file_name (FILE * f);
 
+//// show backtrace of MAX_RECURSIVE_DEPTH  calls on stderr
+extern void show_backtrace_stderr (void);
+
 #endif /*MINILISPBISMON_HEADER */
 ///// end of file bismon/gtkgui/minilispbismon.h

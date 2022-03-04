@@ -100,6 +100,7 @@ initialize_json (void)
     {
       fprintf (stderr, "calloc failed for %u json_t* pointers (%s)", inisiz,
                strerror (errno));
+      show_backtrace_stderr ();
       exit (EXIT_FAILURE);
     };
   json_vect.jsv_markarr = calloc (inisiz, sizeof (bool));
@@ -108,6 +109,7 @@ initialize_json (void)
       fprintf (stderr, "calloc failed for %u mark flags (%s)", inisiz,
                strerror (errno));
       free (json_vect.jsv_arr), json_vect.jsv_arr = NULL;
+      show_backtrace_stderr ();
       exit (EXIT_FAILURE);
     };
   json_vect.jsv_decrefarr = calloc (inisiz, sizeof (bool));
@@ -117,6 +119,7 @@ initialize_json (void)
                inisiz, strerror (errno));
       free (json_vect.jsv_arr), json_vect.jsv_arr = NULL;
       free (json_vect.jsv_markarr), json_vect.jsv_markarr = NULL;
+      show_backtrace_stderr ();
       exit (EXIT_FAILURE);
     };
   json_vect.jsv_count = 0;
@@ -177,6 +180,7 @@ make_json (void *root, json_t *js, bool doincref)
                   {
                     fprintf (stderr, "failed to grow json array to %u (%s)",
                              newsiz, strerror (errno));
+                    show_backtrace_stderr ();
                     exit (EXIT_FAILURE);
                   };
                 memcpy (newjsarr, json_vect.jsv_arr,
@@ -188,6 +192,7 @@ make_json (void *root, json_t *js, bool doincref)
                     fprintf (stderr,
                              "failed to grow jsonmark array to %u (%s)",
                              newsiz, strerror (errno));
+                    show_backtrace_stderr ();
                     exit (EXIT_FAILURE);
                   };
                 memcpy (newmarkarr, json_vect.jsv_markarr,
@@ -200,6 +205,7 @@ make_json (void *root, json_t *js, bool doincref)
                     fprintf (stderr,
                              "failed to grow jsondecref array to %u (%s)",
                              newsiz, strerror (errno));
+                    show_backtrace_stderr ();
                     exit (EXIT_FAILURE);
                   };
                 memcpy (newdecrefarr, json_vect.jsv_decrefarr,

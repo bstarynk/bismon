@@ -218,11 +218,13 @@ eval_in_gtk_callback (Obj **obj)
   if (pthread_self () != main_pthread)
     {
       fprintf (stderr, "eval_in_gtk_callback called from non-main pthread\n");
+      show_backtrace_stderr ();
       return Nil;
     }
   if (!gtk_cur_root || !gtk_cur_env || !gtk_cur_list)
     {
       fprintf (stderr, "eval_in_gtk_callback badly called\n");
+      show_backtrace_stderr ();
       return Nil;
     }
   return eval (gtk_cur_root, gtk_cur_env, obj);
@@ -235,12 +237,14 @@ eval_list_in_gtk_callback (Obj **env, Obj **list)
     {
       fprintf (stderr,
                "eval_list_in_gtk_callback called from non-main pthread\n");
+      show_backtrace_stderr ();
       return Nil;
     }
   if (gtk_cur_root == NULL)
     {
       fprintf (stderr,
                "eval_list_in_gtk_callback called without gtk_cur_root\n");
+      show_backtrace_stderr ();
       return Nil;
     }
   if (!env)
@@ -257,6 +261,7 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
   if (pthread_self () != main_pthread)
     {
       fprintf (stderr, "gtk_loop primitive called from non-main pthread\n");
+      show_backtrace_stderr ();
       return Nil;
     }
   if (!app_minilisp)
