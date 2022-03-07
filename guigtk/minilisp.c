@@ -617,21 +617,25 @@ fread_hash (FILE * f, void *root)
           long off = ftell (f);
           memset (linbuf, 0, linsiz);
           linlen = getline (&linbuf, &linsiz, f);
+          assert (off >= 0);
           if (linlen > 0)
             linbuf[linlen] = (char) 0;
           else
             error ("unterminated raw string literal at %s offset %ld",
                    (char) c, static1_file_name (f), ofs);
           char *ends = strstr (linbuf, endb);
+          char ec = 0;
           if (ends)
             {
               ended = true;
-              int delta = linlen - (ends - linbuf);
+              int delta = linbuf + linlen - ends;
               fseek (f, -delta, SEEK_CUR);
               int pos = ftell (f);
               assert (pos > 0);
               *ends = (char) 0;
               linlen -= strlen (endb);
+              ec = fpeek (f);
+	      assert (ec > 0);
             };
           if (blen + linlen >= bsiz)
             {
