@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <pthread.h>
+#include <execinfo.h>
 
 #include <glib.h>
 
