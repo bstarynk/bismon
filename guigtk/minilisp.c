@@ -561,9 +561,9 @@ Obj *
 fread_hash (FILE * f, void *root)
 {
   Obj *res = NULL;
+  assert (f != NULL);
   int c = fpeek (f);
   int pos = -1;
-  assert (f != NULL);
   char prefix[8];
   memset (prefix, 0, sizeof (prefix));
   long ofs = ftell (f);
@@ -604,6 +604,8 @@ fread_hash (FILE * f, void *root)
       ssize_t linlen = 0;
       char *linbuf = calloc (linsiz, 1);
       bool ended = false;
+      long off = -1;
+      char ec = 0;
       if (!linbuf)
         {
           fprintf (stderr,
@@ -614,7 +616,7 @@ fread_hash (FILE * f, void *root)
         };
       while (!ended)
         {
-          long off = ftell (f);
+          off = ftell (f);
           memset (linbuf, 0, linsiz);
           linlen = getline (&linbuf, &linsiz, f);
           assert (off >= 0);
@@ -624,7 +626,6 @@ fread_hash (FILE * f, void *root)
             error ("unterminated raw string literal at %s offset %ld",
                    (char) c, static1_file_name (f), ofs);
           char *ends = strstr (linbuf, endb);
-          char ec = 0;
           if (ends)
             {
               ended = true;
@@ -657,7 +658,11 @@ fread_hash (FILE * f, void *root)
           blen += linlen;
         };                      /* end while !ended */
       res = make_string (root, buf);
+      off = ftell (f);
+      ec = fpeek (f);
       free (buf), buf = NULL;
+      assert (off > 0);
+      assert (ec > 0);
       return res;
     }
 #warning incomplete fread_hash
