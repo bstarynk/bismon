@@ -357,7 +357,6 @@ clean_gc_gtk (void *root)
           g_object_unref ((GObject *) curad);
         };
     }
-#warning unimplemented clean_gc_gtk
 }                               /* end clean_gc_gtk */
 
 
