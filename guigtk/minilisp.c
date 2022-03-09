@@ -581,7 +581,7 @@ fread_hash (FILE * f, void *root)
   memset (endb, 0, sizeof (endb));
   memset (prefix, 0, sizeof (prefix));
   c = fpeek (f);
-  ofs = ftell (f);
+  off = ftell (f);
   if ((c >= '0' && c < '9') || c == '+' || c == '-')
     {
       db = 0.0;
@@ -684,6 +684,7 @@ fread_hash (FILE * f, void *root)
 #warning incomplete fread_hash
   error ("unimplemented hash syntax #%c at %s offset %ld",
          (char) c, static1_file_name (f), ofs);
+  return NULL;
 }                               /* end fread_hash */
 
 
