@@ -562,14 +562,30 @@ fread_hash (FILE * f, void *root)
 {
   Obj *res = NULL;
   assert (f != NULL);
-  int c = fpeek (f);
+  int c = 0;
   int pos = -1;
+  long off = 0;
+  char ec = 0;
+  bool ended = false;
+  int bsiz = 0, blen = 0;
+  char *buf = NULL;
+  int delta = 0;
+  int newsiz = 0;
+  char *newbuf = NULL;
+  double db = 0.0;
+  size_t linsiz = 0;
+  ssize_t linlen = 0;
+  char *linbuf = NULL;
   char prefix[8];
+  char endb[12];
+  memset (endb, 0, sizeof (endb));
   memset (prefix, 0, sizeof (prefix));
-  long ofs = ftell (f);
+  c = fpeek (f);
+  ofs = ftell (f);
   if ((c >= '0' && c < '9') || c == '+' || c == '-')
     {
-      double db = 0.0;
+      db = 0.0;
+      pos = -1;
       if (fscanf (f, "%lg%n", &db, &pos) > 0 && pos > 0)
         {
           return make_double (root, db);
@@ -577,6 +593,7 @@ fread_hash (FILE * f, void *root)
     }
   else if (c == 'j')
     {
+      pos = -1;
       if (fscanf (f, "json%n", &pos) >= 0 && pos > 0)
         {
           return fread_json (f, root);
@@ -586,12 +603,11 @@ fread_hash (FILE * f, void *root)
   else if (c == '"' && fscanf (f, "\"%6[A-Za-z0-9](%n", prefix, &pos) >= 1
            && prefix[1] && pos > 0)
     {
-      char endb[12];
       memset (endb, 0, sizeof (endb));
       snprintf (endb, sizeof (endb), ")%s\"", prefix);
-      int bsiz = 256;
-      int blen = 0;
-      char *buf = calloc (blen, 1);
+      bsiz = 256;
+      blen = 0;
+      buf = calloc (blen, 1);
       if (!buf)
         {
           fprintf (stderr,
@@ -600,12 +616,12 @@ fread_hash (FILE * f, void *root)
           show_backtrace_stderr ();
           exit (EXIT_FAILURE);
         };
-      size_t linsiz = 128;
-      ssize_t linlen = 0;
-      char *linbuf = calloc (linsiz, 1);
-      bool ended = false;
-      long off = -1;
-      char ec = 0;
+      linsiz = 128;
+      linlen = 0;
+      linbuf = calloc (linsiz, 1);
+      ended = false;
+      off = -1;
+      ec = 0;
       if (!linbuf)
         {
           fprintf (stderr,
@@ -629,19 +645,19 @@ fread_hash (FILE * f, void *root)
           if (ends)
             {
               ended = true;
-              int delta = linbuf + linlen - ends;
+              delta = linbuf + linlen - ends;
               fseek (f, -delta, SEEK_CUR);
               int pos = ftell (f);
               assert (pos > 0);
               *ends = (char) 0;
               linlen -= strlen (endb);
               ec = fpeek (f);
-	      assert (ec > 0);
+              assert (ec > 0);
             };
           if (blen + linlen >= bsiz)
             {
-              int newsiz = ((bsiz + linlen + bsiz / 16 + 5) | 0x1f) + 1;
-              char *newbuf = calloc (newsiz, 1);
+              newsiz = ((bsiz + linlen + bsiz / 16 + 5) | 0x1f) + 1;
+              newbuf = calloc (newsiz, 1);
               if (!newbuf)
                 {
                   fprintf (stderr,
