@@ -618,10 +618,10 @@ fread_hash (FILE * f, void *root)
         };
       linsiz = 128;
       linlen = 0;
-      linbuf = calloc (linsiz, 1);
       ended = false;
       off = -1;
       ec = 0;
+      linbuf = calloc (linsiz, 1);
       if (!linbuf)
         {
           fprintf (stderr,
@@ -674,6 +674,7 @@ fread_hash (FILE * f, void *root)
           blen += linlen;
         };                      /* end while !ended */
       res = make_string (root, buf);
+      fseek (f, strlen(endb), SEEK_CUR);
       off = ftell (f);
       ec = fpeek (f);
       free (buf), buf = NULL;
