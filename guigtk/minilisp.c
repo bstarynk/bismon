@@ -607,7 +607,7 @@ fread_hash (FILE * f, void *root)
       snprintf (endb, sizeof (endb), ")%s\"", prefix);
       bsiz = 256;
       blen = 0;
-      buf = calloc (blen, 1);
+      buf = calloc (bsiz, 1);
       if (!buf)
         {
           fprintf (stderr,
@@ -683,7 +683,7 @@ fread_hash (FILE * f, void *root)
     }
 #warning incomplete fread_hash
   error ("unimplemented hash syntax #%c at %s offset %ld",
-         (char) c, static1_file_name (f), ofs);
+         (char) c, static1_file_name (f), off);
   return NULL;
 }                               /* end fread_hash */
 
@@ -1045,7 +1045,6 @@ length (Obj *list)
 // Evaluator
 //======================================================================
 
-Obj *eval (void *root, Obj **env, Obj **obj);
 
 void
 add_variable (void *root, Obj **env, Obj **sym, Obj **val)
@@ -1112,6 +1111,12 @@ is_list (Obj *obj)
 Obj *
 apply_func (void *root, Obj **env, Obj **fn, Obj **args)
 {
+  assert (fn != NULL);
+  if ((*fn)->type != TFUNCTION && (*fn)->type != TMACRO)
+    error("bad function to apply");
+  if (!env)
+    error("missing environment in apply_func for fn#%d",
+	  (*fn)->fun_number);
   DEFINE3 (params, newenv, body);
   *params = (*fn)->params;
   *newenv = (*fn)->env;
@@ -1245,6 +1250,8 @@ eval (void *root, Obj **env, Obj **obj)
 Obj *
 prim_quote (void *root, Obj **env, Obj **list)
 {
+  assert (root != NULL);
+  assert (env != NULL);
   if (length (*list) != 1)
     error ("Malformed quote");
   return (*list)->car;
@@ -1516,9 +1523,12 @@ prim_while (void *root, Obj **env, Obj **list)
 Obj *
 prim_gensym (void *root, Obj **env, Obj **list)
 {
-  static int count = 0;
-  char buf[10];
-  snprintf (buf, sizeof (buf), "G__%d", count++);
+  static long int count = 0;
+  assert (env != NULL);
+  assert (list != NULL);
+  char buf[32];
+  memset (buf, 0, sizeof(buf));
+  snprintf (buf, sizeof (buf)-4, "G__%ld", count++);
   return make_symbol (root, buf);
 }
 
@@ -1526,6 +1536,8 @@ prim_gensym (void *root, Obj **env, Obj **list)
 Obj *
 prim_gitid (void *root, Obj **env, Obj **list)
 {
+  assert (env != NULL);
+  assert (list != NULL);
   return make_string (root, BISMON_GIT);
 }
 
@@ -2184,7 +2196,6 @@ recursive_equal (Obj *x, Obj *y, unsigned depth)
         {
           extern bool gtkref_recursive_equal (Obj *x, Obj *y, unsigned depth);
           return gtkref_recursive_equal (x, y, depth);
-#warning recursive_equal unimplemented for TGTKREF
         };
       return false;
     case TPRIMITIVE:
@@ -2200,7 +2211,6 @@ recursive_equal (Obj *x, Obj *y, unsigned depth)
     default:
       return false;
     }
-#warning recursive_equal is incomplete
   return false;
 }                               /* end recursive_equal */
 

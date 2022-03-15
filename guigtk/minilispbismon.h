@@ -302,6 +302,10 @@ extern Obj *fread_expr (FILE * fil, void *root);
 extern Obj *fread_json (FILE * fil, void *root);
 
 
+
+// Evaluates the S expression in *obj
+extern Obj *eval (void *root, Obj **env, Obj **obj);
+
 // Evaluates all the list elements and returns their return values as a new list.
 extern Obj *eval_list (void *root, Obj **env, Obj **list);
 
