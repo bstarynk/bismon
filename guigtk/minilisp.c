@@ -1113,10 +1113,9 @@ apply_func (void *root, Obj **env, Obj **fn, Obj **args)
 {
   assert (fn != NULL);
   if ((*fn)->type != TFUNCTION && (*fn)->type != TMACRO)
-    error("bad function to apply");
+    error ("bad function to apply");
   if (!env)
-    error("missing environment in apply_func for fn#%d",
-	  (*fn)->fun_number);
+    error ("missing environment in apply_func for fn#%d", (*fn)->fun_number);
   DEFINE3 (params, newenv, body);
   *params = (*fn)->params;
   *newenv = (*fn)->env;
@@ -1527,8 +1526,8 @@ prim_gensym (void *root, Obj **env, Obj **list)
   assert (env != NULL);
   assert (list != NULL);
   char buf[32];
-  memset (buf, 0, sizeof(buf));
-  snprintf (buf, sizeof (buf)-4, "G__%ld", count++);
+  memset (buf, 0, sizeof (buf));
+  snprintf (buf, sizeof (buf) - 4, "G__%ld", count++);
   return make_symbol (root, buf);
 }
 
