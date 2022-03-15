@@ -640,7 +640,7 @@ fread_hash (FILE * f, void *root)
             linbuf[linlen] = (char) 0;
           else
             error ("unterminated raw string literal at %s offset %ld",
-                   (char) c, static1_file_name (f), ofs);
+                   (char) c, static1_file_name (f), off);
           char *ends = strstr (linbuf, endb);
           if (ends)
             {
