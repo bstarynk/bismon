@@ -118,6 +118,39 @@ alloc (void *root, int type, size_t size)
 }                               /* end alloc */
 
 
+const char *
+minilisp_type_name (enum objtype_en ty)
+{
+  switch (ty)
+    {
+#define TYCASE(Ty) case Ty : return #Ty;
+      TYCASE (TINT);
+      TYCASE (TDOUBLE);
+      TYCASE (TCELL);
+      TYCASE (TVECTOR);
+      TYCASE (TSYMBOL);
+      TYCASE (TSTRING);
+      TYCASE (TJSONREF);
+      TYCASE (TGTKREF);
+      TYCASE (TGLIBREF);
+      TYCASE (TPRIMITIVE);
+      TYCASE (TFUNCTION);
+      TYCASE (TMACRO);
+      TYCASE (TENV);
+      TYCASE (TMOVED);
+      TYCASE (TTRUE);
+      TYCASE (TNIL);
+      TYCASE (TDOT);
+      TYCASE (TCPAREN);
+    default:
+      {
+        static char tybuf[32];
+        memset (tybuf, 0, sizeof (tybuf));
+        snprintf (tybuf, sizeof (tybuf) - 1, "?BadType%d?", (int) ty);
+        return tybuf;
+      };
+    };
+}                               /* end minilisp_type_name */
 
 //======================================================================
 // Garbage collector
@@ -229,6 +262,9 @@ gc (void *root)
           break;
         case TGTKREF:
           mark_gtk_ref (root, scan1);
+          break;
+        case TGLIBREF:
+          mark_glib_ref (root, scan1);
           break;
           /// composite values
         case TCELL:
@@ -348,6 +384,17 @@ make_string (void *root, const char *str)
     }
   return strv;
 }                               /* end make_string */
+
+const char *
+utf8string_in_obj (Obj *obj)
+{
+  if (!obj)
+    return NULL;
+  if (obj->type == TSTRING)
+    return obj->utf8_cstring;
+  return NULL;
+}                               /* end utf8string_in_obj */
+
 
 Obj *
 make_double (void *root, double dbl)
@@ -674,7 +721,7 @@ fread_hash (FILE * f, void *root)
           blen += linlen;
         };                      /* end while !ended */
       res = make_string (root, buf);
-      fseek (f, strlen(endb), SEEK_CUR);
+      fseek (f, strlen (endb), SEEK_CUR);
       off = ftell (f);
       ec = fpeek (f);
       free (buf), buf = NULL;
@@ -983,6 +1030,8 @@ file_print (FILE * fil, Obj *obj, unsigned depth)
       return file_json_print (fil, obj, depth);
     case TGTKREF:
       return file_gtk_print (fil, obj, depth);
+    case TGLIBREF:
+      return file_glib_print (fil, obj, depth);
     case TDOT:
       if (obj == Dot)
         fprintf (fil, "<Dot>");

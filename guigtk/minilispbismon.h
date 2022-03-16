@@ -49,6 +49,7 @@ enum objtype_en
   TSTRING,
   TJSONREF,
   TGTKREF,
+  TGLIBREF,
   TPRIMITIVE,
   TFUNCTION,
   TMACRO,
@@ -63,6 +64,8 @@ enum objtype_en
   TDOT,
   TCPAREN,
 };
+
+extern const char *minilisp_type_name (enum objtype_en ty);
 
 typedef struct json_t json_t;   /// in file <jansson.h>
 
@@ -115,6 +118,8 @@ typedef struct Obj
     int json_index;
     // GTK reference for °TGTKREF
     int gtk_index;
+    // Glib object reference for °TGLIBREF
+    int glib_index;
     // 
     // Primitive °TPRIMITIVE
     struct
@@ -261,8 +266,10 @@ extern void clear_json_marks (void *root);
 extern void clear_gtk_marks (void *root);
 extern void mark_json_ref (void *root, Obj *jsob);
 extern void mark_gtk_ref (void *root, Obj *gtkob);
+extern void mark_glib_ref (void *root, Obj *glibob);
 extern void clean_gc_json (void *root);
 extern void clean_gc_gtk (void *root);
+extern void clean_gc_glib (void *root);
 extern Obj *prim_scalar_eq (void *root, Obj **env, Obj **list);
 extern Obj *prim_json_eq (void *root, Obj **env, Obj **list);
 extern Obj *prim_gtk_eq (void *root, Obj **env, Obj **list);
@@ -276,6 +283,11 @@ extern Obj *make_double (void *root, double dvalue);
 extern Obj *cons (void *root, Obj **car, Obj **cdr);
 extern Obj *make_symbol (void *root, const char *name);
 extern Obj *make_string (void *root, const char *buf);
+
+
+//// accessor of a string or else NULL; the result would be moved so
+//// become invalid by next garbage collection...
+const char *utf8string_in_obj (Obj *obj);
 
 // May create a new symbol. If there's a symbol with the same name, it will not create a new symbol
 // but return the existing one.
@@ -339,6 +351,7 @@ extern void print_val_nl (Obj *obj);
 extern void file_print (FILE * fil, Obj *obj, unsigned depth);
 extern void file_json_print (FILE * fil, Obj *obj, unsigned depth);
 extern void file_gtk_print (FILE * fil, Obj *obj, unsigned depth);
+extern void file_glib_print (FILE * fil, Obj *obj, unsigned depth);
 extern bool recursive_equal (Obj *x, Obj *y, unsigned depth);
 
 /// gives the JSON value inside some Obj, or else NULL; inverse of make_json

@@ -36,21 +36,23 @@ char **minilisp_argv;
 
 GHashTable *gtk_ghtbl;          /* an hashtable associating Gtk pointers to intptr_t ranks */
 
-enum gtk_pointer_kind_en
-{
-  MINILISPGTK_none,
-  MINILISPGTK_WIDGET,           /* a GtkWidget* pointer */
-  MINILISPGTK_GOBJECT,          /* some GObject* pointer */
-};
+GHashTable *glib_ghtbl;         /* an hashtable associating GObject pointers to intptr_t ranks */
 
 struct
 {
-  void **gtkv_arr;              /* array of pointers */
+  GtkWidget **gtkv_arr;         /* array of GTK pointers */
   bool *gtkv_markarr;           /* array of GC marks */
-  enum gtk_pointer_kind_en *gtkv_kindarr;
   unsigned gtkv_size;           /* allocated size */
   unsigned gtkv_count;          /* used count */
 } gtk_vect;
+
+struct
+{
+  GObject **glibv_arr;          /* array of GTK pointers */
+  bool *glibv_markarr;          /* array of GC marks */
+  unsigned glibv_size;          /* allocated size */
+  unsigned glibv_count;         /* used count */
+} glib_vect;
 
 void
 mark_gtk_ref (void *root, Obj *gtkob)
@@ -66,6 +68,21 @@ mark_gtk_ref (void *root, Obj *gtkob)
     }
 }                               /* end mark_gtk_ref */
 
+void
+mark_glib_ref (void *root, Obj *glibob)
+{
+  int glibix = -1;
+  assert (root != NULL);
+  assert (glibob != NULL && glibob->type == TGLIBREF);
+  assert (glib_vect.glibv_count <= glib_vect.glibv_size);
+  glibix = glibob->glib_index;
+  if (glibix > 0 && glibix < (int) glib_vect.glibv_count
+      && glib_vect.glibv_arr)
+    {
+      glib_vect.glibv_markarr[glibix] = true;
+    }
+}                               /* end mark_glib_ref */
+
 GtkWidget *
 get_gtk_widget (Obj *ob)
 {
@@ -77,14 +94,8 @@ get_gtk_widget (Obj *ob)
   gtkix = ob->gtk_index;
   assert (gtkix > 0
           && gtkix < (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr
-          && gtk_vect.gtkv_kindarr);
-  switch (gtk_vect.gtkv_kindarr[gtkix])
-    {
-    case MINILISPGTK_WIDGET:
-      return (GtkWidget *) gtk_vect.gtkv_arr[gtkix];
-    default:
-      return NULL;
-    }
+          && gtk_vect.gtkv_markarr);
+  return (GtkWidget *) gtk_vect.gtkv_arr[gtkix];
   return NULL;
 }                               /* end get_gtk_widget */
 
@@ -93,24 +104,18 @@ get_gtk_widget (Obj *ob)
 GObject *
 get_g_object (Obj *ob)
 {
-  int gtkix = -1;
+  int glibix = -1;
   if (ob == NULL)
     return NULL;
-  if (ob->type != TGTKREF)
+  if (ob->type != TGLIBREF)
     return NULL;
-  gtkix = ob->gtk_index;
-  assert (gtkix > 0
-          && gtkix < (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr
-          && gtk_vect.gtkv_kindarr);
-  switch (gtk_vect.gtkv_kindarr[gtkix])
-    {
-    case MINILISPGTK_GOBJECT:
-      return (GObject *) gtk_vect.gtkv_arr[gtkix];
-    default:
-      break;
-    };
-  return NULL;
+  glibix = ob->glib_index;
+  assert (glibix > 0
+          && glibix < (int) glib_vect.glibv_count && glib_vect.glibv_arr);
+  return (GObject *) glib_vect.glibv_arr[glibix];
 }                               /* end get_g_object */
+
+
 
 void
 file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
@@ -120,51 +125,70 @@ file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
   assert (gtkob != NULL && gtkob->type == TGTKREF);
   gtkix = gtkob->gtk_index;
   assert (gtkix > 0 && gtkix < (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr
-          && gtk_vect.gtkv_kindarr);
-  switch (gtk_vect.gtkv_kindarr[gtkix])
+          && gtk_vect.gtkv_markarr);
+  fprintf (fil, "<gtkw#%d", gtkix);
+  if (depth > MAX_RECURSIVE_DEPTH)
     {
-    case MINILISPGTK_WIDGET:
-      {
-        fprintf (fil, "<gtkw#%d", gtkix);
-        if (depth > MAX_RECURSIVE_DEPTH)
-          {
-            fputs ("…", fil);
-            goto end;
-          }
-        GtkWidget *widg = gtk_vect.gtkv_arr[gtkix];
-        assert (widg != NULL);
-        const gchar *widname = gtk_widget_get_name (widg);
-        if (widname)
-          fprintf (fil, "/%s", widname);
-        else
-          fprintf (fil, "@%p", (void *) widname);
-        const gchar *cssname =
-          gtk_widget_class_get_css_name (GTK_WIDGET_GET_CLASS (widg));
-        if (cssname)
-          fprintf (fil, ".%s", cssname);
-      };
-      break;
-    case MINILISPGTK_GOBJECT:
-      {
-        fprintf (fil, "<gobj#%d", gtkix);
-        GObject *gob = gtk_vect.gtkv_arr[gtkix];
-        if (depth > MAX_RECURSIVE_DEPTH)
-          {
-            fputs ("…", fil);
-            goto end;
-          }
-        assert (gob != NULL);
-        const gchar *nam = G_OBJECT_TYPE_NAME (gob);
-        if (nam)
-          fprintf (fil, ":%s", nam);
-      }
-      break;
-    default:
-      assert (false);
+      fputs ("…", fil);
+      goto end;
     }
+  GtkWidget *widg = gtk_vect.gtkv_arr[gtkix];
+  assert (widg != NULL);
+  const gchar *widname = gtk_widget_get_name (widg);
+  if (widname)
+    fprintf (fil, "/%s", widname);
+  else
+    fprintf (fil, "@%p", (void *) widname);
+  const gchar *cssname =
+    gtk_widget_class_get_css_name (GTK_WIDGET_GET_CLASS (widg));
+  if (cssname)
+    fprintf (fil, ".%s", cssname);
+
+
+  /***
+      case MINILISPGTK_GOBJECT:
+      {
+  ***/
+
 end:
   fprintf (fil, ">");
 }                               /* end file_gtk_print */
+
+
+
+void
+file_glib_print (FILE * fil, Obj *glibob, unsigned depth)
+{
+  int glibix = -1;
+  assert (fil != NULL);
+  assert (glibob != NULL && glibob->type == TGLIBREF);
+  glibix = glibob->glib_index;
+  assert (glibix > 0 && glibix < (int) glib_vect.glibv_count
+          && glib_vect.glibv_arr && glib_vect.glibv_markarr);
+  fprintf (fil, "<glib#%d", glibix);
+  if (depth > MAX_RECURSIVE_DEPTH)
+    {
+      fputs ("…", fil);
+      goto end;
+    }
+  GObject *gob = glib_vect.glibv_arr[glibix];
+  if (depth > MAX_RECURSIVE_DEPTH)
+    {
+      fputs ("…", fil);
+      goto end;
+    }
+  if (!gob)
+    {
+      fputs ("?nilGlib?", fil);
+      goto end;
+    }
+  assert (gob != NULL);
+  const gchar *nam = G_OBJECT_TYPE_NAME (gob);
+  if (nam)
+    fprintf (fil, ":%s", nam);
+end:
+  fputs (">", fil);
+}                               /* end file_glib_print */
 
 
 bool
@@ -184,12 +208,7 @@ gtkref_recursive_equal (Obj *x, Obj *y, unsigned depth)
               && gtk_vect.gtkv_arr);
       assert (yix > 0 && yix < (int) gtk_vect.gtkv_count
               && gtk_vect.gtkv_arr);
-      if (gtk_vect.gtkv_kindarr[xix] == MINILISPGTK_WIDGET
-          && gtk_vect.gtkv_kindarr[yix] == MINILISPGTK_WIDGET)
-        return gtk_vect.gtkv_arr[xix] == gtk_vect.gtkv_arr[yix];
-      if (gtk_vect.gtkv_kindarr[xix] == MINILISPGTK_GOBJECT
-          && gtk_vect.gtkv_kindarr[yix] == MINILISPGTK_GOBJECT)
-        return gtk_vect.gtkv_arr[xix] == gtk_vect.gtkv_arr[yix];
+      return gtk_vect.gtkv_arr[xix] == gtk_vect.gtkv_arr[yix];
     }
   return false;
 }                               /* end gtkref_recursive_equal */
@@ -207,6 +226,39 @@ prim_gtk_eq (void *root, Obj **env, Obj **list)
     return gtkref_recursive_equal (x, y, 0) ? True : Nil;
   return Nil;
 }                               /* end prim_gtk_eq */
+
+Obj *
+prim_gtk_builder (void *root, Obj **env, Obj **list)
+{
+  if (length (*list) != 1)
+    error ("Malformed gtk_builder, need one argument");
+  DEFINE2 (args, res);
+  *args = eval_list (root, env, list);
+  Obj *strv = (*args)->car;
+  if (!strv)
+    {
+      error ("gtk_builder expects a string argument, got none");
+      return Nil;
+    }
+  else if (strv->type != TSTRING)
+    {
+      error ("gtk_builder expects a string argument, got type %s",
+             minilisp_type_name (strv->type));
+      return Nil;
+    }
+  const char *str = utf8string_in_obj (strv);
+  assert (str != NULL);
+  GtkBuilder *gbuilder = gtk_builder_new_from_string (str, -1);
+  if (!gbuilder)
+    {
+      fprintf (stderr,
+               "gtk_builder primitive fails gtk_builder_new_from_string on\n%s\n",
+               str);
+      show_backtrace_stderr ();
+      fflush (stderr);
+      return Nil;
+    }
+}                               /* end prim_gtk_builder */
 
 static void *gtk_cur_root;
 static Obj **gtk_cur_env;
@@ -254,6 +306,24 @@ eval_list_in_gtk_callback (Obj **env, Obj **list)
   return eval_list (gtk_cur_root, env, list);
 }                               /* end eval_list_in_gtk_callback */
 
+
+Obj *
+make_glib_object (void *root, GObject * glibob)
+{
+  assert (root != NULL);
+  assert (glibob != NULL);
+  Obj *res = NULL;
+  res = alloc (root, TGLIBREF, sizeof (GObject *));
+}                               /* end make_glib_object */
+
+Obj *
+make_gtk_object (void *root, GtkWidget * widg)
+{
+  assert (root != NULL);
+  assert (widg != NULL);
+  Obj *res = NULL;
+  res = alloc (root, TGTKREF, sizeof (GtkWidget *));
+}                               /* end make_gtk_object */
 
 Obj *
 prim_gtk_loop (void *root, Obj **env, Obj **list)
@@ -311,7 +381,28 @@ initialize_gtk (int *pargc, char ***pargv)
                                  "load script file SCRIPTFILE",
                                  /*arg_description: */ "SCRIPTFILE");
   atexit (finalize_gtk);
+  gtk_ghtbl = g_hash_table_new (g_direct_hash, g_direct_equal);
+  unsigned inisiz = 128;
+  gtk_vect.gtkv_arr = calloc (inisiz, sizeof (GtkWidget *));
+  if (!gtk_vect.gtkv_arr)
+    {
+      fprintf (stderr, "calloc failed for %u GtkWidget* pointers (%s)",
+               inisiz, strerror (errno));
+      show_backtrace_stderr ();
+      exit (EXIT_FAILURE);
+    };
+  gtk_vect.gtkv_markarr = calloc (inisiz, sizeof (bool));
+  if (!gtk_vect.gtkv_markarr)
+    {
+      fprintf (stderr, "calloc failed for %u mark flags (%s)", inisiz,
+               strerror (errno));
+      free (gtk_vect.gtkv_arr), gtk_vect.gtkv_arr = NULL;
+      show_backtrace_stderr ();
+      exit (EXIT_FAILURE);
+    };
+  gtk_vect.gtkv_size = inisiz;
 }                               /* end initialize_gtk */
+
 
 /// this routine is called at start of the garbage collector to clear
 /// the GC marks for GTK references
@@ -341,23 +432,33 @@ clean_gc_gtk (void *root)
     return;
   for (int gix = 0; gix < (int) gtk_vect.gtkv_count; gix++)
     {
-      void *curad = gtk_vect.gtkv_arr[gix];
-      if (curad == NULL)
+      GtkWidget *widg = gtk_vect.gtkv_arr[gix];
+      if (widg == NULL)
         continue;
       if (gtk_vect.gtkv_markarr[gix])
         continue;
-      if (gtk_vect.gtkv_kindarr[gix] == MINILISPGTK_WIDGET)
-        {
-          gtk_vect.gtkv_arr[gix] = NULL;
-          gtk_widget_destroy ((GtkWidget *) curad);
-        }
-      else if (gtk_vect.gtkv_kindarr[gix] == MINILISPGTK_GOBJECT)
-        {
-          gtk_vect.gtkv_arr[gix] = NULL;
-          g_object_unref ((GObject *) curad);
-        };
+      gtk_vect.gtkv_arr[gix] = NULL;
+      gtk_widget_destroy (widg);
     }
 }                               /* end clean_gc_gtk */
+
+void
+clean_gc_glib (void *root)
+{
+  assert (root != NULL);
+  if (glib_vect.glibv_markarr == NULL)
+    return;
+  for (int gix = 0; gix < (int) glib_vect.glibv_count; gix++)
+    {
+      GObject *gob = glib_vect.glibv_arr[gix];
+      if (gob == NULL)
+        continue;
+      if (glib_vect.glibv_markarr[gix])
+        continue;
+      glib_vect.glibv_arr[gix] = NULL;
+      g_object_unref (gob);
+    }
+}                               /* end clean_gc_glib */
 
 
 void
@@ -365,38 +466,74 @@ define_gtk_primitives (void *root, Obj **env)
 {
   add_primitive (root, env, "gtk_eq", prim_gtk_eq);
   add_primitive (root, env, "gtk_loop", prim_gtk_loop);
+  add_primitive (root, env, "gtk_builder", prim_gtk_builder);
 }                               /* end define_gtk_primitives */
 
 
 void
 finalize_gtk (void)
 {
-  if (gtk_vect.gtkv_count > 0)
+  if (gtk_vect.gtkv_count == 0)
+    return;
+  assert (gtk_vect.gtkv_markarr != NULL);
+  assert (gtk_vect.gtkv_arr != NULL);
+  for (int ix = 0; ix < (int) gtk_vect.gtkv_count; ix++)
     {
-      assert (gtk_vect.gtkv_markarr != NULL);
-      assert (gtk_vect.gtkv_arr != NULL);
-      assert (gtk_vect.gtkv_kindarr != NULL);
-      for (int ix = 0; ix < (int) gtk_vect.gtkv_count; ix++)
-        {
-          if (gtk_vect.gtkv_kindarr[ix] == MINILISPGTK_WIDGET)
-            {
-              if (gtk_vect.gtkv_arr[ix])
-                gtk_widget_destroy ((GtkWidget *) gtk_vect.gtkv_arr[ix]);
-              gtk_vect.gtkv_arr[ix] = NULL;
-            }
-          else if (gtk_vect.gtkv_kindarr[ix] == MINILISPGTK_GOBJECT)
-            {
-              if (gtk_vect.gtkv_arr[ix])
-                g_object_unref ((GObject *) gtk_vect.gtkv_arr[ix]);
-              gtk_vect.gtkv_arr[ix] = NULL;
-            }
-        }
+      if (gtk_vect.gtkv_arr[ix])
+        gtk_widget_destroy ((GtkWidget *) gtk_vect.gtkv_arr[ix]);
+      gtk_vect.gtkv_arr[ix] = NULL;
       free (gtk_vect.gtkv_markarr);
       free (gtk_vect.gtkv_arr);
-      free (gtk_vect.gtkv_kindarr);
       memset (&gtk_vect, 0, sizeof (gtk_vect));
     }
 }                               /* end finalize_gtk */
+
+
+extern void finalize_glib (void);
+void
+initialize_glib (void)
+{
+  atexit (finalize_glib);
+  glib_ghtbl = g_hash_table_new (g_direct_hash, g_direct_equal);
+  unsigned inisiz = 128;
+  glib_vect.glibv_arr = calloc (inisiz, sizeof (GObject *));
+  if (!glib_vect.glibv_arr)
+    {
+      fprintf (stderr, "calloc failed for %u GObject* pointers (%s)", inisiz,
+               strerror (errno));
+      show_backtrace_stderr ();
+      exit (EXIT_FAILURE);
+    };
+  glib_vect.glibv_markarr = calloc (inisiz, sizeof (bool));
+  if (!glib_vect.glibv_markarr)
+    {
+      fprintf (stderr, "calloc failed for %u mark flags (%s)", inisiz,
+               strerror (errno));
+      free (glib_vect.glibv_arr), glib_vect.glibv_arr = NULL;
+      show_backtrace_stderr ();
+      exit (EXIT_FAILURE);
+    };
+  glib_vect.glibv_size = inisiz;
+}                               /* end initialize_glib */
+
+
+void
+finalize_glib (void)
+{
+  if (glib_vect.glibv_count == 0)
+    return;
+  assert (glib_vect.glibv_markarr != NULL);
+  assert (glib_vect.glibv_arr != NULL);
+  for (int ix = 0; ix < (int) glib_vect.glibv_count; ix++)
+    {
+      if (glib_vect.glibv_arr[ix])
+        g_object_unref (glib_vect.glibv_arr[ix]);
+      glib_vect.glibv_arr[ix] = NULL;
+      free (glib_vect.glibv_markarr);
+      free (glib_vect.glibv_arr);
+      memset (&glib_vect, 0, sizeof (glib_vect));
+    };
+}                               /* end finalize_glib */
 
 
 
