@@ -258,6 +258,8 @@ prim_gtk_builder (void *root, Obj **env, Obj **list)
       fflush (stderr);
       return Nil;
     }
+  res = make_glib_object (root, (GObject *) gbuilder);
+  return res;
 }                               /* end prim_gtk_builder */
 
 static void *gtk_cur_root;
@@ -313,8 +315,69 @@ make_glib_object (void *root, GObject * glibob)
   assert (root != NULL);
   assert (glibob != NULL);
   Obj *res = NULL;
-  res = alloc (root, TGLIBREF, sizeof (GObject *));
+  int glix = 0;
+  if (!glib_ghtbl)
+    return Nil;
+  res = alloc (root, TGLIBREF, sizeof (res->glib_index));
+  intptr_t ix = g_hash_table_lookup (glib_ghtbl, glibov);
+  if (ix > 0)
+    glix = ix;
+  else
+    {
+      if (glib_vect.glibv_count + 2 >= glib_vect.glibv_size)
+        {                       // nearly full
+          if (glib_vect.glibv_size > 2 * MAX_VECTOR_LEN)
+            {
+              error ("make_glib with too many objects %zd",
+                     glib_vect.glibv_size);
+              return Nil;
+            }
+          unsigned newsiz =
+            1 +
+            ((glib_vect.glibv_count + 10 + glib_vect.glibv_size / 4) | 0x1f);
+          assert (newsiz > glib_vect.glibv_size);
+          GObject **newarr = calloc (newsiz, sizeof (GObject *));
+          if (!newarr)
+            {
+              fprintf (stderr, "calloc failed for %u GObject* pointers (%s)",
+                       newsiz, strerror (errno));
+              show_backtrace_stderr ();
+              exit (EXIT_FAILURE);
+            };
+          if (glib_vect.glibv_arr)
+            {
+              memcpy (newarr, glib_vect.glibv_arr,
+                      glib_vect.glibv_count * sizeof (GObject *));
+              free (glib_vect.glibv_arr);
+            };
+          glib_vect.glibv_arr = newarr;
+          bool *newmarkarr = calloc (newsiz, sizeof (bool));
+          if (!newmarkarr)
+            {
+              fprintf (stderr,
+                       "calloc failed for %u mark flags for GObject-s (%s)",
+                       newsiz, strerror (errno));
+              show_backtrace_stderr ();
+              exit (EXIT_FAILURE);
+            };
+          if (glib_vect.glibv_markarr)
+            {
+              memcpy (newmarkarr, glib_vect.glibv_markarr,
+                      glib_vect.glibv_count * sizeof (bool));
+              free (glib_vect.glibv_markarr);
+            }
+          glibv_vect.glibv_markarr = newmarkarr;
+          glibv_vect.glibv_size = newsiz;
+        };                      /* end if nearly full */
+      glix = ++glib_vect.glibv_count;
+      glibv_vect.glibv_markarr[glix] = true;
+      glibv_vect.glibv_arr[glix] = glibob;
+    }
+  res->glib_index = glix;
+  return res;
 }                               /* end make_glib_object */
+
+
 
 Obj *
 make_gtk_object (void *root, GtkWidget * widg)
@@ -323,6 +386,8 @@ make_gtk_object (void *root, GtkWidget * widg)
   assert (widg != NULL);
   Obj *res = NULL;
   res = alloc (root, TGTKREF, sizeof (GtkWidget *));
+  error ("make_gtk_object uniplemented");
+#warning make_gtk_object unimplemented
 }                               /* end make_gtk_object */
 
 Obj *
