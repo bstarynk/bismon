@@ -701,7 +701,7 @@ fread_hash (FILE * f, void *root)
               ec = fpeek (f);
               assert (ec > 0);
             };
-          if (blen + linlen >= bsiz)
+          if (blen + linlen + 2 >= bsiz)
             {
               newsiz = ((bsiz + linlen + bsiz / 16 + 5) | 0x1f) + 1;
               newbuf = calloc (newsiz, 1);
@@ -717,7 +717,7 @@ fread_hash (FILE * f, void *root)
               free (buf), newbuf = buf;
               bsiz = newsiz;
             };
-          strcpy (buf + blen, linbuf);
+          strncpy (buf + blen, linbuf, linlen);
           blen += linlen;
         };                      /* end while !ended */
       res = make_string (root, buf);
