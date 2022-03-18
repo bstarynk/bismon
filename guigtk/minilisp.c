@@ -711,7 +711,8 @@ fread_hash (FILE * f, void *root)
             };
           if (blen + linlen + 2 >= bsiz)
             {
-              newsiz = ((bsiz + linlen + blen / 16 + 5) | 0x1f) + 1;
+              newsiz = ((blen + linlen + blen / 16 + linlen / 8 + 5)
+			| 0x1f) + 1;
               assert (newsiz > bsiz);
               assert (newsiz > blen);
               newbuf = calloc (newsiz, 1);
@@ -729,6 +730,7 @@ fread_hash (FILE * f, void *root)
               buf = newbuf;
             };
 	  if (linlen > 0) {
+	    assert (blen + linlen + 1 < bsiz);
 	    strncpy (buf + blen, linbuf, linlen);
 	    blen += linlen;
 	  }
