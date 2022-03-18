@@ -679,12 +679,20 @@ fread_hash (FILE * f, void *root)
         };
       while (!ended)
         {
+          assert (buf != NULL);
+          assert (blen < bsiz);
           off = ftell (f);
+          assert (linbuf != NULL);
+          assert (linsiz > 0 && linlen < linsiz);
           memset (linbuf, 0, linsiz);
           linlen = getline (&linbuf, &linsiz, f);
           assert (off >= 0);
           if (linlen > 0)
-            linbuf[linlen] = (char) 0;
+            {
+              assert (linbuf != NULL);
+              assert (linsiz > 0 && linlen < linsiz);
+              linbuf[linlen] = (char) 0;
+            }
           else
             error ("unterminated raw string literal at %s offset %ld",
                    (char) c, static1_file_name (f), off);
@@ -704,8 +712,8 @@ fread_hash (FILE * f, void *root)
           if (blen + linlen + 2 >= bsiz)
             {
               newsiz = ((bsiz + linlen + blen / 16 + 5) | 0x1f) + 1;
-	      assert (newsiz > bsiz);
-	      assert (newsiz > blen);
+              assert (newsiz > bsiz);
+              assert (newsiz > blen);
               newbuf = calloc (newsiz, 1);
               if (!newbuf)
                 {
@@ -718,7 +726,7 @@ fread_hash (FILE * f, void *root)
               memcpy (newbuf, buf, blen);
               free (buf), newbuf = buf;
               bsiz = newsiz;
-	      buf = newbuf;
+              buf = newbuf;
             };
           strncpy (buf + blen, linbuf, linlen);
           blen += linlen;
