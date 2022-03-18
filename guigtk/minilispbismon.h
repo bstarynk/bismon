@@ -31,9 +31,9 @@ extern pthread_t main_pthread;
 
 extern void error (char *fmt, ...) __attribute__((noreturn));
 
-typedef struct _GObject GObject; // from glib-2.0/gobject/gobject.h
-typedef struct _GtkWidget GtkWidget; // from gtk-3.0/gtk/gtktypes.h
-typedef struct json_t json_t;	     // from jansson.h
+typedef struct _GObject GObject;        // from glib-2.0/gobject/gobject.h
+typedef struct _GtkWidget GtkWidget;    // from gtk-3.0/gtk/gtktypes.h
+typedef struct json_t json_t;   // from jansson.h
 
 //======================================================================
 // Lisp objects
@@ -285,8 +285,8 @@ extern Obj *make_double (void *root, double dvalue);
 extern Obj *cons (void *root, Obj **car, Obj **cdr);
 extern Obj *make_symbol (void *root, const char *name);
 extern Obj *make_string (void *root, const char *buf);
-extern Obj *make_glib_object (void *root, GObject*gob);
-extern Obj *make_gtk_object(void *root, GtkWidget * widg);
+extern Obj *make_glib_object (void *root, GObject * gob);
+extern Obj *make_gtk_object (void *root, GtkWidget * widg);
 extern Obj *make_json (void *root, json_t *js, bool doincref);
 
 
