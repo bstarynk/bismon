@@ -366,12 +366,12 @@ make_glib_object (void *root, GObject * glibob)
                       glib_vect.glibv_count * sizeof (bool));
               free (glib_vect.glibv_markarr);
             }
-          glibv_vect.glibv_markarr = newmarkarr;
-          glibv_vect.glibv_size = newsiz;
+          glib_vect.glibv_markarr = newmarkarr;
+          glib_vect.glibv_size = newsiz;
         };                      /* end if nearly full */
       glix = ++glib_vect.glibv_count;
-      glibv_vect.glibv_markarr[glix] = true;
-      glibv_vect.glibv_arr[glix] = glibob;
+      glib_vect.glibv_markarr[glix] = true;
+      glib_vect.glibv_arr[glix] = glibob;
     }
   res->glib_index = glix;
   return res;
