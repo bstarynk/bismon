@@ -728,8 +728,10 @@ fread_hash (FILE * f, void *root)
               bsiz = newsiz;
               buf = newbuf;
             };
-          strncpy (buf + blen, linbuf, linlen);
-          blen += linlen;
+	  if (linlen > 0) {
+	    strncpy (buf + blen, linbuf, linlen);
+	    blen += linlen;
+	  }
         };                      /* end while !ended */
       res = make_string (root, buf);
       fseek (f, strlen (endb), SEEK_CUR);
