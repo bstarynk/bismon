@@ -320,7 +320,7 @@ make_glib_object (void *root, GObject * glibob)
   intptr_t glix = 0;
   if (!glib_ghtbl)
     return Nil;
-  res = alloc (root, TGLIBREF, sizeof ((*res)->glib_index));
+  res = alloc (root, TGLIBREF, sizeof (res->glib_index));
   intptr_t ix = (intptr_t) g_hash_table_lookup (glib_ghtbl, glibob);
   if (ix > 0)
     glix = ix;

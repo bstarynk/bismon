@@ -258,6 +258,10 @@ extern Obj *alloc (void *root, int type, size_t size);
 // http://en.wikipedia.org/wiki/Cheney%27s_algorithm
 extern void gc (void *root);
 extern Obj *forward_for_gc (Obj *);
+extern void forward_root_objects(void*root);
+extern void *alloc_semispace (void);
+
+extern int fpeek(FILE*f);
 
 extern void add_primitive (void *root, Obj **env, char *name, Primitive * fn);
 extern void define_primitives (void *root, Obj **env);
@@ -288,7 +292,7 @@ extern Obj *make_string (void *root, const char *buf);
 extern Obj *make_glib_object (void *root, GObject * gob);
 extern Obj *make_gtk_object (void *root, GtkWidget * widg);
 extern Obj *make_json (void *root, json_t *js, bool doincref);
-
+extern Obj *make_vector (void *root, unsigned len, Obj **comparr);
 
 //// accessor of a string or else NULL; the result would be moved so
 //// become invalid by next garbage collection...
@@ -314,17 +318,115 @@ extern Obj *acons (void *root, Obj **x, Obj **y, Obj **a);
 
 
 //// reader
+// Skips the input until newline is found. Newline is one of \r, \r\n or \n.
+extern void skip_line (FILE * f);
 extern Obj *fread_expr (FILE * fil, void *root);
+// Reads a list. Note that '(' has already been read.
+extern Obj *fread_list (FILE * f, void *root);
 //// for JSON notation; example #json { "a" : 1, "b" : [true,false,null]}
 extern Obj *fread_json (FILE * fil, void *root);
+// Reader macro ' (single quote). It reads an expression and returns (quote <expr>).
+extern Obj *fread_quote (FILE * f, void *root);
+extern int fread_number (FILE * f, int val);
+extern Obj *fread_symbol (FILE * f, void *root, char c);
+//// read a single-lined string, whose initial double-quote °" has been read
+extern Obj *fread_string (FILE * f, void *root);
 
 
+/// Basile syntax extension; after a # ...
+/// Examples:
+
+/***
+ * #3.14  ; a double value
+ * #json { "a": 2 } ; a JSON value
+ ***/
+extern Obj *fread_hash (FILE * f, void *root);
 
 // Evaluates the S expression in *obj
 extern Obj *eval (void *root, Obj **env, Obj **obj);
 
+// Evaluates the list elements from head and returns the last return value.
+extern Obj *progn (void *root, Obj **env, Obj **list);
+
 // Evaluates all the list elements and returns their return values as a new list.
 extern Obj *eval_list (void *root, Obj **env, Obj **list);
+
+extern Obj *apply_func (void *root, Obj **env, Obj **fn, Obj **args);
+// Apply fn with args.
+extern Obj *apply (void *root, Obj **env, Obj **fn, Obj **args);
+
+//////////////// primitive functions and special forms
+
+// 'expr
+extern Obj *prim_quote (void *root, Obj **env, Obj **list);
+// (cons expr expr)
+extern Obj *prim_cons (void *root, Obj **env, Obj **list);
+// car & cdr
+extern Obj *prim_car (void *root, Obj **env, Obj **list);
+extern Obj *prim_cdr (void *root, Obj **env, Obj **list);
+// (setcar <cell> expr)
+extern Obj *prim_setcar (void *root, Obj **env, Obj **list);
+
+
+// (while cond expr ...)
+extern Obj *prim_while (void *root, Obj **env, Obj **list);
+// (gensym)
+extern Obj *prim_gensym (void *root, Obj **env, Obj **list);
+// (gitid)
+extern Obj *prim_gitid (void *root, Obj **env, Obj **list);
+
+// (vector <expr....>)
+extern Obj *prim_vector (void *root, Obj **env, Obj **list);
+
+/// (vector_make <length>)
+extern Obj *prim_vector_make (void *root, Obj **env, Obj **list);
+// (vector_length <expr>)
+extern Obj *prim_vector_length (void *root, Obj **env, Obj **list);
+// (vector_flavor <expr>)
+extern Obj *prim_vector_flavor (void *root, Obj **env, Obj **list);
+
+// (vector_put_flavor <expr-vec> <expr-flavor>)
+extern Obj *prim_vector_put_flavor (void *root, Obj **env, Obj **list);
+// (vector_slice <expr-vect> <expr-startpos> <expr-endpos>)
+extern Obj *prim_vector_slice (void *root, Obj **env, Obj **list);
+// (vector_fetch <expr-vec> <expr-rank>)
+extern Obj *prim_vector_fetch (void *root, Obj **env, Obj **list);
+// (vector_put <expr-vec> <expr-rank> <expr-comp>) => oldcomp
+extern Obj *prim_vector_put (void *root, Obj **env, Obj **list);
+
+// (+ <number> ...)
+extern Obj *prim_plus (void *root, Obj **env, Obj **list);
+// (- <number> ...)
+extern Obj *prim_minus (void *root, Obj **env, Obj **list);
+// (* <number> ...)
+extern Obj *prim_mult (void *root, Obj **env, Obj **list);
+// (/ <number> ...)
+extern Obj *prim_div (void *root, Obj **env, Obj **list);
+// (% <number> ...) - modulus
+extern Obj *prim_mod (void *root, Obj **env, Obj **list);
+// (< <number> <number>)    or    (< <string> <string>)   or (< <symbol> <symbol>)
+extern Obj *prim_lt (void *root, Obj **env, Obj **list);
+// (<= <number> <number>)   or  (<= <string> <string>)  or  (<= <symbol> <symbol>)
+extern Obj *prim_lessequal (void *root, Obj **env, Obj **list);
+// (> <number> <number>)   or  (> <string> <string>)  or (> <symbol> <symbol>)
+extern Obj *prim_gt (void *root, Obj **env, Obj **list);
+
+// (>= <number> <number>)  or  (>= <string> <string>)  or (>= <symbol> <symbol>)
+extern Obj *prim_greaterequal (void *root, Obj **env, Obj **list);
+
+
+// Searches for a variable by symbol. Returns null if not found.
+extern Obj *find (Obj **env, Obj *sym);
+
+// Expands the given macro application form.
+extern Obj *macroexpand (void *root, Obj **env, Obj **obj);
+
+extern bool is_list (Obj *obj);
+
+extern void add_variable (void *root, Obj **env, Obj **sym, Obj **val);
+
+// Returns a newly created environment frame.
+extern Obj *push_env (void *root, Obj **env, Obj **vars, Obj **vals);
 
 // Evaluate inside a GTK callback, using env & list from prim_gtk_loop
 extern Obj *eval_in_gtk_callback (Obj **obj);
@@ -334,6 +436,8 @@ extern Obj *eval_list_in_gtk_callback (Obj **env, Obj **list);
 
 // Returns the length of the given list. -1 if it's not a proper list.
 extern int length (Obj *list);
+// Destructively reverses the given list.
+extern Obj *reverse (Obj *p);
 
 /// if jsob is a TJSON, get it; otherwise NULL
 extern json_t *get_json (Obj *jsob);
