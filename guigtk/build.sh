@@ -19,7 +19,7 @@ fi
 
 errbase=0
 for cfile in minilisp.c gtkbismonlisp.c jsonbismonlisp.c ; do
-    $BISMON_GCC -Wall -Wextra -g $BISMON_OPTIM -c $cfile -DBISMON_GIT=\"$BISMON_SHGIT\" \
+    $BISMON_GCC -Wall -Wextra -Wno-prototypes -g $BISMON_OPTIM -c $cfile -DBISMON_GIT=\"$BISMON_SHGIT\" \
 	-DERROR_BASE_NUM=$errbase \
     -I . \
     -I /usr/local/include $(pkg-config --cflags gtk+-3.0 jansson) \
