@@ -2533,6 +2533,7 @@ main (int argc, char **argv)
     }
   initialize_json ();
   initialize_gtk (&argc, &argv);
+  initialize_glib ();
   for (int i = 1; i < argc; i++)
     {
       if (!argv[i])
