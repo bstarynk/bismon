@@ -258,8 +258,8 @@ prim_gtk_builder (void *root, Obj **env, Obj **list)
       fflush (stderr);
       return Nil;
     }
-  res = make_glib_object (root, (GObject *) gbuilder);
-  return res;
+  *res = make_glib_object (root, (GObject *) gbuilder);
+  return *res;
 }                               /* end prim_gtk_builder */
 
 static void *gtk_cur_root;
@@ -315,11 +315,11 @@ make_glib_object (void *root, GObject * glibob)
   assert (root != NULL);
   assert (glibob != NULL);
   Obj *res = NULL;
-  int glix = 0;
+  intptr_t glix = 0;
   if (!glib_ghtbl)
     return Nil;
   res = alloc (root, TGLIBREF, sizeof (res->glib_index));
-  intptr_t ix = g_hash_table_lookup (glib_ghtbl, glibob);
+  intptr_t ix = (intptr_t) g_hash_table_lookup (glib_ghtbl, glibob);
   if (ix > 0)
     glix = ix;
   else
@@ -372,6 +372,7 @@ make_glib_object (void *root, GObject * glibob)
       glix = ++glib_vect.glibv_count;
       glib_vect.glibv_markarr[glix] = true;
       glib_vect.glibv_arr[glix] = glibob;
+      g_hash_table_insert (glib_ghtbl, glibob, (void *) glix);
     }
   res->glib_index = glix;
   return res;
@@ -385,9 +386,66 @@ make_gtk_object (void *root, GtkWidget * widg)
   assert (root != NULL);
   assert (widg != NULL);
   Obj *res = NULL;
-  res = alloc (root, TGTKREF, sizeof (GtkWidget *));
-  error ("make_gtk_object uniplemented");
-#warning make_gtk_object unimplemented
+  if (!gtk_ghtbl)
+    return Nil;
+  res = alloc (root, TGTKREF, sizeof (res->gtk_index));
+  intptr_t gtkix = 0;
+  intptr_t ix = (intptr_t) g_hash_table_lookup (gtk_ghtbl, widg);
+  if (ix > 0)
+    gtkix = ix;
+  else
+    {
+      if (gtk_vect.gtkv_count + 2 >= gtk_vect.gtkv_size)
+        {                       // nearly full
+          if (gtk_vect.gtkv_size > 2 * MAX_VECTOR_LEN)
+            {
+              error ("make_gtk with too many objects %zd",
+                     gtk_vect.gtkv_size);
+              return Nil;
+            }
+          unsigned newsiz =
+            1 + ((gtk_vect.gtkv_count + 10 + gtk_vect.gtkv_size / 4) | 0x1f);
+          assert (newsiz > gtk_vect.gtkv_size);
+          GtkWidget **newarr = calloc (newsiz, sizeof (GObject *));
+          if (!newarr)
+            {
+              fprintf (stderr, "calloc failed for %u GObject* pointers (%s)",
+                       newsiz, strerror (errno));
+              show_backtrace_stderr ();
+              exit (EXIT_FAILURE);
+            };
+          if (gtk_vect.gtkv_arr)
+            {
+              memcpy (newarr, gtk_vect.gtkv_arr,
+                      gtk_vect.gtkv_count * sizeof (GObject *));
+              free (gtk_vect.gtkv_arr);
+            };
+          gtk_vect.gtkv_arr = newarr;
+          bool *newmarkarr = calloc (newsiz, sizeof (bool));
+          if (!newmarkarr)
+            {
+              fprintf (stderr,
+                       "calloc failed for %u mark flags for GObject-s (%s)",
+                       newsiz, strerror (errno));
+              show_backtrace_stderr ();
+              exit (EXIT_FAILURE);
+            };
+          if (gtk_vect.gtkv_markarr)
+            {
+              memcpy (newmarkarr, gtk_vect.gtkv_markarr,
+                      gtk_vect.gtkv_count * sizeof (bool));
+              free (gtk_vect.gtkv_markarr);
+            }
+          gtk_vect.gtkv_markarr = newmarkarr;
+          gtk_vect.gtkv_size = newsiz;
+        };                      /* end if nearly full */
+      gtkix = ++gtk_vect.gtkv_count;
+      gtk_vect.gtkv_markarr[gtkix] = true;
+      gtk_vect.gtkv_arr[gtkix] = widg;
+      g_hash_table_insert (gtk_ghtbl, widg, (void *) gtkix);
+    }
+  res->gtk_index = gtkix;
+  return res;
 }                               /* end make_gtk_object */
 
 Obj *
