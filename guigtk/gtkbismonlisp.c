@@ -227,6 +227,8 @@ prim_gtk_eq (void *root, Obj **env, Obj **list)
   return Nil;
 }                               /* end prim_gtk_eq */
 
+
+
 Obj *
 prim_gtk_builder (void *root, Obj **env, Obj **list)
 {
@@ -312,13 +314,13 @@ eval_list_in_gtk_callback (Obj **env, Obj **list)
 Obj *
 make_glib_object (void *root, GObject * glibob)
 {
+  Obj* res = NULL;
   assert (root != NULL);
   assert (glibob != NULL);
-  Obj *res = NULL;
   intptr_t glix = 0;
   if (!glib_ghtbl)
     return Nil;
-  res = alloc (root, TGLIBREF, sizeof (res->glib_index));
+  res = alloc (root, TGLIBREF, sizeof ((*res)->glib_index));
   intptr_t ix = (intptr_t) g_hash_table_lookup (glib_ghtbl, glibob);
   if (ix > 0)
     glix = ix;
@@ -383,9 +385,9 @@ make_glib_object (void *root, GObject * glibob)
 Obj *
 make_gtk_object (void *root, GtkWidget * widg)
 {
+  Obj *res = NULL;
   assert (root != NULL);
   assert (widg != NULL);
-  Obj *res = NULL;
   if (!gtk_ghtbl)
     return Nil;
   res = alloc (root, TGTKREF, sizeof (res->gtk_index));
@@ -447,6 +449,8 @@ make_gtk_object (void *root, GtkWidget * widg)
   res->gtk_index = gtkix;
   return res;
 }                               /* end make_gtk_object */
+
+
 
 Obj *
 prim_gtk_loop (void *root, Obj **env, Obj **list)
