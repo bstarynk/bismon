@@ -709,7 +709,7 @@ fread_hash (FILE * f, void *root)
               ec = fpeek (f);
               assert (ec > 0);
             };
-          if (blen + linlen + 2 >= bsiz)
+          if (blen + linlen + 3 >= bsiz)
             {
               newsiz = ((blen + linlen + blen / 16 + linlen / 8 + 5)
                         | 0x1f) + 1;
@@ -725,13 +725,13 @@ fread_hash (FILE * f, void *root)
                   exit (EXIT_FAILURE);
                 };
               memcpy (newbuf, buf, blen);
-              free (buf), newbuf = buf;
+              free (buf), buf = newbuf;
               bsiz = newsiz;
               buf = newbuf;
             };
           if (linlen > 0)
             {
-              assert (blen + linlen + 1 < bsiz);
+              assert (blen + linlen + 2 < bsiz);
               strncpy (buf + blen, linbuf, linlen);
               blen += linlen;
             }
