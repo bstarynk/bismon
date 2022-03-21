@@ -314,7 +314,7 @@ eval_list_in_gtk_callback (Obj **env, Obj **list)
 Obj *
 make_glib_object (void *root, GObject * glibob)
 {
-  Obj* res = NULL;
+  Obj *res = NULL;
   assert (root != NULL);
   assert (glibob != NULL);
   intptr_t glix = 0;
@@ -451,7 +451,7 @@ make_gtk_object (void *root, GtkWidget * widg)
 }                               /* end make_gtk_object */
 
 
-
+/// (gtk_loop)
 Obj *
 prim_gtk_loop (void *root, Obj **env, Obj **list)
 {

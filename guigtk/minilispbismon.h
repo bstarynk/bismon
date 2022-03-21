@@ -31,6 +31,9 @@ extern pthread_t main_pthread;
 
 extern void error (char *fmt, ...) __attribute__((noreturn));
 
+// Returns true if the environment variable is defined and not the empty string.
+extern bool getEnvFlag (char *name);
+
 typedef struct _GObject GObject;        // from glib-2.0/gobject/gobject.h
 typedef struct _GtkWidget GtkWidget;    // from gtk-3.0/gtk/gtktypes.h
 typedef struct json_t json_t;   // from jansson.h
@@ -153,6 +156,8 @@ typedef struct Obj
 #define MAX_VECTOR_LEN (128*1024)
 
 extern bool recursive_equal (Obj *x, Obj *y, unsigned depth);
+extern bool gtkref_recursive_equal (Obj *x, Obj *y, unsigned depth);
+extern bool jsonref_recursive_equal (Obj *x, Obj *y, unsigned depth);
 
 enum json_magic_en
 {
@@ -160,6 +165,7 @@ enum json_magic_en
   JSONMAG_false = -2,
   JSONMAG_null = -3
 };
+
 
 // Constants
 extern Obj *True;
@@ -258,10 +264,10 @@ extern Obj *alloc (void *root, int type, size_t size);
 // http://en.wikipedia.org/wiki/Cheney%27s_algorithm
 extern void gc (void *root);
 extern Obj *forward_for_gc (Obj *);
-extern void forward_root_objects(void*root);
+extern void forward_root_objects (void *root);
 extern void *alloc_semispace (void);
 
-extern int fpeek(FILE*f);
+extern int fpeek (FILE * f);
 
 extern void add_primitive (void *root, Obj **env, char *name, Primitive * fn);
 extern void define_primitives (void *root, Obj **env);
@@ -279,6 +285,21 @@ extern void clean_gc_glib (void *root);
 extern Obj *prim_scalar_eq (void *root, Obj **env, Obj **list);
 extern Obj *prim_json_eq (void *root, Obj **env, Obj **list);
 extern Obj *prim_gtk_eq (void *root, Obj **env, Obj **list);
+extern Obj *prim_json_type (void *root, Obj **env, Obj **list);
+extern Obj *prim_json_string (void *root, Obj **env, Obj **list);
+extern Obj *prim_json_integer (void *root, Obj **env, Obj **list);
+extern Obj *prim_json_real (void *root, Obj **env, Obj **list);
+extern Obj *prim_json_true (void *root, Obj **env, Obj **list);
+extern Obj *prim_json_false (void *root, Obj **env, Obj **list);
+extern Obj *prim_json_null (void *root, Obj **env, Obj **list);
+extern Obj *prim_json_array_size (void *root, Obj **env, Obj **list);
+extern Obj *prim_json_object_size (void *root, Obj **env, Obj **list);
+extern Obj *prim_make_scalar_json (void *root, Obj **env, Obj **list);
+extern Obj *prim_make_composite_json (void *root, Obj **env, Obj **list);
+
+extern json_t *as_json (Obj *ob, unsigned depth);
+
+extern Obj *prim_gtk_builder (void *root, Obj **env, Obj **list);
 
 //======================================================================
 // Constructors
@@ -366,6 +387,8 @@ extern Obj *prim_car (void *root, Obj **env, Obj **list);
 extern Obj *prim_cdr (void *root, Obj **env, Obj **list);
 // (setcar <cell> expr)
 extern Obj *prim_setcar (void *root, Obj **env, Obj **list);
+// (setq <symbol> expr)
+extern Obj *prim_setq (void *root, Obj **env, Obj **list);
 
 
 // (while cond expr ...)
@@ -415,11 +438,47 @@ extern Obj *prim_gt (void *root, Obj **env, Obj **list);
 extern Obj *prim_greaterequal (void *root, Obj **env, Obj **list);
 
 
+// (lambda (<symbol> ...) expr ...)
+extern Obj *prim_lambda (void *root, Obj **env, Obj **list);
+
+extern Obj *handle_function (void *root, Obj **env, Obj **list, int type);
+
+
+void define_constants (void *root, Obj **env);
+
+
+// (defun <symbol> (<symbol> ...) expr ...)
+extern Obj *prim_defun (void *root, Obj **env, Obj **list);
+// (define <symbol> expr)
+extern Obj *prim_define (void *root, Obj **env, Obj **list);
+// (defmacro <symbol> (<symbol> ...) expr ...)
+extern Obj *prim_defmacro (void *root, Obj **env, Obj **list);
+
 // Searches for a variable by symbol. Returns null if not found.
 extern Obj *find (Obj **env, Obj *sym);
 
 // Expands the given macro application form.
 extern Obj *macroexpand (void *root, Obj **env, Obj **obj);
+// (macroexpand expr)
+extern Obj *prim_macroexpand (void *root, Obj **env, Obj **list);
+
+// (println expr)
+extern Obj *prim_println (void *root, Obj **env, Obj **list);
+// (list ....)
+extern Obj *prim_list (void *root, Obj **env, Obj **list);
+
+
+// (if expr expr expr ...)
+extern Obj *prim_if (void *root, Obj **env, Obj **list);
+// (eq expr expr)
+extern Obj *prim_eq (void *root, Obj **env, Obj **list);
+// (load "filename")
+extern Obj *prim_load (void *root, Obj **env, Obj **list);
+// (load_skipped "filename") -- ignore first lines till ;;;+++
+extern Obj *prim_load_skipped (void *root, Obj **env, Obj **list);
+
+
+extern Obj *handle_defun (void *root, Obj **env, Obj **list, int type);
 
 extern bool is_list (Obj *obj);
 
@@ -430,6 +489,9 @@ extern Obj *push_env (void *root, Obj **env, Obj **vars, Obj **vals);
 
 // Evaluate inside a GTK callback, using env & list from prim_gtk_loop
 extern Obj *eval_in_gtk_callback (Obj **obj);
+
+/// (gtk_loop)
+extern Obj *prim_gtk_loop (void *root, Obj **env, Obj **list);
 
 // Evaluates all the list elements and returns their return values as a new list, in  GTK callback
 extern Obj *eval_list_in_gtk_callback (Obj **env, Obj **list);
@@ -468,9 +530,11 @@ extern json_t *json_in_obj (Obj *obj);
 
 
 
-/// initialize support got JSON references
+/// initialize support for JSON references
 extern void initialize_json (void);
 
+/// initialize support for Glib/Gobject
+extern void initialize_glib (void);
 
 /// initialize support for GTK
 extern void initialize_gtk (int *pargc, char ***pargv);

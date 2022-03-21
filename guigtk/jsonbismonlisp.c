@@ -56,6 +56,8 @@ struct
   unsigned jsv_count;           /* used count */
 } json_vect;
 
+extern void finalize_json (void);
+
 void
 finalize_json (void)
 {
