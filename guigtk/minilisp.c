@@ -683,14 +683,14 @@ fread_hash (FILE * f, void *root)
           assert (blen < bsiz);
           off = ftell (f);
           assert (linbuf != NULL);
-          assert (linsiz > 0 && linlen < linsiz);
+          assert (linsiz > 0 && (size_t) linlen < linsiz);
           memset (linbuf, 0, linsiz);
           linlen = getline (&linbuf, &linsiz, f);
           assert (off >= 0);
           if (linlen > 0)
             {
               assert (linbuf != NULL);
-              assert (linsiz > 0 && linlen < linsiz);
+              assert (linsiz > 0 && (size_t) linlen < linsiz);
               linbuf[linlen] = (char) 0;
             }
           else
@@ -712,7 +712,7 @@ fread_hash (FILE * f, void *root)
           if (blen + linlen + 2 >= bsiz)
             {
               newsiz = ((blen + linlen + blen / 16 + linlen / 8 + 5)
-			| 0x1f) + 1;
+                        | 0x1f) + 1;
               assert (newsiz > bsiz);
               assert (newsiz > blen);
               newbuf = calloc (newsiz, 1);
@@ -729,11 +729,12 @@ fread_hash (FILE * f, void *root)
               bsiz = newsiz;
               buf = newbuf;
             };
-	  if (linlen > 0) {
-	    assert (blen + linlen + 1 < bsiz);
-	    strncpy (buf + blen, linbuf, linlen);
-	    blen += linlen;
-	  }
+          if (linlen > 0)
+            {
+              assert (blen + linlen + 1 < bsiz);
+              strncpy (buf + blen, linbuf, linlen);
+              blen += linlen;
+            }
         };                      /* end while !ended */
       res = make_string (root, buf);
       fseek (f, strlen (endb), SEEK_CUR);
