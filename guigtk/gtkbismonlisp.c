@@ -524,7 +524,7 @@ prim_gtk_builder_get (void *root, Obj **env, Obj **list)
   else
     error
       ("gtk_builder_get needs a string or symbol second argument, but got %s",
-       minilisp_type_name ((*namestr)->type));
+       minilisp_type_name ((*nameob)->type));
   /// should test that buildgob is a GtkBuilder...
 #warning prim_gtk_builder_get unimplemented
   fflush (NULL);
