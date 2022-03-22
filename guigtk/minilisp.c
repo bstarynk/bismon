@@ -2597,18 +2597,41 @@ main (int argc, char **argv)
 
   if (scriptfile)
     {
+      if (verbose_ilisp)
+        {
+          printf ("%s (git %s) reading script file %s\n",
+                  argv[0], BISMON_GIT, scriptfile);
+          fflush (NULL);
+        }
       int nbscrexpr =
         load_file (scriptfile, SKIP_HEAD_LOADED_FILE, root, env);
       if (nbscrexpr <= 0)
         exit (EXIT_FAILURE);
+      if (verbose_ilisp)
+        printf ("%s (git %s) did load %d expressions from script file %s\n",
+                argv[0], BISMON_GIT, nbscrexpr);
     }
   else
     {
+      if (verbose_ilisp)
+        {
+          printf ("%s (git %s) reading stdin\n", argv[0], BISMON_GIT);
+          fflush (NULL);
+        }
       int nbreplexpr = load_file (NULL, LOAD_FULL_LOADED_FILE, root, env);
       if (nbreplexpr <= 0)
         exit (EXIT_FAILURE);
+      if (verbose_ilisp)
+        printf ("%s (git %s) did load %d expressions from stdin\n",
+                argv[0], BISMON_GIT, nbscrexpr);
     }
+  fflush (NULL);
+  exit (EXIT_SUCCESS);
 }                               /* end main */
+
+
+
+
 
 /// Linux specific, see proc(5)
 const char *
