@@ -93,7 +93,7 @@ get_gtk_widget (Obj *ob)
     return NULL;
   gtkix = ob->gtk_index;
   assert (gtkix > 0
-          && gtkix < (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr
+          && gtkix <= (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr
           && gtk_vect.gtkv_markarr);
   return (GtkWidget *) gtk_vect.gtkv_arr[gtkix];
   return NULL;
@@ -111,7 +111,7 @@ get_g_object (Obj *ob)
     return NULL;
   glibix = ob->glib_index;
   assert (glibix > 0
-          && glibix < (int) glib_vect.glibv_count && glib_vect.glibv_arr);
+          && glibix <= (int) glib_vect.glibv_count && glib_vect.glibv_arr);
   return (GObject *) glib_vect.glibv_arr[glibix];
 }                               /* end get_g_object */
 
