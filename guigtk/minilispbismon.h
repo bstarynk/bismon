@@ -300,6 +300,7 @@ extern Obj *prim_make_composite_json (void *root, Obj **env, Obj **list);
 extern json_t *as_json (Obj *ob, unsigned depth);
 
 extern Obj *prim_gtk_builder (void *root, Obj **env, Obj **list);
+extern Obj *prim_gtk_builder_get (void *root, Obj **env, Obj **list);
 
 //======================================================================
 // Constructors

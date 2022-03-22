@@ -163,7 +163,7 @@ file_glib_print (FILE * fil, Obj *glibob, unsigned depth)
   assert (fil != NULL);
   assert (glibob != NULL && glibob->type == TGLIBREF);
   glibix = glibob->glib_index;
-  assert (glibix > 0 && glibix < (int) glib_vect.glibv_count
+  assert (glibix > 0 && glibix <= (int) glib_vect.glibv_count
           && glib_vect.glibv_arr && glib_vect.glibv_markarr);
   fprintf (fil, "<glib#%d", glibix);
   if (depth > MAX_RECURSIVE_DEPTH)
@@ -489,6 +489,36 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
 }                               /* end prim_gtk_loop */
 
 
+/// gives a boxed GTK widget or nil
+/// (gtk_builder_get <builder> <name>)
+Obj *
+prim_gtk_builder_get (void *root, Obj **env, Obj **list)
+{
+  DEFINE2 (builderob, nameob);
+  if (pthread_self () != main_pthread)
+    {
+      fprintf (stderr,
+               "gtk_builder_get primitive called from non-main pthread\n");
+      show_backtrace_stderr ();
+      return Nil;
+    }
+  if (!app_minilisp)
+    error ("gtk_builder_get: no GTK application");
+  Obj *args = eval_list (root, env, list);
+  if (length (args) != 2)
+    error ("gtk_builder_get needs two arguments <builder> <name>, got %d",
+           (int) length (args));
+  *builderob = args->car;
+  *nameob = args->cdr->car;
+  if ((*builderob)->type != TGLIBREF)
+    error ("gtk_builder_get needs a TGLIB first argument, but got %s",
+           minilisp_type_name ((*builderob)->type));
+#warning prim_gtk_builder_get unimplemented
+  fflush (NULL);
+  error ("gtk_builder_get unimplemented");
+}                               /* end prim_gtk_builder_get */
+
+
 extern void finalize_gtk (void);
 void
 initialize_gtk (int *pargc, char ***pargv)
@@ -594,6 +624,7 @@ define_gtk_primitives (void *root, Obj **env)
   add_primitive (root, env, "gtk_eq", prim_gtk_eq);
   add_primitive (root, env, "gtk_loop", prim_gtk_loop);
   add_primitive (root, env, "gtk_builder", prim_gtk_builder);
+  add_primitive (root, env, "gtk_builder_get", prim_gtk_builder_get);
 }                               /* end define_gtk_primitives */
 
 
