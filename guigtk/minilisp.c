@@ -2560,7 +2560,7 @@ main (int argc, char **argv)
     {
       printf
         ("%s git %s built on %s at %s (see github.com/btarynk/bismon/ ....)\n",
-         argv[0], BISMON_GIT, __DATE__, __TIME__);
+         program_name, BISMON_GIT, __DATE__, __TIME__);
       exit (EXIT_SUCCESS);
     }
   initialize_json ();
@@ -2589,7 +2589,7 @@ main (int argc, char **argv)
 
   if (help_wanted)
     {
-      printf ("%s (a minilisp interpreter) usage:\n", argv[0]);
+      printf ("%s (a minilisp interpreter) usage:\n", program_name);
       printf ("\t -v | --verbose     # verbose interaction\n");
       printf ("\t -h | --help        # this help\n");
       printf ("\t --debug-gc         # debug garbage collector\n");
@@ -2631,8 +2631,8 @@ main (int argc, char **argv)
     {
       if (verbose_ilisp)
         {
-          printf ("%s (git %s) reading script file %s\n",
-                  argv[0], BISMON_GIT, scriptfile);
+          printf (";;%s (git %s) reading script file %s\n",
+                  program_name, BISMON_GIT, scriptfile);
           fflush (NULL);
         }
       int nbscrexpr =
@@ -2640,22 +2640,22 @@ main (int argc, char **argv)
       if (nbscrexpr <= 0)
         exit (EXIT_FAILURE);
       if (verbose_ilisp)
-        printf ("%s (git %s) did load %d expressions from script file %s\n",
-                argv[0], BISMON_GIT, nbscrexpr, scriptfile);
+        printf (";;%s (git %s) did load %d expressions from script file %s\n",
+                program_name, BISMON_GIT, nbscrexpr, scriptfile);
     }
   else
     {
       if (verbose_ilisp)
         {
-          printf ("%s (git %s) reading stdin\n", argv[0], BISMON_GIT);
+          printf (";;%s (git %s) reading stdin\n", program_name, BISMON_GIT);
           fflush (NULL);
         }
       int nbreplexpr = load_file (NULL, LOAD_FULL_LOADED_FILE, root, env);
       if (nbreplexpr <= 0)
         exit (EXIT_FAILURE);
       if (verbose_ilisp)
-        printf ("%s (git %s) did load %d expressions from stdin\n",
-                argv[0], BISMON_GIT, nbreplexpr);
+        printf (";;%s (git %s) did load %d expressions from stdin\n",
+                program_name, BISMON_GIT, nbreplexpr);
     }
   fflush (NULL);
   exit (EXIT_SUCCESS);
