@@ -494,6 +494,8 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
 Obj *
 prim_gtk_builder_get (void *root, Obj **env, Obj **list)
 {
+  const char*namestr = NULL;
+  GObject*buildgob = NULL;
   DEFINE2 (builderob, nameob);
   if (pthread_self () != main_pthread)
     {
@@ -511,8 +513,18 @@ prim_gtk_builder_get (void *root, Obj **env, Obj **list)
   *builderob = args->car;
   *nameob = args->cdr->car;
   if ((*builderob)->type != TGLIBREF)
-    error ("gtk_builder_get needs a TGLIB first argument, but got %s",
+    error ("gtk_builder_get needs a TGLIBREF first argument, but got %s",
            minilisp_type_name ((*builderob)->type));
+  buildgob = get_g_object (builderob);
+  assert (buildgob != NULL);
+  if ((*nameob)->type == TSTRING)
+    namestr = (*nameob)->utf8_cstring;
+  else if ((*namestr)->type == TSYMBOL)
+    namestr = (*nameob)->sy_name;
+  else
+    error ("gtk_builder_get needs a string or symbol second argument, but got %s",
+	   minilisp_type_name((*namestr)->type));
+  /// should test that buildgob is a GtkBuilder...
 #warning prim_gtk_builder_get unimplemented
   fflush (NULL);
   error ("gtk_builder_get unimplemented");
