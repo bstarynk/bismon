@@ -124,7 +124,7 @@ file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
   assert (fil != NULL);
   assert (gtkob != NULL && gtkob->type == TGTKREF);
   gtkix = gtkob->gtk_index;
-  assert (gtkix > 0 && gtkix < (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr
+  assert (gtkix > 0 && gtkix <= (int) gtk_vect.gtkv_count && gtk_vect.gtkv_arr
           && gtk_vect.gtkv_markarr);
   fprintf (fil, "<gtkw#%d", gtkix);
   if (depth > MAX_RECURSIVE_DEPTH)
@@ -496,6 +496,7 @@ prim_gtk_builder_get (void *root, Obj **env, Obj **list)
 {
   const char *namestr = NULL;
   GObject *buildgob = NULL;
+  GObject*gotgob = NULL;
   DEFINE2 (builderob, nameob);
   if (pthread_self () != main_pthread)
     {
@@ -526,10 +527,14 @@ prim_gtk_builder_get (void *root, Obj **env, Obj **list)
       ("gtk_builder_get needs a string or symbol second argument, but got %s",
        minilisp_type_name ((*nameob)->type));
   assert (namestr != NULL);
-  /// should test that buildgob is a GtkBuilder...
-#warning prim_gtk_builder_get unimplemented
-  fflush (NULL);
-  error ("gtk_builder_get unimplemented");
+  if (!GTK_IS_BUILDER(buildgob))
+    error ("gtk_builder_get needs a GtkBuilder as first argument");
+  gotgob = gtk_builder_get_object (GTK_BUILDER(buildgob), namestr);
+  if (!gotgob)
+    return Nil;
+  if (GTK_IS_WIDGET(gotgob))
+    return make_gtk_object(root, GTK_WIDGET(gotgob));
+  return make_glib_object(root, gotgob);
 }                               /* end prim_gtk_builder_get */
 
 
