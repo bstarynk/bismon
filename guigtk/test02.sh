@@ -44,6 +44,7 @@
 
 mybuilder
 
+(gtk_builder_get mybuilder "ok_button")
 
 (gtk_loop)
 
