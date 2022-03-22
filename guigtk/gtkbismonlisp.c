@@ -515,11 +515,11 @@ prim_gtk_builder_get (void *root, Obj **env, Obj **list)
   if ((*builderob)->type != TGLIBREF)
     error ("gtk_builder_get needs a TGLIBREF first argument, but got %s",
            minilisp_type_name ((*builderob)->type));
-  buildgob = get_g_object (builderob);
+  buildgob = get_g_object (*builderob);
   assert (buildgob != NULL);
   if ((*nameob)->type == TSTRING)
     namestr = (*nameob)->utf8_cstring;
-  else if ((*namestr)->type == TSYMBOL)
+  else if ((*nameob)->type == TSYMBOL)
     namestr = (*nameob)->sy_name;
   else
     error
