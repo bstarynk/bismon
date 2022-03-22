@@ -2447,6 +2447,8 @@ int
 load_file (const char *filnam, bool skiphead, void *root, Obj **env)
 {
   FILE *fil = filnam ? fopen (filnam, "r") : stdin;
+  char linbuf[256];
+  memset (linbuf, 0, sizeof (linbuf));
   if (!fil)
     {
       fprintf (stderr, "%s: cannot open file %s to load - %m", program_name,
@@ -2457,9 +2459,15 @@ load_file (const char *filnam, bool skiphead, void *root, Obj **env)
   DEFINE1 (expr);
   if (skiphead)
     {
-      printf ("%s git %s reading scriptfile %s\n", program_name, BISMON_GIT,
-              filnam);
-      char linbuf[256];
+      if (verbose_ilisp)
+        {
+          if (filnam)
+            printf (";;%s git %s reading scriptfile %s\n", program_name,
+                    BISMON_GIT, filnam);
+          else
+            printf (";;%s git %s reading stdin\n", program_name, BISMON_GIT,
+                    filnam);
+        };
       do
         {
           memset (linbuf, 0, sizeof (linbuf));
@@ -2470,11 +2478,25 @@ load_file (const char *filnam, bool skiphead, void *root, Obj **env)
             break;
         }
       while (!feof (fil));
-    }
+    };
   int nbexpr = 0;
   if (skiphead)
-    printf ("%s git %s start reading at offset #%ld of scriptfile %s\n",
-            program_name, BISMON_GIT, ftell (fil), filnam);
+    {
+      if (verbose_ilisp)
+        {
+          if (filnam)
+            printf
+              (";;%s git %s start reading at offset #%ld of scriptfile %s\n",
+               program_name, BISMON_GIT, ftell (fil), filnam);
+          else if (ftell (fil) > 0)
+            printf (";;%s git %s start reading at offset #%ld of stdin\n",
+                    program_name, BISMON_GIT, ftell (fil));
+          else
+            printf (";;%s git %s start reading terminal\n",
+                    program_name, BISMON_GIT);
+
+        }
+    };
   while (!feof (fil))
     {
       long off = ftell (fil);
@@ -2482,20 +2504,21 @@ load_file (const char *filnam, bool skiphead, void *root, Obj **env)
       nbexpr++;
       if (verbose_ilisp)
         printf (";; %s: expression#%d at offset %ld of file %s\n",
-                program_name, nbexpr, off, filnam);
+                program_name, nbexpr, off, filnam ? filenam : "*stdin*");
       if (!*expr)
         return nbexpr;
       if (*expr == Cparen)
         error ("Stray close parenthesis in %s offset %ld", filnam, off);
       if (*expr == Dot)
         error ("Stray dot in %s offset %ld", filnam, off);
-      printf
-        (";; %s git %s at offset #%ld of scriptfile %s expression...\n",
-         program_name, BISMON_GIT, off, filnam);
+      if (verbose_ilisp)
+        printf
+          (";; %s git %s at offset #%ld of scriptfile %s expression...\n",
+           program_name, BISMON_GIT, off, filnam);
       print_val (*expr);
       printf ("  => ");
       print_val_nl (eval (root, env, expr));
-    }
+    };
   if (skiphead)
     printf
       (";; %s git %s evaluated %d expressions in file %s (offset %ld)\n",
@@ -2520,7 +2543,7 @@ getEnvFlag (char *name)
 int
 main (int argc, char **argv)
 {
-  program_name = argv[0];
+  program_name = basename (argv[0]);
   main_pthread = pthread_self ();
 
   bool help_wanted = false;
