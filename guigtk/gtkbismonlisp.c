@@ -494,8 +494,8 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
 Obj *
 prim_gtk_builder_get (void *root, Obj **env, Obj **list)
 {
-  const char*namestr = NULL;
-  GObject*buildgob = NULL;
+  const char *namestr = NULL;
+  GObject *buildgob = NULL;
   DEFINE2 (builderob, nameob);
   if (pthread_self () != main_pthread)
     {
@@ -522,8 +522,9 @@ prim_gtk_builder_get (void *root, Obj **env, Obj **list)
   else if ((*namestr)->type == TSYMBOL)
     namestr = (*nameob)->sy_name;
   else
-    error ("gtk_builder_get needs a string or symbol second argument, but got %s",
-	   minilisp_type_name((*namestr)->type));
+    error
+      ("gtk_builder_get needs a string or symbol second argument, but got %s",
+       minilisp_type_name ((*namestr)->type));
   /// should test that buildgob is a GtkBuilder...
 #warning prim_gtk_builder_get unimplemented
   fflush (NULL);
