@@ -2609,7 +2609,7 @@ main (int argc, char **argv)
         exit (EXIT_FAILURE);
       if (verbose_ilisp)
         printf ("%s (git %s) did load %d expressions from script file %s\n",
-                argv[0], BISMON_GIT, nbscrexpr);
+                argv[0], BISMON_GIT, nbscrexpr, scriptfile);
     }
   else
     {
@@ -2623,7 +2623,7 @@ main (int argc, char **argv)
         exit (EXIT_FAILURE);
       if (verbose_ilisp)
         printf ("%s (git %s) did load %d expressions from stdin\n",
-                argv[0], BISMON_GIT, nbscrexpr);
+                argv[0], BISMON_GIT, nbreplexpr);
     }
   fflush (NULL);
   exit (EXIT_SUCCESS);
