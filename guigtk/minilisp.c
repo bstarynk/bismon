@@ -2556,10 +2556,17 @@ main (int argc, char **argv)
 
   program_name = basename (argv[0]);
   main_pthread = pthread_self ();
-  char *gtkargv[MAX_ARGV_LEN];
-  memset (gtkargv, 0, sizeof (gtkargv));
   int gtkargc = 0;
+  char **gtkargv = calloc (argc + 1, sizeof (char *));
   bool help_wanted = false;
+  if (gtkargv == NULL)
+    {
+      fprintf
+        (stderr,
+         "%s git %s built on %s at %s (see github.com/btarynk/bismon/ ....) failed to calloc %d slots of gtkargv (%m)\n",
+         program_name, BISMON_GIT, __DATE__, __TIME__, argc + 1);
+      exit (EXIT_FAILURE);
+    }
   if (argc == 2 && !strcmp (argv[1], "--version"))
     {
       printf
@@ -2567,14 +2574,6 @@ main (int argc, char **argv)
          program_name, BISMON_GIT, __DATE__, __TIME__);
       exit (EXIT_SUCCESS);
     };
-  if (argc + 1 > MAX_ARGV_LEN)
-    {
-      fprintf (stderr,
-               "%s git %s built on %s at %s (see github.com/btarynk/bismon/ ....) accepts no more that %d arguments but got %d\n",
-               program_name, BISMON_GIT, __DATE__, __TIME__, MAX_ARGV_LEN - 2,
-               argc);
-      exit (EXIT_FAILURE);
-    }
   gtkargv[0] = program_name;
   gtkargc = 1;
   for (int i = 1; i < argc; i++)
@@ -2613,7 +2612,8 @@ main (int argc, char **argv)
         gtkargv[gtkargc++] = argv[i];
     }
   initialize_json ();
-  initialize_gtk (&gtkargc, &gtkargv);
+  char ***pgtkargv = &gtkargv;
+  initialize_gtk (&gtkargc, pgtkargv);
   initialize_glib ();
 
   if (help_wanted)
@@ -2687,6 +2687,7 @@ main (int argc, char **argv)
                 program_name, BISMON_GIT, nbreplexpr);
     }
   fflush (NULL);
+  free ((void *) gtkargv);
   exit (EXIT_SUCCESS);
 }                               /* end main */
 
