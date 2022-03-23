@@ -476,9 +476,13 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
   gtk_cur_root = root;
   gtk_cur_env = env;
   gtk_cur_list = list;
+  if (verbose_ilisp)
+    printf(";;gtk_loop running application\n");
   int status =                  //
     g_application_run (G_APPLICATION (app_minilisp),
                        *minilisp_pargc, minilisp_argv);
+  if (verbose_ilisp)
+    printf(";;gtk_loop did run application\n");
   gtk_cur_root = old_gtk_root;
   gtk_cur_env = old_gtk_env;
   gtk_cur_list = old_gtk_cur_list;
@@ -537,6 +541,35 @@ prim_gtk_builder_get (void *root, Obj **env, Obj **list)
   return make_glib_object (root, gotgob);
 }                               /* end prim_gtk_builder_get */
 
+
+/// show a window widget
+/// (gtk_widget_show_all <widget>)
+Obj *
+prim_gtk_widget_show_all (void *root, Obj **env, Obj **list)
+{
+  GtkWidget* widg = NULL;
+  DEFINE1 (widgob);
+  if (pthread_self () != main_pthread)
+    {
+      fprintf (stderr,
+               "gtk_builder_get primitive called from non-main pthread\n");
+      show_backtrace_stderr ();
+      return Nil;
+    }
+  if (!app_minilisp)
+    error ("gtk_widget_show_all: no GTK application");
+  Obj *args = eval_list (root, env, list);
+  if (length (args) != 1)
+    error ("gtk_widget_show_all one argument <widget>, got %d",
+           (int) length (args));
+  *widgob = args->car;
+  widg = get_gtk_widget(*widgob);
+  if (widg)
+    gtk_widget_show_all (widg);
+  else
+    error("gtk_widget_show_all without GtkWidget object");
+  return *widgob;
+} /* end prim_gtk_widget_show_all */
 
 extern void finalize_gtk (void);
 void
@@ -644,6 +677,7 @@ define_gtk_primitives (void *root, Obj **env)
   add_primitive (root, env, "gtk_loop", prim_gtk_loop);
   add_primitive (root, env, "gtk_builder", prim_gtk_builder);
   add_primitive (root, env, "gtk_builder_get", prim_gtk_builder_get);
+  add_primitive (root, env, "gtk_widget_show_all", prim_gtk_widget_show_all);
 }                               /* end define_gtk_primitives */
 
 
