@@ -2552,9 +2552,13 @@ getEnvFlag (char *name)
 int
 main (int argc, char **argv)
 {
+#define MAX_ARGV_LEN 1024
+
   program_name = basename (argv[0]);
   main_pthread = pthread_self ();
-
+  char *gtkargs[MAX_ARGV_LEN];
+  memset (gtkargs, 0, sizeof (gtkargs));
+  int gtkargc = 0;
   bool help_wanted = false;
   if (argc == 2 && !strcmp (argv[1], "--version"))
     {
@@ -2562,30 +2566,55 @@ main (int argc, char **argv)
         ("%s git %s built on %s at %s (see github.com/btarynk/bismon/ ....)\n",
          program_name, BISMON_GIT, __DATE__, __TIME__);
       exit (EXIT_SUCCESS);
+    };
+  if (argc + 1 > MAX_ARGV_LEN)
+    {
+      fprintf (stderr,
+               "%s git %s built on %s at %s (see github.com/btarynk/bismon/ ....) accepts no more that %d arguments but got %d\n",
+               program_name, BISMON_GIT, __DATE__, __TIME__, MAX_ARGV_LEN - 2,
+               argc);
+      exit (EXIT_FAILURE);
     }
-  initialize_json ();
-  initialize_gtk (&argc, &argv);
-  initialize_glib ();
+  gtkargs[0] = program_name;
+  gtkargc = 1;
   for (int i = 1; i < argc; i++)
     {
       if (!argv[i])
         continue;
       if (!strcmp (argv[i], "-v") || !strcmp (argv[1], "--verbose"))
-        verbose_ilisp = true;
+        {
+          verbose_ilisp = true;
+          continue;
+        }
       else if (!strcmp (argv[i], "-h") || !strcmp (argv[i], "--help"))
-        help_wanted = true;
+        {
+          help_wanted = true;
+          continue;
+        }
       else if (!strcmp (argv[i], "--debug-gc"))
-        debug_gc = true;
+        {
+          debug_gc = true;
+          continue;
+        }
       else if (!strcmp (argv[i], "--always-gc"))
-        always_gc = true;
+        {
+          always_gc = true;
+          continue;
+        }
       if (i + 1 < argc
           && argv[i + 1] != NULL
           && (!strcmp (argv[i], "-s") || !strcmp (argv[i], "--script")))
         {
           scriptfile = argv[i + 1];
           i++;
+          continue;
         }
+      else
+        gtkargs[gtkargc++] = argv[i];
     }
+  initialize_json ();
+  initialize_gtk (&gtkargc, &gtkargv);
+  initialize_glib ();
 
   if (help_wanted)
     {
