@@ -2556,8 +2556,8 @@ main (int argc, char **argv)
 
   program_name = basename (argv[0]);
   main_pthread = pthread_self ();
-  char *gtkargs[MAX_ARGV_LEN];
-  memset (gtkargs, 0, sizeof (gtkargs));
+  char *gtkargv[MAX_ARGV_LEN];
+  memset (gtkargv, 0, sizeof (gtkargv));
   int gtkargc = 0;
   bool help_wanted = false;
   if (argc == 2 && !strcmp (argv[1], "--version"))
@@ -2575,7 +2575,7 @@ main (int argc, char **argv)
                argc);
       exit (EXIT_FAILURE);
     }
-  gtkargs[0] = program_name;
+  gtkargv[0] = program_name;
   gtkargc = 1;
   for (int i = 1; i < argc; i++)
     {
@@ -2610,7 +2610,7 @@ main (int argc, char **argv)
           continue;
         }
       else
-        gtkargs[gtkargc++] = argv[i];
+        gtkargv[gtkargc++] = argv[i];
     }
   initialize_json ();
   initialize_gtk (&gtkargc, &gtkargv);
