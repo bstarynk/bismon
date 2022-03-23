@@ -463,6 +463,13 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
     }
   if (!app_minilisp)
     error ("gtk_loop: no GTK application");
+  GError *perr = NULL;
+  if (!g_application_register(app_minilisp, NULL, &perr)) {
+      fprintf(stderr, "%s: failed to register application: %s\n",
+	      program_name, perr?(perr->message):"???");
+      exit (EXIT_FAILURE);
+  };
+  g_application_activate(app_minilisp);
   if (length (*list) > 0)
     error ("gtk_loop needs no extra arguments, got %d", (int) length (*list));
   // not needed, since no arguments:
