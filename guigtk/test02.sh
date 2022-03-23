@@ -44,7 +44,15 @@
 
 mybuilder
 
-(gtk_builder_get mybuilder "ok_button")
+(define okbutton (gtk_builder_get mybuilder "ok_button"))
+
+okbutton
+
+(define dialog1 (gtk_builder_get mybuilder "dialog1"))
+
+dialog1
+
+(gtk_widget_show_all dialog1)
 
 (gtk_loop)
 
