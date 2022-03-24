@@ -23,9 +23,10 @@
     Contact me (Basile Starynkevitch) by email
     basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 **/
-#include "minilispbismon.h"
-
 #include <jansson.h>
+
+#include "bismon-gui-minilisp.h"
+
 
 
 Obj *Jsonv_True = &(Obj)

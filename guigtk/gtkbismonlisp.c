@@ -23,12 +23,12 @@
     Contact me (Basile Starynkevitch) by email
     basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 **/
-#include "minilispbismon.h"
 
 #include <gtk/gtk.h>
 
 #include <math.h>
 
+#include "bismon-gui-minilisp.h"
 
 GtkApplication *app_minilisp;
 int *minilisp_pargc;

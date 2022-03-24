@@ -2,7 +2,7 @@
 // adapted from github.com/rui314/minilisp/ (commit c83b57126759ef3)
 // for the BISMON project
 
-#include "minilispbismon.h"
+#include "bismon-gui-minilisp.h"
 
 char *program_name;
 char *scriptfile;
