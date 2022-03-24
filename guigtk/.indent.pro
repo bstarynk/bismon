@@ -1,0 +1,12 @@
+/* file bismon/guigtk/.indent.pro, with options for GNU indent */
+ --gnu-style --no-tabs --honour-newlines
+ -T Obj
+ -T json_t
+ -T GHashTable
+ -T GObject
+ -T GSequence
+ -T GtkWidget
+ -T GtkWindow
+ -T GtkBuildable
+ -T GtkBuilder
+ -T GtkApplication
