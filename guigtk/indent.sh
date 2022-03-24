@@ -1,7 +1,9 @@
 #!/bin/bash -x
-indent  --gnu-style --no-tabs --honour-newlines -T Obj -T json_t bismon-gui-minilisp.h
-indent  --gnu-style --no-tabs --honour-newlines -T Obj -T GHashTable -T GSequence -T json_t gtkbismonlisp.c
-indent  --gnu-style --no-tabs --honour-newlines -T Obj -T json_t jsonbismonlisp.c
-indent  --gnu-style --no-tabs --honour-newlines -T Obj  gtkbismonlisp.c
-indent  --gnu-style --no-tabs --honour-newlines -T Obj -T json_t minilisp.c
+## file  bismon/guigtk/indent.sh
+## indent options in file .indent.pro
+indent bismon-gui-minilisp.h
+indent gtkbismonlisp.c
+indent jsonbismonlisp.c
+indent gtkbismonlisp.c
+indent minilisp.c
 
