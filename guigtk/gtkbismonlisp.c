@@ -312,7 +312,7 @@ eval_list_in_gtk_callback (Obj **env, Obj **list)
 
 
 Obj *
-make_glib_object (void *root, GObject * glibob)
+make_glib_object (void *root, GObject *glibob)
 {
   Obj *res = NULL;
   assert (root != NULL);
@@ -383,7 +383,7 @@ make_glib_object (void *root, GObject * glibob)
 
 
 Obj *
-make_gtk_object (void *root, GtkWidget * widg)
+make_gtk_object (void *root, GtkWidget *widg)
 {
   Obj *res = NULL;
   assert (root != NULL);
@@ -463,13 +463,6 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
     }
   if (!app_minilisp)
     error ("gtk_loop: no GTK application");
-  GError *perr = NULL;
-  if (!g_application_register(app_minilisp, NULL, &perr)) {
-      fprintf(stderr, "%s: failed to register application: %s\n",
-	      program_name, perr?(perr->message):"???");
-      exit (EXIT_FAILURE);
-  };
-  g_application_activate(app_minilisp);
   if (length (*list) > 0)
     error ("gtk_loop needs no extra arguments, got %d", (int) length (*list));
   // not needed, since no arguments:
@@ -484,12 +477,12 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
   gtk_cur_env = env;
   gtk_cur_list = list;
   if (verbose_ilisp)
-    printf(";;gtk_loop running application\n");
+    printf (";;gtk_loop running application\n");
   int status =                  //
     g_application_run (G_APPLICATION (app_minilisp),
                        *minilisp_pargc, minilisp_argv);
   if (verbose_ilisp)
-    printf(";;gtk_loop did run application\n");
+    printf (";;gtk_loop did run application\n");
   gtk_cur_root = old_gtk_root;
   gtk_cur_env = old_gtk_env;
   gtk_cur_list = old_gtk_cur_list;
@@ -554,7 +547,7 @@ prim_gtk_builder_get (void *root, Obj **env, Obj **list)
 Obj *
 prim_gtk_widget_show_all (void *root, Obj **env, Obj **list)
 {
-  GtkWidget* widg = NULL;
+  GtkWidget *widg = NULL;
   DEFINE1 (widgob);
   if (pthread_self () != main_pthread)
     {
@@ -570,18 +563,21 @@ prim_gtk_widget_show_all (void *root, Obj **env, Obj **list)
     error ("gtk_widget_show_all one argument <widget>, got %d",
            (int) length (args));
   *widgob = args->car;
-  widg = get_gtk_widget(*widgob);
+  widg = get_gtk_widget (*widgob);
   if (widg)
     gtk_widget_show_all (widg);
   else
-    error("gtk_widget_show_all without GtkWidget object");
+    error ("gtk_widget_show_all without GtkWidget object");
   return *widgob;
-} /* end prim_gtk_widget_show_all */
+}                               /* end prim_gtk_widget_show_all */
 
 extern void finalize_gtk (void);
+extern void activate_app_minilisp (GApplication * app, gpointer data);
+
 void
 initialize_gtk (int *pargc, char ***pargv)
 {
+  GError *perr = NULL;
 #warning notice that gtk_init is different in GTK 3 and GTK 4
   gtk_init (pargc, pargv);      /*the GTK3 one */
   minilisp_pargc = pargc;
@@ -596,6 +592,14 @@ initialize_gtk (int *pargc, char ***pargv)
                                  /*description: */
                                  "load script file SCRIPTFILE",
                                  /*arg_description: */ "SCRIPTFILE");
+  g_signal_connect (G_APPLICATION (app_minilisp), "activate",
+                    G_CALLBACK (activate_app_minilisp), NULL);
+  if (!g_application_register (G_APPLICATION (app_minilisp), NULL, &perr))
+    {
+      fprintf (stderr, "%s: failed to register application: %s\n",
+               program_name, perr ? (perr->message) : "???");
+      exit (EXIT_FAILURE);
+    };
   atexit (finalize_gtk);
   gtk_ghtbl = g_hash_table_new (g_direct_hash, g_direct_equal);
   unsigned inisiz = 128;
@@ -619,6 +623,15 @@ initialize_gtk (int *pargc, char ***pargv)
   gtk_vect.gtkv_size = inisiz;
 }                               /* end initialize_gtk */
 
+
+
+void
+activate_app_minilisp (GApplication * app, gpointer data)
+{
+  if (verbose_ilisp)
+    printf ("application @%p is activated with data %p (%s:%d)\n",
+            (void *) app, (void *) data, __FILE__, __LINE__);
+}                               /* end activate_app_minilisp */
 
 /// this routine is called at start of the garbage collector to clear
 /// the GC marks for GTK references
@@ -703,7 +716,9 @@ finalize_gtk (void)
       free (gtk_vect.gtkv_markarr);
       free (gtk_vect.gtkv_arr);
       memset (&gtk_vect, 0, sizeof (gtk_vect));
-    }
+    };
+  if (app_minilisp)
+    g_object_unref (app_minilisp), app_minilisp = NULL;
 }                               /* end finalize_gtk */
 
 
