@@ -301,6 +301,7 @@ extern json_t *as_json (Obj *ob, unsigned depth);
 
 extern Obj *prim_gtk_builder (void *root, Obj **env, Obj **list);
 extern Obj *prim_gtk_builder_get (void *root, Obj **env, Obj **list);
+extern Obj *prim_gtk_widget_show_all (void *root, Obj **env, Obj **list);
 
 //======================================================================
 // Constructors
@@ -311,8 +312,8 @@ extern Obj *make_double (void *root, double dvalue);
 extern Obj *cons (void *root, Obj **car, Obj **cdr);
 extern Obj *make_symbol (void *root, const char *name);
 extern Obj *make_string (void *root, const char *buf);
-extern Obj *make_glib_object (void *root, GObject * gob);
-extern Obj *make_gtk_object (void *root, GtkWidget * widg);
+extern Obj *make_glib_object (void *root, GObject *gob);
+extern Obj *make_gtk_object (void *root, GtkWidget *widg);
 extern Obj *make_json (void *root, json_t *js, bool doincref);
 extern Obj *make_vector (void *root, unsigned len, Obj **comparr);
 
