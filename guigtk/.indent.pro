@@ -10,3 +10,4 @@
  -T GtkBuildable
  -T GtkBuilder
  -T GtkApplication
+ -T GError
