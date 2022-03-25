@@ -2580,7 +2580,7 @@ main (int argc, char **argv)
     {
       if (!argv[i])
         continue;
-      if (!strcmp (argv[i], "-v") || !strcmp (argv[1], "--verbose"))
+      if (!strcmp (argv[i], "-v") || !strcmp (argv[i], "--verbose"))
         {
           verbose_ilisp = true;
           continue;
