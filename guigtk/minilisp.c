@@ -2576,7 +2576,7 @@ main (int argc, char **argv)
     };
   gtkargv[0] = program_name;
   gtkargc = 1;
-  for (int i = 1; i < argc; i++)
+  for (int i = 1; i <= argc; i++)
     {
       if (!argv[i])
         continue;
@@ -2600,7 +2600,7 @@ main (int argc, char **argv)
           always_gc = true;
           continue;
         }
-      if (i + 1 < argc
+      if (i + 1 <= argc
           && argv[i + 1] != NULL
           && (!strcmp (argv[i], "-s") || !strcmp (argv[i], "--script")))
         {
