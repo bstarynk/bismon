@@ -138,18 +138,26 @@ file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
   if (widname)
     fprintf (fil, "/%s", widname);
   else
-    fprintf (fil, "@%p", (void *) widname);
+    fprintf (fil, "@%p", (void *) widg);
   const gchar *cssname =
     gtk_widget_class_get_css_name (GTK_WIDGET_GET_CLASS (widg));
   if (cssname)
     fprintf (fil, ".%s", cssname);
-
-
-  /***
-      case MINILISPGTK_GOBJECT:
+  if (depth == 0)
+    {
+      if (gtk_widget_get_realized (widg))
+        fprintf (fil, "°realized");
+      if (gtk_widget_get_visible (widg))
+        fprintf (fil, "°visible");
+      if (gtk_widget_get_mapped (widg))
+        fprintf (fil, "°mapped");
       {
-  ***/
-
+        int allow = gtk_widget_get_allocated_width (widg);
+        int alloh = gtk_widget_get_allocated_height (widg);
+        if (allow > 0 && alloh > 0)
+          fprintf (fil, "°alw=%d,alh=%d", allow, alloh);
+      }
+    }
 end:
   fprintf (fil, ">");
 }                               /* end file_gtk_print */
