@@ -158,7 +158,7 @@ file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
           fprintf (fil, "°alw=%d,alh=%d", allow, alloh);
       }
       if (gtk_widget_get_no_show_all (widg))
-	fprintf(fil, "°noshowall");
+        fprintf (fil, "°noshowall");
     }
 end:
   fprintf (fil, ">");
@@ -581,6 +581,21 @@ prim_gtk_widget_show_all (void *root, Obj **env, Obj **list)
   return *widgob;
 }                               /* end prim_gtk_widget_show_all */
 
+Obj *
+prim_gtk_application_activate (void *root, Obj **env, Obj **list)
+{
+  if (pthread_self () != main_pthread)
+    {
+      fprintf (stderr,
+               "gtk_application_activate primitive called from non-main pthread\n");
+      show_backtrace_stderr ();
+      return Nil;
+    }
+  error ("gtk_application_activate unimplemented");
+#warning unimplemented prim_gtk_application_activate
+}                               /* end prim_gtk_application_activate */
+
+
 extern void finalize_gtk (void);
 extern void activate_app_minilisp (GApplication * app, gpointer data);
 
@@ -708,6 +723,8 @@ define_gtk_primitives (void *root, Obj **env)
   add_primitive (root, env, "gtk_builder", prim_gtk_builder);
   add_primitive (root, env, "gtk_builder_get", prim_gtk_builder_get);
   add_primitive (root, env, "gtk_widget_show_all", prim_gtk_widget_show_all);
+  add_primitive (root, env, "gtk_application_activate",
+                 prim_gtk_application_activate);
 }                               /* end define_gtk_primitives */
 
 
