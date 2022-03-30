@@ -157,6 +157,8 @@ file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
         if (allow > 0 && alloh > 0)
           fprintf (fil, "°alw=%d,alh=%d", allow, alloh);
       }
+      if (gtk_widget_get_no_show_all (widg))
+	fprintf(fil, "°noshowall");
     }
 end:
   fprintf (fil, ">");
