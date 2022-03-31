@@ -54,6 +54,19 @@ struct
   unsigned glibv_count;         /* used count */
 } glib_vect;
 
+static void *gtk_cur_root;
+static Obj **gtk_cur_env;
+static Obj **gtk_cur_list;
+
+void
+forward_gtk_objects (void)
+{
+  if (gtk_cur_env)
+    *gtk_cur_env = forward_for_gc (*gtk_cur_env);
+  if (gtk_cur_list)
+    *gtk_cur_list = forward_for_gc (*gtk_cur_list);
+}                               /* end forward_gtk_objects */
+
 void
 mark_gtk_ref (void *root, Obj *gtkob)
 {
@@ -273,19 +286,6 @@ prim_gtk_builder (void *root, Obj **env, Obj **list)
   *res = make_glib_object (root, (GObject *) gbuilder);
   return *res;
 }                               /* end prim_gtk_builder */
-
-static void *gtk_cur_root;
-static Obj **gtk_cur_env;
-static Obj **gtk_cur_list;
-
-void
-forward_gtk_objects (void)
-{
-  if (gtk_cur_env)
-    *gtk_cur_env = forward_for_gc (*gtk_cur_env);
-  if (gtk_cur_list)
-    *gtk_cur_list = forward_for_gc (*gtk_cur_list);
-}                               /* end forward_gtk_objects */
 
 Obj *
 eval_in_gtk_callback (Obj **obj)
@@ -606,8 +606,20 @@ prim_gtk_application_activate (void *root, Obj **env, Obj **list)
       show_backtrace_stderr ();
       return Nil;
     }
-  error ("gtk_application_activate unimplemented");
-#warning unimplemented prim_gtk_application_activate
+  if (gtk_cur_root)
+    error ("gtk_application_activate cannot recurse (gtk_cur_root)");
+  if (gtk_cur_env)
+    error ("gtk_application_activate cannot recurse (gtk_cur_env)");
+  if (gtk_cur_list)
+    error ("gtk_application_activate cannot recurse (gtk_cur_list)");
+  if (!env)
+    error ("gtk_application_activate without environment");
+  if (!list || length (*list))
+    error ("gtk_application_activate without arguments");
+  gtk_cur_root = root;
+  gtk_cur_env = env;
+  gtk_cur_list = list;
+  return *list;
 }                               /* end prim_gtk_application_activate */
 
 
