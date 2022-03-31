@@ -708,6 +708,12 @@ activate_app_minilisp (GApplication * app, gpointer data)
       show_backtrace_stderr ();
       return;
     }
+  if (verbose_ilisp)
+    {
+      printf (";;application activated eval: ");
+      print_val_nl (*gtk_cur_list);
+      fflush (NULL);
+    }
   eval_list_in_gtk_callback (gtk_cur_list);
 }                               /* end activate_app_minilisp */
 
