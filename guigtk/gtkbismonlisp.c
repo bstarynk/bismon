@@ -278,6 +278,15 @@ static void *gtk_cur_root;
 static Obj **gtk_cur_env;
 static Obj **gtk_cur_list;
 
+void
+forward_gtk_objects (void)
+{
+  if (gtk_cur_env)
+    *gtk_cur_env = forward_for_gc (*gtk_cur_env);
+  if (gtk_cur_list)
+    *gtk_cur_list = forward_for_gc (*gtk_cur_list);
+}                               /* end forward_gtk_objects */
+
 Obj *
 eval_in_gtk_callback (Obj **obj)
 {
@@ -581,6 +590,10 @@ prim_gtk_widget_show_all (void *root, Obj **env, Obj **list)
   return *widgob;
 }                               /* end prim_gtk_widget_show_all */
 
+
+
+/// the expressions are evaluated when the application is activated 
+/// (gtk_application_activate <expr> ....) 
 Obj *
 prim_gtk_application_activate (void *root, Obj **env, Obj **list)
 {

@@ -265,6 +265,7 @@ extern Obj *alloc (void *root, int type, size_t size);
 extern void gc (void *root);
 extern Obj *forward_for_gc (Obj *);
 extern void forward_root_objects (void *root);
+extern void forward_gtk_objects (void);
 extern void *alloc_semispace (void);
 
 extern int fpeek (FILE * f);

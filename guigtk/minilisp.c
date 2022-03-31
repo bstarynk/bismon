@@ -241,6 +241,9 @@ gc (void *root)
   // Copy the GC root objects first. This moves the pointer scan2.
   forward_root_objects (root);
 
+  // Copy the few GTK objects
+  forward_gtk_objects ();
+
   // Copy the objects referenced by the GC root objects located between scan1 and scan2. Once it's
   // finished, all live objects (i.e. objects reachable from the root) will have been copied to
   // the to-space.
