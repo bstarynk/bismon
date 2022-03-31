@@ -614,7 +614,7 @@ prim_gtk_application_activate (void *root, Obj **env, Obj **list)
     error ("gtk_application_activate cannot recurse (gtk_cur_list)");
   if (!env)
     error ("gtk_application_activate without environment");
-  if (!list || length (*list))
+  if (!list || length (*list) == 0)
     error ("gtk_application_activate without arguments");
   gtk_cur_root = root;
   gtk_cur_env = env;
@@ -683,7 +683,37 @@ activate_app_minilisp (GApplication * app, gpointer data)
   if (verbose_ilisp)
     printf ("application @%p is activated with data %p (%s:%d)\n",
             (void *) app, (void *) data, __FILE__, __LINE__);
+  if (pthread_self () != main_pthread)
+    {
+      fprintf (stderr,
+               "gtk_application_activate primitive called from non-main pthread\n");
+      show_backtrace_stderr ();
+      return;
+    }
+  if (!gtk_cur_root)
+    {
+      fprintf (stderr, "activate_app_minilisp without gtk_cur_root\n");
+      show_backtrace_stderr ();
+      return;
+    }
+  if (!gtk_cur_env)
+    {
+      fprintf (stderr, "activate_app_minilisp without gtk_cur_env\n");
+      show_backtrace_stderr ();
+      return;
+    }
+  if (!gtk_cur_list)
+    {
+      fprintf (stderr, "activate_app_minilisp without gtk_cur_list\n");
+      show_backtrace_stderr ();
+      return;
+    }
+  eval_list_in_gtk_callback (gtk_cur_list);
 }                               /* end activate_app_minilisp */
+
+
+
+
 
 /// this routine is called at start of the garbage collector to clear
 /// the GC marks for GTK references
