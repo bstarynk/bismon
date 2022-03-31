@@ -47,18 +47,18 @@ enum objtype_en
 {
   // Regular objects visible from the user
   TINT = 1,
-  TDOUBLE,
-  TCELL,
-  TVECTOR,
-  TSYMBOL,
-  TSTRING,
-  TJSONREF,
-  TGTKREF,
-  TGLIBREF,
-  TPRIMITIVE,
-  TFUNCTION,
-  TMACRO,
-  TENV,
+  TDOUBLE,                      //2
+  TCELL,                        //3
+  TVECTOR,                      //4
+  TSYMBOL,                      //5
+  TSTRING,                      //6
+  TJSONREF,                     //7
+  TGTKREF,                      //8
+  TGLIBREF,                     //9
+  TPRIMITIVE,                   //10
+  TFUNCTION,                    //11
+  TMACRO,                       //12
+  TENV,                         //13
   // The marker that indicates the object has been moved to other location by GC. The new location
   // can be found at the forwarding pointer. Only the functions to do garbage collection set and
   // handle the object of this type. Other functions will never see the object of this type.

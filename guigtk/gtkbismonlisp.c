@@ -619,13 +619,14 @@ prim_gtk_application_activate (void *root, Obj **env, Obj **list)
   gtk_cur_root = root;
   gtk_cur_env = env;
   gtk_cur_list = list;
-  if (verbose_ilisp) {
-    printf(";;gtk_application_activate gtk_cur_env=");
-    print_val_nl (*gtk_cur_env);
-    printf(";;gtk_application_activate gtk_cur_list=");
-    print_val_nl (*gtk_cur_list);
-    fflush(NULL);
-  };
+  if (verbose_ilisp)
+    {
+      printf (";;gtk_application_activate gtk_cur_env=");
+      print_val_nl (*gtk_cur_env);
+      printf (";;gtk_application_activate gtk_cur_list=");
+      print_val_nl (*gtk_cur_list);
+      fflush (NULL);
+    };
   return *list;
 }                               /* end prim_gtk_application_activate */
 

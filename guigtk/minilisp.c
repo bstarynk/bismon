@@ -1077,6 +1077,13 @@ file_print (FILE * fil, Obj *obj, unsigned depth)
       CASE (TTRUE, "t");
       CASE (TNIL, "()");
 #undef CASE
+    case TENV:
+      fprintf (fil, "<*ENV!var=");
+      file_print (fil, obj->vars, depth + 1);
+      fprintf (fil, "; up=");
+      file_print (fil, obj->up, depth + 1);
+      fprintf (fil, "*>");
+      break;
     default:
       error ("Bug: file_print: Unknown tag type: %d", obj->type);
     }
@@ -2138,6 +2145,7 @@ prim_println (void *root, Obj **env, Obj **list)
   *tmp = (*list)->car;
   print_val (eval (root, env, tmp));
   printf ("\n");
+  fflush (NULL);
   return Nil;
 }
 
