@@ -302,11 +302,17 @@ eval_in_gtk_callback (Obj **obj)
       show_backtrace_stderr ();
       return Nil;
     }
+  if (!obj)
+    {
+      fprintf (stderr, "eval_in_gtk_callback nothing to eval\n");
+      show_backtrace_stderr ();
+      return Nil;
+    }
   return eval (gtk_cur_root, gtk_cur_env, obj);
 }                               /* end eval_in_gtk_callback */
 
 Obj *
-eval_list_in_gtk_callback (Obj **env, Obj **list)
+eval_list_in_gtk_callback (Obj **list)
 {
   if (pthread_self () != main_pthread)
     {
@@ -322,11 +328,7 @@ eval_list_in_gtk_callback (Obj **env, Obj **list)
       show_backtrace_stderr ();
       return Nil;
     }
-  if (!env)
-    env = gtk_cur_env;
-  if (!list)
-    list = gtk_cur_list;
-  return eval_list (gtk_cur_root, env, list);
+  return eval_list (gtk_cur_root, gtk_cur_env, list);
 }                               /* end eval_list_in_gtk_callback */
 
 
