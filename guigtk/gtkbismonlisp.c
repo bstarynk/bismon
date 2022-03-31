@@ -491,6 +491,19 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
   DEFINE2 (prev_env, prev_list);
   *prev_env = *env;
   *prev_list = *list;
+  if (verbose_ilisp)
+    {
+      printf (";;gtk_application_activate [%s:%d] gtk_cur_env=",
+              __FILE__, __LINE__);
+      print_val_nl (*gtk_cur_env);
+      printf (";;gtk_application_activate gtk_cur_list=");
+      print_val_nl (*gtk_cur_list);
+      printf (";;gtk_application_activate env=");
+      print_val_nl (*env);
+      printf (";;gtk_application_activate list=");
+      print_val_nl (*list);
+      fflush (NULL);
+    };
   void *old_gtk_root = gtk_cur_root;
   Obj **old_gtk_env = gtk_cur_env;
   Obj **old_gtk_cur_list = gtk_cur_list;
@@ -621,7 +634,8 @@ prim_gtk_application_activate (void *root, Obj **env, Obj **list)
   gtk_cur_list = list;
   if (verbose_ilisp)
     {
-      printf (";;gtk_application_activate gtk_cur_env=");
+      printf (";;gtk_application_activate [%s:%d] gtk_cur_env=", __FILE__,
+              __LINE__);
       print_val_nl (*gtk_cur_env);
       printf (";;gtk_application_activate gtk_cur_list=");
       print_val_nl (*gtk_cur_list);
