@@ -522,7 +522,7 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
     g_application_run (G_APPLICATION (app_minilisp),
                        *minilisp_pargc, minilisp_argv);
   if (verbose_ilisp)
-    printf (";;gtk_loop did run application\n");
+    printf ("\n;;gtk_loop did run application [%s:%d]\n", __FILE__, __LINE__);
   gtk_cur_root = old_gtk_root;
   gtk_cur_env = old_gtk_env;
   gtk_cur_list = old_gtk_cur_list;
