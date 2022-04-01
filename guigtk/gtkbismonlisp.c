@@ -493,7 +493,7 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
   *prev_list = *list;
   if (verbose_ilisp)
     {
-      printf (";;gtk_application_activate [%s:%d] gtk_cur_env=",
+      printf ("\n;;gtk_application_activate [%s:%d] gtk_cur_env=",
               __FILE__, __LINE__);
       print_val_nl (*gtk_cur_env);
       printf (";;gtk_application_activate gtk_cur_list=");
