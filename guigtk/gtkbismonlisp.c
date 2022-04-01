@@ -720,8 +720,8 @@ activate_app_minilisp (GApplication * app, gpointer data)
   DEFINE1 (evalres);
   if (verbose_ilisp)
     printf
-      ("\n;;activate_app_minilisp application @%p is activated with data %p (%s:%d)\n",
-       (void *) app, (void *) data, __FILE__, __LINE__);
+      ("\n;;activate_app_minilisp application @%p is activated with data %p gtk_cur_list@%p (%s:%d)\n",
+       (void *) app, (void *) data, (void*)gtk_cur_list, __FILE__, __LINE__);
   if (pthread_self () != main_pthread)
     {
       fprintf (stderr, "activate_app_minilisp from non-main pthread\n");
