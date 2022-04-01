@@ -903,6 +903,7 @@ fread_expr (FILE * f, void *root)
 void
 file_print (FILE * fil, Obj *obj, unsigned depth)
 {
+  unsigned initialdepth = depth;
   assert (fil != NULL);
   assert (obj != NULL);
   long loff = ftell (fil);
@@ -924,8 +925,10 @@ file_print (FILE * fil, Obj *obj, unsigned depth)
     {
     case TCELL:
       fputc ('(', fil);
+      int cnt = 0;
       for (;;)
         {
+          cnt++;
           file_print (fil, obj->car, depth + 1);
           if (obj->cdr == Nil)
             break;
@@ -936,7 +939,13 @@ file_print (FILE * fil, Obj *obj, unsigned depth)
               file_print (fil, obj->cdr, depth + 1);
               break;
             }
-          fputs (" ", fil);
+          if (obj && obj != Nil && obj->cdr && initialdepth > 0
+              && cnt % 4 == 0)
+            {
+              MAYBE_NEWLINE ();
+            }
+          else
+            fputs (" ", fil);
           obj = obj->cdr;
         }
       fputc (')', fil);
