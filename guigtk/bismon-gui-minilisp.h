@@ -30,6 +30,11 @@ extern char *scriptfile;
 extern pthread_t main_pthread;
 
 extern void error_fun (int num, char *fmt, ...) __attribute__((noreturn));
+
+#ifndef ERROR_BASE_NUM
+#error ERROR_BASE_NUM constant macro missing in compilation command
+#endif
+
 #define error(Fmt,...) error_fun(__LINE__+ERROR_BASE_NUM,Fmt,##__VA_ARGS__)
 
 // Returns true if the environment variable is defined and not the empty string.
