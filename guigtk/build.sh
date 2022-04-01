@@ -27,7 +27,7 @@ for cfile in minilisp.c gtkbismonlisp.c jsonbismonlisp.c ; do
     if [ $? -gt 0 ]; then
 	exit $?
     fi
-    errbase=$[errbase+1000]
+    errbase=$[errbase+10000]
 done
 
 $BISMON_GCC -Wall -Wextra -g $BISMON_OPTIM minilisp.o gtkbismonlisp.o jsonbismonlisp.o \

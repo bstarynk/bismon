@@ -23,9 +23,10 @@ bool debug_gc;
 bool always_gc;
 bool verbose_ilisp;
 void
-error (char *fmt, ...)
+error_fun (int num, char *fmt, ...)
 {
   va_list ap;
+  fprintf (stderr, "ERROR§%d:", num);
   va_start (ap, fmt);
   vfprintf (stderr, fmt, ap);
   fprintf (stderr, "\n");

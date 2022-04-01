@@ -754,12 +754,13 @@ activate_app_minilisp (GApplication * app, gpointer data)
       print_val_nl (*gtk_cur_list);
       fflush (NULL);
     }
-  evalres = eval_list_in_gtk_callback (gtk_cur_list);
+  assert (evalres != NULL);
+  *evalres = eval_list_in_gtk_callback (gtk_cur_list);
   if (verbose_ilisp)
     {
       printf (";;activate_app_minilisp [%s:%d] evalres: ",
               __FILE__, __LINE__);
-      print_val_nl (evalres);
+      print_val_nl (*evalres);
       fputc ('\n', stdout);
       fflush (NULL);
     }

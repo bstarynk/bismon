@@ -29,7 +29,8 @@ extern char *program_name;
 extern char *scriptfile;
 extern pthread_t main_pthread;
 
-extern void error (char *fmt, ...) __attribute__((noreturn));
+extern void error_fun (int num, char *fmt, ...) __attribute__((noreturn));
+#define error(Fmt,...) error_fun(__LINE__+ERROR_BASE_NUM,Fmt,##__VA_ARGS__)
 
 // Returns true if the environment variable is defined and not the empty string.
 extern bool getEnvFlag (char *name);
