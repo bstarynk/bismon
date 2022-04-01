@@ -493,14 +493,13 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
   *prev_list = *list;
   if (verbose_ilisp)
     {
-      printf ("\n;;gtk_application_activate [%s:%d] gtk_cur_env=",
-              __FILE__, __LINE__);
+      printf ("\n;;gtk_loop [%s:%d] gtk_cur_env=", __FILE__, __LINE__);
       print_val_nl (*gtk_cur_env);
-      printf (";;gtk_application_activate gtk_cur_list=");
+      printf (";;gtk_loop gtk_cur_list=");
       print_val_nl (*gtk_cur_list);
-      printf (";;gtk_application_activate env=");
+      printf (";;gtk_loop env=");
       print_val_nl (*env);
-      printf (";;gtk_application_activate list=");
+      printf (";;gtk_loop list=");
       print_val_nl (*list);
       fflush (NULL);
     };
@@ -514,15 +513,22 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
     {
       printf (";;gtk_loop running application [%s:%d]\n", __FILE__, __LINE__);
       if (!old_gtk_cur_list)
-        printf (";;empty old_gtk_cur_list ptr [%s:%d]\n", __FILE__, __LINE__);
+        printf (";;gtk_loop empty old_gtk_cur_list ptr [%s:%d]\n", __FILE__,
+                __LINE__);
       else if (!*old_gtk_cur_list)
-        printf (";;empty old_gtk_cur_list [%s:%d]\n", __FILE__, __LINE__);
+        printf (";;gtk_loop empty old_gtk_cur_list [%s:%d]\n", __FILE__,
+                __LINE__);
+      fflush (NULL);
     }
   int status =                  //
     g_application_run (G_APPLICATION (app_minilisp),
                        *minilisp_pargc, minilisp_argv);
   if (verbose_ilisp)
-    printf ("\n;;gtk_loop did run application [%s:%d]\n", __FILE__, __LINE__);
+    {
+      printf ("\n;;gtk_loop did run application [%s:%d] status %d\n",
+              __FILE__, __LINE__, status);
+      fflush (NULL);
+    };
   gtk_cur_root = old_gtk_root;
   gtk_cur_env = old_gtk_env;
   gtk_cur_list = old_gtk_cur_list;
@@ -640,11 +646,13 @@ prim_gtk_application_activate (void *root, Obj **env, Obj **list)
   gtk_cur_list = list;
   if (verbose_ilisp)
     {
-      printf (";;gtk_application_activate [%s:%d] gtk_cur_env=", __FILE__,
+      printf ("\n;;gtk_application_activate [%s:%d] gtk_cur_env=", __FILE__,
               __LINE__);
       print_val_nl (*gtk_cur_env);
-      printf (";;gtk_application_activate gtk_cur_list=");
+      printf (";;gtk_application_activate [%s:%d] gtk_cur_list=", __FILE__,
+              __LINE__);
       print_val_nl (*gtk_cur_list);
+      fputc ('\n', stdout);
       fflush (NULL);
     };
   return *list;
@@ -708,13 +716,15 @@ initialize_gtk (int *pargc, char ***pargv)
 void
 activate_app_minilisp (GApplication * app, gpointer data)
 {
+  void *root = gtk_cur_root;
+  DEFINE1 (evalres);
   if (verbose_ilisp)
-    printf ("application @%p is activated with data %p (%s:%d)\n",
-            (void *) app, (void *) data, __FILE__, __LINE__);
+    printf
+      ("\n;;activate_app_minilisp application @%p is activated with data %p (%s:%d)\n",
+       (void *) app, (void *) data, __FILE__, __LINE__);
   if (pthread_self () != main_pthread)
     {
-      fprintf (stderr,
-               "gtk_application_activate primitive called from non-main pthread\n");
+      fprintf (stderr, "activate_app_minilisp from non-main pthread\n");
       show_backtrace_stderr ();
       return;
     }
@@ -738,11 +748,21 @@ activate_app_minilisp (GApplication * app, gpointer data)
     }
   if (verbose_ilisp)
     {
-      printf (";;application activated eval: ");
+      printf
+        ("\n;;activate_app_minilisp [%s:%d] activated before eval list: ",
+         __FILE__, __LINE__);
       print_val_nl (*gtk_cur_list);
       fflush (NULL);
     }
-  eval_list_in_gtk_callback (gtk_cur_list);
+  evalres = eval_list_in_gtk_callback (gtk_cur_list);
+  if (verbose_ilisp)
+    {
+      printf (";;activate_app_minilisp [%s:%d] evalres: ",
+              __FILE__, __LINE__);
+      print_val_nl (evalres);
+      fputc ('\n', stdout);
+      fflush (NULL);
+    }
 }                               /* end activate_app_minilisp */
 
 
@@ -837,6 +857,7 @@ finalize_gtk (void)
     };
   if (app_minilisp)
     g_object_unref (app_minilisp), app_minilisp = NULL;
+  gtk_cur_list = NULL;
 }                               /* end finalize_gtk */
 
 
