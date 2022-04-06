@@ -13,13 +13,17 @@ if [ -z "$BISMON_OPTIM" ]; then
     BISMON_OPTIM="-O1"
 fi
 
+if [ -z "$BISMON_DEBUG" ]; then
+    BISMON_DEBUG="-g3"
+fi
+
 if [ -z "$BISMON_GCC" ]; then
     BISMON_GCC="gcc"
 fi
 
 errbase=0
 for cfile in minilisp.c gtkbismonlisp.c jsonbismonlisp.c ; do
-    $BISMON_GCC -Wall -Wextra -Wmissing-prototypes -g $BISMON_OPTIM -c $cfile -DBISMON_GIT=\"$BISMON_SHGIT\" \
+    $BISMON_GCC -Wall -Wextra -Wmissing-prototypes $BISMON_OPTIM $BISMON_DEBUG -c $cfile -DBISMON_GIT=\"$BISMON_SHGIT\" \
 	-DERROR_BASE_NUM=$errbase \
     -I . \
     -I /usr/local/include $(pkg-config --cflags gtk+-3.0 jansson) \
@@ -27,9 +31,9 @@ for cfile in minilisp.c gtkbismonlisp.c jsonbismonlisp.c ; do
     if [ $? -gt 0 ]; then
 	exit $?
     fi
-    errbase=$[errbase+1000]
+    errbase=$[errbase+10000]
 done
 
-$BISMON_GCC -Wall -Wextra -g $BISMON_OPTIM minilisp.o gtkbismonlisp.o jsonbismonlisp.o \
+$BISMON_GCC -Wall -Wextra $BISMON_OPTIM $BISMON_DEBUG  minilisp.o gtkbismonlisp.o jsonbismonlisp.o \
     -L /usr/local/lib $(pkg-config --libs gtk+-3.0 jansson) \
     -o minilisp-bismongtk

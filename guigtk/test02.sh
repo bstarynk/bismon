@@ -53,8 +53,10 @@ okbutton
 dialog1
 
 (gtk_application_activate
-(println "gtk-application-activated")
-	(gtk_widget_show_all dialog1))
+	(println "gtk-application-activated")
+	(gtk_widget_show_all dialog1)
+	(gtk_application_add_window dialog1)
+)
 
 (gtk_loop)
 
