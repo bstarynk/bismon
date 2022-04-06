@@ -303,6 +303,13 @@ extern json_t *as_json (Obj *ob, unsigned depth);
 extern Obj *prim_gtk_builder (void *root, Obj **env, Obj **list);
 extern Obj *prim_gtk_builder_get (void *root, Obj **env, Obj **list);
 extern Obj *prim_gtk_widget_show_all (void *root, Obj **env, Obj **list);
+extern Obj *prim_gtk_application_activate (void *root, Obj **env, Obj **list);
+
+extern Obj *prim_gtk_application_add_window (void *root, Obj **env,
+                                             Obj **list);
+
+extern Obj *prim_gtk_application_remove_window (void *root, Obj **env,
+                                                Obj **list);
 
 //======================================================================
 // Constructors

@@ -594,11 +594,13 @@ prim_gtk_widget_show_all (void *root, Obj **env, Obj **list)
 
 
 
-/// the expressions are evaluated when the application is activated 
-/// (gtk_application_activate <expr> ....) 
+/// the expressions are evaluated later when the application is
+/// activated (gtk_application_activate <expr> ....)
 Obj *
 prim_gtk_application_activate (void *root, Obj **env, Obj **list)
 {
+  GtkWidget *widg = NULL;
+  DEFINE1 (widgob);
   if (pthread_self () != main_pthread)
     {
       fprintf (stderr,
@@ -629,6 +631,72 @@ prim_gtk_application_activate (void *root, Obj **env, Obj **list)
     };
   return *list;
 }                               /* end prim_gtk_application_activate */
+
+Obj *
+prim_gtk_application_add_window (void *root, Obj **env, Obj **list)
+{
+  GtkWidget *widg = NULL;
+  DEFINE1 (widgob);
+  if (pthread_self () != main_pthread)
+    {
+      fprintf (stderr,
+               "gtk_application_add_window primitive called from non-main pthread\n");
+      show_backtrace_stderr ();
+      return Nil;
+    };
+  if (!app_minilisp)
+    error ("gtk_application_add_window without app_minilisp");
+  Obj *args = eval_list (root, env, list);
+  if (length (args) != 1)
+    error ("gtk_application_add_window one argument <widget>, got %d",
+           (int) length (args));
+  *widgob = args->car;
+  widg = get_gtk_widget (*widgob);
+  if (widg && GTK_WINDOW (widg))
+    gtk_application_add_window (app_minilisp, GTK_WINDOW (widg));
+  else
+    error ("gtk_application_add_window without GtkWindow");
+  if (verbose_ilisp)
+    {
+      printf (";;gtk_application_add_window ");
+      print_val_nl (*widgob);
+    }
+  return *widgob;
+}                               /* end prim_gtk_application_add_window */
+
+
+
+Obj *
+prim_gtk_application_remove_window (void *root, Obj **env, Obj **list)
+{
+  GtkWidget *widg = NULL;
+  DEFINE1 (widgob);
+  if (pthread_self () != main_pthread)
+    {
+      fprintf (stderr,
+               "gtk_application_remove_window primitive called from non-main pthread\n");
+      show_backtrace_stderr ();
+      return Nil;
+    };
+  if (!app_minilisp)
+    error ("gtk_application_remove_window without app_minilisp");
+  Obj *args = eval_list (root, env, list);
+  if (length (args) != 1)
+    error ("gtk_application_remove_window one argument <widget>, got %d",
+           (int) length (args));
+  *widgob = args->car;
+  widg = get_gtk_widget (*widgob);
+  if (widg && GTK_WINDOW (widg))
+    gtk_application_remove_window (app_minilisp, GTK_WINDOW (widg));
+  else
+    error ("gtk_application_remove_window without GtkWindow");
+  if (verbose_ilisp)
+    {
+      printf (";;gtk_application_remove_window ");
+      print_val_nl (*widgob);
+    }
+  return *widgob;
+}                               /* end prim_gtk_application_remove_window */
 
 
 extern void finalize_gtk (void);
@@ -796,6 +864,10 @@ define_gtk_primitives (void *root, Obj **env)
   add_primitive (root, env, "gtk_widget_show_all", prim_gtk_widget_show_all);
   add_primitive (root, env, "gtk_application_activate",
                  prim_gtk_application_activate);
+  add_primitive (root, env, "gtk_application_add_window",
+                 prim_gtk_application_add_window);
+  add_primitive (root, env, "gtk_application_remove_window",
+                 prim_gtk_application_remove_window);
 }                               /* end define_gtk_primitives */
 
 
