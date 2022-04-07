@@ -511,7 +511,12 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
   gtk_cur_list = list;
   if (verbose_ilisp)
     {
-      printf (";;gtk_loop running application [%s:%d]\n", __FILE__, __LINE__);
+      const char *appname = g_get_application_name();
+      if (!appname)
+	appname = "?bismon?guigtk?";
+      printf (";;gtk_loop running application %s [%s:%d]\n",
+	      appname,
+	      __FILE__, __LINE__);
       if (!old_gtk_cur_list)
         printf (";;gtk_loop empty old_gtk_cur_list ptr [%s:%d]\n", __FILE__,
                 __LINE__);
