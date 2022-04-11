@@ -654,6 +654,8 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
     }
   free (objarr), objarr = NULL;
   fprintf (spfil, "\n// end of file %s\n", basename (bytstring_BM (_.pathv)));
+  fflush (spfil);
+  fsync (fileno(spfil));
   fclose (spfil);
   (void) rename (bytstring_BM (_.pathv), bytstring_BM (_.backupv));
   if (rename (bytstring_BM (_.tempathv), bytstring_BM (_.pathv)))
