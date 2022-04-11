@@ -40,7 +40,9 @@ ROUTINEOBJNAME_BM (_5W4PPQFYdj2_3HYUlMsu3oZ)    //
   LOCALFRAME_BM (stkf, /*descr: */ BMK_5W4PPQFYdj2_3HYUlMsu3oZ,
                  value_tyBM argv;
                  objectval_tyBM * prevexpertiseob;
-                 objectval_tyBM * thisexpertiseob; value_tyBM exprocv;);
+                 objectval_tyBM * thisexpertiseob;
+                 value_tyBM exprocv;
+    );
   objectval_tyBM *k_current_expertise = BMK_1Lw70JO0z4y_7VFmnlVAN2U;
   objectval_tyBM *k_expertise = BMK_3BK1iRJQKks_9em7267pi4g;
   objectval_tyBM *k_expertise_processor = BMK_3MH3SdE0EjN_03eZz7SPOY1;
@@ -175,8 +177,9 @@ ROUTINEOBJNAME_BM (_8gAuOE933W3_5s7IF0hgpkz)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8gAuOE933W3_5s7IF0hgpkz,
-                 objectval_tyBM * taskob;
-                 objectval_tyBM * framob; objectval_tyBM * frclassob;);
+                 objectval_tyBM * taskob; objectval_tyBM * framob;
+                 objectval_tyBM * frclassob;
+    );
   objectval_tyBM *k_mini_frame = BMK_7iXMCmAFuoe_5IaAOnyr7vZ;
   _.taskob = arg1;
   do
@@ -227,9 +230,11 @@ run_mini_frame_BM (objectval_tyBM * framob, objectval_tyBM * taskob,
                    struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM (stkf, /*descr: */ NULL,
-                 objectval_tyBM * taskob; objectval_tyBM * framob;
-                 objectval_tyBM * curstatev; value_tyBM curseqv;
-                 value_tyBM curcompv; value_tyBM curvalv;);
+                 objectval_tyBM * taskob;
+                 objectval_tyBM * framob; objectval_tyBM * curstatev;
+                 value_tyBM curseqv; value_tyBM curcompv;
+                 value_tyBM curvalv;
+    );
   objectval_tyBM *k_state = BMK_5zHhLVgR3Dv_1zf1cxOQlJ4;
   objectval_tyBM *k_evaluate_sequence = BMK_8gAuOE933W3_5s7IF0hgpkz;
   objectval_tyBM *k_rank = BMK_8zRh2medTlP_0ImnPyO8NKH;
@@ -268,11 +273,11 @@ evaluate_in_mini_frame_BM (value_tyBM expv, objectval_tyBM * framob,
                            struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM (stkf, /*descr: */ NULL,
-                 objectval_tyBM * taskob;
-                 objectval_tyBM * framob; objectval_tyBM * initialframob;
-                 objectval_tyBM * connob; objectval_tyBM * varob;
-                 value_tyBM expv; value_tyBM valv; value_tyBM errorv;
-    );
+                 objectval_tyBM * taskob; objectval_tyBM * framob;
+                 objectval_tyBM * initialframob; objectval_tyBM * connob;
+                 objectval_tyBM * varob; value_tyBM expv;
+                 value_tyBM valv;
+                 value_tyBM errorv;);
   objectval_tyBM *k_syntax_error = BMK_7UGHYP5h2vc_5O70fk0ifBL;
   objectval_tyBM *k_unbound_variable_error = BMK_68PQkZp1UAq_8RNb44Ea88z;
   objectval_tyBM *k_mini_frame = BMK_7iXMCmAFuoe_5IaAOnyr7vZ;

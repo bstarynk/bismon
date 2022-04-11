@@ -256,6 +256,8 @@ read_sigfd_BM (void)            // called from plain_event_loop_BM
               fprintf (infofil, "BISMON_TIMESTAMP='%s'\n", bismon_timestamp);
               fprintf (infofil, "BISMON_TIMELONG=%ld\n", bismon_timelong);
               fprintf (infofil, "BISMON_DIRECTORY='%s'\n", bismon_directory);
+              fflush (infofil);
+              fsync (fileno (infofil));
               fclose (infofil);
             }
         }
@@ -454,10 +456,10 @@ handle_sigchld_BM (pid_t pid)
       char pidbuf[128];
       memset (pidbuf, 0, sizeof (pidbuf));
       snprintf (pidbuf, sizeof (pidbuf), "/proc/%d/cmdline", (int) pid);
-      FILE *pf = fopen (pidbuf, "r");
-      if (pf)
+      FILE *cmdf = fopen (pidbuf, "r");
+      if (cmdf)
         {
-          size_t ln = fread (pidbuf, sizeof (pidbuf) - 1, 1, pf);
+          size_t ln = fread (pidbuf, sizeof (pidbuf) - 1, 1, cmdf);
           if (ln > 0)
             {
               pidbuf[ln] = (char) 0;
@@ -467,7 +469,7 @@ handle_sigchld_BM (pid_t pid)
             }
           else
             strcpy (pidbuf, "??");
-          fclose (pf);
+          fclose (cmdf);
         }
       else
         {
@@ -827,8 +829,8 @@ plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called
 {
   //  objectval_tyBM *k_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * bufob;
-                 objectval_tyBM * curjsob;);
+                 objectval_tyBM * bufob; objectval_tyBM * curjsob;
+    );
   atomic_init (&eventlooprunning_BM, true);
 
   DBGBACKTRACEPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",  //

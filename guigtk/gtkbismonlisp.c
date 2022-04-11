@@ -511,12 +511,11 @@ prim_gtk_loop (void *root, Obj **env, Obj **list)
   gtk_cur_list = list;
   if (verbose_ilisp)
     {
-      const char *appname = g_get_application_name();
+      const char *appname = g_get_application_name ();
       if (!appname)
-	appname = "?bismon?guigtk?";
+        appname = "?bismon?guigtk?";
       printf (";;gtk_loop running application %s [%s:%d]\n",
-	      appname,
-	      __FILE__, __LINE__);
+              appname, __FILE__, __LINE__);
       if (!old_gtk_cur_list)
         printf (";;gtk_loop empty old_gtk_cur_list ptr [%s:%d]\n", __FILE__,
                 __LINE__);
@@ -794,7 +793,8 @@ activate_app_minilisp (GApplication * app, gpointer data)
   if (verbose_ilisp)
     printf
       ("\n;;activate_app_minilisp application @%p is activated with data %p gtk_cur_list@%p (%s:%d)\n",
-       (void *) app, (void *) data, (void*)gtk_cur_list, __FILE__, __LINE__);
+       (void *) app, (void *) data, (void *) gtk_cur_list, __FILE__,
+       __LINE__);
   if (pthread_self () != main_pthread)
     {
       fprintf (stderr, "activate_app_minilisp from non-main pthread\n");

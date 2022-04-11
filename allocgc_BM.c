@@ -895,13 +895,13 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
     fprintf (fil, "data memory: kept %s, freed %s\n", keptbuf, freedbuf);
   }
   {
-    FILE *f = fopen ("/proc/self/statm", "r");
-    if (f)
+    FILE *fstatm = fopen ("/proc/self/statm", "r");
+    if (fstatm)
       {
         long psiz = 0, rss = 0, shared = 0, code = 0;
         long lib = 0, data = 0, dt = 0;
         long pagsiz = sysconf (_SC_PAGESIZE);
-        if (fscanf (f, "%ld %ld %ld %ld %ld %ld %ld",
+        if (fscanf (fstatm, "%ld %ld %ld %ld %ld %ld %ld",
                     &psiz, &rss, &shared, &code, &lib, &data, &dt) >= 7)
           {
             long psizbytes = psiz * pagsiz;
@@ -939,7 +939,7 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
             fprintf (fil, "process [%d] vmem %s, rss %s, data %s\n",
                      (int) getpid (), psizbuf, rssbuf, databuf);
           }
-        fclose (f);
+        fclose (fstatm);
       }
   }
   fprintf (fil, "-------\n\n");
