@@ -131,7 +131,7 @@ get_g_object (Obj *ob)
 
 
 void
-file_gtk_print (FILE * fil, Obj *gtkob, unsigned depth)
+file_gtk_print (FILE *fil, Obj *gtkob, unsigned depth)
 {
   int gtkix = -1;
   assert (fil != NULL);
@@ -180,7 +180,7 @@ end:
 
 
 void
-file_glib_print (FILE * fil, Obj *glibob, unsigned depth)
+file_glib_print (FILE *fil, Obj *glibob, unsigned depth)
 {
   int glibix = -1;
   assert (fil != NULL);
@@ -772,7 +772,8 @@ initialize_gtk (int *pargc, char ***pargv)
   minilisp_pargc = pargc;
   minilisp_argv = *pargv;
   main_pthread = pthread_self ();
-  app_minilisp = gtk_application_new ("fr.cea.www-list.bismon.guigtk", 0);
+  app_minilisp = gtk_application_new ("fr.cea.www-list.bismon.guigtk",
+                                      G_APPLICATION_NON_UNIQUE);
   g_application_add_main_option (G_APPLICATION (app_minilisp),
                                  /*long_name: */ "script",
                                  /*short_name: */ 'S',
