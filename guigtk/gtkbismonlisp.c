@@ -645,6 +645,11 @@ prim_gtk_window_present (void *root, Obj **env, Obj **list)
   if (!widg || !GTK_IS_WINDOW (widg))
     error ("gtk_window_present without window widget");
   gtk_window_present (GTK_WINDOW (widg));
+  if (verbose_ilisp)
+    {
+      printf ("\n;;gtk_window_present [%s:%d]\n", __FILE__, __LINE__);
+      print_val_nl (*widgob);
+    }
   return widgob;
 }                               /* end prim_gtk_window_present */
 
@@ -654,8 +659,6 @@ prim_gtk_window_present (void *root, Obj **env, Obj **list)
 Obj *
 prim_gtk_application_activate (void *root, Obj **env, Obj **list)
 {
-  GtkWidget *widg = NULL;
-  DEFINE1 (widgob);
   if (pthread_self () != main_pthread)
     {
       fprintf (stderr,
@@ -818,9 +821,8 @@ activate_app_minilisp (GApplication * app, gpointer data)
   DEFINE1 (evalres);
   if (verbose_ilisp)
     printf
-      ("\n;;activate_app_minilisp application @%p is activated with data %p gtk_cur_list@%p (%s:%d)\n",
-       (void *) app, (void *) data, (void *) gtk_cur_list, __FILE__,
-       __LINE__);
+      ("\n;;activate_app_minilisp [%s:%d] application @%p is activated with data %p\n",
+       __FILE__, __LINE__, (void *) app, (void *) data);
   if (pthread_self () != main_pthread)
     {
       fprintf (stderr, "activate_app_minilisp from non-main pthread\n");
@@ -847,9 +849,8 @@ activate_app_minilisp (GApplication * app, gpointer data)
     }
   if (verbose_ilisp)
     {
-      printf
-        ("\n;;activate_app_minilisp [%s:%d] activated before eval list: ",
-         __FILE__, __LINE__);
+      printf ("\n;;activate_app_minilisp [%s:%d] with gtk_cur_list: ",
+              __FILE__, __LINE__);
       print_val_nl (*gtk_cur_list);
       fflush (NULL);
     }
