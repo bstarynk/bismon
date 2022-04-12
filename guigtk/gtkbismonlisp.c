@@ -592,7 +592,7 @@ prim_gtk_builder_get (void *root, Obj **env, Obj **list)
 }                               /* end prim_gtk_builder_get */
 
 
-/// show a window widget
+/// show a widget and subwidgets
 /// (gtk_widget_show_all <widget>)
 Obj *
 prim_gtk_widget_show_all (void *root, Obj **env, Obj **list)
@@ -602,7 +602,7 @@ prim_gtk_widget_show_all (void *root, Obj **env, Obj **list)
   if (pthread_self () != main_pthread)
     {
       fprintf (stderr,
-               "gtk_builder_get primitive called from non-main pthread\n");
+               "gtk_widget_show_all primitive called from non-main pthread\n");
       show_backtrace_stderr ();
       return Nil;
     }
@@ -621,6 +621,32 @@ prim_gtk_widget_show_all (void *root, Obj **env, Obj **list)
   return *widgob;
 }                               /* end prim_gtk_widget_show_all */
 
+
+Obj *
+prim_gtk_window_present (void *root, Obj **env, Obj **list)
+{
+  GtkWidget *widg = NULL;
+  DEFINE1 (widgob);
+  if (pthread_self () != main_pthread)
+    {
+      fprintf (stderr,
+               "gtk_window_present primitive called from non-main pthread\n");
+      show_backtrace_stderr ();
+      return Nil;
+    }
+  if (!app_minilisp)
+    error ("gtk_window_present: no GTK application");
+  Obj *args = eval_list (root, env, list);
+  if (length (args) != 1)
+    error ("gtk_window_present one argument <widget>, got %d",
+           (int) length (args));
+  *widgob = args->car;
+  widg = get_gtk_widget (*widgob);
+  if (!widg || !GTK_IS_WINDOW (widg))
+    error ("gtk_window_present without window widget");
+  gtk_window_present (GTK_WINDOW (widg));
+  return widgob;
+}                               /* end prim_gtk_window_present */
 
 
 /// the expressions are evaluated later when the application is
@@ -908,6 +934,7 @@ define_gtk_primitives (void *root, Obj **env)
   add_primitive (root, env, "gtk_builder", prim_gtk_builder);
   add_primitive (root, env, "gtk_builder_get", prim_gtk_builder_get);
   add_primitive (root, env, "gtk_widget_show_all", prim_gtk_widget_show_all);
+  add_primitive (root, env, "gtk_window_present", prim_gtk_window_present);
   add_primitive (root, env, "gtk_application_activate",
                  prim_gtk_application_activate);
   add_primitive (root, env, "gtk_application_add_window",
