@@ -52,8 +52,8 @@ Obj *Cparen = &(Obj)
 // avoid using it as a variable name as this is not an array but a list.
 Obj *Symbols;
 
-const char *static1_file_name (FILE * f);
-const char *static2_file_name (FILE * f);
+const char *static1_file_name (FILE *f);
+const char *static2_file_name (FILE *f);
 //======================================================================
 // Memory management
 //======================================================================
@@ -474,10 +474,10 @@ acons (void *root, Obj **x, Obj **y, Obj **a)
 #define SYMBOL_MAX_LEN 200
 const char symbol_chars[] = "~!@$%^&*-_=+:/?<>";
 
-Obj *fread_expr (FILE * f, void *root);
+Obj *fread_expr (FILE *f, void *root);
 
 int
-fpeek (FILE * f)
+fpeek (FILE *f)
 {
   int c = fgetc (f);
   ungetc (c, f);
@@ -501,7 +501,7 @@ reverse (Obj *p)
 
 // Skips the input until newline is found. Newline is one of \r, \r\n or \n.
 void
-skip_line (FILE * f)
+skip_line (FILE *f)
 {
   for (;;)
     {
@@ -519,7 +519,7 @@ skip_line (FILE * f)
 
 // Reads a list. Note that '(' has already been read.
 Obj *
-fread_list (FILE * f, void *root)
+fread_list (FILE *f, void *root)
 {
   DEFINE3 (obj, head, last);
   long ofs = -1;
@@ -564,7 +564,7 @@ intern (void *root, char *name)
 
 // Reader marcro ' (single quote). It reads an expression and returns (quote <expr>).
 Obj *
-fread_quote (FILE * f, void *root)
+fread_quote (FILE *f, void *root)
 {
   DEFINE2 (sym, tmp);
   *sym = intern (root, "quote");
@@ -575,7 +575,7 @@ fread_quote (FILE * f, void *root)
 }
 
 int
-fread_number (FILE * f, int val)
+fread_number (FILE *f, int val)
 {
   while (isdigit (fpeek (f)))
     val = val * 10 + (fgetc (f) - '0');
@@ -583,7 +583,7 @@ fread_number (FILE * f, int val)
 }
 
 Obj *
-fread_symbol (FILE * f, void *root, char c)
+fread_symbol (FILE *f, void *root, char c)
 {
   char buf[SYMBOL_MAX_LEN + 1];
   assert (f != NULL);
@@ -609,7 +609,7 @@ fread_symbol (FILE * f, void *root, char c)
  * #json { "a": 2 } ; a JSON value
  ***/
 Obj *
-fread_hash (FILE * f, void *root)
+fread_hash (FILE *f, void *root)
 {
   Obj *res = NULL;
   assert (f != NULL);
@@ -759,7 +759,7 @@ fread_hash (FILE * f, void *root)
 
 //// read a single-lined string, whose initial double-quote °" has been read
 Obj *
-fread_string (FILE * f, void *root)
+fread_string (FILE *f, void *root)
 {
   Obj *obs = NULL;
   int c = -2;
@@ -860,7 +860,7 @@ fread_string (FILE * f, void *root)
 }                               /* end fread_string */
 
 Obj *
-fread_expr (FILE * f, void *root)
+fread_expr (FILE *f, void *root)
 {
   assert (f != NULL);
   for (;;)
@@ -902,7 +902,7 @@ fread_expr (FILE * f, void *root)
 #define MAX_PRINT_DEPTH 20
 // Prints the given object.
 void
-file_print (FILE * fil, Obj *obj, unsigned depth)
+file_print (FILE *fil, Obj *obj, unsigned depth)
 {
   unsigned initialdepth = depth;
   assert (fil != NULL);
@@ -2718,7 +2718,7 @@ main (int argc, char **argv)
 
 /// Linux specific, see proc(5)
 const char *
-static1_file_name (FILE * f)
+static1_file_name (FILE *f)
 {
   static char nambuf1[256];
   if (!f)
@@ -2747,7 +2747,7 @@ static1_file_name (FILE * f)
 
 
 const char *
-static2_file_name (FILE * f)
+static2_file_name (FILE *f)
 {
   static char nambuf2[256];
   if (!f)

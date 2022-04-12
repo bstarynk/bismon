@@ -704,7 +704,7 @@ clean_gc_json (void *root)
 }                               /* end clean_gc_json_gtk */
 
 void
-file_json_print (FILE * fil, Obj *obj, unsigned depth)
+file_json_print (FILE *fil, Obj *obj, unsigned depth)
 {
   assert (fil != NULL);
   assert (obj != NULL && obj->type == TJSONREF);
@@ -757,7 +757,7 @@ file_json_print (FILE * fil, Obj *obj, unsigned depth)
 //// For JSON notation; example #json { "a" : 1, "b" : [true,false,null]}
 //// the #json has been read
 Obj *
-fread_json (FILE * fil, void *root)
+fread_json (FILE *fil, void *root)
 {
   json_t *js = NULL;
   assert (fil != NULL);

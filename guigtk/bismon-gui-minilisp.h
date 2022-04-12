@@ -274,7 +274,7 @@ extern void forward_root_objects (void *root);
 extern void forward_gtk_objects (void);
 extern void *alloc_semispace (void);
 
-extern int fpeek (FILE * f);
+extern int fpeek (FILE *f);
 
 extern void add_primitive (void *root, Obj **env, char *name, Primitive * fn);
 extern void define_primitives (void *root, Obj **env);
@@ -356,18 +356,18 @@ extern Obj *acons (void *root, Obj **x, Obj **y, Obj **a);
 
 //// reader
 // Skips the input until newline is found. Newline is one of \r, \r\n or \n.
-extern void skip_line (FILE * f);
-extern Obj *fread_expr (FILE * fil, void *root);
+extern void skip_line (FILE *f);
+extern Obj *fread_expr (FILE *fil, void *root);
 // Reads a list. Note that '(' has already been read.
-extern Obj *fread_list (FILE * f, void *root);
+extern Obj *fread_list (FILE *f, void *root);
 //// for JSON notation; example #json { "a" : 1, "b" : [true,false,null]}
-extern Obj *fread_json (FILE * fil, void *root);
+extern Obj *fread_json (FILE *fil, void *root);
 // Reader macro ' (single quote). It reads an expression and returns (quote <expr>).
-extern Obj *fread_quote (FILE * f, void *root);
-extern int fread_number (FILE * f, int val);
-extern Obj *fread_symbol (FILE * f, void *root, char c);
+extern Obj *fread_quote (FILE *f, void *root);
+extern int fread_number (FILE *f, int val);
+extern Obj *fread_symbol (FILE *f, void *root, char c);
 //// read a single-lined string, whose initial double-quote °" has been read
-extern Obj *fread_string (FILE * f, void *root);
+extern Obj *fread_string (FILE *f, void *root);
 
 
 /// Basile syntax extension; after a # ...
@@ -377,7 +377,7 @@ extern Obj *fread_string (FILE * f, void *root);
  * #3.14  ; a double value
  * #json { "a": 2 } ; a JSON value
  ***/
-extern Obj *fread_hash (FILE * f, void *root);
+extern Obj *fread_hash (FILE *f, void *root);
 
 // Evaluates the S expression in *obj
 extern Obj *eval (void *root, Obj **env, Obj **obj);
@@ -535,10 +535,10 @@ extern GObject *get_g_object (Obj *);
 /// printer
 extern void print_val (Obj *obj);
 extern void print_val_nl (Obj *obj);
-extern void file_print (FILE * fil, Obj *obj, unsigned depth);
-extern void file_json_print (FILE * fil, Obj *obj, unsigned depth);
-extern void file_gtk_print (FILE * fil, Obj *obj, unsigned depth);
-extern void file_glib_print (FILE * fil, Obj *obj, unsigned depth);
+extern void file_print (FILE *fil, Obj *obj, unsigned depth);
+extern void file_json_print (FILE *fil, Obj *obj, unsigned depth);
+extern void file_gtk_print (FILE *fil, Obj *obj, unsigned depth);
+extern void file_glib_print (FILE *fil, Obj *obj, unsigned depth);
 extern bool recursive_equal (Obj *x, Obj *y, unsigned depth);
 
 /// gives the JSON value inside some Obj, or else NULL; inverse of make_json
@@ -566,8 +566,8 @@ extern int load_file (const char *filnam, bool skiphead, void *root,
 
 //// two unsafe and non-reentrant utilities to print file names; usable
 //// with error(...)
-extern const char *static1_file_name (FILE * f);
-extern const char *static2_file_name (FILE * f);
+extern const char *static1_file_name (FILE *f);
+extern const char *static2_file_name (FILE *f);
 
 //// show backtrace of MAX_RECURSIVE_DEPTH  calls on stderr
 extern void show_backtrace_stderr (void);
