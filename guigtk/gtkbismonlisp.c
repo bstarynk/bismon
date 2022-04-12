@@ -650,7 +650,7 @@ prim_gtk_window_present (void *root, Obj **env, Obj **list)
       printf ("\n;;gtk_window_present [%s:%d]\n", __FILE__, __LINE__);
       print_val_nl (*widgob);
     }
-  return widgob;
+  return *widgob;
 }                               /* end prim_gtk_window_present */
 
 
