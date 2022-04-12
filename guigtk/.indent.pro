@@ -1,5 +1,6 @@
 /* file bismon/guigtk/.indent.pro, with options for GNU indent */
  --gnu-style --no-tabs --honour-newlines
+ -T FILE
  -T Obj
  -T json_t
  -T GHashTable
