@@ -21,6 +21,10 @@ if [ -z "$BISMON_GCC" ]; then
     BISMON_GCC="gcc"
 fi
 
+if [ -n "$1" ]; then
+    BISMON_OPTIM="$BISMON_OPTIM $1"
+fi
+
 errbase=0
 for cfile in minilisp.c gtkbismonlisp.c jsonbismonlisp.c ; do
     $BISMON_GCC -Wall -Wextra -Wmissing-prototypes $BISMON_OPTIM $BISMON_DEBUG -c $cfile -DBISMON_GIT=\"$BISMON_SHGIT\" \
