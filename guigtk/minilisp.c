@@ -1117,6 +1117,26 @@ print_val_nl (Obj *obj)
   fflush (stdout);
 }                               /* end print_val_nl */
 
+
+void
+print_message_val_nl_at (const char *msg, Obj *obj, const char *fil, int lin)
+{
+  if (msg)
+    {
+      if (fil && lin > 0)
+        printf ("%s [%s:%d] ", msg, fil, lin);
+      else
+        fputs (msg, stdout);
+    }
+  if if (obj == NULL)
+    fputs ("*nulobj*", stdout);
+  else
+    file_print (stdout, obj, 0);
+  fputc ('\n', stdout);
+  fflush (stdout);
+}                               /* end print_message_val_nl_at */
+
+
 // Returns the length of the given list. -1 if it's not a proper list.
 int
 length (Obj *list)
@@ -1125,7 +1145,7 @@ length (Obj *list)
   for (; list->type == TCELL; list = list->cdr)
     len++;
   return list == Nil ? len : -1;
-}
+}                               /* end length */
 
 //======================================================================
 // Evaluator
