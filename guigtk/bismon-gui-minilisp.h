@@ -536,6 +536,12 @@ extern GObject *get_g_object (Obj *);
 /// printer
 extern void print_val (Obj *obj);
 extern void print_val_nl (Obj *obj);
+extern void print_message_val_nl_at (const char *msg, Obj *obj,
+                                     const char *fil, int lin);
+#define LOCATED_PRINT_MESSAGE_VAL_NL(Msg,Obj) \
+  print_message_val_nl_at((Msg),(Obj),__FILE__,__LINE__)
+#define SHORT_PRINT_MESSAGE_VAL_NL(Msg,Obj) \
+  print_message_val_nl_at((Msg),(Obj),NULL,0)
 extern void file_print (FILE *fil, Obj *obj, unsigned depth);
 extern void file_json_print (FILE *fil, Obj *obj, unsigned depth);
 extern void file_gtk_print (FILE *fil, Obj *obj, unsigned depth);
