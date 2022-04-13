@@ -316,6 +316,7 @@ extern Obj *prim_gtk_application_add_window (void *root, Obj **env,
 
 extern Obj *prim_gtk_application_remove_window (void *root, Obj **env,
                                                 Obj **list);
+extern Obj *prim_gtk_window_present (void *root, Obj **env, Obj **list);
 
 //======================================================================
 // Constructors
