@@ -240,7 +240,8 @@ Obj *
 prim_gtk_eq (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2)
-    error ("Malformed = (gtk)");
+    error ("Malformed = ; (gtk) prim_gtk_eq with %d arguments",
+	   length(*list));
   DEFINE1 (args);
   *args = eval_list (root, env, list);
   Obj *x = (*args)->car;
@@ -638,7 +639,7 @@ prim_gtk_window_present (void *root, Obj **env, Obj **list)
     error ("gtk_window_present: no GTK application");
   Obj *args = eval_list (root, env, list);
   if (length (args) != 1)
-    error ("gtk_window_present one argument <widget>, got %d",
+    error ("gtk_window_present needs one argument <window-widget>, got %d",
            (int) length (args));
   *widgob = args->car;
   widg = get_gtk_widget (*widgob);
