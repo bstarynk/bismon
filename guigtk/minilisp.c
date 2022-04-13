@@ -1128,7 +1128,7 @@ print_message_val_nl_at (const char *msg, Obj *obj, const char *fil, int lin)
       else
         fputs (msg, stdout);
     }
-  if if (obj == NULL)
+  if (obj == NULL)
     fputs ("*nulobj*", stdout);
   else
     file_print (stdout, obj, 0);
