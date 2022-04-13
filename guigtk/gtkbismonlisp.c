@@ -241,7 +241,7 @@ prim_gtk_eq (void *root, Obj **env, Obj **list)
 {
   if (length (*list) != 2)
     error ("Malformed = ; (gtk) prim_gtk_eq with %d arguments",
-	   length(*list));
+           length (*list));
   DEFINE1 (args);
   *args = eval_list (root, env, list);
   Obj *x = (*args)->car;
