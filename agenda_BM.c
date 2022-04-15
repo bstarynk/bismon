@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -518,11 +518,7 @@ agenda_suspend_for_gc_BM (void)
       else
         break;
     }
-  DBGPRINTF_BM
-    ("agenda_suspend_for_gc_BM before webonion_suspend_before_gc_BM");
-  webonion_suspend_before_gc_BM ();
   DBGPRINTF_BM ("agenda_suspend_for_gc_BM done");
-#warning perhaps agenda_suspend_for_gc_BM should interact with web onion...
 }                               /* end agenda_suspend_for_gc_BM */
 
 void
@@ -541,13 +537,6 @@ agenda_continue_after_gc_BM (void)
   }
   pthread_cond_broadcast (&ti_agendacond_BM);
   atomic_store (&ti_needgc_BM, false);
-  if (bismon_has_web_BM ())
-    {
-      DBGPRINTF_BM
-        ("agenda_continue_after_gc before webonion_continue_after_gc_BM tid#%ld elapsed %.3f s",
-         (long) gettid_BM (), elapsedtime_BM ());
-      webonion_continue_after_gc_BM ();
-    }
   usleep (5);
   DBGPRINTF_BM ("agenda_continue_after_gc end tid#%ld elapsed %.3f s",
                 (long) gettid_BM (), elapsedtime_BM ());
@@ -855,8 +844,8 @@ run_agenda_internal_tasklet_BM (objectval_tyBM * obtk,
     FATAL_BM ("bad tasklet object @%p", obtk);
   ASSERT_BM (flh != NULL);
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obtk;
-                 value_tyBM failres;);
+                 objectval_tyBM * obtk; value_tyBM failres;
+    );
   _.obtk = obtk;
   curfailurehandle_BM = NULL;
   objlock_BM (_.obtk);
@@ -901,15 +890,12 @@ defer_module_dynload_BM (objectval_tyBM * modulobarg, const closure_tyBM * postc
   objectval_tyBM *k_plain_temporary_module = BMK_1oEp0eAAyFN_4lsobepyr1T;
   LOCALFRAME_BM (stkf, /*descr: */ k_defer_module_dynload,
                  objectval_tyBM * modulob;      //
-                 const closure_tyBM * postclos;
-                 value_tyBM arg1v;      //
+                 const closure_tyBM * postclos; value_tyBM arg1v;       //
                  value_tyBM arg2v;      //
                  value_tyBM arg3v;      //
                  objectval_tyBM * curob;        //
                  objectval_tyBM * routob;       //
-                 value_tyBM causev;
-                 value_tyBM errorv;
-    );
+                 value_tyBM causev; value_tyBM errorv;);
   extern void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *data);  /* in misc_BM.cc */
   _.modulob = objectcast_BM (modulobarg);
   _.postclos = closurecast_BM ((value_tyBM) postclosarg);
@@ -1059,8 +1045,7 @@ do_postpone_defer_apply3_BM (int delayms, value_tyBM closarg,
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
-                 value_tyBM tmpv;
-    );
+                 value_tyBM tmpv;);
   _.closv = closarg;
   _.arg1v = arg1arg;
   _.arg2v = arg2arg;
@@ -1110,8 +1095,7 @@ do_postpone_defer_send3_BM (int delayms, value_tyBM recvarg,
                  value_tyBM arg1v;      // first argument
                  value_tyBM arg2v;      // second argument
                  value_tyBM arg3v;      // third argument
-                 value_tyBM tmpv;
-    );
+                 value_tyBM tmpv;);
   _.recv = recvarg;
   _.obsel = obselarg;
   _.arg1v = arg1arg;
@@ -1211,8 +1195,6 @@ enqueue_postpone_bm (struct agenda_postpone_stBM *apo,
              && agpostpone_first_BM->agpo_magic == POSTPONE_MAGIC_BM);
   double nextimstamp = agpostpone_first_BM->agpo_timestamp;
   pthread_mutex_unlock (&ti_agendamtx_BM);
-  if (web_is_running_BM)
-    register_web_postponed_BM (nextimstamp);
   pthread_cond_broadcast (&ti_agendacond_BM);
 }                               /* end enqueue_postpone_bm */
 

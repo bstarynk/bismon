@@ -33,7 +33,6 @@ extern "C"
   extern int64_t prime_above_BM (int64_t n);
   extern int64_t prime_below_BM (int64_t n);
 
-  extern bool bismon_has_web_BM (void);
 
   static inline const char *basename_BM (const char *);
   extern const char *bismon_home_BM (void);
@@ -1530,7 +1529,6 @@ extern "C"
 
   extern void gcmarkmodules_BM (struct garbcoll_stBM *gc);
   extern void gcmarkpostponed_BM (struct garbcoll_stBM *gc);
-  extern void register_web_postponed_BM (double nextimstamp);
 
     value_tyBM
     run_postponed_node_BM (value_tyBM nodarg, struct stackframe_stBM *stkf);
@@ -1573,24 +1571,6 @@ extern "C"
 //**************************************************************
 //**************************************************************
 ////////////////////////////////////////////////////////////////
-/// web specific functions
-  extern void initialize_webonion_BM (void);    // initialize webonion before loading 
-// GC support for websessiondata & webexchangedata
-  extern void websessiondatagcmark_BM (struct garbcoll_stBM *gc,
-                                       struct websessiondata_stBM *ws,
-                                       objectval_tyBM * fromob, int depth);
-  extern void websessiondatagcdestroy_BM (struct garbcoll_stBM *gc,
-                                          struct websessiondata_stBM *ws);
-  extern void websessiondatagckeep_BM (struct garbcoll_stBM *gc,
-                                       struct websessiondata_stBM *ws);
-
-  extern void webexchangedatagcmark_BM (struct garbcoll_stBM *gc,
-                                        struct webexchangedata_stBM *wex,
-                                        objectval_tyBM * fromob, int depth);
-  extern void webexchangedatagcdestroy_BM (struct garbcoll_stBM *gc,
-                                           struct webexchangedata_stBM *wex);
-  extern void webexchangedatagckeep_BM (struct garbcoll_stBM *gc,
-                                        struct webexchangedata_stBM *we);
   extern void
   fork_process_at_slot_BM (int slotpos,
 			   const stringval_tyBM * dirstrarg,
@@ -1602,142 +1582,18 @@ extern "C"
   extern void unlock_runproc_mtx_at_BM (int lineno);
 
 
-  extern void register_onion_thread_stack_BM (struct stackframe_stBM *);
-  extern void unregister_onion_thread_stack_BM (struct stackframe_stBM *);
-  extern void perhaps_suspend_for_gc_onion_thread_stack_BM (struct stackframe_stBM *);
-// payload delete support for websessiondata & webexchangedata
-  extern void websessiondelete_BM (objectval_tyBM * ownobj,
-                                   struct websessiondata_stBM *ws);
-  extern void webexchangedelete_BM (objectval_tyBM * ownobj,
-                                    struct webexchangedata_stBM *we);
-  static inline bool objhaswebsessionpayl_BM (const objectval_tyBM * obj);
-  static inline struct websessiondata_stBM *objgetwebsessionpayl_BM (const
-                                                                     objectval_tyBM
-                                                                     * obj);
-  static inline bool objhaswebexchangepayl_BM (const objectval_tyBM * obj);
-  static inline struct webexchangedata_stBM
-    *objgetwebexchangepayl_BM (const objectval_tyBM * obj);
-  static inline const char *objwebexchangerequestpathpayl_BM (const
-                                                              objectval_tyBM *
-                                                              obj);
-  static inline value_tyBM objwebexchangerequestpathstrvpayl_BM (const
-                                                                 objectval_tyBM
-                                                                 * obj);
-  static inline unsigned objwebexchangerequestmethodpayl_BM (const
-                                                             objectval_tyBM *
-                                                             obj);
-// returns true is the webexchange request is an HTTP POST request
-  static inline bool objwebexchangerequestispostpayl_BM (const
-                                                         objectval_tyBM *
-                                                         obj);
-  static inline onion_request *objwebexchangerequestpayl_BM (const
-                                                             objectval_tyBM *
-                                                             obj);
-  static inline onion_response *objwebexchangeresponsepayl_BM (const
-                                                               objectval_tyBM
-                                                               * obj);
-  static inline objectval_tyBM *objwebexchangesessionpayl_BM (const
-                                                              objectval_tyBM *
-                                                              obj);
-  static inline objectval_tyBM *objwebexchangejsonpayl_BM (const
-                                                           objectval_tyBM *
-                                                           obj);
-  static inline value_tyBM objwebexchangedatapayl_BM (const objectval_tyBM *
-                                                      obj);
-
-// return the value string associated with a constant request header field
-  static inline value_tyBM objwebexchangerequestcstrheaderpayl_BM (const
-                                                                   objectval_tyBM
-                                                                   * obj,
-                                                                   const char
-                                                                   *cheader);
-
-
-// return the value string associated with a value request header field
-  static inline value_tyBM objwebexchangerequestvalheaderpayl_BM (const
-                                                                  objectval_tyBM
-                                                                  * obj,
-                                                                  value_tyBM
-                                                                  cval);
-
-// return the value string associated with a constant queryarg
-  static inline value_tyBM objwebexchangerequestcstrquerypayl_BM (const
-                                                                  objectval_tyBM
-                                                                  * obj,
-                                                                  const char
-                                                                  *cquery);
-
-// return the value string associated with a value queryarg
-  static inline value_tyBM objwebexchangerequestvalquerypayl_BM (const
-                                                                 objectval_tyBM
-                                                                 * obj,
-                                                                 value_tyBM
-                                                                 cval);
-
-// return the value string associated with a constant postarg
-  static inline value_tyBM objwebexchangerequestcstrpostpayl_BM (const
-                                                                 objectval_tyBM
-                                                                 * obj,
-                                                                 const char
-                                                                 *cpost);
-
-// return the value string associated with a value postarg
-  static inline value_tyBM objwebexchangerequestvalpostpayl_BM (const
-                                                                objectval_tyBM
-                                                                * obj,
-                                                                value_tyBM
-                                                                cval);
-
-// the obj should be locked, otherwise it is undefined behavior
-  extern void objwebexchangeputdatapayl_BM (const objectval_tyBM * obj,
-                                            value_tyBM val);
-  extern void objwebexchangecompletepayl_BM (const objectval_tyBM * obj,
-                                             int httpstatus,
-                                             const char *mimetype);
-
-  static inline double objwebexchangedbltime_BM (const objectval_tyBM * obj);
-  static inline time_t objwebexchangetime_BM (const objectval_tyBM * obj);
-
-// send asynchronously on a websession object obj (that the caller
-// should have locked) a JSON message to its websocket
-  extern void
-    objwebsessionsendjsonwebsocketpayl_BM (objectval_tyBM * obj,
-                                           value_tyBM jsonv, value_tyBM ctxtv,
-                                           struct stackframe_stBM *stkf);
-/// gives the contributor of a websession object, or else NULL
-  extern objectval_tyBM *objwebsessioncontributorpayl_BM (objectval_tyBM *
-                                                          obj);
-/// gives creation or expiration times of a websession object, or else 0.0
-  extern double objwebsessioncreatetimepayl_BM (objectval_tyBM * obj);
-  extern double objwebsessionexpiretimepayl_BM (objectval_tyBM * obj);
-/// gives the unique rank of a websession object, or else 0
-  extern unsigned objwebsessionrankpayl_BM (objectval_tyBM * obj);
-/// gives a freshly allocated cookie string of a websession object
-/// with a given prefix (if NULL, without prefix) or else NULL
-  extern value_tyBM objwebsessioncookiestringpayl_BM (objectval_tyBM * obj,
-                                                      const char *prefix);
 ////////////////
 
-  extern void initialize_onionweb_BM (int nbjobs);
   extern void create_commandpipe_BM(void);
-  extern void webonion_suspend_before_gc_BM (void);
-  extern void webonion_continue_after_gc_BM (void);
   extern void plain_event_loop_BM (void);
   extern void stop_event_loop_BM (void);
   
   extern void add_defer_command_BM (void);
   extern void add_rungarbcoll_command_BM (void);
-  extern void gcmarkwebonion_BM (struct garbcoll_stBM *gc);
   extern void stop_unix_json_socket_processing_BM(void);
   extern void initialize_unix_json_socket_processing_BM (const char *ujsname);
 
 
-// send an email; both contribob and decayob should have been locked
-// by the caller; the decayob would become a decayed vector whose
-// first component is a closure setting the password
-  extern void webonion_send_forgotten_email_BM (objectval_tyBM * contribob,
-                                                objectval_tyBM * decayob,
-                                                struct stackframe_stBM *stkf);
 
 // given a decayed object, returns the string value of the URL for forgotten password
   extern

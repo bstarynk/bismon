@@ -82,13 +82,8 @@ static void add_passwords_from_file_BM (const char *addedpasspath);
 
 static void write_pid_into_file_and_kill_old_BM (const char *pidfilepath);
 
-bool run_onion_BM = false;
 
 ////////////////
-const char *onion_ssl_certificate_BM;
-const char *onion_web_base_BM;
-const char *onion_anon_web_cookie_BM;
-extern void run_onionweb_BM (int nbjobs);
 
 extern void weakfailure_BM (void);
 
@@ -1159,7 +1154,6 @@ main (int argc, char **argv)
     showdebugmsg_BM = true;
   if (argc > 1 && !strcmp (argv[1], "--version"))
     give_prog_version_BM (argv[0]);
-  DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   dlprog_BM = dlopen (NULL, RTLD_NOW | RTLD_GLOBAL);
   if (!dlprog_BM)
     {
@@ -1209,8 +1203,6 @@ main (int argc, char **argv)
   initialize_predefined_names_BM ();
   initialize_agenda_BM ();
   GError *opterr = NULL;
-  DBGPRINTF_BM ("run_onion is %s (argc=%d)",
-                run_onion_BM ? "true" : "false", argc);
   ////
   ///
   if (showdebugmsg_BM)
@@ -1218,7 +1210,6 @@ main (int argc, char **argv)
              "debug messages enabled %s pid %d timestamp %s commit %s\n",
              myprogname_BM, (int) getpid (), bismon_timestamp,
              bismon_lastgitcommit);
-  DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   if (give_version_bm)
     give_prog_version_BM (myprogname_BM);
   if (print_contributor_of_oid_bm)
@@ -1238,9 +1229,9 @@ main (int argc, char **argv)
     nbworkjobs_BM = MINNBWORKJOBS_BM + 1;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
-  if (!batch_bm && !run_onion_BM)
+  if (!batch_bm)
     FATAL_BM
-      ("no batch or onion option; please run with --batch or --web;\n"
+      ("no batchoption; please run with --batch;\n"
        "... or run: %s --help", argv[0]);
   /// running as root is really unreasonable.
   if (getuid () == 0)
@@ -1250,11 +1241,8 @@ main (int argc, char **argv)
     FATAL_BM
       ("bismon should not be running as root effective user (and uid#%d)",
        (int) getuid ());
-  if (run_onion_BM)
-    INFOPRINTF_BM ("Web interface requested alone (%d jobs)", nbworkjobs_BM);
   else if (batch_bm)
-    INFOPRINTF_BM ("batch mode requested without Web (%d jobs)",
-                   nbworkjobs_BM);
+    INFOPRINTF_BM ("batch mode requested(%d jobs)", nbworkjobs_BM);
   //
 #warning not sure of this....
   initialize_contributors_path_BM ();
@@ -1264,7 +1252,6 @@ main (int argc, char **argv)
   //
   if (count_emit_has_predef_bm > 0)
     emit_has_predef_BM ();
-  DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   if (!load_dir_bm)
     load_dir_bm = ".";
   else if (load_dir_bm[0] == '-')
@@ -1330,26 +1317,6 @@ main (int argc, char **argv)
       showdebugmsg_BM = true;
     };
   show_net_info_bm ();
-  if (!batch_bm)
-    {
-      if (run_onion_BM)
-        {
-          INFOPRINTF_BM ("initializing ONION for Web services");
-          initialize_webonion_BM ();
-        }
-    }
-  if (mailhtml_file_bm || mailhtml_subject_bm || mailhtml_contributor_bm
-      || mailhtml_attachment_bm)
-    {
-      if (!mailhtml_file_bm)
-        FATAL_BM ("missing --mailhtml-file FILE option");
-      if (!mailhtml_subject_bm)
-        FATAL_BM ("missing --mailhtml-subject SUBJECT option");
-      if (!mailhtml_contributor_bm)
-        FATAL_BM ("missing --mailhtml-contributor CONTRIBUTOR option");
-      do_test_mailhtml_bm ();
-    }
-  DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
   if (nb_parsed_values_after_load_bm > 0)
@@ -1376,39 +1343,17 @@ main (int argc, char **argv)
         }
       do_dump_after_load_BM ();
     };
-  DBGPRINTF_BM ("run_onion is %s", run_onion_BM ? "true" : "false");
-  //
-  if (run_onion_BM)
+  if (pid_filepath_bm && pid_filepath_bm[0] && strcmp (pid_filepath_bm, "-"))
     {
-      if (batch_bm)
-        {
-          nbworkjobs_BM = 0;
-          INFOPRINTF_BM ("no web in batch mode\n");
-        }
-      else
-        {
-          if (pid_filepath_bm && pid_filepath_bm[0]
-              && strcmp (pid_filepath_bm, "-"))
-            {
-              FILE *pidfile = fopen (pid_filepath_bm, "w");
-              if (!pidfile)
-                FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
-              fprintf (pidfile, "%d\n", (int) getpid ());
-              fclose (pidfile);
-              INFOPRINTF_BM ("wrote pid %d in pid-file %s",
-                             (int) getpid (), pid_filepath_bm);
-            }
-          INFOPRINTF_BM
-            ("running ONION web interface for %d jobs pid %d git %s",
-             nbworkjobs_BM, (int) getpid (), bismon_shortgitid);
-          run_onionweb_BM (nbworkjobs_BM);
-        }
+      FILE *pidfile = fopen (pid_filepath_bm, "w");
+      if (!pidfile)
+        FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
+      fprintf (pidfile, "%d\n", (int) getpid ());
+      fclose (pidfile);
+      INFOPRINTF_BM ("wrote pid %d in pid-file %s",
+                     (int) getpid (), pid_filepath_bm);
     }
   ///
-  if (run_onion_BM)
-    {
-      stop_event_loop_BM ();
-    }
   //
   if (want_finalgc_bm)
     {
@@ -1417,8 +1362,7 @@ main (int argc, char **argv)
       full_garbage_collection_BM (NULL);
 
     }
-  DBGPRINTF_BM ("ending BISMON run_onion_BM %s batch_bm %s",
-                run_onion_BM ? "true" : "false", batch_bm ? "true" : "false");
+  DBGPRINTF_BM ("ending BISMON batch_bm %s", batch_bm ? "true" : "false");
   free ((void *) contributors_filepath_BM), contributors_filepath_BM = NULL;
   free ((void *) passwords_filepath_BM), passwords_filepath_BM = NULL;
   if (dump_dir_BM)
@@ -1465,13 +1409,6 @@ is_nice_locale_BM (const char *locstr)
     return true;
 }                               /* end is_nice_locale_BM */
 
-
-
-bool
-bismon_has_web_BM (void)
-{
-  return web_is_running_BM || run_onion_BM;
-}                               /* end bismon_has_web_BM */
 
 void
 do_dump_after_load_BM (void)
@@ -1807,7 +1744,9 @@ void
 parse_values_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob; value_tyBM parsedval;);
+                 objectval_tyBM * parsob;
+                 value_tyBM parsedval;
+    );
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("parsing %d values after load %s using parsob %s\n",
                  nb_parsed_values_after_load_bm, load_dir_bm,
@@ -1845,7 +1784,8 @@ run_testplugins_after_load_BM (void)
   double startcputime = cputime_BM ();
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM pluginamv;  //
-                 objectval_tyBM * pluginob;);
+                 objectval_tyBM * pluginob;
+    );
   // check sanity of test plugins
   static char cwdbuf[200];
   if (!getcwd (cwdbuf, sizeof (cwdbuf) - 1))
@@ -1961,8 +1901,9 @@ void
 init_afterload_bm ()
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob;
-                 value_tyBM parsedval; value_tyBM resval;);
+                 objectval_tyBM * parsob; value_tyBM parsedval;
+                 value_tyBM resval;
+    );
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("doing %d closures after load %s using parsob %s\n",
                  count_init_afterload_bm, load_dir_bm,
@@ -2009,7 +1950,8 @@ void
 add_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * userob;);
+                 objectval_tyBM * userob;
+    );
   ASSERT_BM (count_added_contributors_bm > 0);
   ASSERT_BM (added_contributors_arr_bm != NULL);
   INFOPRINTF_BM ("adding %d contributors after load",
@@ -2044,7 +1986,8 @@ void
 remove_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * oldcontribob;);
+                 objectval_tyBM * oldcontribob;
+    );
   ASSERT_BM (count_removed_contributors_bm > 0);
   INFOPRINTF_BM ("removing %d contributors after load",
                  count_removed_contributors_bm);
@@ -2079,7 +2022,8 @@ void
 add_passwords_from_file_BM (const char *addedpasspath)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * contribob;);
+                 objectval_tyBM * contribob;
+    );
   ASSERT_BM (addedpasspath != NULL);
   DBGPRINTF_BM ("add_passwords_from_file start addedpasspath %s",
                 addedpasspath);
@@ -2185,7 +2129,8 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM funv;       //
                  objectval_tyBM * funob;        //
-                 value_tyBM arg1v, arg2v, arg3v; value_tyBM resappv;    //
+                 value_tyBM arg1v, arg2v, arg3v;
+                 value_tyBM resappv;    //
                  value_tyBM failres;    //
                  value_tyBM failplace;  //
     );
@@ -2271,7 +2216,9 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
                                value_tyBM arg3)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obsel; value_tyBM recva, arg1v, arg2v, arg3v; value_tyBM failres;     //
+                 objectval_tyBM * obsel;
+                 value_tyBM recva, arg1v, arg2v, arg3v;
+                 value_tyBM failres;    //
                  value_tyBM failplace;  //
     );
   _.recva = recv;
@@ -2622,7 +2569,6 @@ log_begin_message_BM (void)
 #ifdef BISMONGTK
   extern void gtk_log_begin_message_BM (void);
 #endif
-  extern void onion_log_begin_message_BM (void);
 #ifdef BISMONGTK
   if (gui_is_running_BM)
     {
@@ -2630,12 +2576,7 @@ log_begin_message_BM (void)
       return;
     };
 #endif /*BISMONGTK*/
-    if (web_is_running_BM)
-    {
-      onion_log_begin_message_BM ();
-      return;
-    }
-  FATAL_BM ("log_begin_message_BM without web or GUI");
+    FATAL_BM ("log_begin_message_BM without web or GUI");
 }                               /* end log_begin_message_BM */
 
 
@@ -2646,7 +2587,6 @@ log_end_message_BM (void)
 #ifdef BISMONGTK
   extern void gtk_log_end_message_BM (void);
 #endif
-  extern void onion_log_end_message_BM (void);
 #ifdef BISMONGTK
   if (gui_is_running_BM)
     {
@@ -2654,12 +2594,7 @@ log_end_message_BM (void)
       return;
     };
 #endif /*BISMONGTK*/
-    if (web_is_running_BM)
-    {
-      onion_log_end_message_BM ();
-      return;
-    }
-  FATAL_BM ("log_end_message_BM without web or GUI");
+    FATAL_BM ("log_end_message_BM without web or GUI");
 }                               /* end log_end_message_BM */
 
 
@@ -2670,7 +2605,6 @@ log_puts_message_BM (const char *str)
 #ifdef BISMONGTK
   extern void gtk_log_puts_message_BM (const char *);
 #endif
-  extern void onion_log_puts_message_BM (const char *);
 #ifdef BISMONGTK
   if (gui_is_running_BM)
     {
@@ -2678,12 +2612,7 @@ log_puts_message_BM (const char *str)
       return;
     };
 #endif /*BISMONGTK*/
-    if (web_is_running_BM)
-    {
-      onion_log_puts_message_BM (str);
-      return;
-    }
-  FATAL_BM ("log_puts_message_BM without web or GUI for: %s", str);
+    FATAL_BM ("log_puts_message_BM without web or GUI for: %s", str);
 }                               /* end log_puts_message_BM */
 
 void
@@ -2692,7 +2621,6 @@ log_object_message_BM (const objectval_tyBM * obj)
 #ifdef BISMONGTK
   extern void gtk_log_object_message_BM (const objectval_tyBM *);
 #endif
-  extern void onion_log_object_message_BM (const objectval_tyBM *);
 #ifdef BISMONGTK
   if (gui_is_running_BM)
     {
@@ -2700,13 +2628,8 @@ log_object_message_BM (const objectval_tyBM * obj)
       return;
     };
 #endif /*BISMONGTK*/
-    if (web_is_running_BM)
-    {
-      onion_log_object_message_BM (obj);
-      return;
-    }
-  FATAL_BM ("log_object_message_BM without web or GUI for %s",
-            objectdbg_BM (obj));
+    FATAL_BM ("log_object_message_BM without web or GUI for %s",
+              objectdbg_BM (obj));
 }                               /* end log_object_message_BM */
 
 void

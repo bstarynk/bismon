@@ -824,13 +824,12 @@ fork_process_at_slot_BM (int slotpos,
 /// remember that only plain_event_loop_BM is allowed to *remove*
 /// things from running_process_descr_arr_BM or pendingrunproc_list_BM
 void
-plain_event_loop_BM (void)      /// called from run_onionweb_BM (which is called from main)
-//// or directly from main
+plain_event_loop_BM (void)      /// called from from main
 {
   //  objectval_tyBM *k_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * bufob; objectval_tyBM * curjsob;
-    );
+                 objectval_tyBM * bufob;
+                 objectval_tyBM * curjsob;);
   atomic_init (&eventlooprunning_BM, true);
 
   DBGBACKTRACEPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",  //

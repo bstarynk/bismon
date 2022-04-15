@@ -272,14 +272,6 @@ extendedgcproc_BM (struct garbcoll_stBM *gc, extendedval_tyBM xval,
     case typayl_user_BM:
       usergcmark_BM (gc, (struct user_stBM *) xval, fromob, depth);
       return xval;
-    case typayl_websession_BM:
-      websessiondatagcmark_BM (gc, (struct websessiondata_stBM *) xval,
-                               fromob, depth);
-      return xval;
-    case typayl_webexchange_BM:
-      webexchangedatagcmark_BM (gc, (struct webexchangedata_stBM *) xval,
-                                fromob, depth);
-      return xval;
     case typayl_decayed_BM:
       decayedvectorgcmark_BM (gc,
                               (struct decayedvectpayl_stBM *) xval,
@@ -371,12 +363,6 @@ valgcdestroy_BM (struct garbcoll_stBM *gc, value_tyBM val)
     case typayl_user_BM:
       usergcdestroy_BM (gc, (struct user_stBM *) val);
       return;
-    case typayl_webexchange_BM:
-      webexchangedatagcdestroy_BM (gc, (struct webexchangedata_stBM *) val);
-      return;
-    case typayl_websession_BM:
-      websessiondatagcdestroy_BM (gc, (struct websessiondata_stBM *) val);
-      return;
     case typayl_decayed_BM:
       decayedvectordestroy_BM (gc, (struct decayedvectpayl_stBM *) val);
       return;
@@ -467,10 +453,6 @@ typestring_BM (int ty)
       return "payl_hashmapbucket";
     case typayl_user_BM:
       return "payl_user";
-    case typayl_websession_BM:
-      return "payl_websession";
-    case typayl_webexchange_BM:
-      return "payl_webexchange";
     default:
       {
         static thread_local char buf[32];
@@ -542,12 +524,6 @@ deleteobjectpayload_BM (objectval_tyBM * obj, extendedval_tyBM payl)
       return;
     case typayl_user_BM:
       userdelete_BM (obj, (struct user_stBM *) payl);
-      return;
-    case typayl_websession_BM:
-      websessiondelete_BM (obj, (struct websessiondata_stBM *) payl);
-      return;
-    case typayl_webexchange_BM:
-      webexchangedelete_BM (obj, (struct webexchangedata_stBM *) payl);
       return;
     default:
 
@@ -646,12 +622,6 @@ valgckeep_BM (struct garbcoll_stBM *gc, value_tyBM val)
       return;
     case typayl_user_BM:
       usergckeep_BM (gc, (struct user_stBM *) val);
-      return;
-    case typayl_websession_BM:
-      websessiondatagckeep_BM (gc, (struct websessiondata_stBM *) val);
-      return;
-    case typayl_webexchange_BM:
-      webexchangedatagckeep_BM (gc, (struct webexchangedata_stBM *) val);
       return;
     default:
       FATAL_BM ("gckeep ty#%d unexpected for val@%p", ty, val);
@@ -774,7 +744,6 @@ full_garbage_collection_BM (struct stackframe_stBM *stkfram)
   gcmarkconstants_BM (&GCdata);
   gcmarkglobals_BM (&GCdata);
   gcmarkdefer_BM (&GCdata);
-  gcmarkwebonion_BM (&GCdata);
   gcmarkevloop_BM (&GCdata);
   gcmarkagenda_BM (&GCdata);
   gcmarkmodules_BM (&GCdata);

@@ -65,9 +65,6 @@ enum gctyenum_BM
   typayl_hashsetvbucket_BM,
   typayl_hashmapval_BM,
   typayl_hashmapbucket_BM,
-  /// for webonion
-  typayl_websession_BM,
-  typayl_webexchange_BM,
   // for JSONRPC service client socket
   typayl_jsonrpcservice_BM,
   ///
@@ -767,54 +764,6 @@ struct jsonrpcservicedata_stBM { /* for typayl_jsonrpcservice_BM */
 /// both websessiondata & webexchangedata payloads and their owning
 /// objects are only created by the web infrastructure. So there is no
 /// public function to create them, or put them as a payload
-
-
-/// web session data reifies web HTTP session & HTTP cookie
-#define BISMONION_WEBSESS_MAGIC 0x31dcebad      /* websess magic 836561837 */
-struct websessiondata_stBM      /// for typayl_websession_BM
-{
-  typedhead_tyBM websess_head;  // rlen is unused
-  unsigned websess_magic;       /* always BISMONION_WEBSESS_MAGIC */
-  unsigned websess_rank;        /* unique rank */
-  uint32_t websess_rand1;       /* first random integer */
-  uint32_t websess_rand2;       /* second random integer */
-  objectval_tyBM *websess_ownobj;       /* owning object having this payload */
-  objectval_tyBM *websess_contribob;    /* the contributor logged in, or nil */
-  value_tyBM websess_datav;     /* supplementary data value */
-
-  double websess_createtime;    /* creation time */
-  double websess_expiretime;    /* expiry time */
-  /* There is only one web socket per websession.  So if the user
-     "opens a link in new tab", another websession should be
-     created. */
-  onion_websocket *websess_websocket;   /* the web socket */
-};                              /* end websessiondata_stBM */
-
-
-//// a webexchange object reifies an HTTP request and response
-#define BISMONION_WEBX_MAGIC 0x11b63c9b /* webx magic 297155739 */
-#define BISMONION_MIMETYPE_SIZE 40
-struct webexchangedata_stBM
-{                               /// for typayl_webexchange_BM
-  struct strbuffer_stBM webx_sbuf;      /* inherit from strbuffer */
-  unsigned webx_magic;          /* always BISMONION_WEBX_MAGIC */
-  int webx_num;
-  objectval_tyBM *webx_ownobj;  /* owning object having this payload */
-  objectval_tyBM *webx_sessobj; /* the websession object, if any */
-  pthread_cond_t webx_cond_ready;       /* condvar for readiness, under owning object's mutex */
-  // for HTTP REST-full like POST requests, the request could carry a
-  // JSON value, which we encapsulate as some object.  See also
-  // https://softwareengineering.stackexchange.com/q/390262/40065 for
-  // more.  This field is only set at creation time, for HTTP POST
-  // requests with a Content-Type: "application/json"
-  objectval_tyBM *webx_jsonobj;
-  value_tyBM webx_datav;        /* supplementary data value */
-  double webx_time;
-  char webx_mimetype[BISMONION_MIMETYPE_SIZE];
-  atomic_int webx_respcode;
-  onion_request *webx_requ;
-  onion_response *webx_resp;
-};                              /* end webexchangedata_stBM */
 
 ////////////////////////////////////////////////////////////////
 /// NB: struct browsedval_stBM & struct browsedobj_stBM are in globals_BM.h

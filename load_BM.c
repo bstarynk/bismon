@@ -640,7 +640,8 @@ load_modif_value_BM (struct loader_stBM *ld, int ix,
   LOCALFRAME_BM (parstkfrm, NULL,       //
                  struct parser_stBM *ldparser;  //
                  objectval_tyBM * curldobj;     //
-                 value_tyBM valv;);
+                 value_tyBM valv;
+    );
   _.ldparser = ldpars;
   _.curldobj = argcurldobj;
   unsigned lineno = parserlineno_BM (ldpars);
@@ -684,7 +685,8 @@ load_modif_json_BM (struct loader_stBM *ld, int ix,
   LOCALFRAME_BM (parstkfrm, NULL,       //
                  struct parser_stBM *ldparser;  //
                  objectval_tyBM * curldobj;     //
-                 value_tyBM valv;);
+                 value_tyBM valv;
+    );
   _.ldparser = ldpars;
   _.curldobj = argcurldobj;
   unsigned lineno = parserlineno_BM (ldpars);
@@ -799,7 +801,8 @@ load_modif_todo_BM (struct loader_stBM *ld, int ix,
                  value_tyBM todov;      //
                  const closure_tyBM * closv;    //
                  objectval_tyBM * obselv;       //
-                 value_tyBM args[TODO_MAXARGS_BM];);
+                 value_tyBM args[TODO_MAXARGS_BM];
+    );
   _.ldparser = ldpars;
   _.curldobj = argcurldobj;
   unsigned lineno = parserlineno_BM (ldpars);
@@ -897,10 +900,12 @@ load_postpone_modif_BM (struct loader_stBM *ld, int ix,
 {
 
   LOCALFRAME_BM (parstkfrm, NULL,       //
-                 struct loader_stBM *ld; struct parser_stBM *ldparser;  //
+                 struct loader_stBM *ld;
+                 struct parser_stBM *ldparser;  //
                  objectval_tyBM * curldobj;     //
                  value_tyBM datav;      //
-                 const closure_tyBM * clos;);
+                 const closure_tyBM * clos;
+    );
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
   ASSERT_BM (ix >= 0 && ix <= (int) ld->ld_maxnum);
   ASSERT_BM (data != NULL);
@@ -957,7 +962,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                  value_tyBM attrval;    //
                  value_tyBM compval;    //
                  objectval_tyBM * classobj;     //
-                 };);
+                 };
+    );
   _.ldparsownob = makeobj_BM ();
   struct parser_stBM *ldpars
     = makeparser_of_file_BM (fil, curldpath, _.ldparsownob);
@@ -1371,7 +1377,8 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
 {
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
   ASSERT_BM (_parentframe != NULL);
-  LOCALFRAME_BM (_parentframe, NULL, value_tyBM firsttodo;);
+  LOCALFRAME_BM (_parentframe, NULL, value_tyBM firsttodo;
+    );
   /// run the first pass to create every object
   for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
     if (ld->ld_storepatharr[ix])
@@ -1481,8 +1488,9 @@ const quasinode_tyBM * restargs __attribute__((unused)))
     closix__LAST
   };
   LOCALFRAME_BM (stkf, BMP_postpone_load_modification,  //
-                 objectval_tyBM * curldobj;
-                 value_tyBM data; closure_tyBM * cclos;);
+                 objectval_tyBM * curldobj; value_tyBM data;
+                 closure_tyBM * cclos;
+    );
   LOCALGETFUNV_BM (_.cclos);
   WEAKASSERT_BM (isclosure_BM (_.cclos)
                  && closurewidth_BM ((value_tyBM) _.cclos) >= closix__LAST);
@@ -1563,7 +1571,9 @@ ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh)    // load_module
   extern void postpone_loader_module_BM (objectval_tyBM * modulob,
                                          struct stackframe_stBM *stkf);
   LOCALFRAME_BM (stkf, BMP_load_module, //
-                 objectval_tyBM * modulob; value_tyBM callingclosv;);
+                 objectval_tyBM * modulob;
+                 value_tyBM callingclosv;
+    );
   LOCALGETFUNV_BM (_.callingclosv);
   _.modulob = objectcast_BM (closurenthson_BM (_.callingclosv, 0));
   char modulidbuf[32];
