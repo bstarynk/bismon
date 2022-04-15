@@ -682,12 +682,10 @@ prim_gtk_application_activate (void *root, Obj **env, Obj **list)
   gtk_cur_list = list;
   if (verbose_ilisp)
     {
-      printf ("\n;;gtk_application_activate [%s:%d] gtk_cur_env=", __FILE__,
-              __LINE__);
-      print_val_nl (*gtk_cur_env);
-      printf (";;gtk_application_activate [%s:%d] gtk_cur_list=", __FILE__,
-              __LINE__);
-      print_val_nl (*gtk_cur_list);
+      LOCATED_PRINT_MESSAGE_VAL_NL
+        ("\n;;gtk_application_activate gtk_cur_env=", *gtk_cur_env);
+      LOCATED_PRINT_MESSAGE_VAL_NL
+        ("\;; gtk_application_activate gtk_cur_list=", *gtk_cur_list);
       fputc ('\n', stdout);
       fflush (NULL);
     };
@@ -720,8 +718,8 @@ prim_gtk_application_add_window (void *root, Obj **env, Obj **list)
     error ("gtk_application_add_window without GtkWindow");
   if (verbose_ilisp)
     {
-      printf (";;gtk_application_add_window ");
-      print_val_nl (*widgob);
+      LOCATED_PRINT_MESSAGE_VAL_NL (";; gtk_application_add_window ",
+                                    *widgob);
     }
   return *widgob;
 }                               /* end prim_gtk_application_add_window */
