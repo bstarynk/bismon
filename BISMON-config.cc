@@ -3,7 +3,7 @@
 // see https://github.com/bstarynk/bismon/
 /***
     BISMON
-    Copyright © 2020 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2020 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
     with help from Franck Védrine.
@@ -74,8 +74,6 @@ std::string bmc_host_compflags;
 std::string bmc_out_directory;
 std::string bmc_emit_constdep_path;
 std::string bmc_ninja_file;
-std::string bmc_onion_includedir;
-std::string bmc_onion_libdir;
 
 std::vector<std::string> bmc_source_files;
 std::vector<std::string> bmc_constdep_files;
@@ -95,8 +93,6 @@ extern "C" const char* bismon_target_gcc;
 extern "C" const char* bismon_target_gxx;
 extern "C" const char* const bismon_sources[];
 extern "C" const int bismon_source_number;
-extern "C" const char* bismon_onion_includedir;
-extern "C" const char* bismon_onion_libdir;
 
 
 bool bmc_batch_flag;
@@ -121,8 +117,6 @@ enum bmc_longopt_en
   BMCOPT_dry_run,
   BMCOPT_skiplabel,
   BMCOPT_output_directory,
-  BMCOPT_onion_incldir,
-  BMCOPT_onion_libdir,
 };
 
 //see https://en.wikipedia.org/wiki/ANSI_escape_code
@@ -148,8 +142,6 @@ static const struct option
   {"skip",  	         required_argument,  0,    BMCOPT_skiplabel},
   {"label",  	         required_argument,  0,    BMCOPT_skiplabel},
   {"output-directory",   required_argument,  0,    BMCOPT_output_directory},
-  {"onion-incldir",      required_argument,  0,    BMCOPT_onion_incldir},
-  {"onion-libdir",       required_argument,  0,    BMCOPT_onion_libdir},
   {0,0,0,0}
 };
 
@@ -320,36 +312,6 @@ bmc_parse_options(int& argc, char**argv)
     case BMCOPT_skiplabel:             // --skip=XXXX or --label=XXX
       BMC_DEBUG("skipping label:" << optarg);
       break;
-    case BMCOPT_onion_incldir:    // --onion-incldir=XXXX2
-      BMC_DEBUG("given libonion include directory :" << optarg);
-      if (!bmc_dryrun_flag)
-      {
-        DIR* incldir = opendir(optarg);
-        if (!incldir)
-        {
-          std::cerr << argv[0] << " failed to opendir libonion include directory " << optarg
-                    << " : " << strerror(errno) << std::endl;
-          BMC_FAILURE("failed to open libonion include directory");
-        }
-        else
-          closedir(incldir);
-      }
-      break;
-    case BMCOPT_onion_libdir:     // --onion-libdir=XXXX
-      BMC_DEBUG("given libonion library directory :" << optarg);
-      if (!bmc_dryrun_flag)
-      {
-        DIR* libdir = opendir(optarg);
-        if (!libdir)
-        {
-          std::cerr << argv[0] << " failed to opendir libonion library directory " << optarg
-                    << " : " << strerror(errno) << std::endl;
-          BMC_FAILURE("failed to open libonion library directory");
-        }
-        else
-          closedir(libdir);
-      }
-      break;
     }
   }
   BMC_DEBUG("constdepix=" << constdepix);
@@ -394,15 +356,6 @@ bmc_show_usage(const char*progname)
   std::cerr << " --ninja=PATH           # generate a PATH for ninja builder - see ninja-build.org" << std::endl;
   std::cerr << "           	        # usually --ninja=build.ninja" << std::endl;
   std::cerr << " --output-directory=DIR # set the output directory to DIR - default is " << bismon_directory << std::endl;
-  std::cerr << "# The libonion is for web services.  See www.coralbits.com/libonion & github.com/davidmoreno/onion ..." << std::endl;
-  std::cerr << " --onion-incldir=DIR    # set to DIR the include directory for libonion e.g. <onion/onion.h>" << std::endl;
-  std::cerr << "           	        # for example: --onion-incldir=/usr/local/include" << std::endl;
-  if (bismon_onion_includedir)
-    std::cerr << "## known libonion include directory is " << bismon_onion_includedir << std::endl;
-  std::cerr << " --onion-libdir=DIR     # set to DIR the shared library directory for libonion.so" << std::endl;
-  std::cerr << "           	        # for example: --onion-libdir=/usr/local/lib" << std::endl;
-  if (bismon_onion_libdir)
-    std::cerr << "## known libonion library directory is " << bismon_onion_libdir << std::endl;
   std::cerr << "#####################################" << std::endl;
   std::cerr <<  "##-- This executable " << progname << " was built " << __DATE__ "@" __TIME__ " from " __FILE__ " git " << BISMON_SHORTGIT << std::endl;
   std::cerr << std::endl;
@@ -867,11 +820,7 @@ bmc_print_config_make(const char*progname)
   makeoutf << "BISMONMK_GITID=" << bismon_gitid << std::endl;
   makeoutf << "BISMONMK_SHORTGITID=" << bismon_shortgitid << std::endl;
   makeoutf << "#without BISMONMK_gtk" << std::endl;
-  if (bmc_onion_includedir.empty())
-    makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
-  else
-    makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS) $(BM_ONION_OBJECTS)"
-             << std::endl;
+  makeoutf << "BISMONMK_OBJECTS= $(BM_OBJECTS)" << std::endl;
   errno = 0;
   makeoutf << std::endl
 	   << "##: BISMONMK_HOST_CC from " << __FILE__ ":" << __LINE__ << std::endl;
@@ -919,16 +868,6 @@ bmc_print_config_make(const char*progname)
     makeoutf << std::endl;
   }
   makeoutf << "BISMONMK_PACKAGES= glib-2.0 gobject-2.0 jansson readline" << std::endl;
-  makeoutf << std::endl
-	   << "##: BISMONMK_ONION_* stuff from " << __FILE__ ":" << __LINE__ << std::endl;
-  if (!bmc_onion_includedir.empty())
-    makeoutf << "BISMONMK_ONION_INCLUDEDIR=" << bmc_onion_includedir << std::endl;
-  else
-    makeoutf << "#without BISMONMK_ONION_INCLUDE" << std::endl;
-  if (!bmc_onion_libdir.empty())
-    makeoutf << "BISMONMK_ONION_LIBDIR=" << bmc_onion_libdir << std::endl;
-  else
-    makeoutf << "#without BISMONMK_ONION_LIBDIR" << std::endl;
   makeoutf << std::endl
 	   << "##: BISMONMK_EXECUTABLE stuff from " << __FILE__ ":" << __LINE__ << std::endl;
   makeoutf << "BISMONMK_EXECUTABLE= bismon" << std::endl;
@@ -1000,7 +939,7 @@ rule CXX_rlBM
   description = CXX_rlBM $out < $in (handwritten C++ code) ° $depfile
   command = $NJBM_host_cxx -c $NJBM_host_warn_flags $
             $NJBM_host_optim_flags $NJBM_host_debug_flags $
-            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $NJBM_onion_cflags $
+            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $
             -MD -MF $depfile $
             $in -o $out
 
@@ -1010,7 +949,7 @@ rule MODCC_rlBM
   description = MODCC_rlBM  $out < $in (generated C module) ° $depfile
   command = $NJBM_host_cxx -fPIC -shared $NJBM_host_warn_flags $
             $NJBM_host_optim_flags $NJBM_host_debug_flags $
-            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $NJBM_onion_cflags $
+            $NJBM_host_prepro_flags $NJBM_pkgconfig_cflags $
             -MD -MF  $depfile $
             $in -o $out
 
@@ -1020,7 +959,7 @@ rule LINKALLBISMON_rlBM
   description = LINKALLBISMON_rlBM (link everything into $out)
   command = $NJBM_host_cxx  $NJBM_host_warn_flags $
             $NJBM_host_optim_flags $NJBM_host_debug_flags $
-            $in $NJBM_pkgconfig_libs $NJBM_onion_linkflags $
+            $in $NJBM_pkgconfig_libs $
             -o $out
 
 ################### end of NinjaRules ###################
@@ -1178,15 +1117,6 @@ bmc_print_config_ninja(const char*progname)
   };
   ninjaoutf << std::endl;
   BMC_DEBUG("handled bismon_packages= " << bismon_packages);
-  if (bismon_onion_includedir && bismon_onion_includedir[0])
-    ninjaoutf << "NJBM_onion_cflags= -I " << bismon_onion_includedir << std::endl;
-  else
-    ninjaoutf << "NJBM_onion_cflags =" << std::endl;
-  if (bismon_onion_libdir && bismon_onion_libdir[0]) {
-    ninjaoutf << "NJBM_onion_linkflags= -L" << bismon_onion_libdir << " -lonion" << std::endl;
-  }
-  else
-    ninjaoutf << "NJBM_onion_linkflags =" << std::endl;
   ninjaoutf << std::endl;
   ninjaoutf << "NJBM_host_cc= "
 	    << (getenv("CC")?:"gcc") << std::endl;
@@ -1511,102 +1441,6 @@ bmc_ask_missing_configuration(const char*progname)
     }
   std::cout << std::endl;
   BMC_DEBUG("Now bmc_target_gxx is '" << bmc_target_gxx << "'" << std::endl);
-  //////////////////////////////
-  /// ask about the libonion - see www.coralbits.com/libonion/ and github.com/davidmoreno/onion
-  /// libonion include header - with onion/onion.h
-  if (bismon_onion_includedir && bismon_onion_includedir[0]) { // from __timestamp.c
-    BMC_DEBUG("got bismon_onion_includedir " << bismon_onion_includedir);
-    DIR*dirincl = opendir(bismon_onion_includedir);
-    if (dirincl)
-      closedir(dirincl);
-    else {
-      std::cerr << progname << ": the libONION include directory " << bismon_onion_includedir
-		<< " is a bad one: " << strerror(errno) << " (from __timestamp.* file)" << std::endl;
-      std::cerr << "... consider running `make distclean` then `make runconfig` then `make bismon`..." << std::endl;
-      BMC_FAILURE("bad libONION include directory");
-    };
-    bmc_onion_includedir = std::string(bismon_onion_includedir);
-  };
-  if (bismon_onion_libdir && bismon_onion_libdir[0]) { // from __timestamp.c
-    BMC_DEBUG("got bismon_onion_libdir " << bismon_onion_libdir);
-    DIR*dirlib = opendir(bismon_onion_includedir);
-    if (dirlib)
-      closedir(dirlib);
-    else {
-      std::cerr << progname << ": the libONION library directory " << bismon_onion_libdir
-		<< " is a bad one: " << strerror(errno) << " (from __timestamp.* file)" << std::endl;
-      std::cerr << "... consider running `make distclean` then `make runconfig` then `make bismon`..." << std::endl;
-      BMC_FAILURE("bad libONION library directory");
-    };
-    bmc_onion_libdir = std::string(bismon_onion_libdir);
-  };
-  if (bmc_onion_includedir.empty() || bmc_onion_libdir.empty()) {
-    std::cout << std::endl;
-    std::cout << "BISMON needs the libonion web server (HTTP+HTTPS) library." << std::endl;
-    std::cout << "See www.coralbits.com/libonion and github.com/davidmoreno/onion for more." << std::endl;
-  }
-  while (bmc_onion_includedir.empty()) {
-    std::cout << "Include directory for libonion ; it should contain the <onion/onion.h> header file."
-	      << std::endl;
-    if (!access("/usr/local/include/onion/onion.h", R_OK) && isatty(STDOUT_FILENO)) {
-      std::cout << "... Found /usr/local/include/onion/onion.h" << std::endl;
-      BMC_DEBUG("defaulting libonion header directory to /usr/local/include/");
-      bmc_set_readline_buffer("/usr/local/include/");
-    }
-    else if (!access("/usr/include/onion/onion.h", R_OK) && isatty(STDOUT_FILENO)) {
-      std::cout << "... Found /usr/include/onion/onion.h" << std::endl;
-      BMC_DEBUG("defaulting libonion header directory to /usr/include/");
-      bmc_set_readline_buffer("/usr/include/");
-    }
-    const char*onionincl = bmc_readline(progname, "Libonion included-header directory? ");
-    if (onionincl && strlen(onionincl)>2) {
-      std::string stronionincl(onionincl);
-      if (stronionincl[stronionincl.size()-1] != '/')
-	stronionincl += "/";
-      BMC_DEBUG("stronionincl='" << stronionincl << "'");
-      std::string onionh = stronionincl+"onion/onion.h";
-      if (!access(onionh.c_str(), R_OK)) {
-	bmc_onion_includedir = stronionincl;
-	BMC_DEBUG("setting bmc_onion_includedir to " << stronionincl);
-      } else
-	std::cerr << "WARNING: Wrong libonion include dir " << stronionincl << " since " << onionh << " cannot be read." << std::endl
-		  << " (from " << __FILE__ ":" << __LINE__ << ")" << std::endl
-		  << std::endl;
-    }
-  } // end while bmc_onion_includedir.empty()
-  /////////////
-  /// libonion library directory, with libonion.so
-  while (bmc_onion_libdir.empty()) {
-    std::cout << "library directory for libonion ; it should contain the libonion.so shared object."
-	      << std::endl;
-    if (!access("/usr/local/lib/libonion.so", R_OK) && isatty(STDOUT_FILENO)) {
-      std::cout << "... Found /usr/local/lib/libonion.so" << std::endl;
-      BMC_NLDEBUG("defaulting libonion library directory to /usr/local/lib/");
-      bmc_set_readline_buffer("/usr/local/lib/");
-    }
-    else if (!access("/usr/lib/libonion.so", R_OK) && isatty(STDOUT_FILENO)) {
-      std::cout << "... Found /usr/lib/libonion.so" << std::endl;
-      BMC_DEBUG("defaulting libonion library directory to /usr/lib/");
-      bmc_set_readline_buffer("/usr/lib");
-    }
-    const char*onionlib = bmc_readline(progname, "Libonion shared library directory? ");
-    if (onionlib && strlen(onionlib)>2) {
-      std::string stronionlib(onionlib);
-      if (stronionlib[stronionlib.size()-1] != '/')
-	stronionlib += "/";
-      BMC_DEBUG("stronionlib='" << stronionlib << "'");
-      std::string onionlib = stronionlib+"libonion.so";
-      if (!access(onionlib.c_str(), R_OK)) {
-	bmc_onion_libdir = stronionlib;
-	BMC_DEBUG("setting bmc_onion_libdir to " << stronionlib);
-      } else
-	std::cerr << "WARNING: Wrong libonion shared library directory " << stronionlib
-		  << " since " << onionlib << " cannot be read."
-		  << std::endl
-		  << " (... from " << __FILE__ ":" << __LINE__ << ")" << std::endl;
-    }
-  } // end while bmc_onion_libdir.empty()
-  BMC_DEBUG("now bmc_onion_libdir is:" << bmc_onion_libdir << std::endl);
   ////////////////////////
   /// ask about the output directory, into which files would be written
   char cwdbuf[256];
@@ -1774,26 +1608,6 @@ bmc_initialize_global_variables(const char*progname)
     bmc_target_gxx = std::string(bismon_target_gxx);
     BMC_DEBUG("bmc_target_gxx initialized to " << bmc_target_gcc);
     nbinit++;
-  };
-  if (bismon_onion_includedir && bismon_onion_includedir[0]) {
-    std::string onincdir(bismon_onion_includedir);
-    if (onincdir[onincdir.size()-1] != '/')
-      onincdir += "/";
-    if (!access((onincdir+"onion/onion.h").c_str(), R_OK)) {
-      bmc_onion_includedir = std::string(bismon_onion_includedir);
-      BMC_DEBUG("bmc_onion_includedir initialized to " << bmc_onion_includedir);
-      nbinit++;
-    }
-  };
-  if (bismon_onion_libdir && bismon_onion_libdir[0]) {
-    std::string onlibdir(bismon_onion_libdir);
-    if (onlibdir[onlibdir.size()-1] != '/')
-      onlibdir += "/";
-    if (!access((onlibdir+"libonion.so").c_str(), R_OK)) {
-      bmc_onion_libdir = std::string(bismon_onion_libdir);
-      BMC_DEBUG("bmc_onion_includedir initialized to " << bmc_onion_includedir);
-      nbinit++;
-    }
   };
   BMC_DEBUG("bmc_initialize_global_variables did " << nbinit << " initializations for " << progname << std::endl);
   return nbinit;
