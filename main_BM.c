@@ -1205,9 +1205,11 @@ main (int argc, char **argv)
   if (!skiplocalcheck)
     check_locale_BM ();
   {
-    const char* glib_mismatch = glib_check_version(GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MINOR_VERSION);
+    const char *glib_mismatch =
+      glib_check_version (GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION,
+                          GLIB_MICRO_VERSION);
     if (glib_mismatch)
-      FATAL_BM("GLIB version mismatch: %s", glib_mismatch);
+      FATAL_BM ("GLIB version mismatch: %s", glib_mismatch);
   };
   initialize_garbage_collector_BM ();
   check_delims_BM ();
@@ -2435,10 +2437,11 @@ void
 give_prog_version_BM (const char *progname)
 {
   char versionbuf[48];
-  memset (versionbuf, 0, sizeof(versionbuf));
-  confstr(_CS_GNU_LIBC_VERSION, versionbuf, sizeof(versionbuf)-1);
+  memset (versionbuf, 0, sizeof (versionbuf));
+  confstr (_CS_GNU_LIBC_VERSION, versionbuf, sizeof (versionbuf) - 1);
   printf ("\n" "*** %s: version information\n", progname);
-  printf ("\t timestamp: %s (%uld Epoch)\n", bismon_timestamp, bismon_timelong);
+  printf ("\t timestamp: %s (%uld Epoch)\n", bismon_timestamp,
+          bismon_timelong);
   printf ("\t git id: %s\n", bismon_gitid);
   printf ("\t last git commit: %s\n", bismon_lastgitcommit);
   printf ("\t last git tag: %s\n", bismon_lastgittag);
@@ -2447,8 +2450,9 @@ give_prog_version_BM (const char *progname)
   printf ("\t GNUmakefile: %s\n", bismon_gnumakefile);
   printf ("\t libc runtime version: %s\n", versionbuf);
   printf ("\t Glib build version: %d.%d.%d\n",
-	  GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
-  printf ("\t Jansson build version: %s, runtime %s\n", JANSSON_VERSION, jansson_version_str());
+          GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
+  printf ("\t Jansson build version: %s, runtime %s\n", JANSSON_VERSION,
+          jansson_version_str ());
   printf ("########\n");
   printf ("## to get help, run: %s --help\n\n", progname);
   fflush (NULL);
