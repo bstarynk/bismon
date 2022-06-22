@@ -1,7 +1,7 @@
 #!/bin/bash -x
 ##
 ##   BISMON  ---- its Build script
-##   Copyright © 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+##   Copyright © 2021 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 ##   contributed by Basile Starynkevitch (working at CEA, LIST, France)
 ##   <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 ##
@@ -88,4 +88,10 @@ $BISMON_MAKE $BISMON_MAKE_FLAGS  --jobs=$[$nbproc/2 + 1] objects || (
     exit 1
 )
 
-exec $BISMON_MAKE $BISMON_MAKE_FLAGS  bismon
+if [ -f bismon ]; then
+    /bin/mv -v bismon bismon%
+fi
+
+$BISMON_MAKE $BISMON_MAKE_FLAGS  bismon
+
+exec ./bismon --version
