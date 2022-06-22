@@ -2438,7 +2438,8 @@ give_prog_version_BM (const char *progname)
   printf ("\t source dir: %s\n", bismon_directory);
   printf ("\t GNUmakefile: %s\n", bismon_gnumakefile);
   printf ("########\n");
-  printf ("run\n" "\t   %s --help\n" "to get help.\n", progname);
+  printf ("## to get help, run: %s --help\n\n", progname);
+  fflush (NULL);
   exit (EXIT_SUCCESS);
 }                               /* end give_prog_version_BM */
 
