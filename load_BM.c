@@ -455,10 +455,16 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
           else
             {
               int pos = -1;
+              char dlerrbuf[80];
+              memset (dlerrbuf, 0, sizeof (dlerrbuf));
+              strncpy (dlerrbuf, dlerror (), sizeof (dlerrbuf));
+              curloadedobj->ob_rout = crashing_objrout_BM;
+              curloadedobj->ob_sig = BMP_function_sig;
               if (sscanf (linbuf + delimlen, " *%n", &pos) >= 0 && pos > 0)
-                FATAL_BM ("bad default function-sig line %s in file %s:%d,"
-                          " dlsym %s failed %s",
-                          linbuf, curldpath, lincnt, symbuf, dlerror ());
+                WARNPRINTF_BM
+                  ("bad default function-sig line %s in file %s:%d,"
+                   " dlsym %s failed %s", linbuf, curldpath, lincnt, symbuf,
+                   dlerrbuf);
             }
         }
       //
