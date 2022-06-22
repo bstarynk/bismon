@@ -36,10 +36,6 @@ INDENTFLAGS= --gnu-style --no-tabs --honour-newlines
 ASTYLEFLAGS= --style=gnu -s2
 RM= rm -fv
 BM_CXX_STANDARD_FLAGS= -std=gnu++17
-## libonion from github.com/davidmoreno/onion is an HTTP/HTTPS server library
-
-## template generator from libonion
-ONION_TEMPLATE_GENERATOR= otemplate
 
 ## CONVENTION: handwritten markdown files are...
 MARKDOWN_SOURCES= $(sort $(wildcard *.md))
@@ -59,8 +55,6 @@ BM_C_SOURCES= $(wildcard [a-z]*_BM.c)
 ## CONVENTION: handwritten C++ files are...
 BM_CXX_SOURCES= $(wildcard [a-z]*_BM.cc)
 
-## CONVENTION: handwritten C files for web using libonion
-BM_C_ONION_SOURCES= $(wildcard [a-z]*_ONIONBM.c)
 
 
 ## obsolete GTK, going to another process & program
@@ -68,12 +62,6 @@ BM_C_ONION_SOURCES= $(wildcard [a-z]*_ONIONBM.c)
 #-BM_C_GTK_SOURCES= $(wildcard [a-z]*_GTKBM.c)
 
 
-## CONVENTION: templates for libonion
-BM_ONION_TEMPLATES= $(wildcard [a-z]*ONIONBM.thtml)
-
-BM_ONIONTEMPL_HEADERS= $(patsubst %.thtml,_%.h,$(BM_ONION_TEMPLATES))
-BM_ONIONTEMPL_C_CODE= $(patsubst %.thtml,_%.c,$(BM_ONION_TEMPLATES))
-BM_ONIONTEMPL_OBJECTS= $(patsubst %.c,%.o,$(BM_ONIONTEMPL_C_CODE))
 
 ## CONVENTION: packages for pkg-config
 #BISMON_PACKAGES=  glib-2.0 gtk4 gtk4-x11 gtksourceview-3.0
@@ -87,7 +75,6 @@ BISMON_CONFIG_OPTIONS=
 #-BM_OBJECTS= $(patsubst %.c,%.o,$(BM_C_SOURCES))  $(patsubst %.c,%.o,$(BM_C_GTK_SOURCES))  $(patsubst %.cc,%.o,$(BM_CXX_SOURCES))
 BM_OBJECTS= $(patsubst %.c,%.o,$(BM_C_SOURCES))  $(patsubst %.cc,%.o,$(BM_CXX_SOURCES))
 
-BM_ONION_OBJECTS= $(patsubst %.c,%.o,$(BM_C_ONION_SOURCES)) $(BM_ONIONTEMPL_OBJECTS)
 
 ## internal make variables...
 BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
@@ -193,14 +180,6 @@ id_BM-g.o: id_BM.c id_BM.h
 %_BM-g.o: %_BM.cc bismon.h
 	$(CXX) -c -DBISMON_MAKING_CPP_$*_g $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
 
-%_ONIONBM.o: %_ONIONBM.c bismon.h
-	@printf "for $@ BISMON_SHORT_GIT is '%s'\n" '$(BISMON_SHORT_GIT)'
-	$(CC) -c -DBISMON_MAKING_ONIONC_$* -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall -Wextra  $< -o $@
-
-%_ONIONBM-g.o: %_ONIONBM.c bismon.h
-	$(CC) -c -DBISMON_MAKING_ONIONC_$*_g $(BISMON_CFLAGS) -DBISMON_GITID=\"$(BISMON_SHORT_GIT)\" $-g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -I$(BISMONMK_ONION_INCLUDEDIR) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall -Wextra $< -o $@
-
-web_ONIONBM.o: web_ONIONBM.c _login_ONIONBM.h _changepasswd_ONIONBM.h
 
 %BM.const.h: %BM.c BM_makeconst
 	./BM_makeconst -H $@ $<
@@ -215,17 +194,10 @@ executable: _bismon-config.mk
 
 
 _bismon-constants.c: BM_makeconst $(BISMONMK_OBJECTS)
-	./BM_makeconst -C $@ $(BM_C_SOURCES) $(BM_C_ONION_SOURCES) $(BM_CXX_SOURCES)
+	./BM_makeconst -C $@ $(BM_C_SOURCES) $(BM_CXX_SOURCES)
 
 _bismon-constants.o: _bismon-constants.c
 
-_%_ONIONBM.h _%_ONIONBM.c: %_ONIONBM.thtml
-	/bin/cp $^ $^~ $(warning processing $^)
-	if [ -f  $(patsubst %.thtml,_%.h,$^) ] ; then \
-	   /bin/mv -vf $(patsubst %.thtml,_%.h,$^) $(patsubst %.thtml,_%.h~,$^) ; fi
-	if [ -f  $(patsubst %.thtml,_%.c,$^) ] ; then \
-	   /bin/mv -vf $(patsubst %.thtml,_%.c,$^) $(patsubst %.thtml,_%.c~,$^) ; fi
-	$(ONION_TEMPLATE_GENERATOR) --asset-file $(patsubst %.thtml,_%.h,$^) $^ $(patsubst %.thtml,_%.c,$^)
 
 ## a phony target, used in Build script
 objects:  $(BISMONMK_OBJECTS)
@@ -235,19 +207,17 @@ bismon:  _bismon-config.mk _bm_config.h _bismon-constants.c $(wildcard _genbm_*.
 ifdef BISMONMK_HOST_CXX
 	@echo linking $@ with BISMONMK_HOST_CXX= $(BISMONMK_HOST_CXX)
 	$(BISMONMK_HOST_CXX)  $(BISMONMK_OBJECTS) _bismon-constants.o  __timestamp.o \
-                    -L$(BISMONMK_ONION_LIBDIR) -lonion \
                     $(shell pkg-config --libs $(BISMONMK_PACKAGES)) \
                     -lbacktrace -lcrypt -lpthread -ldl -rdynamic -o $@
 else
 	@echo linking $@ with CXX= $(CXX)
 	$(CXX)  $(BISMONMK_OBJECTS) _bismon-constants.o  __timestamp.o \
-                    -L$(BISMONMK_ONION_LIBDIR) -lonion \
                     $(shell pkg-config --libs $(BISMONMK_PACKAGES)) \
                     -lbacktrace -lcrypt -lpthread -ldl -rdynamic -o $@
 endif
 
 _bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash
-	./emit-make-dependencies.bash $(BM_C_SOURCES) $(BM_C_ONION_SOURCES) $(BM_C_GTK_SOURCES)  $(BM_CXX_SOURCES)
+	./emit-make-dependencies.bash $(BM_C_SOURCES) $(BM_C_GTK_SOURCES)  $(BM_CXX_SOURCES)
 
 redump: bismon $(wildcard store*.bmon)
 	./bismon --version
