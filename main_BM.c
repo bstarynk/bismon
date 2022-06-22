@@ -33,7 +33,6 @@ struct timespec startrealtimespec_BM;
 void *dlprog_BM;
 const char *myprogname_BM;
 bool gui_is_running_BM;
-bool web_is_running_BM;
 volatile bool showdebugmsg_BM;
 bool parsedebugmsg_BM;
 int nbworkjobs_BM;

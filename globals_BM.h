@@ -42,7 +42,7 @@ extern const char *bmconstidstrings[];
 extern char myhostname_BM[];
 extern atomic_bool want_garbage_collection_BM;
 extern bool gui_is_running_BM;
-extern bool web_is_running_BM;
+
 extern FILE *gui_command_log_file_BM;
 ////
 extern volatile const char*unix_json_socket_BM;
