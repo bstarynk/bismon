@@ -53,7 +53,7 @@ pthread_mutex_t onionstack_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t onionstack_condchange_BM = PTHREAD_COND_INITIALIZER;
 struct onionstackinfo_stBM onionstackinfo_BM[MAXNBWORKJOBS_BM + 1];
 thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
-#endif /*BISMON_LIBONION*/
+#endif /*BISMON_LIBONION */
 
 
 /// a mutex protecting the JSONRPC services...
@@ -98,7 +98,7 @@ enum cmd_charcode_enBM
   cmdcod_rungc_bm = 'G',
 #ifdef BISMON_LIBONION
   cmdcod_postponetimer_bm = 'T',
-#endif /*BISMON_LIBONION*/
+#endif /*BISMON_LIBONION */
 };
 
 
@@ -110,8 +110,8 @@ create_commandpipe_BM (void)
     FATAL_BM ("create_commandpipe_BM failure for the command pipe - %m");
   cmdpipe_rd_BM = piparr[0];
   cmdpipe_wr_BM = piparr[1];
-  DBGPRINTF_BM("create_commandpipe_BM cmdpiprd#%d cmdpipwr#%d",
-	       cmdpipe_rd_BM, cmdpipe_wr_BM);
+  DBGPRINTF_BM ("create_commandpipe_BM cmdpiprd#%d cmdpipwr#%d",
+                cmdpipe_rd_BM, cmdpipe_wr_BM);
 }                               /* end create_commandpipe_BM */
 
 void
@@ -175,7 +175,7 @@ read_commandpipe_BM (void)
               }
           }
           break;
-#endif /*BISMON_LIBONION*/
+#endif /*BISMON_LIBONION */
         default:
           /// this should not happen....
           WARNPRINTF_BM ("read_commandpipe_BM  '%s' unknown", buf);
@@ -610,7 +610,7 @@ add_postponetimer_command_onion_BM (void)
     }
   FATAL_BM ("add_postponetimer_command_onion_BM failed");
 }                               /* end add_postponetimer_command_onion_BM */
-#endif /*BISMON_LIBONION*/
+#endif /*BISMON_LIBONION */
 
 
 
@@ -843,10 +843,11 @@ plain_event_loop_BM (void)      /// called from from main
   INFOPRINTF_BM
     ("start loop of plain_event_loop_BM libonion webbase %s, bismon pid %d git %s host %s\n",
      onion_web_base_BM, (int) getpid (), bismon_shortgitid, myhostname_BM);
-#else /*without BISMON_LIBONION*/
-  INFOPRINTF_BM  ("start loop of plain_event_loop_BM bismon pid %d git %s host %s\n",
-		  (int) getpid (), bismon_shortgitid, myhostname_BM);
-#endif /*BISMON_LIBONION*/
+#else /*without BISMON_LIBONION */
+  INFOPRINTF_BM
+    ("start loop of plain_event_loop_BM bismon pid %d git %s host %s\n",
+     (int) getpid (), bismon_shortgitid, myhostname_BM);
+#endif /*BISMON_LIBONION */
   fflush (NULL);
   while (atomic_load (&eventlooprunning_BM))
     {
