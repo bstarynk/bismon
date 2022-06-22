@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- -*- xml -*- -->
+<interface>
+  <requires lib="gtk+" version="3.22"/>
+  <!-- the application menu -->
+  <object class='GtkMenuItem' id='menuapp_id'>
+    <property name='label'>App</property>
+    <child type='submenu'>
+      <object class='GtkMenu' id='appsubmenu_id'>
+        <child>
+          <object class='GtkMenuItem' id='appexit_id'>
+            <property name='label'>e_Xit</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
+        <child>
+          <object class='GtkMenuItem' id='appquit_id'>
+            <property name='label'>_Quit</property>
+	    <property name='use-underline'>true</property>	    
+          </object>
+        </child>
+        <child>
+          <object class='GtkMenuItem' id='appdump_id'>
+            <property name='label'>_Dump</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
+        <child>
+          <object class='GtkMenuItem' id='appgarbcoll_id'>
+            <property name='label'>_Garbage-Collect</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
+        <child>
+          <object class='GtkCheckMenuItem' id='appdebug_id'>
+            <property name='label'>_Debug</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
+        <child>
+          <object class='GtkCheckMenuItem' id='appparsedebug_id'>
+            <property name='label'>_Parser debug</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+  <!-- the edit menu -->
+  <object class='GtkMenuItem' id='menuedit_id'>
+    <property name='label'>Edit</property>
+    <child type='submenu'>
+      <object class='GtkMenu' id='editsubmenu_id'>
+        <child>
+          <object class='GtkMenuItem' id='editcopy_id'>
+            <property name='label'>cop_y</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
+        <child>
+          <object class='GtkMenuItem' id='editpaste_id'>
+            <property name='label'>_paste</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+
+  <!-- the object menu -->
+  <object class='GtkMenuItem' id='menuobject_id'>
+    <property name='label'>Object</property>
+    <child type='submenu'>
+      <object class='GtkMenu' id='objectsubmenu_id'>
+        <child>
+          <object class='GtkMenuItem' id='objectnewobwin_id'>
+            <property name='label'>new obj.win.</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
+        <child>
+          <object class='GtkMenuItem' id='objectshow_id'>
+            <property name='label'>show object</property>
+	    <property name='use-underline'>true</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+
+
+    
+  <!-- the browser tag table -->
+    <object class='GtkTextTagTable' id='browsertagtable_id'>
+      <!-- pagetitle_brotag for the title of the entire page -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">pagetitle_brotag</property>
+                <property name="font">Arial Bold</property>
+                <property name="scale">1.39</property>
+                <property name="paragraph-background">lemonchiffon1</property>
+                <property name="pixels-above-lines">3</property>
+                <property name="pixels-below-lines">6</property>
+                <property name="foreground">navyblue</property>
+                <property name="justification">GTK_JUSTIFY_CENTER</property>
+            </object>
+        </child>
+      <!-- objtitle_brotag for the title of a non-focused object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">objtitle_brotag</property>
+                <property name="font">Arial Bold</property>
+                <property name="scale">1.29</property>
+                <property name="paragraph-background">lightcyan1</property>
+                <property name="pixels-above-lines">2</property>
+                <property name="pixels-below-lines">3</property>
+                <property name="foreground">deepskyblue4</property>
+                <property name="justification">GTK_JUSTIFY_CENTER</property>
+            </object>
+        </child>
+
+      <!-- valtitle_brotag for the title of a named value -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">valtitle_brotag</property>
+                <property name="font">Cantarell Bold</property>
+                <property name="scale">1.29</property>
+                <property name="paragraph-background">lightcyan1</property>
+                <property name="pixels-above-lines">2</property>
+                <property name="pixels-below-lines">3</property>
+                <property name="foreground">navyblue</property>
+                <property name="justification">GTK_JUSTIFY_CENTER</property>
+            </object>
+        </child>
+	<!-- focustitle_brotag for the title of the focused object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">focustitle_brotag</property>
+                <property name="font">Carlito Bold</property>
+                <property name="scale">1.29</property>
+                <property name="paragraph-background">lightsalmon</property>
+                <property name="pixels-above-lines">2</property>
+                <property name="pixels-below-lines">3</property>
+                <property name="foreground">deepskyblue4</property>
+                <property name="justification">GTK_JUSTIFY_CENTER</property>
+            </object>
+        </child>
+      <!-- objcommtitle_brotag for comment in title of an object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">objcommtitle_brotag</property>
+                <property name="font">Andale Mono Regular</property>
+                <property name="foreground">darkolivegreen</property>
+            </object>
+        </child>
+      <!-- objnametitle_brotag for name in title of an object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">objnametitle_brotag</property>
+                <property name="font">Archivo SemiBold</property>
+                <property name="foreground">cyan4</property>
+            </object>
+        </child>
+      <!-- objidtitle_brotag for the id in title of an object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">objidtitle_brotag</property>
+                <property name="font">FreeMono Bold</property>
+                <property name="scale">0.90</property>
+                <property name="foreground">sienna</property>
+            </object>
+        </child>
+      <!-- objid_brotag for the id of an object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">objid_brotag</property>
+                <property name="font">Courier New Bold</property>
+                <property name="foreground">DarkGoldenRod4</property>
+                <property name="scale">1.05</property>
+            </object>
+        </child>
+      <!-- objname_brotag for the name of an object -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">objname_brotag</property>
+                <property name="font">Dosis Bold</property>
+                <property name="foreground">darkgreen</property>
+            </object>
+        </child>
+      <!-- objrefcomm_brotag for the comment of an object ref -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">objrefcomm_brotag</property>
+                <property name="scale">0.95</property>
+                <property name="font">Aerial Mono Bold</property>
+                <property name="foreground">steelblue</property>
+            </object>
+        </child>
+      <!-- nest_brotag for the nesting punctuation -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">nest_brotag</property>
+                <property name="font">Noto Sans Bold</property>
+                <property name="scale">1.01</property>
+                <property name="foreground">coral4</property>
+            </object>
+        </child>
+      <!-- blink_brotag for the blinking -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">blink_brotag</property>
+                <property name="background">yellow</property>
+            </object>
+        </child>
+      <!-- num_brotag for numbers -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">num_brotag</property>
+                <property name="font">Courier New Bold</property>
+                <property name="scale">0.95</property>
+                <property name="foreground">palegreen4</property>
+            </object>
+        </child>
+      <!-- str_brotag for string content -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">str_brotag</property>
+                <property name="font">Droid Sans Mono Regular</property>
+                <property name="scale">0.95</property>
+                <property name="foreground">dodgerblue4</property>
+            </object>
+        </child>
+      <!-- stresc_brotag for string escapes -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">stresc_brotag</property>
+                <property name="font">FreeMono Bold Oblique</property>
+                <property name="scale">0.95</property>
+                <property name="foreground">slateblue1</property>
+            </object>
+        </child>
+      <!-- toodeep_brotag for the comment when too deep -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">toodeep_brotag</property>
+                <property name="font">Oxygen Bold</property>
+                <property name="scale">0.99</property>
+                <property name="foreground">orangered3</property>
+            </object>
+        </child>
+      <!-- miscomm_brotag for miscelannous comments -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">miscomm_brotag</property>
+                <property name="font">Arial Regular</property>
+                <property name="scale">0.90</property>
+                <property name="foreground">cadetblue4</property>
+                <property name="background">ivory</property>
+            </object>
+        </child>
+      <!-- epilogue_brotag for epilogue -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">epilogue_brotag</property>
+                <property name="font">Arial Regular</property>
+                <property name="scale">0.85</property>
+                <property name="foreground">DeepSkyBlue3</property>
+                <property name="background">LavenderBlush2</property>
+            </object>
+        </child>
+	
+    </object>
+    
+  <!-- the command tag table -->
+    <object class='GtkTextTagTable' id='commandtagtable_id'>
+      <!-- errored_cmdtag for the errored text -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">errored_cmdtag</property>
+	      <property name="background">lightpink</property>
+                <property name="font">Courier New</property>
+            </object>
+        </child>
+      <!-- skipped_cmdtag for the skipped text -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">skipped_cmdtag</property>
+	      <property name="background">azure</property>
+              <property name="font">Courier New Italic</property>
+            </object>
+        </child>
+      <!-- commentinside_cmdtag for inside comment -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">commentinside_cmdtag</property>
+	      <property name='foreground'>blue</property>
+	      <property name='font'>DejaVu Sans Mono</property>
+            </object>
+        </child>
+      <!-- commentsign_cmdtag for comment sign -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">commentsign_cmdtag</property>
+	      <property name='foreground'>darkblue</property>
+            </object>
+        </child>
+      <!-- delim_cmdtag for delimiters -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">delim_cmdtag</property>
+	      <property name='foreground'>darkgreen</property>
+	      <property name='font'>Courier New, Bold</property>
+            </object>
+        </child>
+      <!-- knowname_cmdtag for known names -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">knowname_cmdtag</property>
+	      <property name='foreground'>mediumblue</property>
+	      <property name='font'>Courier New, Bold</property>
+            </object>
+        </child>
+      <!-- newname_cmdtag for new names -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">newname_cmdtag</property>
+	      <property name='foreground'>firebrick</property>
+	      <property name='font'>Roboto Mono Bold</property>
+            </object>
+        </child>
+	<!-- dollar_cmdtag for $<var> & $:<var> -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">dollar_cmdtag</property>
+	      <property name='foreground'>saddlebrown</property>
+	      <property name='font'>Courier New Bold</property>
+            </object>
+        </child>
+	
+      <!-- id_cmdtag for ids -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">id_cmdtag</property>
+	      <property name='foreground'>saddlebrown</property>
+	      <property name='font'>Inconsolata Medium Bold</property>
+            </object>
+        </child>
+      <!-- number_cmdtag for numbers -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">number_cmdtag</property>
+	      <property name='foreground'>CadetBlue</property>
+	      <property name='font'>Space Mono Bold</property>
+            </object>
+        </child>
+      <!-- stringsign_cmdtag for string signs, e.g. external quotes -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">stringsign_cmdtag</property>
+	      <property name='foreground'>DarkOrchid</property>
+	      <property name='background'>MistyRose</property>
+	      <property name='font'>Space Mono Bold</property>
+            </object>
+        </child>
+      <!-- stringinside_cmdtag for string internal chjaracters -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">stringinside_cmdtag</property>
+	      <property name='foreground'>DeepSkyBlue4</property>
+	      <property name='background'>DarkSeaGreen1</property>
+	      <property name='font'>Space Mono Oblique</property>
+            </object>
+        </child>
+      <!-- nesting_cmdtag for open/close parenthesis -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">nesting_cmdtag</property>
+	      <property name='background'>light yellow</property>
+            </object>
+        </child>
+	<!-- blink_cmdtag for blinking -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+              <property name="name">blink_cmdtag</property>
+	      <property name='background'>goldenrod1</property>
+            </object>
+        </child>
+    </object>
+    
+  <!-- the log tag table -->
+    <object class='GtkTextTagTable' id='logtagtable_id'>
+      <!-- error_logtag for the error message in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">error_logtag</property>
+		<property name="foreground">red3</property>
+		<property name="font">DejaVu Sans Mono Bold</property>
+            </object>
+        </child>
+      <!-- time_logtag for the time info in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">time_logtag</property>
+		<property name='foreground'>cadetblue4</property>
+		<property name='paragraph-background'>honeydew2</property>
+                <property name="font">Courier New Bold</property>
+                <property name="scale">0.92</property>
+            </object>
+        </child>
+      <!-- id_logtag for object ids in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">id_logtag</property>
+		<property name='foreground'>chocolate4</property>
+                <property name="font">FreeMono Bold</property>
+            </object>
+        </child>
+      <!-- name_logtag for object names in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">name_logtag</property>
+		<property name='foreground'>darkgreen</property>
+                <property name="font">Liberation Mono Bold</property>
+            </object>
+        </child>
+      <!-- command_logtag for command in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">command_logtag</property>
+		<property name='foreground'>darkblue</property>
+		<property name='scale'>0.9</property>
+                <property name="font">Liberation Mono Bold</property>
+            </object>
+        </child>
+      <!-- comment_logtag for command in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">comment_logtag</property>
+		<property name='foreground'>darkgreen</property>
+		<property name='background'>ivory</property>
+		<property name='scale'>0.9</property>
+                <property name="font">Courier New Italics</property>
+            </object>
+        </child>
+      <!-- code_logtag for command in log -->
+        <child type="tag">
+            <object class='GtkTextTag'>
+                <property name="name">code_logtag</property>
+		<property name='foreground'>saddlebrown</property>
+		<property name='background'>ivory2</property>
+		<property name='scale'>0.94</property>
+                <property name="font">DejaVu Sans Mono Book</property>
+            </object>
+        </child>
+    </object>
+</interface>
