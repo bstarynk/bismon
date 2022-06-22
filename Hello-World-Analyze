@@ -66,12 +66,12 @@ done
 
 echo "$0:" bismon arguments $bismon_hello_args in $(pwd) > /dev/stderr
 
-if [ -z "$BISMON_WEB_BASE" ]; then
-    export BISMON_WEB_BASE=localhost:8086
-fi
+#if [ -z "$BISMON_WEB_BASE" ]; then
+#    export BISMON_WEB_BASE=localhost:8086
+#fi
 
 if [ -z "$BISMON_GCC" ]; then
-    export BISMON_GCC=/usr/bin/gcc-10
+    export BISMON_GCC=/usr/bin/gcc-11
 fi
 
 if [ -z "$BISMON_PIDFILE" ]; then
