@@ -2741,7 +2741,8 @@ warning_objrout_BM (struct stackframe_stBM *stkf,
     ("warning_objrout_BM stkf@%p arg1=%p arg2=%p arg3=%p arg4=%p restargs=%p",
      (void *) stkf, (void *) arg1, (void *) arg2, (void *) arg2,
      (void *) arg3, (void *) arg4, (void *) restargs);
-  if (backtracestate_BM)
+  fflush(NULL);
+  if (backtracestate_BM && pthread_self () == mainthreadid_BM)
     {
       fprintf (stderr, "\n\n\n**warning_objrout_BM full backtrace **\n");
       fflush (stderr);
