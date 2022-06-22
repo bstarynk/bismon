@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -22,6 +22,8 @@
 #include "bismon.h"
 
 struct loader_stBM *firstloader_BM;
+
+bool load_bismon_completed_BM;
 
 void
 loadergcmark_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
@@ -238,7 +240,8 @@ load_initial_BM (const char *ldirpath)
   free (ld->ld_dir), ld->ld_dir = NULL;
   ld->ld_data = NULL;
   ld->ld_maxnum = 0;
-  // keep the header of ld
+  // keep the header of ld; it will become GC-ed later
+  load_bismon_completed_BM = true;
 }                               /* end load_initial_BM */
 
 void

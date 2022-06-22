@@ -63,6 +63,7 @@ extern const char *project_name_BM;
 extern volatile bool showdebugmsg_BM;
 extern bool parsedebugmsg_BM;
 extern bool debug_after_load_BM;
+extern bool load_bismon_completed_BM;
 
 extern pthread_t mainthreadid_BM;
 
