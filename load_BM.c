@@ -477,7 +477,15 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               && (*endid == (char) 0 || isspace (*endid)))
             {
               if (!open_module_for_loader_BM (modid, ld, NULL))
-                FATAL_BM ("loader failed to open module for %s", linbuf);
+                {
+                  WARNPRINTF_BM
+                    ("loader failed to open module for %s in %s line %d",
+                     linbuf, curldpath, lincnt);
+                  if (backtracestate_BM)
+                    backtrace_print_BM
+                      ((struct backtrace_state *) backtracestate_BM, 0,
+                       stderr);
+                }
             }
           else
             FATAL_BM ("invalid module requirement line %s in file %s:%d",
