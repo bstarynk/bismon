@@ -93,6 +93,8 @@ extern int nbworkjobs_BM;
 extern volatile struct backstrace_state *backtracestate_BM;
 
 
+extern char temporary_dir_BM[];
+
 extern int sigfd_BM;       /* for signalfd(2) */
 extern volatile atomic_bool eventlooprunning_BM;
 

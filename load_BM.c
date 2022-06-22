@@ -285,7 +285,7 @@ first_pass_got_delim_bm (const char *buf, const char *delimstr)
                                StorDelim##_TERPREFIX_BM)) > 0))
 
 
-
+#warning TODO: loader should create missing C function stub in temporary_dir_BM
 
 static void
 load_first_pass_BM (struct loader_stBM *ld, int ix)

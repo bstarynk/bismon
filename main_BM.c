@@ -167,6 +167,7 @@ abort_BM (void)
 
 
 ////////////////////////////////////////////////////////////////
+char temporary_dir_BM[256];
 char *load_dir_bm;
 char *dump_dir_BM;
 char *dump_after_load_dir_bm;
@@ -589,6 +590,15 @@ const GOptionEntry optionstab_bm[] = {
    .description = "use PATH as the master contact file;\n"
    "\t .. default is contact_BM or $HOME/contact_BM",
    .arg_description = "PATH"},
+  //
+  {.long_name = "temporary-dir",.short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &temporary_dir_BM,
+   .description =
+   "If given a directory TEMPORARY_DIR\n"
+   "\t will create files in it, otherwise create some under /var/tmp\n",
+   .arg_description = "TEMPORARY_DIR"},
   //
   {.long_name = "sigusr1-dump-prefix",.short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
