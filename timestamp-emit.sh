@@ -104,20 +104,20 @@ else
 fi
 
 
-### libonion
-echo "//// libonion for Web service:" >> $tempoutput
-if [ -n "$BISMONMK_ONION_INCLUDEDIR" ]; then
-    (echo -n 'const char* bismon_onion_includedir = "'; echo -n $BISMONMK_ONION_INCLUDEDIR;  echo '";') >> $tempoutput
-else
-    echo 'const char* bismon_onion_includedir;' >> $tempoutput
-fi
-
-
-if [ -n "$BISMONMK_ONION_LIBDIR" ]; then
-    (echo -n 'const char* bismon_onion_libdir = "'; echo -n $BISMONMK_ONION_LIBDIR;  echo '";') >> $tempoutput
-else
-    echo 'const char* bismon_onion_libdir;' >> $tempoutput
-fi
+### libonion is becoming obsolete, commit cfe63e48206d6f568 (june 22, 2022); see BISMON_LIBONION preprocessor flag
+#°  echo "//// libonion for Web service:" >> $tempoutput
+#°  if [ -n "$BISMONMK_ONION_INCLUDEDIR" ]; then
+#°      (echo -n 'const char* bismon_onion_includedir = "'; echo -n $BISMONMK_ONION_INCLUDEDIR;  echo '";') >> $tempoutput
+#°  else
+#°      echo 'const char* bismon_onion_includedir;' >> $tempoutput
+#°  fi
+#°
+#°
+#°  if [ -n "$BISMONMK_ONION_LIBDIR" ]; then
+#°      (echo -n 'const char* bismon_onion_libdir = "'; echo -n $BISMONMK_ONION_LIBDIR;  echo '";') >> $tempoutput
+#°  else
+#°      echo 'const char* bismon_onion_libdir;' >> $tempoutput
+#°  fi  
 
 mv $tempoutput $output_timestamp
 ### eof timestamp-emit.sh
