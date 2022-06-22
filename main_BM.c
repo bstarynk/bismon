@@ -60,7 +60,7 @@ char real_executable_BM[128];
 const char *onion_ssl_certificate_BM;
 const char *onion_web_base_BM;
 const char *onion_anon_web_cookie_BM;
-#endif /*BISMON_LIBONION*/
+#endif /*BISMON_LIBONION */
 
 
 ////////////////////////////////////////////////////////////////
@@ -873,11 +873,11 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "Create an anonymous web session, and write its cookie in the given COOKIEFILE",
    .arg_description = "COOKIEFILE"},
-#endif /*BISMON_LIBONION*/
+#endif /*BISMON_LIBONION */
   ///
   /// end of options
-  {} //// last entry should be all zeros
-};// end of variable optionstab_bm
+  {}                            //// last entry should be all zeros
+};                              // end of variable optionstab_bm
 
 ///////////////////////////////////////////////////////////////
 
@@ -1320,10 +1320,12 @@ main (int argc, char **argv)
     }
   if (debug_after_load_BM)
     {
-      INFOPRINTF_BM ("bismon with debug messages after load from %s",
-                     load_dir_bm);
+      INFOPRINTF_BM ("bismon pid#%d with debug messages after load from %s",
+                     (int) getpid (), load_dir_bm);
       showdebugmsg_BM = true;
-    };
+    }
+  else
+    INFOPRINTF_BM ("bismon pid#%d silent for debug", (int) getpid ());
   show_net_info_bm ();
   if (nb_added_predef_bm > 0)
     add_new_predefined_bm ();
@@ -1548,6 +1550,8 @@ initialize_passwords_path_BM (void)
 {
   if (!passwords_filepath_BM)   // no --passwords-file program option
     {
+      DBGPRINTF_BM
+        ("initialize_passwords_path_BM without passwords_filepath_BM");
       char *path = NULL;
       char *homepath = NULL;
       if (!access (PASSWORDS_FILE_BM, R_OK))
@@ -1579,7 +1583,11 @@ initialize_passwords_path_BM (void)
       passwords_filepath_BM = rcpath;
     }
   else
-    {                           // some given passwords_filepath_bm with --passwords-path= ... argument
+    {
+      DBGPRINTF_BM
+        ("initialize_passwords_path_BM with passwords_filepath_BM '%s'",
+         passwords_filepath_BM);
+      // some given passwords_filepath_bm with --passwords-path= ... argument
       if (access (passwords_filepath_BM, R_OK))
         FATAL_BM ("cannot read passwords file %s - %m",
                   passwords_filepath_BM);
