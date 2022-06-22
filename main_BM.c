@@ -1204,6 +1204,11 @@ main (int argc, char **argv)
     }
   if (!skiplocalcheck)
     check_locale_BM ();
+  {
+    const char* glib_mismatch = glib_check_version(GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MINOR_VERSION);
+    if (glib_mismatch)
+      FATAL_BM("GLIB version mismatch: %s", glib_mismatch);
+  };
   initialize_garbage_collector_BM ();
   check_delims_BM ();
   initialize_globals_BM ();
@@ -2440,7 +2445,10 @@ give_prog_version_BM (const char *progname)
   printf ("\t source checksum: %s\n", bismon_checksum);
   printf ("\t source dir: %s\n", bismon_directory);
   printf ("\t GNUmakefile: %s\n", bismon_gnumakefile);
-  printf ("\t libc version: %s\n", versionbuf);
+  printf ("\t libc runtime version: %s\n", versionbuf);
+  printf ("\t Glib build version: %d.%d.%d\n",
+	  GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
+  printf ("\t Jansson build version: %s, runtime %s\n", JANSSON_VERSION, jansson_version_str());
   printf ("########\n");
   printf ("## to get help, run: %s --help\n\n", progname);
   fflush (NULL);
