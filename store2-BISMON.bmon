@@ -8892,23 +8892,29 @@ _2MbEY8KXrxi_0JYIwVyj1is
 
 «_0ncEyxweiqi_5Vj5U2xvh82 |=objwebexchangecompletepayl|
 !~ name (~ objwebexchangecompletepayl ~)
-± 1534609912.476
+± 1655902312.476
 ∈ _9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "complete the webexchange o1 witrh HTTP code i2 and content-type str3"
+ "complete the webexchange o1 with HTTP code i2 and content-type str3 ¤¤¤OBSOLETE"
 ↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ 
  _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb _8n7GWhlxWg7_5ag1u0MmBX5 ]
 ↦ _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _42gEKfF4qca_6gGwxSFC1FO ( _0ncEyxweiqi_5Vj5U2xvh82)
 ↦ _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
- * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _0ncEyxweiqi_5Vj5U2xvh82  ":*/"  " " 
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*¤¤" _0ncEyxweiqi_5Vj5U2xvh82  ":*/"  "\n"
+ "#ifdef BISMON_LIBONION\n"
   "objwebexchangecompletepayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
 _97rnxb0KFqq_44veN75DG2E)  ")," 
   " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  
 ")," 
-  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8n7GWhlxWg7_5ag1u0MmBX5)  
-"))")
+  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8n7GWhlxWg7_5ag1u0MmBX5)
+  "\n"
+  "#else /*no BISMON_LIBONION*/\n"
+  "FATAL_BM/*obsolete ¤¤objwebexchangecompletepayl*/(\"obsolete objwebexchangecompletepayl\");\n"
+  "#endif /*BISMON_LIBONION*/
+"))"
+)
 
 »_0ncEyxweiqi_5Vj5U2xvh82
 
@@ -8919,11 +8925,11 @@ _97rnxb0KFqq_44veN75DG2E)  "),"
 ± 1533646313.108
 ∈ _2SZvlA4wcJd_72ldva0oSGH |=basiclo_primitive|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "get the value inside webexchange object o1"
+ "get the value inside webexchange object o1 ¤¤¤OBSOLETE"
 ↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ _97rnxb0KFqq_44veN75DG2E ]
 ↦ _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
- * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*" _7OAWgbmvUYb_7KwwCqhyd93  ":*/"  " " 
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*¤¤" _7OAWgbmvUYb_7KwwCqhyd93  ":*/"  " " 
   "objwebexchangedatapayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
  "))")
 ↦ _8oZ9fPJGhmS_24c2sSYsdr2 |=result_type|
