@@ -2429,14 +2429,18 @@ do_test_mailhtml_bm (void)
 void
 give_prog_version_BM (const char *progname)
 {
-  printf ("%s: version information\n", progname);
-  printf ("\t timestamp: %s\n", bismon_timestamp);
+  char versionbuf[48];
+  memset (versionbuf, 0, sizeof(versionbuf));
+  confstr(_CS_GNU_LIBC_VERSION, versionbuf, sizeof(versionbuf)-1);
+  printf ("\n" "*** %s: version information\n", progname);
+  printf ("\t timestamp: %s (%uld Epoch)\n", bismon_timestamp, bismon_timelong);
   printf ("\t git id: %s\n", bismon_gitid);
   printf ("\t last git commit: %s\n", bismon_lastgitcommit);
   printf ("\t last git tag: %s\n", bismon_lastgittag);
   printf ("\t source checksum: %s\n", bismon_checksum);
   printf ("\t source dir: %s\n", bismon_directory);
   printf ("\t GNUmakefile: %s\n", bismon_gnumakefile);
+  printf ("\t libc version: %s\n", versionbuf);
   printf ("########\n");
   printf ("## to get help, run: %s --help\n\n", progname);
   fflush (NULL);
