@@ -2714,5 +2714,47 @@ parse_program_options_BM (int argc, char **argv)
                 initialargc, argc);
 }                               /* end parse_program_options_BM */
 
+value_tyBM
+crashing_objrout_BM (struct stackframe_stBM *stkf,
+                     const value_tyBM arg1,
+                     const value_tyBM arg2,
+                     const value_tyBM arg3,
+                     const value_tyBM arg4, const quasinode_tyBM * restargs)
+{
+  FATAL_BM
+    ("crashing_objrout_BM stkf@%p arg1=%p arg2=%p arg3=%p arg4=%p restargs=%p",
+     (void *) stkf, (void *) arg1, (void *) arg2, (void *) arg2,
+     (void *) arg3, (void *) arg4, (void *) restargs);
+  return NULL;
+}                               /* end of crashing_objrout_BM */
+
+
+
+value_tyBM
+warning_objrout_BM (struct stackframe_stBM *stkf,
+                    const value_tyBM arg1,
+                    const value_tyBM arg2,
+                    const value_tyBM arg3,
+                    const value_tyBM arg4, const quasinode_tyBM * restargs)
+{
+  WARNPRINTF_BM
+    ("warning_objrout_BM stkf@%p arg1=%p arg2=%p arg3=%p arg4=%p restargs=%p",
+     (void *) stkf, (void *) arg1, (void *) arg2, (void *) arg2,
+     (void *) arg3, (void *) arg4, (void *) restargs);
+  if (backtracestate_BM)
+    {
+      fprintf (stderr, "\n\n\n**warning_objrout_BM full backtrace **\n");
+      fflush (stderr);
+      backtrace_print_BM ((struct backtrace_state *) backtracestate_BM, 1,
+                          stderr);
+      fprintf (stderr,
+               "\n----- end warning_objrout_BM full backtrace ------\n\n");
+      fflush (stderr);
+    }
+  return NULL;
+}                               /* end of warning_objrout_BM */
+
+
+
 
 /*** end of file main_BM.c ***/

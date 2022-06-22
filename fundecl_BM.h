@@ -93,7 +93,19 @@ extern "C"
   extern const char *objectdbg7_BM (const objectval_tyBM * obj);        // non reentrant!
 
 
-
+  /* see the objrout_sigBM signature in types_BM.h */
+extern value_tyBM crashing_objrout_BM (struct stackframe_stBM *stkf,
+				       const value_tyBM arg1,
+				       const value_tyBM arg2,
+				       const value_tyBM arg3,
+				       const value_tyBM arg4,
+				       const quasinode_tyBM * restargs);
+extern value_tyBM warning_objrout_BM(struct stackframe_stBM *stkf,
+				     const value_tyBM arg1,
+				     const value_tyBM arg2,
+				     const value_tyBM arg3,
+				     const value_tyBM arg4,
+				     const quasinode_tyBM * restargs);
 
 
   extern void *allocgcty_BM (unsigned type, size_t sz);
