@@ -93,8 +93,11 @@ extern volatile struct backstrace_state *backtracestate_BM;
 
 
 extern int sigfd_BM;       /* for signalfd(2) */
-extern atomic_int oniontimerfd_BM; /* for timerfd_create(2) */
 extern volatile atomic_bool eventlooprunning_BM;
+
+///// related to libonion, see https://www.coralbits.com/libonion/
+#ifdef BISMON_LIBONION
+extern atomic_int oniontimerfd_BM; /* for timerfd_create(2) */
 extern pthread_mutex_t onionstack_mtx_BM;
 extern pthread_cond_t onionstack_condchange_BM;
 /*****************************************************************/
@@ -114,7 +117,11 @@ struct onionstackinfo_stBM
 };
 extern struct onionstackinfo_stBM onionstackinfo_BM[MAXNBWORKJOBS_BM + 1];
 extern thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
+#endif /*BISMON_LIBONION*/
 
+
+
+////////////////////////////////////////////////////////////////
 // Array describing currently running processes.
 extern struct processdescr_stBM running_process_descr_arr_BM[MAXNBWORKJOBS_BM + 1];
 

@@ -48,12 +48,12 @@ volatile atomic_bool eventlooprunning_BM;
 
 static volatile atomic_int count_dump_sigusr1_BM;
 
+#ifdef BISMON_LIBONION
 pthread_mutex_t onionstack_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t onionstack_condchange_BM = PTHREAD_COND_INITIALIZER;
-
 struct onionstackinfo_stBM onionstackinfo_BM[MAXNBWORKJOBS_BM + 1];
 thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
-
+#endif /*BISMON_LIBONION*/
 
 
 /// a mutex protecting the JSONRPC services...
@@ -96,7 +96,9 @@ enum cmd_charcode_enBM
   cmdcod__none_bm = 0,
   cmdcod_execdefer_bm = 'X',
   cmdcod_rungc_bm = 'G',
+#ifdef BISMON_LIBONION
   cmdcod_postponetimer_bm = 'T',
+#endif /*BISMON_LIBONION*/
 };
 
 
@@ -108,9 +110,8 @@ create_commandpipe_BM (void)
     FATAL_BM ("create_commandpipe_BM failure for the command pipe - %m");
   cmdpipe_rd_BM = piparr[0];
   cmdpipe_wr_BM = piparr[1];
-  DBGPRINTF_BM
-    ("create_commandpipe_BM before onion_listen cmdpiprd#%d cmdpipwr#%d",
-     cmdpipe_rd_BM, cmdpipe_wr_BM);
+  DBGPRINTF_BM("create_commandpipe_BM cmdpiprd#%d cmdpipwr#%d",
+	       cmdpipe_rd_BM, cmdpipe_wr_BM);
 }                               /* end create_commandpipe_BM */
 
 void
@@ -135,6 +136,7 @@ read_commandpipe_BM (void)
           // if buf[0] is 'G', run the garbage collector. Not sure!
           garbage_collect_if_wanted_BM (NULL);
           return;
+#ifdef BISMON_LIBONION
         case cmdcod_postponetimer_bm:  // 'T'
           // if buf[0] is 'T', something changed about postponed timers
           {
@@ -173,6 +175,7 @@ read_commandpipe_BM (void)
               }
           }
           break;
+#endif /*BISMON_LIBONION*/
         default:
           /// this should not happen....
           WARNPRINTF_BM ("read_commandpipe_BM  '%s' unknown", buf);
@@ -581,7 +584,7 @@ add_rungarbcoll_command_BM (void)
     }
 }                               /* end add_rungarbcoll_command_BM */
 
-
+#ifdef BISMON_LIBONION
 void
 add_postponetimer_command_onion_BM (void)
 {
@@ -607,7 +610,7 @@ add_postponetimer_command_onion_BM (void)
     }
   FATAL_BM ("add_postponetimer_command_onion_BM failed");
 }                               /* end add_postponetimer_command_onion_BM */
-
+#endif /*BISMON_LIBONION*/
 
 
 
@@ -836,9 +839,14 @@ plain_event_loop_BM (void)      /// called from from main
                          sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
   int masterixjs = -1;
+#ifdef BISMON_LIBONION
   INFOPRINTF_BM
-    ("start loop of plain_event_loop_BM for %s, bismon pid %d git %s host %s\n",
+    ("start loop of plain_event_loop_BM libonion webbase %s, bismon pid %d git %s host %s\n",
      onion_web_base_BM, (int) getpid (), bismon_shortgitid, myhostname_BM);
+#else /*without BISMON_LIBONION*/
+  INFOPRINTF_BM  ("start loop of plain_event_loop_BM bismon pid %d git %s host %s\n",
+		  (int) getpid (), bismon_shortgitid, myhostname_BM);
+#endif /*BISMON_LIBONION*/
   fflush (NULL);
   while (atomic_load (&eventlooprunning_BM))
     {
@@ -895,8 +903,8 @@ plain_event_loop_BM (void)      /// called from from main
                     struct jsonrpcservicedata_stBM *jsonrpcpayl = curjspayl;
                     ASSERT_BM (jsonrpcpayl->jsonrpcserv_magic ==
                                BISMON_JSONRPCSERV_MAGICNUM);
-                    ASSERT_BM (nbpoll <
-                               sizeof (pollarr) / sizeof (pollarr[0]));
+                    ASSERT_BM (nbpoll < (int)
+                               (sizeof (pollarr) / sizeof (pollarr[0])));
                     if (!jsonrpcpayl->jsonrpcserv_buffer)
                       {
                         const int initsiz = 360;
