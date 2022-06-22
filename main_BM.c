@@ -1152,7 +1152,17 @@ check_locale_BM (void)
 
 
 
-
+void
+cleanup_temporary_dir_after_exit_bm(void)
+{
+  FILE*fat = popen("/bin/at now + 15 minutes", "w");
+  if (!fat)
+    FATAL_BM("popen /bin/at now + 15 minutes failed (%m)");
+  fprintf(fat, "/bin/rm -rf %s", temporary_dir_BM);
+  fflush(fat);
+  fclose(fat);
+} /* end cleanup_temporary_dir_after_exit_bm */
+  
 ////////////////////////////////////////////////////////////////
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
@@ -1182,6 +1192,8 @@ main (int argc, char **argv)
   memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
+  if (access("/bin/at", X_OK))
+    FATAL_BM ("BISMON (%s pid %d) requires a /bin/at (%m)", myprogname_BM, (int)getpid());
   bool skiplocalcheck = false;
   {
     // check the locale(7), unless using print-contributor-of-oid
@@ -1212,6 +1224,30 @@ main (int argc, char **argv)
         ("set -using g_random_set_seed- the Glib PRNG random seed to %d",
          randomseed_BM);
     }
+  if (!temporary_dir_BM[0]) {
+    time_t nowt=0;
+    time(&nowt);
+    snprintf(temporary_dir_BM, sizeof(temporary_dir_BM),
+	     "/var/tmp/bismon-p%d-t%ld", (int)getpid(), (long)nowt);
+    DBGPRINTF_BM("temporary dir %s", temporary_dir_BM);
+    if (mkdir (temporary_dir_BM, 0700))
+      FATAL_BM("failed to make temporary directory %s", temporary_dir_BM);
+    INFOPRINTF_BM("made temporary directory %s", temporary_dir_BM);
+    atexit(cleanup_temporary_dir_after_exit_bm);
+  };
+  {
+    char temptestpath[384];
+    memset (temptestpath, 0, sizeof(temptestpath));
+    snprintf(temptestpath, sizeof(temptestpath), "%s/__BISMON_TEMPORARY_DIR", temporary_dir_BM);
+    FILE* fw = fopen(temptestpath, "w");
+    if (!fw)
+      FATAL_BM("failed to write temporary %s (%m)", temptestpath);
+    fprintf(fw, "# Bismon %s pid %d on %s temporary %s\n",
+	    bismon_gitid, (int)getpid(), myhostname_BM, temptestpath);
+    fflush(fw);
+    fsync(fileno(fw));
+    fclose(fw);
+  };
   if (!skiplocalcheck)
     check_locale_BM ();
   {
