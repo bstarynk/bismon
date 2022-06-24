@@ -94,7 +94,8 @@ using std::atomic_store;
 /// the Glib low-level utility library from developer.gnome.org/glib/
 #include <glib.h>
 
-/// We need the libonion HTTP server library from
+#ifdef BISMON_LIBONION
+/// We used to need the libonion HTTP server library from
 /// http://www.coralbits.com/libonion/ on
 /// https://github.com/davidmoreno/onion
 #include <onion/onion.h>
@@ -109,7 +110,7 @@ using std::atomic_store;
 #include <onion/exportlocal.h>
 #include <onion/internal_status.h>
 #include <onion/websocket.h>
-
+#endif /*BISMON_LIBONION*/
 
 /// We need the GNU readline 8 library from www.gnu.org/software/readline/
 #include <readline/readline.h>
@@ -121,4 +122,10 @@ using std::atomic_store;
 #include "globals_BM.h"
 #include "fundecl_BM.h"
 #include "inline_BM.h"
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 #endif /*BISMON_INCLUDED */
