@@ -4342,6 +4342,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
   char *realsrcdirstr = NULL;
   char *srcpathstr = NULL;
   char *prevsrcpathstr = NULL;
+  char *indentcmdstr = NULL;
   objectval_tyBM *k_simple_module_generation = BMK_2HlKptD03wA_7JJCG7lN5nS;
   objectval_tyBM *k_prepare_module = BMK_17mrxkMdNtH_2CduQ2WDIy5;
   objectval_tyBM *k_plain_module = BMK_8g1WBJBhDT9_1QK8IcuWYx2;
@@ -4586,13 +4587,21 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                  debug_outstr_value_BM (_.srcdirstrv, CURFRAME_BM, 0));
   fflush (stderr);
   if (srcdirstr)
-    INFOPRINTF_BM ("*!* ended emitting %s module %s/%s in %s *!*\n",
+    INFOPRINTF_BM ("*!* ended emitting %s module %s/%s in %s path %s *!*\n",
                    modulistemporary ? "temporary" : "persistent",
-                   objectdbg_BM (_.modulob), modulidbuf, srcdirstr);
+                   objectdbg_BM (_.modulob), modulidbuf, srcdirstr,
+                   srcpathstr);
   else
-    INFOPRINTF_BM ("*!* ended emitting %s module %s/%s *!*\n",
+    INFOPRINTF_BM ("*!* ended emitting %s module %s/%s cpath %s *!*\n",
                    modulistemporary ? "temporary" : "persistent",
-                   objectdbg_BM (_.modulob), modulidbuf);
+                   objectdbg_BM (_.modulob), modulidbuf, srcpathstr);
+  asprintf (&indentcmdstr, "/usr/bin/indent '%s'", srcpathstr);
+  indok = system (indentcmdstr);
+  if (!indok)
+    FATAL_BM ("failed to indent generated C code %s (#%d)", srcpathstr,
+              indok);
+  if (indentcmdstr)
+    free (indentcmdstr), indentcmdstr = NULL;
   if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;
   if (pardirstr)
