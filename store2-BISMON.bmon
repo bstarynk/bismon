@@ -13,13 +13,9 @@
 ///‼… are strictly equivalent ….
 ///---------------------
 
-// with 7 modules
+// with 3 modules
 µ_1lhXvXtIyPu_3nhuy4kN3wd
-µ_1zCsXG4OTPr_8PwkDAWr16S
-µ_3BFt4NfJmZC_7iYi2dwM38B
-µ_55roYj6pggy_95lbHks0q2X
 µ_8oL3Mr0lJtL_5DdSEr80iHP
-µ_9dQJgjsq7hs_2T2RqXLkU0A
 µ_9oXtCgAbkqv_4y1xhhF5Nhz
 
 
@@ -8895,26 +8891,21 @@ _2MbEY8KXrxi_0JYIwVyj1is
 ± 1655902312.476
 ∈ _9pJUJ57N6RL_2nsXFzR6S3E |=basiclo_cexpander|
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
- "complete the webexchange o1 with HTTP code i2 and content-type str3 ¤¤¤OBSOLETE"
+ "complete the webexchange o1 with HTTP code"& " i2 and content-type str3 ¤¤¤OBSOLETE"
 ↦ _0jFqaPPHgYH_5JpjOPxQ67p |=arguments|
  [ 
  _97rnxb0KFqq_44veN75DG2E _2Z396p8p48p_848KxWmzoSb _8n7GWhlxWg7_5ag1u0MmBX5 ]
 ↦ _3EKD6vcwegI_3LMuXHuazib |=command_readmacro|
  % _42gEKfF4qca_6gGwxSFC1FO ( _0ncEyxweiqi_5Vj5U2xvh82)
 ↦ _7yoiT31GmV4_2iTjHx3P2hb |=cexpansion|
- * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*¤¤" _0ncEyxweiqi_5Vj5U2xvh82  ":*/"  "\n"
- "#ifdef BISMON_LIBONION\n"
-  "objwebexchangecompletepayl_BM"  "(("  * _5ucAZimYynS_4VA0XHvr1nW (  
-_97rnxb0KFqq_44veN75DG2E)  ")," 
-  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb)  
-")," 
-  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8n7GWhlxWg7_5ag1u0MmBX5)
-  "\n"
-  "#else /*no BISMON_LIBONION*/\n"
-  "FATAL_BM/*obsolete ¤¤objwebexchangecompletepayl*/(\"obsolete objwebexchangecompletepayl\");\n"
-  "#endif /*BISMON_LIBONION*/\n"
-  "))"
-)
+ * _3pQnBS9ZjkQ_0uGmqUUhAum (  "/*¤¤" _0ncEyxweiqi_5Vj5U2xvh82  ":*/"  "\n" 
+  "#ifdef BISMON_LIBONION\n"  "objwebexchangecompletepayl_BM"  "((" 
+ * _5ucAZimYynS_4VA0XHvr1nW ( _97rnxb0KFqq_44veN75DG2E) 
+  "),"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _2Z396p8p48p_848KxWmzoSb) 
+  "),"  " "  "("  * _5ucAZimYynS_4VA0XHvr1nW ( _8n7GWhlxWg7_5ag1u0MmBX5) 
+  "\n"  "#else /*no BISMON_LIBONION*/\n"  "FATAL_BM/*obsolete ¤¤objwebexchangecompletepayl*/(\"obsolete"& 
+" objwebexchangecompletepayl\");\n"  "#endif /*BISMON_LIBONION*/\n" 
+  "))")
 
 »_0ncEyxweiqi_5Vj5U2xvh82
 
@@ -23738,12 +23729,6 @@ _95J5VWlxn7h_9P3UNOuvpbl
 ↦ _01h86SAfOfg_1q2oMegGRwW |=comment|
  "Json settings of Basile"
 
-!~ json (~
-
-{
- "bismon-test-canvas": true
-}
-~)
 »_2msS16w7aJn_2L0FejG935R
 
 

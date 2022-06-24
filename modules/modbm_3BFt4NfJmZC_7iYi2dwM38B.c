@@ -299,7 +299,13 @@ endblock__3VVvcLyYqv8_9yci7GvqEEv: ;
 //+ #4/6 of block _8prn9eFlYZD_6JJKKh2b8KW ::  
  
 { // start cexpansion _0aLvox3qw9g_6O8WY6Cew3g - objwebexchangecompletepayl  
-/*objwebexchangecompletepayl:*/ objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), ( 200), ( "text/html; charset=utf-8"));  
+/*¤¤objwebexchangecompletepayl:*/
+#ifdef BISMON_LIBONION
+objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), ( 200), ( "text/html; charset=utf-8"
+#else /*no BISMON_LIBONION*/
+FATAL_BM/*obsolete ¤¤objwebexchangecompletepayl*/("obsolete objwebexchangecompletepayl");
+#endif /*BISMON_LIBONION*/
+));  
 } // end cexpansion _0aLvox3qw9g_6O8WY6Cew3g - objwebexchangecompletepayl  
   
  

@@ -8081,7 +8081,13 @@ if (objhasstrbufferpayl_BM(obsbuf__4TtArYe1OZr_6h7qpeLoXhc) && isobject_BM(ob__4
 } // end cexpansion _2aNdEppQolr_46RGo9i35gr - objstrbuffernewlinepayl  
   
 { // start cexpansion _3Ik736kQ5Uw_5WxtZn5mvBq - objwebexchangecompletepayl  
-/*objwebexchangecompletepayl:*/ objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), ( 200), ( "application/javascript; charset=utf-8"));  
+/*¤¤objwebexchangecompletepayl:*/
+#ifdef BISMON_LIBONION
+objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), ( 200), ( "application/javascript; charset=utf-8"
+#else /*no BISMON_LIBONION*/
+FATAL_BM/*obsolete ¤¤objwebexchangecompletepayl*/("obsolete objwebexchangecompletepayl");
+#endif /*BISMON_LIBONION*/
+));  
 } // end cexpansion _3Ik736kQ5Uw_5WxtZn5mvBq - objwebexchangecompletepayl  
   
 /*return _5IknCErYDMv_1AeqYkXvrSL:*/  /*v_r:*/_.v_3qw9bnATIhq_8loBraLeXzQ = // returned 

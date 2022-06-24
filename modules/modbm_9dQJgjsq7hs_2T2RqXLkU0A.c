@@ -1779,7 +1779,13 @@ objstrbufferappendcstrpayl_BM ( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx, idbuf_8
 //+ #14/17 of block _8LfVVn1aQnn_5StV71VcY8c :: 
  
 { // start cexpansion _5NxJcWAji00_6bLDj8UN74M - objwebexchangecompletepayl  
-/*objwebexchangecompletepayl:*/ objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), (/*chunk-constob HTTP_OK:*/(HTTP_OK)), ( "application/json"));  
+/*¤¤objwebexchangecompletepayl:*/
+#ifdef BISMON_LIBONION
+objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), (/*chunk-constob HTTP_OK:*/(HTTP_OK)), ( "application/json"
+#else /*no BISMON_LIBONION*/
+FATAL_BM/*obsolete ¤¤objwebexchangecompletepayl*/("obsolete objwebexchangecompletepayl");
+#endif /*BISMON_LIBONION*/
+));  
 } // end cexpansion _5NxJcWAji00_6bLDj8UN74M - objwebexchangecompletepayl  
   
  
@@ -2462,7 +2468,13 @@ DBGPRINTF_BM("end root-web-handler €%.9s v_resemit=%s o_webex=%s/L%u:\n%s\n###
 //+ #8/10 of block _6eHKA5eSoIV_4ajeKi1n1so :: 
  
 { // start cexpansion _3GNqxaIiNPt_2gUUJzEqzQN - objwebexchangecompletepayl  
-/*objwebexchangecompletepayl:*/ objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), (/*chunk-constob HTTP_OK:*/(HTTP_OK)), ( "application/xhtml+xml"));  
+/*¤¤objwebexchangecompletepayl:*/
+#ifdef BISMON_LIBONION
+objwebexchangecompletepayl_BM(( /*o_webex:*/_.o_5JuT4FgNFFh_7McrTYeT3jx), (/*chunk-constob HTTP_OK:*/(HTTP_OK)), ( "application/xhtml+xml"
+#else /*no BISMON_LIBONION*/
+FATAL_BM/*obsolete ¤¤objwebexchangecompletepayl*/("obsolete objwebexchangecompletepayl");
+#endif /*BISMON_LIBONION*/
+));  
 } // end cexpansion _3GNqxaIiNPt_2gUUJzEqzQN - objwebexchangecompletepayl  
   
  
