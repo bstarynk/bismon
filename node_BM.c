@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018-2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -380,20 +380,33 @@ quasinodegcproc_BM (struct garbcoll_stBM *gc, quasinode_tyBM * qnod,
 value_tyBM
 apply0_BM (const value_tyBM funv, struct stackframe_stBM *stkf)
 {
+  objectval_tyBM *ob = NULL;
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
     {
-      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
-      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
-      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+      ob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) ob));
+      rout = (objrout_sigBM *) objroutaddr_BM (ob, BMP_function_sig);
     }
   else if (isobject_BM (funv))
-    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+    {
+      ob = (objectval_tyBM *) funv;
+      rout = (objrout_sigBM *) objroutaddr_BM (ob, BMP_function_sig);
+    }
   else
     return NULL;
-  if (!rout)
-    return NULL;
+  if (!rout || rout == crashing_objrout_BM || rout == warning_objrout_BM)
+    {
+      if (ob)
+        WARNPRINTF_BM ("apply0 funv: %s object %s with bad routine",
+                       debug_outstr_value_BM (funv, stkf, 0),
+                       objectdbg_BM (ob));
+      else
+        WARNPRINTF_BM ("apply0 funv: %s bad function",
+                       debug_outstr_value_BM (funv, stkf, 0));
+      return NULL;
+    };
   stkf->stkfram_callfun = funv;
   return (*rout) (stkf, NULL, NULL, NULL, NULL, NULL);
 }                               /* end apply0_BM */
@@ -403,20 +416,35 @@ value_tyBM
 apply1_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1)
 {
+  objectval_tyBM *ob = NULL;
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
     {
-      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
-      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
-      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+      ob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) ob));
+      rout = (objrout_sigBM *) objroutaddr_BM (ob, BMP_function_sig);
     }
   else if (isobject_BM (funv))
-    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+    {
+      ob = (objectval_tyBM *) funv;
+      rout = (objrout_sigBM *) objroutaddr_BM (ob, BMP_function_sig);
+    }
   else
     return NULL;
-  if (!rout)
-    return NULL;
+  if (!rout || rout == crashing_objrout_BM || rout == warning_objrout_BM)
+    {
+      if (ob)
+        WARNPRINTF_BM ("apply1 funv: %s arg1 %s object %s with bad routine",
+                       debug_outstr_value_BM (funv, stkf, 0),
+                       debug_outstr_value_BM (arg1, stkf, 0),
+                       objectdbg_BM (ob));
+      else
+        WARNPRINTF_BM ("apply1 funv: %s arg1 %s bad function",
+                       debug_outstr_value_BM (funv, stkf, 0),
+                       debug_outstr_value_BM (arg1, stkf, 0));
+      return NULL;
+    }
   stkf->stkfram_callfun = funv;
   return (*rout) (stkf, arg1, NULL, NULL, NULL, NULL);
 }                               /* end apply1_BM */
@@ -426,20 +454,38 @@ value_tyBM
 apply2_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2)
 {
+  objectval_tyBM *ob = NULL;
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
     {
-      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
-      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
-      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+      ob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) ob));
+      rout = (objrout_sigBM *) objroutaddr_BM (ob, BMP_function_sig);
     }
   else if (isobject_BM (funv))
-    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+    {
+      ob = (objectval_tyBM *) funv;
+      rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+    }
   else
     return NULL;
-  if (!rout)
-    return NULL;
+  if (!rout || rout == crashing_objrout_BM || rout == warning_objrout_BM)
+    {
+      if (ob)
+        WARNPRINTF_BM
+          ("apply2 funv: %s arg1 %s arg2 %s object %s with bad routine",
+           debug_outstr_value_BM (funv, stkf, 0), debug_outstr_value_BM (arg1,
+                                                                         stkf,
+                                                                         0),
+           debug_outstr_value_BM (arg2, stkf, 0), objectdbg_BM (ob));
+      else
+        WARNPRINTF_BM ("apply2 funv: %s arg1 %s arg2 %s bad function",
+                       debug_outstr_value_BM (funv, stkf, 0),
+                       debug_outstr_value_BM (arg1, stkf, 0),
+                       debug_outstr_value_BM (arg2, stkf, 0));
+      return NULL;
+    }
   stkf->stkfram_callfun = funv;
   return (*rout) (stkf, arg1, arg2, NULL, NULL, NULL);
 }                               /* end apply2_BM */
@@ -450,20 +496,38 @@ apply3_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3)
 {
+  objectval_tyBM *ob = NULL;
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
     {
-      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
-      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
-      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+      ob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) ob));
+      rout = (objrout_sigBM *) objroutaddr_BM (ob, BMP_function_sig);
     }
   else if (isobject_BM (funv))
-    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+    {
+      ob = (objectval_tyBM *) funv;
+      rout = (objrout_sigBM *) objroutaddr_BM (ob, BMP_function_sig);
+    }
   else
     return NULL;
-  if (!rout)
-    return NULL;
+  if (!rout || rout == crashing_objrout_BM || rout == warning_objrout_BM)
+    {
+      if (ob)
+        WARNPRINTF_BM
+          ("apply2 funv: %s arg1 %s arg2 %s object %s with bad routine",
+           debug_outstr_value_BM (funv, stkf, 0), debug_outstr_value_BM (arg1,
+                                                                         stkf,
+                                                                         0),
+           debug_outstr_value_BM (arg2, stkf, 0), objectdbg_BM (ob));
+      else
+        WARNPRINTF_BM ("apply2 funv: %s arg1 %s arg2 %s bad function",
+                       debug_outstr_value_BM (funv, stkf, 0),
+                       debug_outstr_value_BM (arg1, stkf, 0),
+                       debug_outstr_value_BM (arg2, stkf, 0));
+      return NULL;
+    }
   stkf->stkfram_callfun = funv;
   return (*rout) (stkf, arg1, arg2, arg3, NULL, NULL);
 }                               /* end apply3_BM */
@@ -741,4 +805,11 @@ applymany_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
   return res;
 }                               /* end applymany_BM */
 
+
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 /**** end of file node_BM.c ****/
