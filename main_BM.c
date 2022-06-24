@@ -83,7 +83,7 @@ static void add_passwords_from_file_BM (const char *addedpasspath);
 
 static void write_pid_into_file_and_kill_old_BM (const char *pidfilepath);
 
-void cleanup_temporary_dir_after_exit_BM(void); /* for atexit */
+void cleanup_temporary_dir_after_exit_BM (void);        /* for atexit */
 ////////////////
 
 extern void weakfailure_BM (void);
