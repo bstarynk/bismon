@@ -170,7 +170,7 @@ load_initial_BM (const char *ldirpath)
   ld->ld_maxnum = maxnum;
   ld->ld_startelapsedtime = elapsedtime_BM ();
   ld->ld_startcputime = cputime_BM ();
-  ld->ld_curspaceix = - __LINE__;
+  ld->ld_curspaceix = -__LINE__;
   ld->ld_passnum = -1;
   ld->ld_objhset =
     hashsetobj_grow_BM (NULL, 2 * BM_NB_PREDEFINED + maxnum * 100);
@@ -462,15 +462,17 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               char dlerrbuf[80];
               memset (dlerrbuf, 0, sizeof (dlerrbuf));
               strncpy (dlerrbuf, dlerror (), sizeof (dlerrbuf));
-	      /* the first store space is the predefined one, and we
-		 need it to be correct... */
-	      if (ld->ld_curspaceix > 1)
-		curloadedobj->ob_rout = warning_objrout_BM;
-	      else {
-		WARNPRINTF_BM("loader first space in buggy store file %s:%d",
-			      curldpath, lincnt);
-		curloadedobj->ob_rout = crashing_objrout_BM;
-	      }
+              /* the first store space is the predefined one, and we
+                 need it to be correct... */
+              if (ld->ld_curspaceix > 1)
+                curloadedobj->ob_rout = warning_objrout_BM;
+              else
+                {
+                  WARNPRINTF_BM
+                    ("loader first space in buggy store file %s:%d",
+                     curldpath, lincnt);
+                  curloadedobj->ob_rout = crashing_objrout_BM;
+                }
               curloadedobj->ob_sig = BMP_function_sig;
               if (sscanf (linbuf + delimlen, " *%n", &pos) >= 0 && pos > 0)
                 WARNPRINTF_BM
@@ -517,8 +519,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
   fclose (fil);
   ld->ld_nbobjects += nbobjdef;
   ld->ld_nbroutines += nbrout;
-  ld->ld_curspaceix = - __LINE__;
-  ld->ld_passnum = - __LINE__;
+  ld->ld_curspaceix = -__LINE__;
+  ld->ld_passnum = -__LINE__;
 }                               /* end load_first_pass_BM */
 
 
@@ -1397,8 +1399,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
         }
       nbdirectives++;
     };
-  ld->ld_curspaceix = - __LINE__;
-  ld->ld_passnum = - __LINE__;
+  ld->ld_curspaceix = -__LINE__;
+  ld->ld_passnum = -__LINE__;
 }                               /* end load_second_pass_BM */
 
 ////////////////////////////////////////////////////////////////
@@ -1498,7 +1500,7 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       curpars->pars_memolcount = curpars->pars_memolsize = 0;
       ld->ld_parsarr[ix] = NULL;
     }
-  ld->ld_curspaceix =  - __LINE__;
+  ld->ld_curspaceix = -__LINE__;
   ld->ld_passnum = 0;
 }                               /* end doload_BM */
 
