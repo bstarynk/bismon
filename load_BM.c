@@ -462,7 +462,15 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               char dlerrbuf[80];
               memset (dlerrbuf, 0, sizeof (dlerrbuf));
               strncpy (dlerrbuf, dlerror (), sizeof (dlerrbuf));
-              curloadedobj->ob_rout = crashing_objrout_BM;
+	      /* the first store space is the predefined one, and we
+		 need it to be correct... */
+	      if (ld->ld_curspaceix > 1)
+		curloadedobj->ob_rout = warning_objrout_BM;
+	      else {
+		WARNPRINTF_BM("loader first space in buggy store file %s:%d",
+			      curldpath, lincnt);
+		curloadedobj->ob_rout = crashing_objrout_BM;
+	      }
               curloadedobj->ob_sig = BMP_function_sig;
               if (sscanf (linbuf + delimlen, " *%n", &pos) >= 0 && pos > 0)
                 WARNPRINTF_BM
