@@ -506,6 +506,7 @@ void
 dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
                     objectval_tyBM * hspob, struct stackframe_stBM *stkf)
 {
+  int nbnamed = 0;
   ASSERT_BM (valtype_BM ((const value_tyBM) du) == typayl_dumper_BM);
   ASSERT_BM ((spix >= PredefSp_BM && spix < LASTSPACE__BM)
              || (spix == ProjectSp_BM));
@@ -587,6 +588,20 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
          " '" STORE_COMPONENT_PREFIX_BM "' and '" STORE_COMPONENT_ALTPREFIX_BM "' for appending components,\n"  //.
          "///‼… are strictly equivalent ….\n"     //.
          "///---------------------\n\n", spfil);
+  /// compute the number of named objects in nbnamed
+  nbnamed = 0;
+  for (unsigned obix = 0; obix < nbobj; obix++)
+    {
+      _.curobj = setelemnth_BM (_.setobjs, obix);
+      ASSERT_BM (_.curobj != NULL);
+      objlock_BM (_.curobj);
+      const char *curnam = findobjectname_BM (_.curobj);
+      if (curnam)
+        nbnamed++;
+      objunlock_BM (_.curobj);
+    }
+  fprintf (spfil, "/// %d named objects out of %u in this space.\n\n",
+           nbnamed, nbobj);
   _.modhsetob = makeobj_BM ();
   objputhashsetpayl_BM (_.modhsetob, 2 + nbobj / 128);
   // compute the set of modules
@@ -595,7 +610,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       _.curobj = setelemnth_BM (_.setobjs, obix);
       ASSERT_BM (_.curobj != NULL);
       objlock_BM (_.curobj);
-      if (_.curobj->ob_rout)
+      if (_.curobj->ob_rout && _.curobj->ob_rout != crashing_objrout_BM && _.curobj->ob_rout != warning_objrout_BM)
         {
           Dl_info di = { };
           if (dladdr (_.curobj->ob_rout, &di) && di.dli_fname)
@@ -642,10 +657,15 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       objarr[obix] = _.curobj;
     };
   sortnamedobjarr_BM (objarr, nbobj);
+
   for (unsigned obix = 0; obix < nbobj; obix++)
     {
       _.curobj = objarr[obix];
       ASSERT_BM (_.curobj != NULL);
+      if (obix < nbnamed)
+        ASSERT_BM (findobjectname_BM (_.curobj) != NULL);
+      else
+        ASSERT_BM (findobjectname_BM (_.curobj) == NULL);
       dump_emit_object_BM (du, _.curobj, spfil, CURFRAME_BM);
       if (obix % 64 == 0 && obix > 0)
         {
