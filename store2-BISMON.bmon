@@ -8912,8 +8912,8 @@ _97rnxb0KFqq_44veN75DG2E)  "),"
   "\n"
   "#else /*no BISMON_LIBONION*/\n"
   "FATAL_BM/*obsolete ¤¤objwebexchangecompletepayl*/(\"obsolete objwebexchangecompletepayl\");\n"
-  "#endif /*BISMON_LIBONION*/
-"))"
+  "#endif /*BISMON_LIBONION*/\n"
+  "))"
 )
 
 »_0ncEyxweiqi_5Vj5U2xvh82
