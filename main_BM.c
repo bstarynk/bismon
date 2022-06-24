@@ -546,7 +546,8 @@ remove_contributor_bm (const gchar * optname __attribute__((unused)),
 ////////////////////////////////////////////////////////////////
 const GOptionEntry optionstab_bm[] = {
   //
-  {.long_name = "load",.short_name = 'l',
+  {.long_name = "load",         //
+   .short_name = 'l',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &load_dir_bm,
@@ -554,21 +555,24 @@ const GOptionEntry optionstab_bm[] = {
    "\t .... (default is the current working directory)",
    .arg_description = "DIR"},
   //
-  {.long_name = "dump",.short_name = 'd',
+  {.long_name = "dump",         //
+   .short_name = 'd',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &dump_dir_BM,
    .description = "dump persistent heap into directory DIR",
    .arg_description = "DIR"},
   //
-  {.long_name = "dump-after-load",.short_name = (char) 0,
+  {.long_name = "dump-after-load",      //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &dump_after_load_dir_bm,
    .description = "dump after load the persistent heap into directory DIR",
    .arg_description = "DIR"},
   //
-  {.long_name = "contributors-file",.short_name = (char) 0,
+  {.long_name = "contributors-file",    //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &contributors_filepath_BM,
@@ -576,7 +580,8 @@ const GOptionEntry optionstab_bm[] = {
    "\t .. default is contributors_BM or $HOME/contributors_BM",
    .arg_description = "PATH"},
   //
-  {.long_name = "passwords-file",.short_name = (char) 0,
+  {.long_name = "passwords-file",       //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &passwords_filepath_BM,
@@ -584,7 +589,8 @@ const GOptionEntry optionstab_bm[] = {
    "\t .. default is passwords_BM or $HOME/passwords_BM",
    .arg_description = "PATH"},
   //
-  {.long_name = "contact-file",.short_name = (char) 0,
+  {.long_name = "contact-file", //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &contact_filepath_BM,
@@ -592,7 +598,7 @@ const GOptionEntry optionstab_bm[] = {
    "\t .. default is contact_BM or $HOME/contact_BM",
    .arg_description = "PATH"},
   //
-  {.long_name = "temporary-dir",//
+  {.long_name = "temporary-dir",        //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
@@ -602,7 +608,8 @@ const GOptionEntry optionstab_bm[] = {
    "\t will create files in it, otherwise create some under /var/tmp\n",
    .arg_description = "TEMPORARY_DIR"},
   //
-  {.long_name = "sigusr1-dump-prefix",.short_name = (char) 0,
+  {.long_name = "sigusr1-dump-prefix",  //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &sigusr1_dump_prefix_BM,
@@ -614,7 +621,7 @@ const GOptionEntry optionstab_bm[] = {
    "\t ... the second dump into /tmp/dumpBM2/ etc...\n",
    .arg_description = "DUMP_PREFIX"},
   //
-  {.long_name = "add-passwords",//
+  {.long_name = "add-passwords",        //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
@@ -624,7 +631,7 @@ const GOptionEntry optionstab_bm[] = {
    "\t ... containing lines like <username>:<password> to add passwords",
    .arg_description = "PASSWORDENTRIES"},
   //
-  {.long_name = "add-password-comment",//
+  {.long_name = "add-password-comment", //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
@@ -634,7 +641,7 @@ const GOptionEntry optionstab_bm[] = {
    "\t .... file.",
    .arg_description = "PASSWORDCOMMENT"},
   //
-  {.long_name = "emit-has-predef",//
+  {.long_name = "emit-has-predef",      //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_INT,
@@ -642,21 +649,23 @@ const GOptionEntry optionstab_bm[] = {
    .description = "emit NB 'HAS_PREDEF_BM'",
    .arg_description = "NB"},
   //
-  {.long_name = "job",.short_name = (char) 'j',
+  {.long_name = "job",          //
+   .short_name = (char) 'j',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_INT,
    .arg_data = &nbworkjobs_BM,
    .description = "number of worker threads NBJOBS (>=2, <16)",
    .arg_description = "NBJOBS"},
   //
-  {.long_name = "random-seed",.short_name = (char) 0,
+  {.long_name = "random-seed",  //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_INT,
    .arg_data = &randomseed_BM,
    .description = "set the initial PRNG seed for g_random_int to given SEED",
    .arg_description = "SEED"},
   //
-  {.long_name = "sleep-delay",//
+  {.long_name = "sleep-delay",  //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_DOUBLE,
@@ -664,7 +673,7 @@ const GOptionEntry optionstab_bm[] = {
    .description = " sleep the given DELAY (in seconds) at start, after load ",
    .arg_description = " DELAY "},
   //
-  {.long_name = "pid-file",//
+  {.long_name = "pid-file",     //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
@@ -677,7 +686,7 @@ const GOptionEntry optionstab_bm[] = {
    " \t gets a SIGQUIT signal, and has one second to dump its state) ",
    .arg_description = "PATH"},
   //
-  {.long_name = "run-command",//
+  {.long_name = "run-command",  //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -685,7 +694,7 @@ const GOptionEntry optionstab_bm[] = {
    .description = " run the command CMD ",
    .arg_description = " CMD "},
   //
-  {.long_name = "project-name",//
+  {.long_name = "project-name", //
    .short_name = (char) 'P',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -693,7 +702,7 @@ const GOptionEntry optionstab_bm[] = {
    .description = " define the project name ",
    .arg_description = " PROJECT_NAME "},
   //
-  {.long_name = "init-after-load",//
+  {.long_name = "init-after-load",      //
    .short_name = 'i',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -701,7 +710,7 @@ const GOptionEntry optionstab_bm[] = {
    .description = "do the <closure> after loading, as initialization",
    .arg_description = "<closure> (or object)"},
   //
-  {.long_name = "chdir-after-load",//
+  {.long_name = "chdir-after-load",     //
    .short_name = (char) 'c',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
@@ -710,7 +719,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "DIR"},
 
   //
-  {.long_name = "parse-value",//
+  {.long_name = "parse-value",  //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -719,7 +728,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "EXPR"},
 
   //
-  {.long_name = "parse-file",//
+  {.long_name = "parse-file",   //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -728,7 +737,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = " FILENAME "},
 
   //
-  {.long_name = "test-plugin",//
+  {.long_name = "test-plugin",  //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -738,7 +747,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "PLUGINAME"},
 
   //
-  {.long_name = "comment-predef",//
+  {.long_name = "comment-predef",       //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
@@ -747,7 +756,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "COMM"},
 
   //
-  {.long_name = "add-predef",//
+  {.long_name = "add-predef",   //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -756,7 +765,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "PREDEFNAME"},
 
   ////
-  {.long_name = "contributor",//
+  {.long_name = "contributor",  //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -769,7 +778,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "CONTRIBUTOR"},
 
   ////
-  {.long_name = "print-contributor-of-oid",//
+  {.long_name = "print-contributor-of-oid",     //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
@@ -779,7 +788,7 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "CONTRIBOID"},
 
   ////
-  {.long_name = "remove-contributor",//
+  {.long_name = "remove-contributor",   //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
@@ -821,42 +830,47 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = NULL},
   //
   //
-  {.long_name = "batch",.short_name = (char) 0,
+  {.long_name = "batch",        //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
    .arg_data = &batch_bm,
    .description = "run in batch mode without user interface",
    .arg_description = NULL},
   //
-  {.long_name = "debug",.short_name = (char) 'D',
+  {.long_name = "debug",        //.short_name = (char) 'D',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
    .arg_data = (bool *) &showdebugmsg_BM,
    .description = " gives lots of debug messages ",
    .arg_description = NULL},
   //
-  {.long_name = "debug-after-load",.short_name = (char) 0,
+  {.long_name = "debug-after-load",     //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
    .arg_data = &debug_after_load_BM,
    .description = "enable debug messages after load",
    .arg_description = NULL},
   //
-  {.long_name = "emit-module",.short_name = (char) 0,
+  {.long_name = "emit-module",  //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &module_to_emit_bm,
    .description = "emit module MODULEOBJ",
    .arg_description = "MODULEOBJ"},
   //
-  {.long_name = "mailhtml-file",.short_name = (char) 0,
+  {.long_name = "mailhtml-file",        //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &mailhtml_file_bm,
    .description = " FILE is the file, in HTML, to be sent to contributor",
    .arg_description = "FILE"},
   //
-  {.long_name = "mailhtml-subject",.short_name = (char) 0,
+  {.long_name = "mailhtml-subject",     //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &mailhtml_subject_bm,
@@ -864,14 +878,16 @@ const GOptionEntry optionstab_bm[] = {
    " SUBJECT is the subject of the email to be sent to contributor",
    .arg_description = "SUBJECT"},
   //
-  {.long_name = "mailhtml-contributor",.short_name = (char) 0,
+  {.long_name = "mailhtml-contributor", //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &mailhtml_contributor_bm,
    .description = " CONTRIBUTOR is to whom the email will be sent",
    .arg_description = "CONTRIBUTOR"},
   //
-  {.long_name = "mailhtml-attachment",.short_name = (char) 0,
+  {.long_name = "mailhtml-attachment",  //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &mailhtml_attachment_bm,
@@ -879,7 +895,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "ATTACHEDFILE"},
   //
   //
-  {.long_name = "version",.short_name = (char) 0,
+  {.long_name = "version",      //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
    .arg_data = &give_version_bm,
@@ -889,7 +906,8 @@ const GOptionEntry optionstab_bm[] = {
   //////////////////
 #ifdef BISMON_LIBONION
   //
-  {.long_name = "onion-ssl-certificate",.short_name = (char) 0,
+  {.long_name = "onion-ssl-certificate",        //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &onion_ssl_certificate_BM,
@@ -897,14 +915,16 @@ const GOptionEntry optionstab_bm[] = {
    "Uses FILEPREFIX.pem & FILEPREFIX.key for SSL certificate to libonion",
    .arg_description = "FILEPREFIX"},
   //
-  {.long_name = "onion-web-base",.short_name = (char) 0,
+  {.long_name = "onion-web-base",       //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &onion_web_base_BM,
    .description =
    "A string like <host>:<port>, default is localhost:8086, describing the base of web URLs served by bismon",
    .arg_description = "WEB_BASE"},
-  {.long_name = "onion-anon-web-cookie",.short_name = (char) 0,
+  {.long_name = "onion-anon-web-cookie",        //
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &onion_anon_web_cookie_BM,
