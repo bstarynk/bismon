@@ -868,4 +868,11 @@ debug_outstr_value_BM (const value_tyBM val, struct stackframe_stBM *stkf,
   return objstrbufferbytespayl_BM (_.bufob);
 }                               /* end debug_outstr_value_BM */
 
+
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 /**** end of file dump_BM.c ****/
