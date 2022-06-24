@@ -538,6 +538,7 @@ apply4_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4)
 {
+#warning apply4_BM should be improved to add warning when no routine
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
@@ -563,6 +564,7 @@ apply4more_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
                const value_tyBM arg3, const value_tyBM arg4,
                const value_tyBM argmore)
 {
+#warning apply4more_BM should be improved to add warning when no routine
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
@@ -589,6 +591,7 @@ apply5_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5)
 {
+#warning apply5_BM should be improved to add warning when no routine
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
@@ -617,6 +620,7 @@ apply6_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg3, const value_tyBM arg4,
            const value_tyBM arg5, const value_tyBM arg6)
 {
+#warning apply6_BM should be improved to add warning when no routine
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
@@ -647,6 +651,7 @@ apply7_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg5, const value_tyBM arg6,
            const value_tyBM arg7)
 {
+#warning apply7_BM should be improved to add warning when no routine
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
@@ -678,6 +683,7 @@ apply8_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg5, const value_tyBM arg6,
            const value_tyBM arg7, const value_tyBM arg8)
 {
+#warning apply8_BM should be improved to add warning when no routine
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
@@ -711,6 +717,7 @@ apply9_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg7, const value_tyBM arg8,
            const value_tyBM arg9)
 {
+#warning apply9_BM should be improved to add warning when no routine
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
@@ -741,6 +748,7 @@ value_tyBM
 applyvar_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
              unsigned nbargs, const value_tyBM * argarr)
 {
+#warning applyvar_BM should be improved to add warning when no routine
   if (nbargs > MAXAPPLYARGS_BM)
     return NULL;
   if (nbargs > 0 && !argarr)
@@ -787,6 +795,7 @@ value_tyBM
 applymany_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
               unsigned nbargs, ...)
 {
+#warning applymany_BM should be improved to add warning when no routine
   if (nbargs > MAXAPPLYARGS_BM)
     FATAL_BM ("applymany_BM too many %u arguments", nbargs);
   value_tyBM tinyarr[TINYSIZE_BM] = { };
