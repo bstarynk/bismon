@@ -610,7 +610,8 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
       _.curobj = setelemnth_BM (_.setobjs, obix);
       ASSERT_BM (_.curobj != NULL);
       objlock_BM (_.curobj);
-      if (_.curobj->ob_rout && _.curobj->ob_rout != crashing_objrout_BM && _.curobj->ob_rout != warning_objrout_BM)
+      if (_.curobj->ob_rout && _.curobj->ob_rout != crashing_objrout_BM
+          && _.curobj->ob_rout != warning_objrout_BM)
         {
           Dl_info di = { };
           if (dladdr (_.curobj->ob_rout, &di) && di.dli_fname)
