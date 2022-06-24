@@ -5092,4 +5092,10 @@ failure:
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniscan_node_conn#make_tree  _8ru2DB8XTmJ_7h8mj1NTpKM */
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 ///// end of file gencode_BM.c

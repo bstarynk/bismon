@@ -4595,13 +4595,16 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     INFOPRINTF_BM ("*!* ended emitting %s module %s/%s cpath %s *!*\n",
                    modulistemporary ? "temporary" : "persistent",
                    objectdbg_BM (_.modulob), modulidbuf, srcpathstr);
-  asprintf (&indentcmdstr, "/usr/bin/indent '%s'", srcpathstr);
-  {
-    int indentbad = system (indentcmdstr);
-    if (indentbad)
-      FATAL_BM ("failed to indent generated C code %s (#%d)", srcpathstr,
-		indentbad);
-  }
+  if (!dont_indent_generated_code_BM)
+    {
+      asprintf (&indentcmdstr, "/usr/bin/indent '%s'", srcpathstr);
+      {
+        int indentbad = system (indentcmdstr);
+        if (indentbad)
+          FATAL_BM ("failed to indent generated C code %s (#%d)", srcpathstr,
+                    indentbad);
+      }
+    }
   if (indentcmdstr)
     free (indentcmdstr), indentcmdstr = NULL;
   if (srcdirstr)
@@ -5180,4 +5183,10 @@ failure:
   PLAINFAILURE_BM (failin, _.errorv, CURFRAME_BM);
 }                               /* end miniemit_node_conn°make_tree _1nsAyqOOy7S_1zodeivnxlm */
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 /*** end of file emitcode_BM.c ***/

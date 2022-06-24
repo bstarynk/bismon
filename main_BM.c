@@ -49,6 +49,7 @@ double sleepdelay_bm;
 const char *project_name_BM;
 const char *sigusr1_dump_prefix_BM;
 const volatile char *unix_json_socket_BM;
+bool dont_indent_generated_code_BM;
 
 int sigfd_BM = -1;              /* for signalfd(2) */
 atomic_int oniontimerfd_BM = -1;        /* for timerfd_create(2) */
@@ -591,7 +592,8 @@ const GOptionEntry optionstab_bm[] = {
    "\t .. default is contact_BM or $HOME/contact_BM",
    .arg_description = "PATH"},
   //
-  {.long_name = "temporary-dir",.short_name = (char) 0,
+  {.long_name = "temporary-dir",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &temporary_dir_BM,
@@ -612,7 +614,8 @@ const GOptionEntry optionstab_bm[] = {
    "\t ... the second dump into /tmp/dumpBM2/ etc...\n",
    .arg_description = "DUMP_PREFIX"},
   //
-  {.long_name = "add-passwords",.short_name = (char) 0,
+  {.long_name = "add-passwords",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &added_passwords_filepath_BM,
@@ -621,7 +624,8 @@ const GOptionEntry optionstab_bm[] = {
    "\t ... containing lines like <username>:<password> to add passwords",
    .arg_description = "PASSWORDENTRIES"},
   //
-  {.long_name = "add-password-comment",.short_name = (char) 0,
+  {.long_name = "add-password-comment",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &password_file_comment_BM,
@@ -630,7 +634,8 @@ const GOptionEntry optionstab_bm[] = {
    "\t .... file.",
    .arg_description = "PASSWORDCOMMENT"},
   //
-  {.long_name = "emit-has-predef",.short_name = (char) 0,
+  {.long_name = "emit-has-predef",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_INT,
    .arg_data = &count_emit_has_predef_bm,
@@ -651,14 +656,16 @@ const GOptionEntry optionstab_bm[] = {
    .description = "set the initial PRNG seed for g_random_int to given SEED",
    .arg_description = "SEED"},
   //
-  {.long_name = "sleep-delay",.short_name = (char) 0,
+  {.long_name = "sleep-delay",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_DOUBLE,
    .arg_data = &sleepdelay_bm,
    .description = " sleep the given DELAY (in seconds) at start, after load ",
    .arg_description = " DELAY "},
   //
-  {.long_name = "pid-file",.short_name = (char) 0,
+  {.long_name = "pid-file",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &pid_filepath_bm,
@@ -670,28 +677,32 @@ const GOptionEntry optionstab_bm[] = {
    " \t gets a SIGQUIT signal, and has one second to dump its state) ",
    .arg_description = "PATH"},
   //
-  {.long_name = "run-command",.short_name = (char) 0,
+  {.long_name = "run-command",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &run_command_bm,
    .description = " run the command CMD ",
    .arg_description = " CMD "},
   //
-  {.long_name = "project-name",.short_name = (char) 'P',
+  {.long_name = "project-name",//
+   .short_name = (char) 'P',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &set_project_name_bm,
    .description = " define the project name ",
    .arg_description = " PROJECT_NAME "},
   //
-  {.long_name = "init-after-load",.short_name = 'i',
+  {.long_name = "init-after-load",//
+   .short_name = 'i',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &handle_init_afterload_bm,
    .description = "do the <closure> after loading, as initialization",
    .arg_description = "<closure> (or object)"},
   //
-  {.long_name = "chdir-after-load",.short_name = (char) 'c',
+  {.long_name = "chdir-after-load",//
+   .short_name = (char) 'c',
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &chdir_after_load_bm,
@@ -699,7 +710,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "DIR"},
 
   //
-  {.long_name = "parse-value",.short_name = (char) 0,
+  {.long_name = "parse-value",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &get_parse_value_after_load_bm,
@@ -707,7 +719,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "EXPR"},
 
   //
-  {.long_name = "parse-file",.short_name = (char) 0,
+  {.long_name = "parse-file",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &get_parse_file_after_load_bm,
@@ -715,7 +728,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = " FILENAME "},
 
   //
-  {.long_name = "test-plugin ",.short_name = (char) 0,
+  {.long_name = "test-plugin",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &get_testplugin_after_load_bm,
@@ -724,7 +738,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "PLUGINAME"},
 
   //
-  {.long_name = "comment-predef",.short_name = (char) 0,
+  {.long_name = "comment-predef",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &comment_bm,
@@ -732,7 +747,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "COMM"},
 
   //
-  {.long_name = "add-predef",.short_name = (char) 0,
+  {.long_name = "add-predef",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &add_predef_bm,
@@ -740,7 +756,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "PREDEFNAME"},
 
   ////
-  {.long_name = "contributor",.short_name = (char) 0,
+  {.long_name = "contributor",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &add_contributor_bm,
@@ -752,7 +769,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "CONTRIBUTOR"},
 
   ////
-  {.long_name = "print-contributor-of-oid",.short_name = (char) 0,
+  {.long_name = "print-contributor-of-oid",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_STRING,
    .arg_data = &print_contributor_of_oid_bm,
@@ -761,7 +779,8 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = "CONTRIBOID"},
 
   ////
-  {.long_name = "remove-contributor",.short_name = (char) 0,
+  {.long_name = "remove-contributor",//
+   .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &remove_contributor_bm,
@@ -781,6 +800,15 @@ const GOptionEntry optionstab_bm[] = {
    .description =
    "cleanup memory at end (for valgrind)\n"
    "\t ... (see valgrind.org for more).",
+   .arg_description = NULL},
+  ///
+  ///
+  {.long_name = "dont-indent",  //
+   .short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_NONE,
+   .arg_data = &dont_indent_generated_code_BM,
+   .description = "do not indent (using GNU indent) the generated C code",
    .arg_description = NULL},
   ///
   {.long_name = "final-gc",     //
@@ -2821,4 +2849,10 @@ warning_objrout_BM (struct stackframe_stBM *stkf,
 
 
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 /*** end of file main_BM.c ***/

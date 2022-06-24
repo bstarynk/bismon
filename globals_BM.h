@@ -95,8 +95,14 @@ extern volatile struct backstrace_state *backtracestate_BM;
 
 extern char temporary_dir_BM[];
 
+extern bool dont_indent_generated_code_BM;
+
 extern int sigfd_BM;       /* for signalfd(2) */
 extern volatile atomic_bool eventlooprunning_BM;
+
+
+
+
 
 ///// related to libonion, see https://www.coralbits.com/libonion/
 #ifdef BISMON_LIBONION
@@ -143,4 +149,10 @@ extern int cmdpipe_rd_BM, cmdpipe_wr_BM;
 #define UNSPECIFIED_BM ((void*)(&unspecifieddata_BM))
 #define HAS_GLOBAL_BM(Nam) extern objectval_tyBM*globdata_##Nam##_BM;
 #include "_genbm_global.h"
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 #endif /*GLOBALS_BM_INCLUDED */
