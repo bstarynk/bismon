@@ -4596,10 +4596,12 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                    modulistemporary ? "temporary" : "persistent",
                    objectdbg_BM (_.modulob), modulidbuf, srcpathstr);
   asprintf (&indentcmdstr, "/usr/bin/indent '%s'", srcpathstr);
-  indok = system (indentcmdstr);
-  if (!indok)
-    FATAL_BM ("failed to indent generated C code %s (#%d)", srcpathstr,
-              indok);
+  {
+    int indentbad = system (indentcmdstr);
+    if (indentbad)
+      FATAL_BM ("failed to indent generated C code %s (#%d)", srcpathstr,
+		indentbad);
+  }
   if (indentcmdstr)
     free (indentcmdstr), indentcmdstr = NULL;
   if (srcdirstr)
