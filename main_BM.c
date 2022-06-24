@@ -1193,8 +1193,11 @@ main (int argc, char **argv)
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
   if (access ("/bin/at", X_OK))
-    FATAL_BM ("BISMON (%s pid %d) requires a /bin/at (%m)", myprogname_BM,
-              (int) getpid ());
+    FATAL_BM ("BISMON (%s pid %d git %s) requires a /bin/at (%m)",
+              myprogname_BM, (int) getpid (), bismon_shortgitid);
+  if (access ("/usr/bin/indent", X_OK))
+    FATAL_BM ("BISMON (%s pid %d git %s) requires a /usr/bin/indent (%m)",
+              myprogname_BM, (int) getpid (), bismon_shortgitid);
   bool skiplocalcheck = false;
   {
     // check the locale(7), unless using print-contributor-of-oid
