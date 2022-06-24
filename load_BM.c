@@ -170,6 +170,8 @@ load_initial_BM (const char *ldirpath)
   ld->ld_maxnum = maxnum;
   ld->ld_startelapsedtime = elapsedtime_BM ();
   ld->ld_startcputime = cputime_BM ();
+  ld->ld_curspaceix = - __LINE__;
+  ld->ld_passnum = -1;
   ld->ld_objhset =
     hashsetobj_grow_BM (NULL, 2 * BM_NB_PREDEFINED + maxnum * 100);
   ld->ld_modhset = hashsetobj_grow_BM (NULL, 2 * TINYSIZE_BM);
@@ -292,11 +294,13 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
 {
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
   ASSERT_BM ((ix >= 0 && ix <= (int) ld->ld_maxnum) || ix == ProjectSp_BM);
+  ld->ld_passnum = 1;
   char *curldpath = NULL;
   if (ix >= 0 && ix <= (int) ld->ld_maxnum)
     curldpath = ld->ld_storepatharr[ix];
   else if (ix == ProjectSp_BM)
     curldpath = ld->ld_projectstatepath;
+  ld->ld_curspaceix = ix;
   ASSERT_BM (curldpath != NULL);
   size_t linsiz = 256;
   char *linbuf = malloc (linsiz);
@@ -505,6 +509,8 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
   fclose (fil);
   ld->ld_nbobjects += nbobjdef;
   ld->ld_nbroutines += nbrout;
+  ld->ld_curspaceix = - __LINE__;
+  ld->ld_passnum = - __LINE__;
 }                               /* end load_first_pass_BM */
 
 
@@ -960,11 +966,13 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
 {
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
   ASSERT_BM ((ix >= 0 && ix <= (int) ld->ld_maxnum) || ix == ProjectSp_BM);
+  ld->ld_passnum = 2;
   char *curldpath = NULL;
   if (ix >= 0 && ix <= (int) ld->ld_maxnum)
     curldpath = ld->ld_storepatharr[ix];
   else if (ix == ProjectSp_BM)
     curldpath = ld->ld_projectstatepath;
+  ld->ld_curspaceix = ix;
   ASSERT_BM (curldpath != NULL);
   FILE *fil = fopen (curldpath, "r");
   if (!fil)
@@ -1381,6 +1389,8 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
         }
       nbdirectives++;
     };
+  ld->ld_curspaceix = - __LINE__;
+  ld->ld_passnum = - __LINE__;
 }                               /* end load_second_pass_BM */
 
 ////////////////////////////////////////////////////////////////
@@ -1480,6 +1490,8 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       curpars->pars_memolcount = curpars->pars_memolsize = 0;
       ld->ld_parsarr[ix] = NULL;
     }
+  ld->ld_curspaceix =  - __LINE__;
+  ld->ld_passnum = 0;
 }                               /* end doload_BM */
 
 

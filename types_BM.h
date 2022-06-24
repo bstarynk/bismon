@@ -492,6 +492,8 @@ struct loader_stBM              // malloc-ed then free-d at load time
   typedhead_tyBM pa;            // rlen is unused
   unsigned ld_magic;            /* always LOADERMAGIC_BM */
   unsigned ld_maxnum;           /* highest number of store*.bmon files */
+  int ld_curspaceix;		/* a space number, or < 0 if none */
+  int ld_passnum;		/* 1 for the first pass, 2 for the second pass, < 0 for none */
   double ld_startelapsedtime;
   double ld_startcputime;
   unsigned long ld_nbobjects;
