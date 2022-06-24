@@ -83,7 +83,7 @@ static void add_passwords_from_file_BM (const char *addedpasspath);
 
 static void write_pid_into_file_and_kill_old_BM (const char *pidfilepath);
 
-
+void cleanup_temporary_dir_after_exit_BM(void); /* for atexit */
 ////////////////
 
 extern void weakfailure_BM (void);
@@ -1201,7 +1201,7 @@ check_locale_BM (void)
 
 
 void
-cleanup_temporary_dir_after_exit_bm (void)
+cleanup_temporary_dir_after_exit_BM (void)
 {
   FILE *fat = popen ("/bin/at now + 15 minutes", "w");
   if (!fat)
@@ -1209,7 +1209,7 @@ cleanup_temporary_dir_after_exit_bm (void)
   fprintf (fat, "/bin/rm -rf %s", temporary_dir_BM);
   fflush (fat);
   fclose (fat);
-}                               /* end cleanup_temporary_dir_after_exit_bm */
+}                               /* end cleanup_temporary_dir_after_exit_BM */
 
 ////////////////////////////////////////////////////////////////
 //// see also https://github.com/dtrebbien/GNOME.supp and
@@ -1286,7 +1286,7 @@ main (int argc, char **argv)
       if (mkdir (temporary_dir_BM, 0700))
         FATAL_BM ("failed to make temporary directory %s", temporary_dir_BM);
       INFOPRINTF_BM ("made temporary directory %s", temporary_dir_BM);
-      atexit (cleanup_temporary_dir_after_exit_bm);
+      atexit (cleanup_temporary_dir_after_exit_BM);
     };
   {
     char temptestpath[384];
