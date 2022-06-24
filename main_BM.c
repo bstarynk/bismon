@@ -2489,7 +2489,7 @@ give_prog_version_BM (const char *progname)
   memset (versionbuf, 0, sizeof (versionbuf));
   confstr (_CS_GNU_LIBC_VERSION, versionbuf, sizeof (versionbuf) - 1);
   printf ("\n" "*** %s: version information\n", progname);
-  printf ("\t timestamp: %s (%uld Epoch)\n", bismon_timestamp,
+  printf ("\t timestamp: %s (%ld Epoch)\n", bismon_timestamp,
           bismon_timelong);
   printf ("\t git id: %s\n", bismon_gitid);
   printf ("\t last git commit: %s\n", bismon_lastgitcommit);
