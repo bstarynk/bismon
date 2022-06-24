@@ -1153,16 +1153,16 @@ check_locale_BM (void)
 
 
 void
-cleanup_temporary_dir_after_exit_bm(void)
+cleanup_temporary_dir_after_exit_bm (void)
 {
-  FILE*fat = popen("/bin/at now + 15 minutes", "w");
+  FILE *fat = popen ("/bin/at now + 15 minutes", "w");
   if (!fat)
-    FATAL_BM("popen /bin/at now + 15 minutes failed (%m)");
-  fprintf(fat, "/bin/rm -rf %s", temporary_dir_BM);
-  fflush(fat);
-  fclose(fat);
-} /* end cleanup_temporary_dir_after_exit_bm */
-  
+    FATAL_BM ("popen /bin/at now + 15 minutes failed (%m)");
+  fprintf (fat, "/bin/rm -rf %s", temporary_dir_BM);
+  fflush (fat);
+  fclose (fat);
+}                               /* end cleanup_temporary_dir_after_exit_bm */
+
 ////////////////////////////////////////////////////////////////
 //// see also https://github.com/dtrebbien/GNOME.supp and
 //// https://stackoverflow.com/q/16659781/841108 to use valgrind with
@@ -1192,8 +1192,9 @@ main (int argc, char **argv)
   memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
-  if (access("/bin/at", X_OK))
-    FATAL_BM ("BISMON (%s pid %d) requires a /bin/at (%m)", myprogname_BM, (int)getpid());
+  if (access ("/bin/at", X_OK))
+    FATAL_BM ("BISMON (%s pid %d) requires a /bin/at (%m)", myprogname_BM,
+              (int) getpid ());
   bool skiplocalcheck = false;
   {
     // check the locale(7), unless using print-contributor-of-oid
@@ -1224,29 +1225,31 @@ main (int argc, char **argv)
         ("set -using g_random_set_seed- the Glib PRNG random seed to %d",
          randomseed_BM);
     }
-  if (!temporary_dir_BM[0]) {
-    time_t nowt=0;
-    time(&nowt);
-    snprintf(temporary_dir_BM, sizeof(temporary_dir_BM),
-	     "/var/tmp/bismon-p%d-t%ld", (int)getpid(), (long)nowt);
-    DBGPRINTF_BM("temporary dir %s", temporary_dir_BM);
-    if (mkdir (temporary_dir_BM, 0700))
-      FATAL_BM("failed to make temporary directory %s", temporary_dir_BM);
-    INFOPRINTF_BM("made temporary directory %s", temporary_dir_BM);
-    atexit(cleanup_temporary_dir_after_exit_bm);
-  };
+  if (!temporary_dir_BM[0])
+    {
+      time_t nowt = 0;
+      time (&nowt);
+      snprintf (temporary_dir_BM, sizeof (temporary_dir_BM),
+                "/var/tmp/bismon-p%d-t%ld", (int) getpid (), (long) nowt);
+      DBGPRINTF_BM ("temporary dir %s", temporary_dir_BM);
+      if (mkdir (temporary_dir_BM, 0700))
+        FATAL_BM ("failed to make temporary directory %s", temporary_dir_BM);
+      INFOPRINTF_BM ("made temporary directory %s", temporary_dir_BM);
+      atexit (cleanup_temporary_dir_after_exit_bm);
+    };
   {
     char temptestpath[384];
-    memset (temptestpath, 0, sizeof(temptestpath));
-    snprintf(temptestpath, sizeof(temptestpath), "%s/__BISMON_TEMPORARY_DIR", temporary_dir_BM);
-    FILE* fw = fopen(temptestpath, "w");
+    memset (temptestpath, 0, sizeof (temptestpath));
+    snprintf (temptestpath, sizeof (temptestpath),
+              "%s/__BISMON_TEMPORARY_DIR", temporary_dir_BM);
+    FILE *fw = fopen (temptestpath, "w");
     if (!fw)
-      FATAL_BM("failed to write temporary %s (%m)", temptestpath);
-    fprintf(fw, "# Bismon %s pid %d on %s temporary %s\n",
-	    bismon_gitid, (int)getpid(), myhostname_BM, temptestpath);
-    fflush(fw);
-    fsync(fileno(fw));
-    fclose(fw);
+      FATAL_BM ("failed to write temporary %s (%m)", temptestpath);
+    fprintf (fw, "# Bismon %s pid %d on %s temporary %s\n",
+             bismon_gitid, (int) getpid (), myhostname_BM, temptestpath);
+    fflush (fw);
+    fsync (fileno (fw));
+    fclose (fw);
   };
   if (!skiplocalcheck)
     check_locale_BM ();
@@ -2760,6 +2763,12 @@ parse_program_options_BM (int argc, char **argv)
                 initialargc, argc);
 }                               /* end parse_program_options_BM */
 
+
+/**
+ * This crashing_objrout_BM could be set as the ob_rout function in
+ * objects. If called (it never should be called), it is crashing the
+ * bismon application.
+ **/
 value_tyBM
 crashing_objrout_BM (struct stackframe_stBM *stkf,
                      const value_tyBM arg1,
@@ -2767,15 +2776,20 @@ crashing_objrout_BM (struct stackframe_stBM *stkf,
                      const value_tyBM arg3,
                      const value_tyBM arg4, const quasinode_tyBM * restargs)
 {
-  FATAL_BM
-    ("crashing_objrout_BM stkf@%p arg1=%p arg2=%p arg3=%p arg4=%p restargs=%p",
-     (void *) stkf, (void *) arg1, (void *) arg2, (void *) arg2,
-     (void *) arg3, (void *) arg4, (void *) restargs);
+  FATAL_BM ("crashing_objrout_BM stkf@%p arg1=%p arg2=%p arg3=%p arg4=%p restargs=%p", (void *) stkf,   //
+            (void *) arg1, (void *) arg2,       //
+            (void *) arg3, (void *) arg4,       //
+            (void *) restargs);
   return NULL;
 }                               /* end of crashing_objrout_BM */
 
 
 
+/**
+ * This warning_objrout_BM could be set as the ob_rout function in
+ * objects. If called, it emits a warning, and from the main thread
+ * prints backtrace details.
+ **/
 value_tyBM
 warning_objrout_BM (struct stackframe_stBM *stkf,
                     const value_tyBM arg1,
@@ -2783,11 +2797,11 @@ warning_objrout_BM (struct stackframe_stBM *stkf,
                     const value_tyBM arg3,
                     const value_tyBM arg4, const quasinode_tyBM * restargs)
 {
-  WARNPRINTF_BM
-    ("warning_objrout_BM stkf@%p arg1=%p arg2=%p arg3=%p arg4=%p restargs=%p",
-     (void *) stkf, (void *) arg1, (void *) arg2, (void *) arg2,
-     (void *) arg3, (void *) arg4, (void *) restargs);
-  fflush(NULL);
+  WARNPRINTF_BM ("warning_objrout_BM stkf@%p arg1=%p arg2=%p arg3=%p arg4=%p restargs=%p", (void *) stkf,       //
+                 (void *) arg1, (void *) arg2,  //
+                 (void *) arg3, (void *) arg4,  //
+                 (void *) restargs);
+  fflush (NULL);
   if (backtracestate_BM && pthread_self () == mainthreadid_BM)
     {
       fprintf (stderr, "\n\n\n**warning_objrout_BM full backtrace **\n");
