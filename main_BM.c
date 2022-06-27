@@ -650,6 +650,16 @@ const GOptionEntry optionstab_bm[] = {
    .description = "number of worker threads NBJOBS (>=2, <16)",
    .arg_description = "NBJOBS"},
   //
+  {.long_name = "json-socket",        //
+   .short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &unix_json_socket_BM,
+   .description =
+   "Use the given JSONSOCKET file \n"
+   "\t ... as the unix(7) socket for JSONRPC protocol",
+   .arg_description = "JSONSOCKET"},
+  //
   {.long_name = "random-seed",  //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
