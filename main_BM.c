@@ -1240,6 +1240,9 @@ main (int argc, char **argv)
   memset ((char *) myhostname_BM, 0, sizeof (myhostname_BM));
   if (gethostname ((char *) myhostname_BM, sizeof (myhostname_BM) - 1))
     FATAL_BM ("gethostname failure %m");
+  INFOPRINTF_BM ("BISMON (%s git %s pid %d) starting on host %s (build %s)\n",
+                 myprogname_BM, bismon_shortgitid, (int) getpid (),
+                 myhostname_BM, bismon_timestamp);
   if (access ("/bin/at", X_OK))
     FATAL_BM ("BISMON (%s pid %d git %s) requires a /bin/at (%m)",
               myprogname_BM, (int) getpid (), bismon_shortgitid);
@@ -1401,9 +1404,12 @@ main (int argc, char **argv)
     FATAL_BM ("--chdir-after-load directory '%s' cannot start with minus,\n"
               "... use '--chdir-after-load ./%s' instead",
               chdir_after_load_bm, chdir_after_load_bm);
-  INFOPRINTF_BM ("bismon should load directory %s - git commit: %s",
+  INFOPRINTF_BM ("Bismon should load directory %s - git commit: %s",
                  load_dir_bm, bismon_lastgitcommit);
   load_initial_BM (load_dir_bm);
+  INFOPRINTF_BM ("Bismon (pid %d git %s on %s) loaded directory %s\n",
+                 (int) getpid (), bismon_shortgitid, myhostname_BM,
+                 load_dir_bm);
   if (added_passwords_filepath_BM && added_passwords_filepath_BM[0])
     add_passwords_from_file_BM (added_passwords_filepath_BM);
   if (chdir_after_load_bm)
