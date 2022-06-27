@@ -132,6 +132,9 @@ extern value_tyBM warning_objrout_BM(struct stackframe_stBM *stkf,
 // stringify a raw string, up to its first space character
   extern const stringval_tyBM *prefixtofirstspacestring_BM (const char *str);
 
+// stringify the lastgitcommit
+  extern const stringval_tyBM *lastgitcommitstring_BM (void);
+
   extern int lenstring_BM (const stringval_tyBM *);     // length in bytes
   extern const char *bytstring_BM (const stringval_tyBM *);
   extern void *stringgcproc_BM (struct garbcoll_stBM *gc,
