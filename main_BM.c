@@ -544,7 +544,7 @@ const GOptionEntry optionstab_bm[] = {
 #define BISMONPROG_SHORT_OPTION(Shopt) Shopt
 #include "progoptions_BM.h"
   /* for the Bismon variant like --bismon-debug: */
-#define BISMONPROG_LONG_OPTION(Lopt) "bismon" Lopt
+#define BISMONPROG_LONG_OPTION(Lopt) "bismon-" Lopt
 #define BISMONPROG_SHORT_OPTION(Shopt) (char)0
 #include "progoptions_BM.h"
   ///
