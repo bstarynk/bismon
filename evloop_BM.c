@@ -48,12 +48,6 @@ volatile atomic_bool eventlooprunning_BM;
 
 static volatile atomic_int count_dump_sigusr1_BM;
 
-#ifdef BISMON_LIBONION
-pthread_mutex_t onionstack_mtx_BM = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t onionstack_condchange_BM = PTHREAD_COND_INITIALIZER;
-struct onionstackinfo_stBM onionstackinfo_BM[MAXNBWORKJOBS_BM + 1];
-thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
-#endif /*BISMON_LIBONION */
 
 
 /// a mutex protecting the JSONRPC services...
@@ -96,9 +90,6 @@ enum cmd_charcode_enBM
   cmdcod__none_bm = 0,
   cmdcod_execdefer_bm = 'X',
   cmdcod_rungc_bm = 'G',
-#ifdef BISMON_LIBONION
-  cmdcod_postponetimer_bm = 'T',
-#endif /*BISMON_LIBONION */
 };
 
 
@@ -136,46 +127,6 @@ read_commandpipe_BM (void)
           // if buf[0] is 'G', run the garbage collector. Not sure!
           garbage_collect_if_wanted_BM (NULL);
           return;
-#ifdef BISMON_LIBONION
-        case cmdcod_postponetimer_bm:  // 'T'
-          // if buf[0] is 'T', something changed about postponed timers
-          {
-            struct itimerspec its;
-            memset (&its, 0, sizeof (its));
-            if (UNLIKELY_BM (oniontimerfd_BM < 0))
-              {
-                oniontimerfd_BM =
-                  timerfd_create (CLOCK_MONOTONIC, TFD_CLOEXEC);
-                if (oniontimerfd_BM < 0)
-                  FATAL_BM
-                    ("read_commandpipe_BM fail on timerfd_create - %m");
-                DBGPRINTF_BM ("read_commandpipe_BM oniontimerfd_BM=%d",
-                              oniontimerfd_BM);
-              }
-            double timestamp = timestamp_newest_postpone_BM ();
-            double deltatime = timestamp - elapsedtime_BM ();
-            if (deltatime > MAXTIMER_SECONDS_BM)
-              deltatime = MAXTIMER_SECONDS_BM;
-            DBGPRINTF_BM ("read_commandpipe_BM deltatime=%.5f", deltatime);
-            if (deltatime > 0.0)
-              {
-                clock_gettime (CLOCK_MONOTONIC, &its.it_value);
-                its.it_value.tv_sec += (long) (floor (deltatime));
-                its.it_value.tv_nsec += (long) (deltatime * 1.0e9);
-                while (its.it_value.tv_nsec > NANOSECONDS_PER_SECOND_bm)
-                  {
-                    its.it_value.tv_sec++;
-                    its.it_value.tv_nsec -= NANOSECONDS_PER_SECOND_bm;
-                  }
-                if (timerfd_settime
-                    (oniontimerfd_BM, TFD_TIMER_ABSTIME, &its, NULL))
-                  FATAL_BM
-                    ("read_commandpipe_BM timerfd_settime failure deltatime=%.4f / %m",
-                     deltatime);
-              }
-          }
-          break;
-#endif /*BISMON_LIBONION */
         default:
           /// this should not happen....
           WARNPRINTF_BM ("read_commandpipe_BM  '%s' unknown", buf);
@@ -584,33 +535,6 @@ add_rungarbcoll_command_BM (void)
     }
 }                               /* end add_rungarbcoll_command_BM */
 
-#ifdef BISMON_LIBONION
-void
-add_postponetimer_command_onion_BM (void)
-{
-  char buf[4];
-  memset (&buf, 0, sizeof (buf));
-  DBGBACKTRACEPRINTF_BM ("add_postponetimer_command_onion_BM");
-  buf[0] = cmdcod_postponetimer_bm;     /* 'T' */
-  int count = 0;
-  while (count < 256)
-    {                           /* this loop usually runs once */
-      int nbw = write (cmdpipe_wr_BM, buf, 1);
-      if (nbw < 0 && errno == EINTR)
-        continue;
-      if (nbw < 0 && errno == EWOULDBLOCK)
-        {
-          usleep (2000);
-          continue;
-        };
-      if (nbw == 1)
-        return;
-      FATAL_BM ("add_postponetimer_command_onion_BM nbw %d - %s", nbw,
-                (nbw < 0) ? strerror (errno) : "--");
-    }
-  FATAL_BM ("add_postponetimer_command_onion_BM failed");
-}                               /* end add_postponetimer_command_onion_BM */
-#endif /*BISMON_LIBONION */
 
 
 
@@ -839,15 +763,9 @@ plain_event_loop_BM (void)      /// called from from main
                          sigfd_BM, (long) gettid_BM (), elapsedtime_BM ());
   long loopcnt = 0;
   int masterixjs = -1;
-#ifdef BISMON_LIBONION
-  INFOPRINTF_BM
-    ("start loop of plain_event_loop_BM libonion webbase %s, bismon pid %d git %s host %s\n",
-     onion_web_base_BM, (int) getpid (), bismon_shortgitid, myhostname_BM);
-#else /*without BISMON_LIBONION */
   INFOPRINTF_BM
     ("start loop of plain_event_loop_BM bismon pid %d git %s host %s\n",
      (int) getpid (), bismon_shortgitid, myhostname_BM);
-#endif /*BISMON_LIBONION */
   fflush (NULL);
   while (atomic_load (&eventlooprunning_BM))
     {

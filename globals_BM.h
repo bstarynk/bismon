@@ -104,29 +104,6 @@ extern volatile atomic_bool eventlooprunning_BM;
 
 
 
-///// related to libonion, see https://www.coralbits.com/libonion/
-#ifdef BISMON_LIBONION
-extern atomic_int oniontimerfd_BM; /* for timerfd_create(2) */
-extern pthread_mutex_t onionstack_mtx_BM;
-extern pthread_cond_t onionstack_condchange_BM;
-/*****************************************************************/
-extern const char *onion_ssl_certificate_BM;
-extern const char *onion_web_base_BM;
-extern const char *onion_anon_web_cookie_BM;
-/*****************************************************************/
-
-/// onion threads are related to the ONION web server infrastructure.
-/// See function custom_onion_handler_BM used in function
-/// initialize_onionweb_BM, in file web_ONIONBM.c ....
-struct onionstackinfo_stBM
-{
-  pthread_t ost_thread;
-  struct stackframe_stBM *ost_stkf;
-  atomic_bool ost_suspended;
-};
-extern struct onionstackinfo_stBM onionstackinfo_BM[MAXNBWORKJOBS_BM + 1];
-extern thread_local struct onionstackinfo_stBM *curonionstackinfo_BM;
-#endif /*BISMON_LIBONION*/
 
 
 

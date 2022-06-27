@@ -94,23 +94,6 @@ using std::atomic_store;
 /// the Glib low-level utility library from developer.gnome.org/glib/
 #include <glib.h>
 
-#ifdef BISMON_LIBONION
-/// We used to need the libonion HTTP server library from
-/// http://www.coralbits.com/libonion/ on
-/// https://github.com/davidmoreno/onion
-#include <onion/onion.h>
-#include <onion/low.h>
-#include <onion/request.h>
-#include <onion/response.h>
-#include <onion/block.h>
-#include <onion/handler.h>
-#include <onion/dict.h>
-#include <onion/log.h>
-#include <onion/shortcuts.h>
-#include <onion/exportlocal.h>
-#include <onion/internal_status.h>
-#include <onion/websocket.h>
-#endif /*BISMON_LIBONION*/
 
 /// We need the GNU readline 8 library from www.gnu.org/software/readline/
 #include <readline/readline.h>

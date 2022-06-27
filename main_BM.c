@@ -55,13 +55,6 @@ int sigfd_BM = -1;              /* for signalfd(2) */
 atomic_int oniontimerfd_BM = -1;        /* for timerfd_create(2) */
 char real_executable_BM[128];
 
-#ifdef BISMON_LIBONION
-/// these ONION variables may need to be declared even when
-/// web_ONIONBM.c is not linked, so
-const char *onion_ssl_certificate_BM;
-const char *onion_web_base_BM;
-const char *onion_anon_web_cookie_BM;
-#endif /*BISMON_LIBONION */
 
 
 ////////////////////////////////////////////////////////////////
@@ -904,34 +897,6 @@ const GOptionEntry optionstab_bm[] = {
    .arg_description = NULL},
   //
   //////////////////
-#ifdef BISMON_LIBONION
-  //
-  {.long_name = "onion-ssl-certificate",        //
-   .short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &onion_ssl_certificate_BM,
-   .description =
-   "Uses FILEPREFIX.pem & FILEPREFIX.key for SSL certificate to libonion",
-   .arg_description = "FILEPREFIX"},
-  //
-  {.long_name = "onion-web-base",       //
-   .short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_STRING,
-   .arg_data = &onion_web_base_BM,
-   .description =
-   "A string like <host>:<port>, default is localhost:8086, describing the base of web URLs served by bismon",
-   .arg_description = "WEB_BASE"},
-  {.long_name = "onion-anon-web-cookie",        //
-   .short_name = (char) 0,
-   .flags = G_OPTION_FLAG_NONE,
-   .arg = G_OPTION_ARG_FILENAME,
-   .arg_data = &onion_anon_web_cookie_BM,
-   .description =
-   "Create an anonymous web session, and write its cookie in the given COOKIEFILE",
-   .arg_description = "COOKIEFILE"},
-#endif /*BISMON_LIBONION */
   ///
   /// end of options
   {}                            //// last entry should be all zeros
