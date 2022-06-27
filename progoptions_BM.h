@@ -151,7 +151,7 @@
    .description = "number of worker threads NBJOBS (>=2, <16)",
    .arg_description = "NBJOBS"},
   //
-  {.long_name = BISMONPROG_LONG_OPTION("json-socket"),        //
+  {.long_name = BISMONPROG_LONG_OPTION("unix-json-socket"),        //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
