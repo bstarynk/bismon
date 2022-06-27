@@ -436,7 +436,7 @@ get_parse_file_after_load_bm (const gchar * optname __attribute__((unused)),
     FATAL_BM ("cannot access file %s to be parsed (%m)", val);
   NONPRINTF_BM ("get_parse_file_after_load #%d.. valen=%d:\n%s",
                 nb_parsed_files_after_load_bm, (int) strlen (val), val);
-  parsed_files_after_loadarr_bm[nb_parsed_files_after_load_bm++] = val;
+  parsed_files_after_loadarr_bm[nb_parsed_files_after_load_bm++] = (char*)val;
 }                               /* end get_parse_file_after_load_bm */
 
 
@@ -935,7 +935,6 @@ main (int argc, char **argv)
   initialize_predefined_objects_BM ();
   initialize_predefined_names_BM ();
   initialize_agenda_BM ();
-  GError *opterr = NULL;
   ////
   ///
   if (showdebugmsg_BM)
@@ -1221,7 +1220,7 @@ initialize_contributors_path_BM (void)
   if (!contributors_filepath_BM)
     {
       char *path = NULL;
-      char *homepath = NULL;
+      const char *homepath = NULL;
       if (!access (CONTRIBUTORS_FILE_BM, R_OK))
         contributors_filepath_BM = CONTRIBUTORS_FILE_BM;
       else if ((homepath = bismon_home_BM ()) != NULL
@@ -1281,7 +1280,7 @@ initialize_passwords_path_BM (void)
       DBGPRINTF_BM
         ("initialize_passwords_path_BM without passwords_filepath_BM");
       char *path = NULL;
-      char *homepath = NULL;
+      const char *homepath = NULL;
       if (!access (PASSWORDS_FILE_BM, R_OK))
         passwords_filepath_BM = PASSWORDS_FILE_BM;
       else if ((homepath = bismon_home_BM ()) != NULL
@@ -1349,7 +1348,7 @@ initialize_contact_path_BM (void)
   if (!contact_filepath_BM)     // no --passwords-file program option
     {
       char *path = NULL;
-      char *homepath = NULL;
+      const char *homepath = NULL;
       if (!access (CONTACT_FILE_BM, R_OK))
         contact_filepath_BM = CONTACT_FILE_BM;
       else if ((homepath = bismon_home_BM ()) != NULL
@@ -2026,7 +2025,7 @@ do_test_mailhtml_bm (void)
   {
     rawid_tyBM contid = { 0, 0 };
     char *errmsg = NULL;
-    char *endc = NULL;
+    const char *endc = NULL;
     _.contribob = NULL;
     if (mailhtml_contributor_bm[0] == '_'
         &&
