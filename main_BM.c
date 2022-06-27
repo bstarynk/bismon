@@ -539,6 +539,13 @@ remove_contributor_bm (const gchar * optname __attribute__((unused)),
 ////////////////////////////////////////////////////////////////
 const GOptionEntry optionstab_bm[] = {
   //////////////////
+  /* for the shorter variant like --debug */
+#define BISMONPROG_LONG_OPTION(Lopt) Lopt
+#define BISMONPROG_SHORT_OPTION(Shopt) Shopt
+#include "progoptions_BM.h"
+  /* for the Bismon variant like --bismon-debug: */
+#define BISMONPROG_LONG_OPTION(Lopt) "bismon" Lopt
+#define BISMONPROG_SHORT_OPTION(Shopt) (char)0
 #include "progoptions_BM.h"
   ///
   /// end of options

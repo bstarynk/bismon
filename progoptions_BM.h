@@ -41,7 +41,7 @@
 
   //
   {.long_name = BISMONPROG_LONG_OPTION("load"),         //
-   .short_name = 'l',
+   .short_name = BISMONPROG_SHORT_OPTION('l'),
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &load_dir_bm,
@@ -50,7 +50,7 @@
    .arg_description = "DIR"},
   //
   {.long_name = BISMONPROG_LONG_OPTION("dump"),         //
-   .short_name = 'd',
+   .short_name = BISMONPROG_SHORT_OPTION('d'),
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &dump_dir_BM,
@@ -144,7 +144,7 @@
    .arg_description = "NB"},
   //
   {.long_name = BISMONPROG_LONG_OPTION("job"),          //
-   .short_name = 'j',
+   .short_name = BISMONPROG_SHORT_OPTION('j'),
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_INT,
    .arg_data = &nbworkjobs_BM,
@@ -199,7 +199,7 @@
    .arg_description = " CMD "},
   //
   {.long_name = BISMONPROG_LONG_OPTION("project-name"), //
-   .short_name = 'P',
+   .short_name = BISMONPROG_SHORT_OPTION('P'),
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &set_project_name_bm,
@@ -207,7 +207,7 @@
    .arg_description = " PROJECT_NAME "},
   //
   {.long_name = BISMONPROG_LONG_OPTION("init-after-load"),      //
-   .short_name = 'i',
+   .short_name = BISMONPROG_SHORT_OPTION('i'),
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_CALLBACK,
    .arg_data = &handle_init_afterload_bm,
@@ -215,7 +215,7 @@
    .arg_description = "<closure> (or object)"},
   //
   {.long_name = BISMONPROG_LONG_OPTION("chdir-after-load"),     //
-   .short_name = 'c',
+   .short_name = BISMONPROG_SHORT_OPTION('c'),
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &chdir_after_load_bm,
@@ -343,7 +343,7 @@
    .arg_description = NULL},
   //
   {.long_name = BISMONPROG_LONG_OPTION("debug"), //
-   .short_name = 'D',
+   .short_name = BISMONPROG_SHORT_OPTION('D'),
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_NONE,
    .arg_data = (bool *) &showdebugmsg_BM,
@@ -409,6 +409,8 @@
    .arg_description = NULL},
   //
 
+#undef BISMONPROG_LONG_OPTION
+#undef BISMONPROG_SHORT_OPTION
 
 
 /****************
