@@ -1975,4 +1975,10 @@ objstrbufferwritetofilepayl_BM (objectval_tyBM * obj, const char *filepath)
   INFOPRINTF_BM ("file %s written", filepath);
 }                               /* end objstrbufferwritetofilepayl_BM */
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 // end of file scalar_BM.c
