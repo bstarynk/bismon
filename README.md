@@ -245,8 +245,10 @@ source code, and configure it to provide them.). **An old GCC**
 * [Jansson](http://www.digip.org/jansson/) 2.12 or better is needed
   for JSON (used in relation to WebSockets).
 
-* [libonion](http://www.coralbits.com/libonion) is needed for the web
-  interface.
+* [libonion](http://www.coralbits.com/libonion) was needed for the web
+  interface, but removed in June, 27, 2022, git commit `a943cf687c748` or
+  tag `no-more-ibonion-tag` (with typo: missing `l`). Before that
+  commit look for `BISMON_LIBONION` preprocessor flag.
 
 * [GNU make](https://www.gnu.org/software/make/) 4 or better
 
