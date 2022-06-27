@@ -89,7 +89,7 @@ if [ ${#bismon_hello_args[@]} -eq 0 ]; then
     bismon_hello_args+=("--bismon-project-name=HelloWorld_Project")
 #   bismon_hello_args+=("--bismon-debug-after-load")
     bismon_hello_args+=("--bismon-pid-file=$BISMON_PIDFILE")
-    bismon_hello_args+=("--bismon-anon-web-cookie=/tmp/bismon.cookie")
+#    bismon_hello_args+=("--bismon-anon-web-cookie=/tmp/bismon.cookie")
     bismon_hello_args+=("--bismon-sigusr1-dump-prefix=/tmp/bismonsigusr1hw.dir")
 fi
 
