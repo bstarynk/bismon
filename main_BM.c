@@ -944,6 +944,8 @@ main (int argc, char **argv)
              bismon_lastgitcommit);
   if (give_version_bm)
     give_prog_version_BM (myprogname_BM);
+  if (sigusr1_dump_prefix_BM)
+    test_make_empty_sigusr1_dump_dir_BM ();
   if (print_contributor_of_oid_bm)
     {
       initialize_contributors_path_BM ();
@@ -1024,6 +1026,8 @@ main (int argc, char **argv)
   INFOPRINTF_BM ("Bismon (pid %d git %s on %s) loaded directory %s\n",
                  (int) getpid (), bismon_shortgitid, myhostname_BM,
                  load_dir_bm);
+  if (pid_filepath_bm && pid_filepath_bm[0] && strcmp (pid_filepath_bm, "-"))
+    write_pid_into_file_and_kill_old_BM (pid_filepath_bm);
   if (added_passwords_filepath_BM && added_passwords_filepath_BM[0])
     add_passwords_from_file_BM (added_passwords_filepath_BM);
   if (chdir_after_load_bm)
@@ -2048,7 +2052,7 @@ do_test_mailhtml_bm (void)
     DBGPRINTF_BM ("do_test_mailhtml_bm contributor='%s' == %s",
                   mailhtml_contributor_bm, objectdbg_BM (_.contribob));
   }
-  _.contnamev = objcontributornamepayl_BM (_.contribob);
+  _.contnamev = (value_tyBM) objcontributornamepayl_BM (_.contribob);
   bool popenfile = mailhtml_file_bm[0] == '|';
   FILE *infil = popenfile       //
     ? popen (mailhtml_file_bm + 1, "r") //
@@ -2087,7 +2091,7 @@ do_test_mailhtml_bm (void)
       char *prevpc = pc;
       char *pi = NULL;
       char *npc = NULL;
-      char *repl = NULL;
+      const char *repl = NULL;
       while ((pi = strstr (pc, "<?bismon")) != NULL)
         {
           char smallbuf[64];
