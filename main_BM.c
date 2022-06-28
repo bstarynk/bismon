@@ -961,9 +961,9 @@ main (int argc, char **argv)
     nbworkjobs_BM = MINNBWORKJOBS_BM + 1;
   else if (nbworkjobs_BM > MAXNBWORKJOBS_BM)
     nbworkjobs_BM = MAXNBWORKJOBS_BM;
-  if (!batch_bm)
+  if (!batch_bm && !unix_json_socket_BM)
     FATAL_BM
-      ("no batchoption; please run with --batch;\n"
+      ("no batch option and no Unix json socket; please run with --batch or with unix-json-socket=JSONSOCKET;\n"
        "... or run: %s --help", argv[0]);
   /// running as root is really unreasonable.
   if (getuid () == 0)
@@ -2488,6 +2488,122 @@ warning_objrout_BM (struct stackframe_stBM *stkf,
 
 
 
+
+const char *
+get_real_executable_path_BM (void)
+{
+  return real_executable_BM;
+}                               /* end get_real_executable_path_BM */
+
+
+void
+write_pid_into_file_and_kill_old_BM (const char *pidfilepath)
+{
+  ASSERT_BM (pidfilepath && pidfilepath[0]);
+  int oldpid = -1;
+  FILE *oldpidfile = fopen (pidfilepath, "r");
+  /// if the pidfile starts with a dot or a percent, dont kill the old process
+  bool shouldkillold = pidfilepath[0] != '.' && pidfilepath[0] != '%';
+  bool killedold = false;
+  if (oldpidfile)
+    {
+      if (fscanf (oldpidfile, "%d", &oldpid) > 0 && oldpid > 0
+          && !kill (oldpid, 0))
+        {
+          char thisexepath[256];
+          char oldexepath[256];
+          char oldpidpath[64];
+          memset (thisexepath, 0, sizeof (thisexepath));
+          memset (oldexepath, 0, sizeof (oldexepath));
+          memset (oldpidpath, 0, sizeof (oldpidpath));
+          snprintf (oldpidpath, sizeof (oldpidpath), "/proc/%d/exe", oldpid);
+          /** WARNING: this is not entirely robust, if the
+	      old pid happens to terminate or is killed
+	      externally ... But we do check that it is
+	      running the same executable than the current
+	      one... See proc(5) on Linux */
+          if (!readlink
+              ("/proc/self/exe", thisexepath,
+               sizeof (thisexepath) - 1)
+              && !readlink (oldpidpath, oldexepath,
+                            sizeof (oldexepath) - 1)
+              && !strcmp (thisexepath, oldexepath)
+              && strlen (thisexepath) < sizeof (thisexepath) - 2
+              && shouldkillold)
+            {
+              INFOPRINTF_BM
+                ("quitting old Bismon process of pid %d running this executable %s",
+                 oldpid, thisexepath);
+              killedold = 0 == kill (oldpid, SIGQUIT);
+              if (killedold)
+                {
+                  INFOPRINTF_BM
+                    ("SIGQUIT-ed old Bismon process of pid %d on %s running this executable %s",
+                     oldpid, myhostname_BM, thisexepath);
+                  fflush (NULL);
+                  sleep (1);    /* to let the other Bismon die gracefully */
+                }
+              else
+                WARNPRINTF_BM
+                  ("failed to SIGQUIT-ed old Bismon process of pid %d on %s running this executable %s (%m)",
+                   oldpid, myhostname_BM, thisexepath);
+            }
+        }
+      fclose (oldpidfile), oldpidfile = NULL;
+      char backuppidpath[256];
+      memset (backuppidpath, 0, sizeof (backuppidpath));
+      if (strlen (pidfilepath) < sizeof (backuppidpath) - 4)
+        {
+          if (snprintf (backuppidpath, sizeof (backuppidpath),
+                        "%s~", pidfilepath) > 0)
+            {
+              if (!rename (pid_filepath_bm, backuppidpath))
+                INFOPRINTF_BM ("backed up pid file path %s -> %s",
+                               pid_filepath_bm, backuppidpath);
+            };
+        }
+    }
+  if (killedold)                // probably a previous Bismon process is
+    // still running
+    {
+      /* We sleep for one second, to give the old Bismon
+         server enough time to dump its state
+         properly. This is a bit messy, but could usually be
+         helpful. */
+      sleep (1);
+    };
+  FILE *pidfile = fopen (pid_filepath_bm, "w");
+  if (!pidfile)
+    FATAL_BM ("failed to open pid file %s - %m", pid_filepath_bm);
+  fprintf (pidfile, "%d\n", (int) getpid ());
+  fprintf (pidfile, "#pid on host %s\n", myhostname_BM);
+  fprintf (pidfile, "#git %s\n", bismon_shortgitid);
+  fprintf (pidfile, "#built %s\n", bismon_timestamp);
+  fflush (pidfile);
+  /// On purpose the pid file is kept open.... this ensures that lsof(1)
+  /// might be used...
+
+  INFOPRINTF_BM ("wrote pid %d in pid-file %s",
+                 (int) getpid (), pid_filepath_bm);
+}                               /* end write_pid_into_file_and_kill_old_BM */
+
+void
+test_make_empty_sigusr1_dump_dir_BM (void)
+{
+  char dirbufname[MAXLEN_SIGUSR1_DUMP_PREFIX_BM + 8];
+  ASSERT_BM (sigusr1_dump_prefix_BM != (const char *) 0);
+  memset (dirbufname, 0, sizeof (dirbufname));
+  if (strlen (sigusr1_dump_prefix_BM) >= MAXLEN_SIGUSR1_DUMP_PREFIX_BM)
+    FATAL_BM ("too long sigusr1_dump_prefix_BM: %s (more than %d bytes)",
+              sigusr1_dump_prefix_BM, MAXLEN_SIGUSR1_DUMP_PREFIX_BM);
+  snprintf (dirbufname, sizeof (dirbufname), "%s--0000",
+            sigusr1_dump_prefix_BM);
+  ASSERT_BM (strlen (dirbufname) < sizeof (dirbufname) - 1);
+  if (mkdir (dirbufname, S_IRWXU /* u+rwx */ ))
+    FATAL_BM ("failed to mkdir %s - %m", dirbufname);
+  INFOPRINTF_BM ("Successfully made empty SIGUSR1 dump directory %s",
+                 dirbufname);
+}                               /* end test_make_empty_sigusr1_dump_dir_BM */
 
 /****************
  **                           for Emacs...
