@@ -423,8 +423,9 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
                      nbrout, symbuf, curldidbuf32, curldpath);
                 }
               else              /* no ad, since dlsym failed: */
-                DBGPRINTF_BM ("failed dlsym-ing '%s' in whole program",
-                              symbuf, dlerror ());
+                WARNPRINTF_BM ("failed dlsym-ing '%s' in whole program: %s",
+                               symbuf, dlerror ());
+#warning perhaps we should dlsym in previously loaded modules?
             }
           curloadedobj = NULL;
         }
@@ -472,16 +473,12 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
               else
                 {
                   WARNPRINTF_BM
-                    ("loader first space in buggy store file %s:%d",
-                     curldpath, lincnt);
+                    ("loader first space in buggy store file %s:%d, dlsym %s in whole program failed %s",
+                     curldpath, lincnt, symbuf, dlerrbuf);
                   curloadedobj->ob_rout = crashing_objrout_BM;
                 }
               curloadedobj->ob_sig = BMP_function_sig;
-              if (sscanf (linbuf + delimlen, " *%n", &pos) >= 0 && pos > 0)
-                WARNPRINTF_BM
-                  ("bad default function-sig line %s in file %s:%d,"
-                   " dlsym %s failed %s", linbuf, curldpath, lincnt, symbuf,
-                   dlerrbuf);
+              /// if (sscanf (linbuf + delimlen, " *%n", &pos) >= 0 && pos > 0) 
             }
         }
       //
@@ -1630,4 +1627,10 @@ ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh)    // load_module
   LOCALRETURN_BM (_.modulob);
 }                               /* end load_module _3j4mbvFJZzA_9ucKetDMbdh */
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 /*** end of file load_BM.c ****/
