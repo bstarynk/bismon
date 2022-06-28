@@ -436,7 +436,8 @@ get_parse_file_after_load_bm (const gchar * optname __attribute__((unused)),
     FATAL_BM ("cannot access file %s to be parsed (%m)", val);
   NONPRINTF_BM ("get_parse_file_after_load #%d.. valen=%d:\n%s",
                 nb_parsed_files_after_load_bm, (int) strlen (val), val);
-  parsed_files_after_loadarr_bm[nb_parsed_files_after_load_bm++] = (char*)val;
+  parsed_files_after_loadarr_bm[nb_parsed_files_after_load_bm++] =
+    (char *) val;
 }                               /* end get_parse_file_after_load_bm */
 
 
@@ -1602,7 +1603,12 @@ run_testplugins_after_load_BM (void)
           DBGPRINTF_BM
             ("run_testplugins_after_load initestname %s  after inifun @%p #%d\n",
              initestname, inifun, ix);
-        };
+        }
+      else
+        DBGPRINTF_BM
+          ("run_testplugins_after_load initestname %s dlsym failure %s",
+           initestname, dlerror ());
+
     }                           /* end for ix, initialization */
   INFOPRINTF_BM ("loaded %d test plugins\n", nb_testplugins_after_load_bm);
   fflush (NULL);

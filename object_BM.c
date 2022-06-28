@@ -1040,6 +1040,9 @@ register_predefined_object_BM (objectval_tyBM * pob)
       pob->ob_sig = BMP_function_sig;
       pob->ob_rout = (objrout_sigBM *) ad;
     }
+  else
+    WARNPRINTF_BM ("dlsym-ing %s in whole program failed : %s",
+                   symbuf, dlerror ());
 }                               /* end register_predefined_object_BM */
 
 

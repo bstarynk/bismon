@@ -422,6 +422,9 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
                     ("forced %d-th routine %s of function_sig for %s in file %s\n",
                      nbrout, symbuf, curldidbuf32, curldpath);
                 }
+              else              /* no ad, since dlsym failed: */
+                DBGPRINTF_BM ("failed dlsym-ing '%s' in whole program",
+                              symbuf, dlerror ());
             }
           curloadedobj = NULL;
         }
@@ -1269,7 +1272,7 @@ load_second_pass_BM (struct loader_stBM *ld, int ix,
                     }
                   else
                     FATAL_BM
-                      ("bad function-sig in file %s:%d, dlsym %s failed %s",
+                      ("bad function-sig in file %s:%d, dlsym %s failed in whole program %s",
                        curldpath, lineno, buf, dlerror ());
                   if (buf != bufname)
                     free (buf), buf = NULL;
