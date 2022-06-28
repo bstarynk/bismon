@@ -140,7 +140,7 @@ _bm_config.h _bm_config.c:
 ## FIXME: for some reason, near commit 70c004037af4cb4a on 10 june 2021, it
 ## seems that $(COMPILE.cc) don't work and we need to use $(CXX)
 BM_makeconst_dbg: BM_makeconst-g.o id_BM-g.o
-	$(CXX) -g -Wall  -DBISMON_MAKING_$@ $^  $(shell pkg-config --libs glib-2.0) -o $@
+	$(CXX) -g -Wall  -DBISMON_MAKING_$@  $^  $(shell pkg-config --libs glib-2.0) -o $@
 
 BM_makeconst: BM_makeconst.o id_BM.o
 	@echo building $@ with CXX= $(CXX)
@@ -149,36 +149,36 @@ BM_makeconst: BM_makeconst.o id_BM.o
 
 BM_makeconst-g.o: BM_makeconst.cc id_BM.h
 	@echo building $@ with CXX= $(CXX)
-	$(CXX) -DBISMON_MAKING_BM_makeconst_g  $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
+	$(CXX) -DBISMON_MAKING_BM_makeconst_g -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags glib-2.0) -g -Wall -c $< -o $@
 	@echo did build $@ with CXX= $(CXX)
 
 BM_makeconst.o: BM_makeconst.cc id_BM.h
 	@echo building $@ with CXX= $(CXX)
-	$(CXX)  -DBISMON_MAKING_BM_makeconst $(shell pkg-config --cflags glib-2.0) -g -O -Wall -c $< -o $@
+	$(CXX)  -DBISMON_MAKING_BM_makeconst -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags glib-2.0) -g -O -Wall -c $< -o $@
 	@echo did build $@ with CXX= $(CXX)
 
 -include _bismon-makedep.mk
 
 id_BM.o: id_BM.c id_BM.h
-	$(CC) -DBISMON_MAKING_id_BM $(BISMON_CFLAGS)  $(shell pkg-config --cflags glib-2.0)  -Wall -Wextra -c $< -o $@
+	$(CC) -DBISMON_MAKING_id_BM $(BISMON_CFLAGS)  -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags glib-2.0)  -Wall -Wextra -c $< -o $@
 id_BM-g.o: id_BM.c id_BM.h
-	$(CC)   -DBISMON_MAKING_id_BM_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags glib-2.0) -g -Wall  -Wextra -c $< -o $@
+	$(CC)   -DBISMON_MAKING_id_BM_g $(BISMON_CFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -g $(shell pkg-config --cflags glib-2.0) -g -Wall  -Wextra -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h
-	$(CC)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMON_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra -c  $< -o $@
+	$(CC)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMON_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra -c  $< -o $@
 
 #%_GTKBM.o: %_GTKBM.c bismon.h
 #	@echo BISMON_PACKAGES is $(BISMON_PACKAGES)
 #	$(CC)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) $(shell pkg-config --cflags $(BISMON_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra -c  $< -o $@
 
 %_BM-g.o: %_BM.c bismon.h
-	$(CC)  -DBISMON_MAKING_C_$*_g $(BISMON_CFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall-Wextra -c $< -o $@
+	$(CC)  -DBISMON_MAKING_C_$*_g $(BISMON_CFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall-Wextra -c $< -o $@
 
 %_BM.o: %_BM.cc bismon.h
-	$(CXX) -c  -DBISMON_MAKING_CPP_$* $(BISMON_CXXFLAGS) $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall -Wextra $< -o $@
+	$(CXX) -c  -DBISMON_MAKING_CPP_$* $(BISMON_CXXFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall -Wextra $< -o $@
 
 %_BM-g.o: %_BM.cc bismon.h
-	$(CXX) -c -DBISMON_MAKING_CPP_$*_g $(BISMON_CXXFLAGS) -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
+	$(CXX) -c -DBISMON_MAKING_CPP_$*_g $(BISMON_CXXFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@
 
 
 %BM.const.h: %BM.c BM_makeconst
@@ -224,7 +224,7 @@ redump: bismon $(wildcard store*.bmon)
 	./bismon --batch --dump-after-load=.
 
 modubin/modbm_%.so: modules/modbm_%.c | bismon _bismon-config.mk _bm_config.h
-	$(LINK.c) -DBISMON_MODULE_$(notdir $(basename $@)) $(BISMON_CFLAGS) -shared -DBISMON_MODID=\"$(BISMON_MODULE_ID)\" -DBISMON_MODMD5=\"$(BISMON_MODULE_MD5SUM)\" -fPIC -I. $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -rdynamic -Wall  $< -o $@
+	$(LINK.c) -DBISMON_MODULE_$(notdir $(basename $@)) $(BISMON_CFLAGS) -shared -DBISMON_MODID=\"$(BISMON_MODULE_ID)\" -DBISMON_MODMD5=\"$(BISMON_MODULE_MD5SUM)\" -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -fPIC -I. $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -rdynamic -Wall  $< -o $@
 ## _bm_predef.h is obsolete since renamed _genbm_predef.h
 
 indent:
