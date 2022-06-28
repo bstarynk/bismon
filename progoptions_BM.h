@@ -102,7 +102,7 @@
    "\t will create files in it, otherwise create some under /var/tmp\n",
    .arg_description = "TEMPORARY_DIR"},
   //
-  {.long_name = "sigusr1-dump-prefix",  //
+  {.long_name = BISMONPROG_LONG_OPTION("sigusr1-dump-prefix"),  //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
    .arg = G_OPTION_ARG_FILENAME,
