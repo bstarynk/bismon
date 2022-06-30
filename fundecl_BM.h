@@ -1207,7 +1207,7 @@ extern value_tyBM warning_objrout_BM(struct stackframe_stBM *stkf,
   extern json_t *jansjsonfromvalue_BM (value_tyBM val, value_tyBM src,
                                        value_tyBM ctx, int depth,
                                        struct stackframe_stBM *stkf);
-
+  extern objectval_tyBM *  objkindjansjsonpayl_BM (const objectval_tyBM * obj);
 // FIXME: we need to explain how json_sequence, json_set, json_tuple,
 // jsonable_closure, jsonable_object are used.
 
