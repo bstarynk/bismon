@@ -38,9 +38,7 @@ ROUTINEOBJNAME_BM (_6gRlN8loM4E_4pSsNmiCeIa)    // emit_c_type:c_opaque
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM recv;
-                 objectval_tyBM * bufob;
-    );
+                 value_tyBM recv; objectval_tyBM * bufob;);
   // retrieve arguments
   _.recv = /*ctype */ (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
@@ -85,8 +83,7 @@ ROUTINEOBJNAME_BM (_979hCujWp2g_9tjRbM8Ht1l)    // emit_c_type:c_enum
                  value_tyBM recv;
                  objectval_tyBM * prbufob;
                  const objectval_tyBM * extendingob;
-                 const tupleval_tyBM * ownenumtup;
-    );
+                 const tupleval_tyBM * ownenumtup;);
   // retrieve arguments
   _.recv = /*ctype */ (arg1);
   WEAKASSERT_BM (isobject_BM (_.recv));
@@ -138,7 +135,8 @@ ROUTINEOBJNAME_BM (_9M3BqmOS7mA_96DTa52k7Xq)    // emit_declaration°simple_rout
                  value_tyBM keybindv;   //
                  value_tyBM errorv;     //
                  value_tyBM commentv;   //
-                 value_tyBM errcausev;);
+                 value_tyBM errcausev;
+    );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.errcausev = (value_tyBM)(Cause); goto failure; } while(0)
   objectval_tyBM *k_blocks = BMK_2lCuMosXupr_5GAoqVgJ8PZ;
@@ -394,7 +392,8 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
                  value_tyBM vctypv;     //
                  objectval_tyBM * typob;        //
                  value_tyBM errorv;     //
-                 value_tyBM causev;);
+                 value_tyBM causev;
+    );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   char routidbuf[32];
@@ -2387,7 +2386,8 @@ miniemit_var_BM (struct stackframe_stBM *stkf,
                  objectval_tyBM * connob;       //
                  objectval_tyBM * typob;        //
                  value_tyBM errorv;     //
-                 value_tyBM causev;);
+                 value_tyBM causev;
+    );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   _.refob = objectcast_BM (refob);
@@ -2517,7 +2517,8 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
                  objectval_tyBM * chunkob;      //
                  objectval_tyBM * emptybindhsetob;      //
                  value_tyBM errorv;     //
-                 value_tyBM causev;);
+                 value_tyBM causev;
+    );
   int depth = -1;
   objectval_tyBM *k_arguments = BMK_0jFqaPPHgYH_5JpjOPxQ67p;
   objectval_tyBM *k_cexpansion = BMK_7yoiT31GmV4_2iTjHx3P2hb;
@@ -2702,13 +2703,16 @@ ROUTINEOBJNAME_BM (_48l341uEMuG_3gJ2HHIwYhn)    //miniemit_node_conn°basiclo_si
   objectval_tyBM * k_emit_expression = BMK_9lXSe7DrOl6_7hghYt0LhTF;
   objectval_tyBM *k_miniemit_node_conn = BMK_7L782rSgJBB_9vjsBdqAoz7;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_48l341uEMuG_3gJ2HHIwYhn,
-                 value_tyBM resultv; objectval_tyBM * connob; value_tyBM expv;  //
+                 value_tyBM resultv;
+                 objectval_tyBM * connob;
+                 value_tyBM expv;       //
                  objectval_tyBM * modgenob;     //
                  objectval_tyBM * routprepob;   //
                  objectval_tyBM * fromob;       //
                  value_tyBM funv;       //
                  value_tyBM errorv;     //
-                 value_tyBM causev;);
+                 value_tyBM causev;
+    );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM) (Cause); goto failure; } while(0)
   _.connob = objectcast_BM (arg1);
@@ -2781,11 +2785,11 @@ ROUTINEOBJNAME_BM (_22wwtRd69oP_3IH6VRfTzu6)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_22wwtRd69oP_3IH6VRfTzu6,
-                 objectval_tyBM * stmtob;
-                 objectval_tyBM * modgenob; objectval_tyBM * routprepob;
-                 objectval_tyBM * destob; value_tyBM srcexpv;
-                 value_tyBM resultv; value_tyBM errorv;
-                 value_tyBM causev;);
+                 objectval_tyBM * stmtob; objectval_tyBM * modgenob;
+                 objectval_tyBM * routprepob; objectval_tyBM * destob;
+                 value_tyBM srcexpv; value_tyBM resultv;
+                 value_tyBM errorv; value_tyBM causev;
+    );
   objectval_tyBM *k_emit_statement = BMK_1ERH9PxNhPb_2o869yOMuH0;
   _.stmtob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
@@ -2941,8 +2945,7 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
                  value_tyBM compv;      //
                  value_tyBM errorv;     //
                  value_tyBM causev;     //
-                 value_tyBM resultv;
-    );
+                 value_tyBM resultv;);
   _.stmtob = objectcast_BM (arg1);
   _.modgenob = objectcast_BM (arg2);
   _.routprepob = objectcast_BM (arg3);
@@ -4330,7 +4333,8 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                  value_tyBM resprep;    //
                  value_tyBM resgen;     //
                  value_tyBM prefixv;    //
-                 objectval_tyBM * dumpob; value_tyBM errorv;    //
+                 objectval_tyBM * dumpob;
+                 value_tyBM errorv;     //
                  value_tyBM closgenv;   //
                  value_tyBM srcdirstrv; //
                  value_tyBM causev;     //
@@ -4674,7 +4678,8 @@ ROUTINEOBJNAME_BM (_6lTDbwKEMMc_0wsIKviDSce)    //miniemit_node_conn#apply
                  value_tyBM resultv;    //
                  value_tyBM funexpv;    //
                  value_tyBM causev;     //
-                 value_tyBM errorv;);
+                 value_tyBM errorv;
+    );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   _.expv = arg1;
@@ -4760,7 +4765,8 @@ ROUTINEOBJNAME_BM (_5ul3FB4ewSJ_7GbPhk05UVR)    ///miniemit_node_conn#send
                  value_tyBM resultv;    //
                  value_tyBM funexpv;    //
                  value_tyBM causev;     //
-                 value_tyBM errorv;);
+                 value_tyBM errorv;
+    );
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
   _.expv = arg1;
@@ -4853,7 +4859,8 @@ ROUTINEOBJNAME_BM (_0DW82XG9HTW_0SblkfpwJi3)    //miniemit_node_conn#make_sequen
                  value_tyBM callingclosv;       //
                  value_tyBM funexpv;    //
                  value_tyBM causev;     //
-                 value_tyBM errorv;);
+                 value_tyBM errorv;
+    );
   LOCALGETFUNV_BM (_.callingclosv);
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
@@ -4960,7 +4967,8 @@ ROUTINEOBJNAME_BM (_4qDfwZTHqD2_7Xti5ibNj8Z)    // miniemit_node_conn#collect_se
                  value_tyBM callingclosv;       //
                  value_tyBM funexpv;    //
                  value_tyBM causev;     //
-                 value_tyBM errorv;);
+                 value_tyBM errorv;
+    );
   LOCALGETFUNV_BM (_.callingclosv);
   int failin = -1;
 #define FAILHERE(Cause) do { failin = __LINE__ ; _.causev = (value_tyBM)(Cause); goto failure; } while(0)
@@ -5059,7 +5067,8 @@ ROUTINEOBJNAME_BM (_1nsAyqOOy7S_1zodeivnxlm)    // miniemit_node_conn°make_tree
                  value_tyBM callingclosv;       //
                  value_tyBM funexpv;    //
                  value_tyBM causev;     //
-                 value_tyBM errorv;);
+                 value_tyBM errorv;
+    );
   LOCALGETFUNV_BM (_.callingclosv);
   int failin = -1;
 #define MAXTREEOPTIMARGS_BM 8

@@ -134,7 +134,7 @@ module_count_BM(void)
 {
 
   std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
-  return modulemtx_BM.size();
+  return modulemap_BM.size();
 } // end module_count_BM
 
 ////////////////
@@ -578,7 +578,6 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
                     objectdbg_BM(_.modulob), binmodpath.c_str());
   }
   ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
-  std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
   (void) modulemap_BM.insert({modid,//
                               ModuleData_BM{.mod_id=modid,//
                                   .mod_dlh=dlh, //

@@ -40,8 +40,10 @@ ROUTINEOBJNAME_BM (_3kMqlEugRVW_7DgwjR4CBbP)    //
   // arg4 is the depth
   ASSERT_BM (istaggedint_BM (arg4));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM recv; objectval_tyBM * bufob;
-                 objectval_tyBM * dumpob; value_tyBM depthv;);
+                 value_tyBM recv;
+                 objectval_tyBM * bufob; objectval_tyBM * dumpob;
+                 value_tyBM depthv;
+    );
   _.recv = arg1;
   WEAKASSERT_BM (objhasstrbufferpayl_BM (arg2));
   _.bufob = objectcast_BM (arg2);
@@ -73,9 +75,10 @@ ROUTINEOBJNAME_BM (_3Tc3E4uo2p5_4EXWCPwCR5b)    //
   // arg3 is the obdump
   ASSERT_BM (istaggedint_BM (arg4));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const setval_tyBM * recv;
-                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
-                 value_tyBM depthv; const objectval_tyBM * curobj;);
+                 const setval_tyBM * recv; objectval_tyBM * dumpob;
+                 objectval_tyBM * bufob; value_tyBM depthv;
+                 const objectval_tyBM * curobj;
+    );
   _.recv = (arg1);
   _.bufob = objectcast_BM (arg2);
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.bufob));
@@ -124,9 +127,10 @@ ROUTINEOBJNAME_BM (_5D9kkPHSPxq_8suDXpjlzjE)    // dump_value tuple
   // arg3 is the obdump
   ASSERT_BM (istaggedint_BM (arg4));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const tupleval_tyBM * recv;
-                 objectval_tyBM * bufob; objectval_tyBM * dumpob;
-                 value_tyBM depthv; const objectval_tyBM * curobj;);
+                 const tupleval_tyBM * recv; objectval_tyBM * bufob;
+                 objectval_tyBM * dumpob; value_tyBM depthv;
+                 const objectval_tyBM * curobj;
+    );
   _.recv = (arg1);
   _.bufob = objectcast_BM (arg2);
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.bufob));
@@ -177,10 +181,10 @@ ROUTINEOBJNAME_BM (_5v30KC0IMxx_53ZzXprJTM6)    //
   // arg3 is the obdumper
   ASSERT_BM (istaggedint_BM (arg4));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * recv;
-                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
-                 value_tyBM depthv;
-                 value_tyBM curson; const objectval_tyBM * connobj;);
+                 const node_tyBM * recv; objectval_tyBM * dumpob;
+                 objectval_tyBM * bufob; value_tyBM depthv; value_tyBM curson;
+                 const objectval_tyBM * connobj;
+    );
   _.recv = (arg1);
   _.bufob = objectcast_BM (arg2);
   _.dumpob = objectcast_BM (arg3);
@@ -252,9 +256,11 @@ ROUTINEOBJNAME_BM (_6jvRZetUz36_978V6SKIWZC)    //
   // arg2 is the bufob
   ASSERT_BM (istaggedint_BM (arg4));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * recv; objectval_tyBM * dumpob;
-                 objectval_tyBM * bufob; value_tyBM depthv;
-                 value_tyBM curson; const objectval_tyBM * connobj;);
+                 const closure_tyBM * recv;
+                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
+                 value_tyBM depthv; value_tyBM curson;
+                 const objectval_tyBM * connobj;
+    );
   _.recv = (arg1);
   _.bufob = objectcast_BM (arg2);
   _.dumpob = objectcast_BM (arg3);
@@ -401,9 +407,11 @@ ROUTINEOBJNAME_BM (_4EBQMvthjcP_2OiZxZviSQc)    // dump_scan°class
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv; objectval_tyBM * dumpob;
-                 const objectval_tyBM * supercl; const setval_tyBM * selset;
-                 const objectval_tyBM * cursel; value_tyBM curmeth;);
+                 const objectval_tyBM * recv;
+                 objectval_tyBM * dumpob; const objectval_tyBM * supercl;
+                 const setval_tyBM * selset; const objectval_tyBM * cursel;
+                 value_tyBM curmeth;
+    );
   ASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   // arg2 is the dumpob
@@ -443,10 +451,11 @@ ROUTINEOBJNAME_BM (_67IapmpeTLU_8MQKtlK8iAD)    // dump_data°class
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv;
-                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
-                 const objectval_tyBM * supercl; const setval_tyBM * selset;
-                 const objectval_tyBM * cursel; value_tyBM curmeth;);
+                 const objectval_tyBM * recv; objectval_tyBM * dumpob;
+                 objectval_tyBM * bufob; const objectval_tyBM * supercl;
+                 const setval_tyBM * selset; const objectval_tyBM * cursel;
+                 value_tyBM curmeth;
+    );
   ASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   _.dumpob = objectcast_BM (arg2);
@@ -522,8 +531,9 @@ ROUTINEOBJNAME_BM (_4DvEF1tVGFD_6VVLpFn6FPW)    //  dump_scan°hset_object
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv; objectval_tyBM * dumpob;
-                 const setval_tyBM * setv;);
+                 objectval_tyBM * recv;
+                 objectval_tyBM * dumpob; const setval_tyBM * setv;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   _.dumpob = objectcast_BM (arg2);
@@ -559,9 +569,11 @@ ROUTINEOBJNAME_BM (_7GMLV81ntO3_4NHTv7fCL0A)    // dump_data°hset_object
   ASSERT_BM (k_dump_value != NULL);
   objectval_tyBM *k_put = BMK_9pvzBeIKHXF_8YDPCrQ6OEK;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv; value_tyBM funv;
-                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
-                 const setval_tyBM * setv; value_tyBM dumpres;);
+                 const objectval_tyBM * recv;
+                 value_tyBM funv; objectval_tyBM * dumpob;
+                 objectval_tyBM * bufob; const setval_tyBM * setv;
+                 value_tyBM dumpres;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   _.dumpob = objectcast_BM (arg2);
@@ -600,8 +612,10 @@ ROUTINEOBJNAME_BM (_26FUvWKvkYr_5hyqhhV8NEh)    // get°hset_object
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv; value_tyBM elem;
-                 objectval_tyBM * curob; const setval_tyBM * setv;);
+                 objectval_tyBM * recv;
+                 value_tyBM elem; objectval_tyBM * curob;
+                 const setval_tyBM * setv;
+    );
   struct hashsetobj_stBM *hset = NULL;
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
@@ -660,8 +674,9 @@ ROUTINEOBJNAME_BM (_91iTl2vqF09_72WJj4swbNi)    // put°hset_object
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv; const seqobval_tyBM * putseqv;
-                 objectval_tyBM * curob;);
+                 objectval_tyBM * recv;
+                 const seqobval_tyBM * putseqv; objectval_tyBM * curob;
+    );
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
   _.recv = arg1;
@@ -694,9 +709,9 @@ ROUTINEOBJNAME_BM (_2juH5YMCcog_8pQGCuE5mod)    // add°hset_object
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-                 value_tyBM addend; const seqobval_tyBM * putseqv;
-                 objectval_tyBM * curob;);
+                 objectval_tyBM * recv; value_tyBM addend;
+                 const seqobval_tyBM * putseqv; objectval_tyBM * curob;
+    );
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
   _.recv = arg1;
@@ -749,9 +764,9 @@ ROUTINEOBJNAME_BM (_5hedSPIXD0o_5ef69rR2kzb)    // remove°hset_object
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-                 value_tyBM removedv; const seqobval_tyBM * putseqv;
-                 objectval_tyBM * curob;);
+                 objectval_tyBM * recv; value_tyBM removedv;
+                 const seqobval_tyBM * putseqv; objectval_tyBM * curob;
+    );
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
   _.recv = arg1;
@@ -793,7 +808,9 @@ ROUTINEOBJNAME_BM (_88cUYsDqSFO_0DKwKLSOmpm)    //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv; const setval_tyBM * setv;);
+                 const objectval_tyBM * recv;
+                 const setval_tyBM * setv;
+    );
   _.recv = arg1;
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
@@ -818,8 +835,9 @@ ROUTINEOBJNAME_BM (_99PsYq2Nw3w_9q4BJNeQ6Re)    //  dump_scan°vector_object
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-                 objectval_tyBM * dumpob; value_tyBM compv;);
+                 objectval_tyBM * recv; objectval_tyBM * dumpob;
+                 value_tyBM compv;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   _.dumpob = objectcast_BM (arg2);
@@ -858,9 +876,10 @@ ROUTINEOBJNAME_BM (_0y90r6nyAYP_2MmfH2V00B1)    // dump_data°vector_object
   ASSERT_BM (k_dump_value != NULL);
   objectval_tyBM *k_fill = BMK_8pmtJTuEbBF_4xNgNCOElwL;
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv; objectval_tyBM * dumpob;
-                 objectval_tyBM * bufob; value_tyBM dumpres;
-                 value_tyBM nodv;);
+                 objectval_tyBM * recv;
+                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
+                 value_tyBM dumpres; value_tyBM nodv;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   _.dumpob = objectcast_BM (arg2);
@@ -900,8 +919,10 @@ ROUTINEOBJNAME_BM (_7BhZWKS2grS_3TnuK6o8ZFH)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7BhZWKS2grS_3TnuK6o8ZFH,
-                 objectval_tyBM * recv;
-                 value_tyBM contv; value_tyBM compv; value_tyBM resultv;);
+                 objectval_tyBM * recv; value_tyBM contv;
+                 value_tyBM compv;
+                 value_tyBM resultv;
+    );
   _.recv = objectcast_BM (arg1);
   _.contv = arg2;
   unsigned ilen = 0;
@@ -957,9 +978,9 @@ ROUTINEOBJNAME_BM (_8MU0cEcpEYN_5SVe0jrv36o)    //  dump_scan°assoc_object
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
                  const objectval_tyBM * recv;
-                 const objectval_tyBM * curattrob;
-                 value_tyBM curval; objectval_tyBM * dumpob;
-                 const setval_tyBM * setv;);
+                 const objectval_tyBM * curattrob; value_tyBM curval;
+                 objectval_tyBM * dumpob; const setval_tyBM * setv;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   WEAKASSERT_BM (obdumpgetdumper_BM (arg2) != NULL);
@@ -1010,10 +1031,11 @@ ROUTINEOBJNAME_BM (_9EytjXNb76D_1ZP3iSk9cuu)    // dump_data°assoc_object
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv;
-                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
-                 const setval_tyBM * setv; objectval_tyBM * curattrob;
-                 value_tyBM curval; value_tyBM dumpres;);
+                 const objectval_tyBM * recv; objectval_tyBM * dumpob;
+                 objectval_tyBM * bufob; const setval_tyBM * setv;
+                 objectval_tyBM * curattrob; value_tyBM curval;
+                 value_tyBM dumpres;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   WEAKASSERT_BM (obdumpgetdumper_BM (arg2) != NULL);
@@ -1077,8 +1099,9 @@ ROUTINEOBJNAME_BM (_4zaM2Itdsuq_9qNJK0HbcQI)    //  set°assoc_object
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv;
-                 const closure_tyBM * clos; const setval_tyBM * setv;);
+                 const objectval_tyBM * recv; const closure_tyBM * clos;
+                 const setval_tyBM * setv;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   anyassoc_tyBM *assoc = assoccast_BM (objpayload_BM (_.recv));
@@ -1102,8 +1125,10 @@ ROUTINEOBJNAME_BM (_4icYJnKsN0o_4xm5UbQOMTe)    //  get°assoc_object
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv; const objectval_tyBM * obattr;
-                 const closure_tyBM * clos; value_tyBM resuv;);
+                 const objectval_tyBM * recv;
+                 const objectval_tyBM * obattr; const closure_tyBM * clos;
+                 value_tyBM resuv;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   anyassoc_tyBM *assoc = assoccast_BM (objpayload_BM (_.recv));
@@ -1130,8 +1155,10 @@ ROUTINEOBJNAME_BM (_6eD9Y1qYcnj_8uVDhxjBpG8)    //  put°assoc_object
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv; const objectval_tyBM * obattr;
-                 const closure_tyBM * clos; value_tyBM valattr;);
+                 objectval_tyBM * recv;
+                 const objectval_tyBM * obattr; const closure_tyBM * clos;
+                 value_tyBM valattr;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   if (!isobject_BM ((value_tyBM) _.recv))
@@ -1160,9 +1187,9 @@ ROUTINEOBJNAME_BM (_0ekJdzLOqAI_8mejMqkwuKQ)    //  remove°assoc_object
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-                 objectval_tyBM * obattr; value_tyBM attr;
-                 const closure_tyBM * clos;);
+                 objectval_tyBM * recv; objectval_tyBM * obattr;
+                 value_tyBM attr; const closure_tyBM * clos;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   if (!isobject_BM ((value_tyBM) _.recv))
@@ -1209,9 +1236,10 @@ ROUTINEOBJNAME_BM (_7fCcteNe7aR_3IKHeHjmzff)    // dump_value°object
   // arg2 is the bufob
   ASSERT_BM (istaggedint_BM (arg4));
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv;
-                 objectval_tyBM * bufob; value_tyBM depthv;
-                 objectval_tyBM * dumpob; const objectval_tyBM * curobj;);
+                 const objectval_tyBM * recv; objectval_tyBM * bufob;
+                 value_tyBM depthv; objectval_tyBM * dumpob;
+                 const objectval_tyBM * curobj;
+    );
   _.recv = (arg1);
   _.bufob = objectcast_BM (arg2);
   WEAKASSERT_BM (objhasstrbufferpayl_BM (_.bufob));
@@ -1247,8 +1275,11 @@ ROUTINEOBJNAME_BM (_6PmxiZR9WBe_13DwWExCALl)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv; objectval_tyBM * dumpob;
-                 objectval_tyBM * bufob; value_tyBM closv; value_tyBM resuv;);
+                 const objectval_tyBM * recv;
+                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
+                 value_tyBM closv;
+                 value_tyBM resuv;
+    );
   ASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   WEAKASSERT_BM (obdumpgetdumper_BM (arg2) != NULL);
@@ -1281,8 +1312,10 @@ ROUTINEOBJNAME_BM (_7D36kHemyWQ_0YfwWnUhR9Y)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv; objectval_tyBM * dumpob;
-                 objectval_tyBM * bufob; value_tyBM obval;);
+                 const objectval_tyBM * recv;
+                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
+                 value_tyBM obval;
+    );
   ASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   WEAKASSERT_BM (obdumpgetdumper_BM (arg2) != NULL);
@@ -1319,8 +1352,9 @@ const value_tyBM arg2, const value_tyBM arg3, const value_tyBM arg4_
 __attribute__((unused)), const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv;
-                 objectval_tyBM * dumpob; value_tyBM obval;);
+                 const objectval_tyBM * recv; objectval_tyBM * dumpob;
+                 value_tyBM obval;
+    );
   ASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   WEAKASSERT_BM (obdumpgetdumper_BM (arg2) != NULL);
@@ -1357,8 +1391,10 @@ const quasinode_tyBM * restargs __attribute__((unused)))
     closix__REST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * ldobj; objectval_tyBM * obsel;
-                 value_tyBM resuv; const closure_tyBM * clos;);
+                 objectval_tyBM * ldobj;
+                 objectval_tyBM * obsel; value_tyBM resuv;
+                 const closure_tyBM * clos;
+    );
   LOCALGETFUNV_BM (_.clos);
   if (!isclosure_BM ((const value_tyBM) _.clos))
     FATAL_BM ("todo_send _9mdRnBqdqf5_9UvgSFA7wIY non-closure called");
@@ -1434,8 +1470,9 @@ const quasinode_tyBM * restargs __attribute__((unused)))
     closix__REST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const closure_tyBM * cclos;
-                 const closure_tyBM * closv; objectval_tyBM * ldobj;);
+                 const closure_tyBM * cclos; const closure_tyBM * closv;
+                 objectval_tyBM * ldobj;
+    );
   LOCALGETFUNV_BM (_.cclos);
   if (!isclosure_BM ((const value_tyBM) _.cclos)
       || closurewidth_BM ((const value_tyBM) _.cclos) >= closix__REST)
@@ -1512,10 +1549,12 @@ const quasinode_tyBM * restargs __attribute__((unused)))
     closix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const objectval_tyBM * recv; objectval_tyBM * dumpob;
-                 objectval_tyBM * bufob; objectval_tyBM * prsbufob;
-                 const stringval_tyBM * filnamv; const setval_tyBM * prset;
-                 const objectval_tyBM * curpredef; value_tyBM cclos;);
+                 const objectval_tyBM * recv;
+                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
+                 objectval_tyBM * prsbufob; const stringval_tyBM * filnamv;
+                 const setval_tyBM * prset; const objectval_tyBM * curpredef;
+                 value_tyBM cclos;
+    );
   struct dumper_stBM *duptr = obdumpgetdumper_BM (arg2);
   WEAKASSERT_BM (duptr != NULL);
   _.dumpob = arg2;
@@ -1665,7 +1704,9 @@ const quasinode_tyBM * restargs __attribute__((unused)))
                  objectval_tyBM * prsbufob;
                  const stringval_tyBM * filnamv;
                  const node_tyBM * nodglobv;
-                 const stringval_tyBM * curglobname; value_tyBM cclosv;);
+                 const stringval_tyBM * curglobname;
+                 value_tyBM cclosv;
+    );
   struct dumper_stBM *duptr = obdumpgetdumper_BM (arg2);
   WEAKASSERT_BM (duptr != NULL);
   LOCALGETFUNV_BM (_.cclosv);
@@ -1755,8 +1796,9 @@ ROUTINEOBJNAME_BM (_3yJPC4SxGtF_6ilaF37wdxG)    //
                  objectval_tyBM * sbufob;
                  objectval_tyBM * prsbufob;
                  const stringval_tyBM * filnamv;
-                 const tupleval_tyBM * tuptypes;
-                 objectval_tyBM * curtype; value_tyBM emittedv;);
+                 const tupleval_tyBM * tuptypes; objectval_tyBM * curtype;
+                 value_tyBM emittedv;
+    );
   struct dumper_stBM *duptr = obdumpgetdumper_BM (arg2);
   WEAKASSERT_BM (duptr != NULL);
   _.dumpob = arg2;
@@ -1884,8 +1926,9 @@ ROUTINEOBJNAME_BM (_9imDBaAxOpp_2HI9AuWrEKD)    //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-                 objectval_tyBM * obsel; const closure_tyBM * methclo;);
+                 objectval_tyBM * recv; objectval_tyBM * obsel;
+                 const closure_tyBM * methclo;
+    );
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
   _.recv = (objectval_tyBM *) arg1;
@@ -1918,8 +1961,8 @@ ROUTINEOBJNAME_BM (_2qppG2LJu79_9ljkbLS0eFQ)    //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv;
-                 objectval_tyBM * obsuperclass;);
+                 objectval_tyBM * recv; objectval_tyBM * obsuperclass;
+    );
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
   _.recv = (objectval_tyBM *) arg1;
@@ -1954,7 +1997,9 @@ ROUTINEOBJNAME_BM (_60NdV04Lel2_5FSZVWKbSL7)    // put_data_value°basiclo_funct
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * recv; value_tyBM nval;);
+                 objectval_tyBM * recv;
+                 value_tyBM nval;
+    );
   _.recv = arg1;
   _.nval = arg2;
   ASSERT_BM (isobject_BM (_.recv));
@@ -1987,7 +2032,8 @@ ROUTINEOBJNAME_BM (_5DDSY1YgVZr_6dOU4tiBldk)    //
     closix__LAST
   };
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 value_tyBM cclos;);
+                 value_tyBM cclos;
+    );
   LOCALGETFUNV_BM (_.cclos);
   if (!isclosure_BM (_.cclos) || closurewidth_BM (_.cclos) != closix__LAST)
     return NULL;
@@ -2009,8 +2055,9 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL, objectval_tyBM * obmod;
-                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
-                 value_tyBM res; value_tyBM failreason; //
+                 objectval_tyBM * dumpob;
+                 objectval_tyBM * bufob; value_tyBM res;
+                 value_tyBM failreason; //
                  value_tyBM failplace;  //
     );
   ASSERT_BM (isobject_BM (arg1));
@@ -2094,10 +2141,11 @@ ROUTINEOBJNAME_BM (_0kUyX0U19K2_5mcH4RCaBl9)    // block:readmacro
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * rnodv;
-                 objectval_tyBM * resobj; objectval_tyBM * resclass;
-                 objectval_tyBM * curlab; objectval_tyBM * parsob;
-                 value_tyBM curson; value_tyBM inv;);
+                 const node_tyBM * rnodv; objectval_tyBM * resobj;
+                 objectval_tyBM * resclass; objectval_tyBM * curlab;
+                 objectval_tyBM * parsob; value_tyBM curson;
+                 value_tyBM inv;
+    );
   objectval_tyBM *k_basiclo_block = NULL;
   objectval_tyBM *k_label = NULL;
   if (!isnode_BM (arg1))
@@ -2516,12 +2564,17 @@ ROUTINEOBJNAME_BM (_0XbMOJqLLPZ_1t2wg2TwPRA)    // readmacro#cond
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * rnodv; objectval_tyBM * resobj;
-                 const struct parser_stBM *pars; value_tyBM inv;
-                 value_tyBM destv; value_tyBM srcv; objectval_tyBM * parsob; union
+                 const node_tyBM * rnodv;
+                 objectval_tyBM * resobj; const struct parser_stBM *pars;
+                 value_tyBM inv; value_tyBM destv;
+                 value_tyBM srcv;
+                 objectval_tyBM * parsob;
+                 union
                  {
-                 value_tyBM curson;
-                 objectval_tyBM * curobj;}; objectval_tyBM * prevobj;);
+                 value_tyBM curson; objectval_tyBM * curobj;
+                 };
+                 objectval_tyBM * prevobj;
+    );
   _.rnodv = arg1;
   if (!isnode_BM (arg1))
     LOCALRETURN_BM (NULL);
@@ -2635,8 +2688,11 @@ ROUTINEOBJNAME_BM (_5ZT4G2KhMyi_4mC2iDVPWQP)    //readmacro#wrong
 {
   objectval_tyBM * k_basiclo_wrong = BMK_65wIF6z9pmQ_47VZsHJ6zdk;
   LOCALFRAME_BM (stkf, /*descr: */ BMK_5ZT4G2KhMyi_4mC2iDVPWQP,
-                 value_tyBM nodev; objectval_tyBM * parsob;
-                 objectval_tyBM * resob; value_tyBM cursonv; value_tyBM inv;);
+                 value_tyBM nodev;
+                 objectval_tyBM * parsob; objectval_tyBM * resob;
+                 value_tyBM cursonv;
+                 value_tyBM inv;
+    );
   _.nodev = (value_tyBM) nodecast_BM (arg1);
   if (!isnode_BM (_.nodev))
     LOCALRETURN_BM (NULL);
@@ -2812,10 +2868,13 @@ ROUTINEOBJNAME_BM (_8uFPIAUyvE6_36pUIgGwmbf)    // objswitch:readmacro
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * rnodv; objectval_tyBM * resobj;      //
+                 const node_tyBM * rnodv;
+                 objectval_tyBM * resobj;       //
                  objectval_tyBM * parsob;       //
                  objectval_tyBM * classob;      //
-                 value_tyBM curson; value_tyBM inv;);
+                 value_tyBM curson;
+                 value_tyBM inv;
+    );
   objectval_tyBM *k_basiclo_objswitch = BMK_3votvybaW1d_35YcL4p51kp;
   objectval_tyBM *k_switch = BMK_5PJV21P82kA_2KfQTz95vdH;
   _.rnodv = arg1;
@@ -2916,10 +2975,11 @@ ROUTINEOBJNAME_BM (_6SUnsQrN1BV_1WnLPm4QoOq)    // loop:readmacro
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * rnodv; value_tyBM curson;
-                 objectval_tyBM * resobj; objectval_tyBM * resclass;
-                 objectval_tyBM * curlab; objectval_tyBM * inv;
-                 objectval_tyBM * parsob;);
+                 const node_tyBM * rnodv;
+                 value_tyBM curson; objectval_tyBM * resobj;
+                 objectval_tyBM * resclass; objectval_tyBM * curlab;
+                 objectval_tyBM * inv; objectval_tyBM * parsob;
+    );
   _.rnodv = arg1;
   if (!isnode_BM (arg1))
     LOCALRETURN_BM (NULL);
@@ -3141,11 +3201,11 @@ ROUTINEOBJNAME_BM (_1ufPZmTnWhp_7FX9NANZCAW)    //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * rnodv;
-                 objectval_tyBM * resobj; objectval_tyBM * resclass;
-                 objectval_tyBM * inv; objectval_tyBM * curlab;
-                 objectval_tyBM * parsob; value_tyBM curson;
-                 value_tyBM whilexpv;);
+                 const node_tyBM * rnodv; objectval_tyBM * resobj;
+                 objectval_tyBM * resclass; objectval_tyBM * inv;
+                 objectval_tyBM * curlab; objectval_tyBM * parsob;
+                 value_tyBM curson; value_tyBM whilexpv;
+    );
   _.rnodv = arg1;
   if (!isnode_BM (arg1))
     LOCALRETURN_BM (NULL);
@@ -3275,10 +3335,11 @@ ROUTINEOBJNAME_BM (_5788HpgOtVV_4zwZIr0jgmq)    //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * rnodv; objectval_tyBM * resobj;
-                 objectval_tyBM * resclass; objectval_tyBM * inv;
-                 value_tyBM curson;
-                 value_tyBM resexpv; objectval_tyBM * parsob;);
+                 const node_tyBM * rnodv;
+                 objectval_tyBM * resobj; objectval_tyBM * resclass;
+                 objectval_tyBM * inv; value_tyBM curson; value_tyBM resexpv;
+                 objectval_tyBM * parsob;
+    );
   _.rnodv = arg1;
   if (!isnode_BM (arg1))
     LOCALRETURN_BM (NULL);
@@ -3367,10 +3428,11 @@ ROUTINEOBJNAME_BM (_7sg0DjYTA8n_66vhff9SgXH)    //
  const quasinode_tyBM * restargs __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * rnodv; objectval_tyBM * resobj;
-                 objectval_tyBM * resclass; objectval_tyBM * inv;
-                 value_tyBM curson;
-                 value_tyBM runexpv; objectval_tyBM * parsob;);
+                 const node_tyBM * rnodv;
+                 objectval_tyBM * resobj; objectval_tyBM * resclass;
+                 objectval_tyBM * inv; value_tyBM curson; value_tyBM runexpv;
+                 objectval_tyBM * parsob;
+    );
   _.rnodv = arg1;
   if (!isnode_BM (arg1))
     LOCALRETURN_BM (NULL);
@@ -3672,10 +3734,12 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    // when#read_macro
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 const node_tyBM * rnodv; objectval_tyBM * resobj;
-                 objectval_tyBM * curobj; objectval_tyBM * resclass;
-                 value_tyBM testexpv; value_tyBM * inv;
-                 value_tyBM curson, curarg; objectval_tyBM * parsob;);
+                 const node_tyBM * rnodv;
+                 objectval_tyBM * resobj; objectval_tyBM * curobj;
+                 objectval_tyBM * resclass; value_tyBM testexpv;
+                 value_tyBM * inv; value_tyBM curson, curarg;
+                 objectval_tyBM * parsob;
+    );
   _.rnodv = nodecast_BM (arg1);
   int lineno = getint_BM (arg2);
   int colpos = getint_BM (arg3);
@@ -3796,9 +3860,10 @@ ROUTINEOBJNAME_BM (_7iKya0Q5Jii_0mjPPia0yib)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7iKya0Q5Jii_0mjPPia0yib,
-                 value_tyBM rnodv; value_tyBM inv;
-                 value_tyBM curson;
-                 objectval_tyBM * parsob; objectval_tyBM * resobj;);
+                 value_tyBM rnodv;
+                 value_tyBM inv; value_tyBM curson; objectval_tyBM * parsob;
+                 objectval_tyBM * resobj;
+    );
   objectval_tyBM *k_assoc_object = BMK_6ZQ05nCv3Ys_8LA6B5LkZgm;
   _.rnodv = arg1;
   if (!isnode_BM (arg1))
@@ -3877,9 +3942,10 @@ ROUTINEOBJNAME_BM (_2mWbSPeD8lw_8ea0EhwQUAa)    // readmacro:hset
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2mWbSPeD8lw_8ea0EhwQUAa,
-                 value_tyBM rnodv; value_tyBM inv;
-                 value_tyBM curson;
-                 objectval_tyBM * parsob; objectval_tyBM * resobj;);
+                 value_tyBM rnodv;
+                 value_tyBM inv; value_tyBM curson; objectval_tyBM * parsob;
+                 objectval_tyBM * resobj;
+    );
   objectval_tyBM *k_hset_object = BMK_8c9otZ4pwR6_55k81qyyYV2;
   _.rnodv = arg1;
   if (!isnode_BM (arg1))
@@ -3956,9 +4022,10 @@ ROUTINEOBJNAME_BM (_8RsUtTTwcw0_9DjQfQrNouU)    //  dump_scan°hashsetval_object
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ BMK_8RsUtTTwcw0_9DjQfQrNouU,
-                 objectval_tyBM * recv; objectval_tyBM * curattrob;
-                 value_tyBM curval; objectval_tyBM * dumpob;
-                 const setval_tyBM * setv;);
+                 objectval_tyBM * recv;
+                 objectval_tyBM * curattrob; value_tyBM curval;
+                 objectval_tyBM * dumpob; const setval_tyBM * setv;
+    );
   WEAKASSERT_BM (isobject_BM (arg1));
   _.recv = arg1;
   WEAKASSERT_BM (obdumpgetdumper_BM (arg2) != NULL);
@@ -3987,10 +4054,12 @@ ROUTINEOBJNAME_BM (_6UxkFEHhNQS_0f65oUlZ7b5)    // dump_data°hashsetval_object
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ BMK_6UxkFEHhNQS_0f65oUlZ7b5,
-                 objectval_tyBM * recv; objectval_tyBM * dumpob;
-                 objectval_tyBM * bufob; const setval_tyBM * setv;
-                 objectval_tyBM * curattrob; value_tyBM curval;
-                 value_tyBM contv; value_tyBM dumpres;);
+                 objectval_tyBM * recv;
+                 objectval_tyBM * dumpob; objectval_tyBM * bufob;
+                 const setval_tyBM * setv; objectval_tyBM * curattrob;
+                 value_tyBM curval; value_tyBM contv;
+                 value_tyBM dumpres;
+    );
   objectval_tyBM *k_reserve = BMK_2pwKyMVQyvI_3PH8nIPXjW0;
   objectval_tyBM *k_add = BMK_1dzZlwqKdLH_8HjkBsL9Mar;
   WEAKASSERT_BM (isobject_BM (arg1));
@@ -4041,7 +4110,8 @@ ROUTINEOBJNAME_BM (_7IlDChYeWQk_1l1rM2cq5uj)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7IlDChYeWQk_1l1rM2cq5uj,
-                 objectval_tyBM * obrecv;);
+                 objectval_tyBM * obrecv;
+    );
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
   if (!istaggedint_BM (arg2))
@@ -4071,7 +4141,9 @@ ROUTINEOBJNAME_BM (_9O4E8Tcc2Fq_8MXrM73GJCM)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_9O4E8Tcc2Fq_8MXrM73GJCM,
-                 value_tyBM valv; objectval_tyBM * obrecv;);
+                 value_tyBM valv;
+                 objectval_tyBM * obrecv;
+    );
   _.obrecv = (objectval_tyBM *) arg1;
   _.valv = arg2;
   if (objhashashsetvalpayl_BM (_.obrecv))
@@ -4097,7 +4169,9 @@ ROUTINEOBJNAME_BM (_2WY2j1qroxH_1sjxiD6Yvad)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_2WY2j1qroxH_1sjxiD6Yvad,
-                 value_tyBM valv; objectval_tyBM * obrecv;);
+                 value_tyBM valv;
+                 objectval_tyBM * obrecv;
+    );
   _.obrecv = (objectval_tyBM *) arg1;
   _.valv = arg2;
   if (objhashashsetvalpayl_BM (_.obrecv))
@@ -4122,7 +4196,8 @@ ROUTINEOBJNAME_BM (_1PXiQf6nwlO_8J54FkeCF9A)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_1PXiQf6nwlO_8J54FkeCF9A,
-                 objectval_tyBM * obrecv;);
+                 objectval_tyBM * obrecv;
+    );
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
   if (!istaggedint_BM (arg2))
@@ -4151,7 +4226,10 @@ ROUTINEOBJNAME_BM (_8EqnYwr2sed_1Njis9lW96i)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_8EqnYwr2sed_1Njis9lW96i,
-                 objectval_tyBM * obrecv; value_tyBM keyv; value_tyBM valv;);
+                 objectval_tyBM * obrecv;
+                 value_tyBM keyv;
+                 value_tyBM valv;
+    );
   if (!isobject_BM (arg1))
     LOCALRETURN_BM (NULL);
   if (!arg2)
@@ -4180,8 +4258,10 @@ ROUTINEOBJNAME_BM (_5DQ2V9upFQv_3I4NiDiwsdf)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_5DQ2V9upFQv_3I4NiDiwsdf,
-                 objectval_tyBM * recv;
-                 objectval_tyBM * dumpob; value_tyBM keyv; value_tyBM valv;);
+                 objectval_tyBM * recv; objectval_tyBM * dumpob;
+                 value_tyBM keyv;
+                 value_tyBM valv;
+    );
   _.recv = objectcast_BM (arg1);
   _.dumpob = objectcast_BM (arg2);
   WEAKASSERT_BM (obdumpgetdumper_BM (_.dumpob) != NULL);
@@ -4280,8 +4360,9 @@ ROUTINEOBJNAME_BM (_7XDuHagbhi8_3V9zhBpbrrV)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_7XDuHagbhi8_3V9zhBpbrrV,
-                 objectval_tyBM * taskob;
-                 value_tyBM resultv; value_tyBM rankv;);
+                 objectval_tyBM * taskob; value_tyBM resultv;
+                 value_tyBM rankv;
+    );
   objectval_tyBM *k_rank = BMK_8zRh2medTlP_0ImnPyO8NKH;
   objectval_tyBM *kk_defer_show = BMK_7rRjqfXs3QI_4Nwk2Lfm569;
   _.taskob = objectcast_BM (arg1);
@@ -4319,7 +4400,8 @@ ROUTINEOBJNAME_BM (_43m9jyNirvE_0wkbsL0Nvkp)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_43m9jyNirvE_0wkbsL0Nvkp,
-                 objectval_tyBM * ob;);
+                 objectval_tyBM * ob;
+    );
   _.ob = objectcast_BM (arg1);
   if (!_.ob)
     {

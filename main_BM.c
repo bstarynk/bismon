@@ -29,6 +29,8 @@
 #include <sys/sysinfo.h>
 
 
+static atomic_int nb_warnings_BM;
+
 struct timespec startrealtimespec_BM;
 void *dlprog_BM;
 const char *myprogname_BM;
@@ -107,6 +109,17 @@ weakfailure_BM (void)
 {
   fflush (NULL);
 }                               /* end weakfailure_BM */
+
+void
+warning_at_BM (const char *fil, int lin)
+{
+  ASSERT_BM (fil != NULL && lin > 0);
+  int nbw = 1 + atomic_fetch_add (&nb_warnings_BM, 1);
+  if (nbw % 10 == 0)
+    fputc ('\n', stderr);
+  fprintf (stderr, "BISMON WARNING#%03d: %s: %d: ", nbw, fil, lin);
+  fflush (stderr);
+}                               /* end warning_at_BM */
 
 void
 weakassertfailureat_BM (const char *condmsg, const char *fil, int lin)
@@ -1492,9 +1505,7 @@ void
 parse_values_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob;
-                 value_tyBM parsedval;
-    );
+                 objectval_tyBM * parsob; value_tyBM parsedval;);
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("parsing %d values after load %s using parsob %s\n",
                  nb_parsed_values_after_load_bm, load_dir_bm,
@@ -1532,8 +1543,7 @@ run_testplugins_after_load_BM (void)
   double startcputime = cputime_BM ();
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM pluginamv;  //
-                 objectval_tyBM * pluginob;
-    );
+                 objectval_tyBM * pluginob;);
   // check sanity of test plugins
   static char cwdbuf[200];
   if (!getcwd (cwdbuf, sizeof (cwdbuf) - 1))
@@ -1654,9 +1664,8 @@ void
 init_afterload_bm ()
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * parsob; value_tyBM parsedval;
-                 value_tyBM resval;
-    );
+                 objectval_tyBM * parsob;
+                 value_tyBM parsedval; value_tyBM resval;);
   _.parsob = makeobj_BM ();
   INFOPRINTF_BM ("doing %d closures after load %s using parsob %s\n",
                  count_init_afterload_bm, load_dir_bm,
@@ -1703,8 +1712,7 @@ void
 add_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * userob;
-    );
+                 objectval_tyBM * userob;);
   ASSERT_BM (count_added_contributors_bm > 0);
   ASSERT_BM (added_contributors_arr_bm != NULL);
   INFOPRINTF_BM ("adding %d contributors after load",
@@ -1739,8 +1747,7 @@ void
 remove_contributors_after_load_BM (void)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * oldcontribob;
-    );
+                 objectval_tyBM * oldcontribob;);
   ASSERT_BM (count_removed_contributors_bm > 0);
   INFOPRINTF_BM ("removing %d contributors after load",
                  count_removed_contributors_bm);
@@ -1775,8 +1782,7 @@ void
 add_passwords_from_file_BM (const char *addedpasspath)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * contribob;
-    );
+                 objectval_tyBM * contribob;);
   ASSERT_BM (addedpasspath != NULL);
   DBGPRINTF_BM ("add_passwords_from_file start addedpasspath %s",
                 addedpasspath);
@@ -1882,8 +1888,7 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
                  value_tyBM funv;       //
                  objectval_tyBM * funob;        //
-                 value_tyBM arg1v, arg2v, arg3v;
-                 value_tyBM resappv;    //
+                 value_tyBM arg1v, arg2v, arg3v; value_tyBM resappv;    //
                  value_tyBM failres;    //
                  value_tyBM failplace;  //
     );
@@ -1969,9 +1974,7 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
                                value_tyBM arg3)
 {
   LOCALFRAME_BM ( /*prev stackf: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * obsel;
-                 value_tyBM recva, arg1v, arg2v, arg3v;
-                 value_tyBM failres;    //
+                 objectval_tyBM * obsel; value_tyBM recva, arg1v, arg2v, arg3v; value_tyBM failres;     //
                  value_tyBM failplace;  //
     );
   _.recva = recv;

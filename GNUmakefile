@@ -28,6 +28,7 @@
 
 GCC= gcc
 GXX= g++
+SED= /bin/sed
 MARKDOWN= markdown
 INDENT= indent
 ASTYLE= astyle
@@ -115,7 +116,7 @@ BISMON_CXXFLAGS= -O -g -Wall -Wextra -std=gnu++14
 endif
 
 clean:
-	$(RM) *.o BISMON-config bismon   modubin/*.so modubin/*.o *~ *% *.cc.orig
+	$(RM) *.o BISMON-config bismon   modubin/*.so modubin/*.o *~ *% *.cc.orig *.i *.ii
 	$(RM) gccplugins/*.so gccplugins/*~ gccplugins/*%
 	$(RM) libbismonclient/*.o  libbismonclient/*~  libbismonclient/*%
 	$(RM) libbismonclient/*.so
@@ -159,13 +160,20 @@ BM_makeconst.o: BM_makeconst.cc id_BM.h
 
 -include _bismon-makedep.mk
 
+
 id_BM.o: id_BM.c id_BM.h
 	$(CC) -DBISMON_MAKING_id_BM $(BISMON_CFLAGS)  -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags glib-2.0)  -Wall -Wextra -c $< -o $@
+id_BM.i:  id_BM.c id_BM.h
+	$(CC) -C -E -DBISMON_MAKING_id_BM $(BISMON_CFLAGS)  -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags glib-2.0)  -Wall -Wextra  $< | $(SED) s:^#://#: > $@
+
 id_BM-g.o: id_BM.c id_BM.h
 	$(CC)   -DBISMON_MAKING_id_BM_g $(BISMON_CFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -g $(shell pkg-config --cflags glib-2.0) -g -Wall  -Wextra -c $< -o $@
 
 %_BM.o: %_BM.c bismon.h
 	$(CC)  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMON_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra -c  $< -o $@
+
+%_BM.i: %_BM.c bismon.h
+	$(CC) -C -E  -DBISMON_MAKING_C_$* $(BISMON_CFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMON_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall  -Wextra   $< | $(SED) 's:^#://#:' > $@
 
 #%_GTKBM.o: %_GTKBM.c bismon.h
 #	@echo BISMON_PACKAGES is $(BISMON_PACKAGES)
@@ -176,6 +184,9 @@ id_BM-g.o: id_BM.c id_BM.h
 
 %_BM.o: %_BM.cc bismon.h
 	$(CXX) -c  -DBISMON_MAKING_CPP_$* $(BISMON_CXXFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall -Wextra $< -o $@
+
+%_BM.ii: %_BM.cc bismon.h
+	$(CXX) -C -E   -DBISMON_MAKING_CPP_$* $(BISMON_CXXFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%.mkd, $@) -Wall -Wextra $<  | $(SED) 's:^#://#:' > $@
 
 %_BM-g.o: %_BM.cc bismon.h
 	$(CXX) -c -DBISMON_MAKING_CPP_$*_g $(BISMON_CXXFLAGS) -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -g $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -MD -MF$(patsubst %.o, _%-g.mkd, $@)  -g -Wall  $< -o $@

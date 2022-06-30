@@ -755,8 +755,8 @@ plain_event_loop_BM (void)      /// called from from main
 {
   //  objectval_tyBM *k_plain_event_loop = BMK_74VNUG6Vqq4_700i8h0o8EI;
   LOCALFRAME_BM ( /*prev: */ NULL, /*descr: */ NULL,
-                 objectval_tyBM * bufob;
-                 objectval_tyBM * curjsob;);
+                 objectval_tyBM * bufob; objectval_tyBM * curjsob;
+    );
   atomic_init (&eventlooprunning_BM, true);
 
   DBGBACKTRACEPRINTF_BM ("plain_event_loop_BM before loop sigfd_BM=%d tid#%ld elapsed %.3f s",  //
