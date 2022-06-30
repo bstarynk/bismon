@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -2107,7 +2107,7 @@ parserendoffile_BM (const struct parser_stBM *pars)
 bool
 parseradvanceutf8_BM (struct parser_stBM *pars, unsigned nbc)
 {
-  if (!isparser_BM ((const value_tyBM) pars))
+  if (!isparser_BM ((const extendedval_tyBM) pars))
     return false;
   if (!pars->pars_linebuf)
     return false;
