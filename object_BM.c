@@ -1042,8 +1042,8 @@ register_predefined_object_BM (objectval_tyBM * pob)
     }
   else
     WARNPRINTF_BM
-      ("register_predefined_object_BM object %s: dlsym-ing %s in whole program failed : %s",
-       objectdbg_BM (pob), symbuf, dlerror ());
+      ("register_predefined_object_BM object %s: dlsym-ing %s in whole program failed : %s (with %d loaded modules)",
+       objectdbg_BM (pob), symbuf, dlerror (), module_count_BM ());
 }                               /* end register_predefined_object_BM */
 
 
