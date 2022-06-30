@@ -3,7 +3,7 @@
 // see https://github.com/bstarynk/bismon/
 /***
     BISMON
-    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
     with help from Franck Védrine.
@@ -122,6 +122,7 @@ struct ModuleData_BM
   void* mod_dlh;		// the dlopen handle
   objectval_tyBM* mod_obj;	// the module object
   value_tyBM mod_data;		// its data
+  double mod_dlopentime;	// the clocktime CLOCK_REALTIME of successful dlopen
 };
 
 static std::map<rawid_tyBM,ModuleData_BM,IdLess_BM> modulemap_BM;
@@ -534,7 +535,9 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   void*dlh = dlopen(binmodpath.c_str(), RTLD_NOW | RTLD_GLOBAL);
   if (!dlh)
     {
-      WARNPRINTF_BM("module dlopen failure %s\n", dlerror());
+      WARNPRINTF_BM("module dlopen (of binary module %s) failure %s\n",
+                    binmodpath.c_str(),
+                    dlerror());
       return false;
     }
   DBGPRINTF_BM("open_module_for_loader dlsym-ing module_id_BM in dlh@%p for %s",
@@ -559,14 +562,16 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
     char cwdbuf[128];
     memset(cwdbuf, 0, sizeof(cwdbuf));
     if (getcwd(cwdbuf, sizeof(cwdbuf)-1))
-      INFOPRINTF_BM("open_module_for_loader module %s dlopened %s from %s",
+      INFOPRINTF_BM("open_module_for_loader module %s dlopened binary %s from directory %s",
                     objectdbg_BM(_.modulob), binmodpath.c_str(), cwdbuf);
     else
-      INFOPRINTF_BM("open_module_for_loader module %s dlopened %s",
+      INFOPRINTF_BM("open_module_for_loader module %s dlopened binary %s",
                     objectdbg_BM(_.modulob), binmodpath.c_str());
   }
   ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
-  (void) modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
+  (void) modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, //
+                              .mod_obj=_.modulob, .mod_data=nullptr,
+                              .mod_dlopentime = clocktime_BM(CLOCK_REALTIME)}});
   ////
   const closure_tyBM*closloadm = makeclosure1_BM (BMP_load_module, _.modulob);
   DBGPRINTF_BM("open_module_for_loader closloadm %s", OUTSTRVALUE_BM((void*)closloadm));
@@ -1286,4 +1291,11 @@ final_miscdata_cleanup_BM (void)
   }
 } // end final_miscdata_cleanup_BM
 
+
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 // end of file misc_BM.cc

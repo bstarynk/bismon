@@ -1342,7 +1342,7 @@ end:
         }
       else if (isobject_BM (_.todov))
         {                       // postponed send of todov selector
-          _.resv =(value_tyBM)
+          _.resv = (value_tyBM)
             makenode5_BM (k_postponed_send, _.recv, _.todov, _.arg1v, _.arg2v,
                           _.arg3v);
         }
