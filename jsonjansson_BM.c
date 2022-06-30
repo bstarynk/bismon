@@ -930,10 +930,10 @@ nodaljsonstring_BM (struct nodaljsonmode_st *njm, const char *str,
   objectval_tyBM *k_json_object = BMK_7hNqn2hxg1M_3wNHCtOf9IF;
   objectval_tyBM *k_json_string = BMK_419If27jxwQ_3WQnLqU53iq;
   LOCALFRAME_BM (stkf, /*descr: */ k_json_string,
-                 value_tyBM resv; //
-		 value_tyBM setv; //
-		 objectval_tyBM * ob; //
-		 );
+                 value_tyBM resv;       //
+                 value_tyBM setv;       //
+                 objectval_tyBM * ob;   //
+    );
   ASSERT_BM (njm && njm->njs_magic == NODALJSON_MAGIC_BM);
   if (!str)
     return NULL;
@@ -964,7 +964,9 @@ nodaljsonstring_BM (struct nodaljsonmode_st *njm, const char *str,
            && !isalnum (str[len_euro_underscore + 3])
            && !isalnum (str[len_euro_underscore + 4]))
     {
-      _.setv = (value_tyBM) setobjectsofidprefixed_BM (str + len_euro_underscore - 1);
+      _.setv =
+        (value_tyBM) setobjectsofidprefixed_BM (str + len_euro_underscore -
+                                                1);
       if (isset_BM (_.setv) && setcardinal_BM (_.setv) == 1)
         _.resv = (value_tyBM) setelemnth_BM (_.setv, 0);
     }
