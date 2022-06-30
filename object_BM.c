@@ -1041,9 +1041,9 @@ register_predefined_object_BM (objectval_tyBM * pob)
       pob->ob_rout = (objrout_sigBM *) ad;
     }
   else
-    WARNPRINTF_BM ("register_predefined_object_BM object %s: dlsym-ing %s in whole program failed : %s",
-		   objectdbg_BM (pob),
-		   symbuf, dlerror ());
+    WARNPRINTF_BM
+      ("register_predefined_object_BM object %s: dlsym-ing %s in whole program failed : %s",
+       objectdbg_BM (pob), symbuf, dlerror ());
 }                               /* end register_predefined_object_BM */
 
 
