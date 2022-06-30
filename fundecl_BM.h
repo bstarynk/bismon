@@ -1529,6 +1529,9 @@ extern value_tyBM warning_objrout_BM(struct stackframe_stBM *stkf,
   extern bool open_module_for_loader_BM (const rawid_tyBM modid,
                                          struct loader_stBM *ld,
                                          struct stackframe_stBM *stkf);
+  extern unsigned module_count_BM(void);
+
+
 
 /// simple module initialization
   extern value_tyBM simple_module_initialize_BM (const value_tyBM arg1, //
