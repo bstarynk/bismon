@@ -569,9 +569,12 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
                     objectdbg_BM(_.modulob), binmodpath.c_str());
   }
   ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
-  (void) modulemap_BM.insert({modid,ModuleData_BM{.mod_id=modid, .mod_dlh=dlh, //
-                              .mod_obj=_.modulob, .mod_data=nullptr,
-                              .mod_dlopentime = clocktime_BM(CLOCK_REALTIME)}});
+  (void) modulemap_BM.insert({modid,//
+                              ModuleData_BM{.mod_id=modid,//
+                                  .mod_dlh=dlh, //
+                                  .mod_obj=_.modulob,//
+                                  .mod_data=nullptr,//
+                                  .mod_dlopentime = clocktime_BM(CLOCK_REALTIME)}});
   ////
   const closure_tyBM*closloadm = makeclosure1_BM (BMP_load_module, _.modulob);
   DBGPRINTF_BM("open_module_for_loader closloadm %s", OUTSTRVALUE_BM((void*)closloadm));
