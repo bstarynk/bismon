@@ -1248,13 +1248,13 @@ end:
       if (isclosure_BM (_.todov))
         {                       // postponed apply of todov closure
           ASSERT_BM (_.recv == NULL);
-          _.resv =
+          _.resv = (value_tyBM)
             makenode4_BM (k_postponed_apply, _.todov, _.arg1v, _.arg2v,
                           _.arg3v);
         }
       else if (isobject_BM (_.todov))
         {                       // postponed send of todov selector
-          _.resv =
+          _.resv = (value_tyBM)
             makenode5_BM (k_postponed_send, _.recv, _.todov, _.arg1v, _.arg2v,
                           _.arg3v);
         }
@@ -1336,13 +1336,13 @@ end:
       if (isclosure_BM (_.todov))
         {                       // postponed apply of todov closure
           ASSERT_BM (_.recv == NULL);
-          _.resv =
+          _.resv = (value_tyBM)
             makenode4_BM (k_postponed_apply, _.todov, _.arg1v, _.arg2v,
                           _.arg3v);
         }
       else if (isobject_BM (_.todov))
         {                       // postponed send of todov selector
-          _.resv =
+          _.resv =(value_tyBM)
             makenode5_BM (k_postponed_send, _.recv, _.todov, _.arg1v, _.arg2v,
                           _.arg3v);
         }
@@ -1471,5 +1471,12 @@ gcmarkpostponed_BM (struct garbcoll_stBM *gc)
     }
   pthread_mutex_unlock (&ti_agendamtx_BM);
 }                               /* end gcmarkpostponed_BM */
+
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 
 /***** end of file agenda_BM.c ****/
