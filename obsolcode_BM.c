@@ -772,3 +772,11 @@ OBSOLETEROUTINE_BM (_9QuovXguk9K_17pMbAD0XmX)   //
  * then make redump ; if it fails with a ./bismon: undefined symbol:
  * crout_XXX message add that obsolete routine from
  * attic/guicode_GTKBM.c */
+
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
+/**** end of file obsolcode_BM.c ****/

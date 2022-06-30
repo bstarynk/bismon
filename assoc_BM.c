@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018, 2019 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -1759,4 +1759,10 @@ value_tyBM
 
 #warning more needed on hashsets, hashmaps, etc....
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 /**** end of file assoc_BM.c ****/

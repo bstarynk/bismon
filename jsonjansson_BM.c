@@ -1097,4 +1097,10 @@ nodaljsondecode_BM (struct nodaljsonmode_st *njm, json_t * js, int depth,
   return _.resv;
 }                               /* end of nodaljsondecode_BM */
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 ///// end of file jsonjansson_BM.c

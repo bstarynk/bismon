@@ -112,4 +112,10 @@ prime_below_BM (int64_t n)
   return 0;
 }
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 // eof primes_BM.c

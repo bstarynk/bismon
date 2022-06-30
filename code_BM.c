@@ -3,7 +3,7 @@
 
 /***
     BISMON 
-    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -4368,4 +4368,10 @@ ROUTINEOBJNAME_BM (_43m9jyNirvE_0wkbsL0Nvkp)    //
 }                               /* end  sysdata command_handler  _43m9jyNirvE_0wkbsL0Nvkp */
 
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 /**** end of file code_BM.c ***/

@@ -1644,4 +1644,11 @@ sendmany_BM (const value_tyBM recv, const objectval_tyBM * obselector,
   return res;
 }                               /* end sendmany_BM */
 
+
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 /**** end of file object_BM.c *****/

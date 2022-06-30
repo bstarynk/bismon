@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -415,4 +415,10 @@ listgcmark_BM (struct garbcoll_stBM *gc, struct listtop_stBM *lis,
 }                               /* end listgcmark_BM  */
 
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 /**** end of file list_BM.c ****/

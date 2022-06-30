@@ -1088,5 +1088,11 @@ initialize_unix_json_socket_processing_BM (const char *ujsname)
 }                               /* end initialize_unix_json_socket_processing_BM */
 
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 
 ///////// end of file evloop_BM.c 

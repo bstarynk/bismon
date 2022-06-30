@@ -2364,4 +2364,10 @@ send_html_email_to_contributor_BM (const char *subject, const char *htmlbody,
 
 
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 /// end of file user_BM.c

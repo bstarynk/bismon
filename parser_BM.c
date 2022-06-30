@@ -2772,4 +2772,10 @@ parsergetchunk_BM (struct parser_stBM *pars,
   return NULL;
 }                               /* end parsergetchunk_BM */
 
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 // eof parser_BM.c
