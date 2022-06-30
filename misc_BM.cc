@@ -126,8 +126,16 @@ struct ModuleData_BM
 };
 
 static std::map<rawid_tyBM,ModuleData_BM,IdLess_BM> modulemap_BM;
+static std::recursive_mutex modulemtx_BM;
 
 
+unsigned
+module_count_BM(void)
+{
+
+  std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
+  return modulemtx_BM.size();
+} // end module_count_BM
 
 ////////////////
 bool
@@ -523,6 +531,7 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
       if (::stat(binmodpath.c_str(), &binmodstat))
         FATAL_BM("unexpected stat failure of %s (%m) after module build", binmodpath.c_str());
     }
+  std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
   if (modulemap_BM.find(modid) != modulemap_BM.end())
     {
       // module already loaded
@@ -569,6 +578,7 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
                     objectdbg_BM(_.modulob), binmodpath.c_str());
   }
   ld->ld_modhset = hashsetobj_add_BM(ld->ld_modhset, objmod);
+  std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
   (void) modulemap_BM.insert({modid,//
                               ModuleData_BM{.mod_id=modid,//
                                   .mod_dlh=dlh, //
@@ -692,6 +702,7 @@ void postpone_loader_module_BM (objectval_tyBM*modulobarg, struct stackframe_stB
   char modulidbuf[32];
   memset (modulidbuf, 0, sizeof(modulidbuf));
   idtocbuf32_BM (objid_BM (_.modulob), modulidbuf);
+  std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
   auto it = modulemap_BM.find(objid_BM (_.modulob));
   ASSERT_BM(it != modulemap_BM.end());
   void*dlh = it->second.mod_dlh;
@@ -725,6 +736,7 @@ void postpone_loader_module_BM (objectval_tyBM*modulobarg, struct stackframe_stB
 void gcmarkmodules_BM(struct garbcoll_stBM*gc)
 {
   ASSERT_BM (gc && gc->gc_magic == GCMAGIC_BM);
+  std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
   for (auto it: modulemap_BM)
     {
       gcobjmark_BM(gc, it.second.mod_obj);
@@ -1248,6 +1260,7 @@ unregister_failock_BM(struct failurelockset_stBM*flh, objectval_tyBM* ob)
 void
 final_miscdata_cleanup_BM (void)
 {
+  unsigned oldnbmod = module_count_BM();
   {
     std::vector<const char*> namevec;
     namevec.reserve(namemap_BM.size()+1);
@@ -1260,6 +1273,7 @@ final_miscdata_cleanup_BM (void)
   }
   namemap_BM = typeof(namemap_BM) {};
   objhashtable_BM = typeof(objhashtable_BM) {};
+  std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
   {
     std::vector<std::pair<void*, rawid_tyBM>> vecmodu;
     vecmodu.reserve(modulemap_BM.size());
@@ -1274,6 +1288,7 @@ final_miscdata_cleanup_BM (void)
         modata.mod_obj = nullptr;
         modata.mod_data = nullptr;
       }
+    std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
     modulemap_BM.clear();
     modulemap_BM = typeof(modulemap_BM) {};
     int modcnt = 0;
@@ -1290,7 +1305,7 @@ final_miscdata_cleanup_BM (void)
           }
         else modcnt++;
       }
-    INFOPRINTF_BM("dlclosed %d modules", modcnt);
+    INFOPRINTF_BM("dlclosed %d modules (of %d)", modcnt, oldnbmod);
   }
 } // end final_miscdata_cleanup_BM
 
