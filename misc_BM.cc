@@ -639,7 +639,7 @@ void deferred_do_module_dynload_BM (value_tyBM * valarr, unsigned nbval, void *d
     FATAL_BM("bad module_id_BM in %s for %s: %s",
              binmodulpath,  objectdbg_BM(_.modulob), (modidad?"modid mismatch":dlerror()));
   modulemap_BM.insert({objid_BM (_.modulob),ModuleData_BM{.mod_id=objid_BM (_.modulob), .mod_dlh=dlh, .mod_obj=_.modulob, .mod_data=nullptr}});
-  INFOPRINTF_BM("deferred_do_module_dynload modulob=%s binmodulpath='%s'",
+  INFOPRINTF_BM("deferred_do_module_dynload modulob=%s dlopened binmodulpath='%s'",
                 objectdbg_BM(_.modulob), binmodulpath);
   char modulinitname[48];
   memset (modulinitname, 0, sizeof(modulinitname));
