@@ -423,8 +423,9 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
                      nbrout, symbuf, curldidbuf32, curldpath);
                 }
               else              /* no ad, since dlsym failed: */
-                WARNPRINTF_BM ("failed dlsym-ing '%s' in whole program: %s",
-                               symbuf, dlerror ());
+                WARNPRINTF_BM ("failed dlsym-ing '%s' in whole program: %s; with %d modules",
+                               symbuf, dlerror (),
+			       module_count_BM());
 #warning perhaps we should dlsym in previously loaded modules?
             }
           curloadedobj = NULL;
