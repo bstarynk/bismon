@@ -117,7 +117,8 @@ warning_at_BM (const char *fil, int lin)
   int nbw = 1 + atomic_fetch_add (&nb_warnings_BM, 1);
   if (nbw % 10 == 0)
     fputc ('\n', stderr);
-  fprintf (stderr, "BISMON WARNING#%03d: %s: %d: ", nbw, fil, lin);
+  fprintf (stderr, "BISMON WARNING#%03d: %s: %d: ", nbw,
+	   basename_BM(fil), lin);
   fflush (stderr);
 }                               /* end warning_at_BM */
 
