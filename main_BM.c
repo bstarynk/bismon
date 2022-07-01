@@ -118,7 +118,7 @@ warning_at_BM (const char *fil, int lin)
   if (nbw % 10 == 0)
     fputc ('\n', stderr);
   fprintf (stderr, "BISMON WARNING#%03d: %s: %d: ", nbw,
-	   basename_BM(fil), lin);
+           basename_BM (fil), lin);
   fflush (stderr);
 }                               /* end warning_at_BM */
 
@@ -908,10 +908,10 @@ main (int argc, char **argv)
       INFOPRINTF_BM
         ("set -using g_random_set_seed- the Glib PRNG random seed to %d",
          randomseed_BM);
-      if (getpid() % 2 == 0)
-	WARNPRINTF_BM("even pid %d for BISMON", (int) getpid());
+      if (getpid () % 2 == 0)
+        WARNPRINTF_BM ("even pid %d for BISMON", (int) getpid ());
       else
-	INFOPRINTF_BM("odd pid %d for BISMON", (int) getpid());
+        INFOPRINTF_BM ("odd pid %d for BISMON", (int) getpid ());
     }
   if (!temporary_dir_BM[0])
     {
