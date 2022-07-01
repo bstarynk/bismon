@@ -349,9 +349,7 @@ void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 #define WARNPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
     /*¤WARNPRINTFATBIS¤*/				\
     warning_at_BM(Fil,Lin);				\
-    fprintf(stderr, Fmt "\n",				\
-	    basename_BM((Fil)), (Lin),			\
-	    ##__VA_ARGS__);				\
+    fprintf(stderr, Fmt "\n", ##__VA_ARGS__);		\
     fflush(stderr);					\
   } while(0)
 
