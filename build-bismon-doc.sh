@@ -1,4 +1,5 @@
 #!/bin/bash -x
+# SPDX-License-Identifier: GPL-3.0-or-later
 # file build-bismon-doc.sh
 # for BISMON - see github.com/bstarynk/bismon/
 ## requirement: generate PDF (with hyperlinks) and HTML5
