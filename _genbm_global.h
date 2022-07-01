@@ -1,6 +1,6 @@
 // generated code file for globals _genbm_global.h
 // this generated file _genbm_global.h is GPLv3+ licensed
-// generated in 2022, Jun, 24
+// generated in 2022, Jul, 01
 #ifndef HAS_GLOBAL_BM
 #error missing HAS_GLOBAL_BM
 #endif
