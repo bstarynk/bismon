@@ -347,18 +347,22 @@ void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 ////////////////
 
 #define WARNPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
+    /*¤WARNPRINTFATBIS¤*/				\
     warning_at_BM(Fil,Lin);				\
     fprintf(stderr, Fmt "\n",				\
-	   basename_BM((Fil)), (Lin),			\
-	 ##__VA_ARGS__);				\
+	    basename_BM((Fil)), (Lin),			\
+	    ##__VA_ARGS__);				\
     fflush(stderr);					\
-} while(0)
+  } while(0)
 
-#define WARNPRINTFAT_BM(Fil,Lin,Fmt,...) \
+#define WARNPRINTFAT_BM(Fil,Lin,Fmt,...)	\
+    /*¤WARNPRINTFAT¤*/				\
   WARNPRINTFATBIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)
 
-#define WARNPRINTF_BM(Fmt,...) \
-  WARNPRINTFAT_BM(__FILE__,__LINE__,Fmt,##__VA_ARGS__)
+#define WARNPRINTF_BM(Fmt,...)			\
+  /*¤WARNPRINTF¤*/				\
+  WARNPRINTFAT_BM(__FILE__,__LINE__,		\
+		  Fmt,##__VA_ARGS__)
 
 ////////////////
 #define INFOPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
