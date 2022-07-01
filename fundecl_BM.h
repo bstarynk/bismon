@@ -40,6 +40,8 @@ extern "C"
   extern void
     backtrace_print_BM (struct backtrace_state *state, int skip, FILE * f);
 
+  extern void warning_at_BM(const char*fil, int lin);
+
   static inline double clocktime_BM (clockid_t);
 
 // convert some absolute Unix Epoch time into milliseconds since Y2K

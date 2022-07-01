@@ -347,7 +347,6 @@ void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
 ////////////////
 
 #define WARNPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
-    extern void warning_at_BM(const char*fil, int lin); \
     warning_at_BM(Fil,Lin);				\
     fprintf(stderr, Fmt "\n",				\
 	   basename_BM((Fil)), (Lin),			\
