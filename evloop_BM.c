@@ -845,7 +845,7 @@ plain_event_loop_BM (void)      /// called from from main
         pthread_mutex_unlock (&unix_json_mtx_BM);
       }
       //////////// POLLING BELOW
-      if (nbpoll >= sizeof (pollarr) / sizeof (pollarr[0]))
+      if (nbpoll >= (int)(sizeof (pollarr) / sizeof (pollarr[0])))
         FATAL_BM ("too many %d file descriptors to poll loop#%ld", nbpoll,
                   loopcnt);
 #define POLL_DELAY_MILLISECS_BM 3750
