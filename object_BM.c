@@ -1040,10 +1040,9 @@ register_predefined_object_BM (objectval_tyBM * pob)
       pob->ob_sig = BMP_function_sig;
       pob->ob_rout = (objrout_sigBM *) ad;
     }
-  else
-    WARNPRINTF_BM
-      ("register_predefined_object_BM object %s: dlsym-ing %s in whole program failed : %s (with %d loaded modules)",
-       objectdbg_BM (pob), symbuf, dlerror (), module_count_BM ());
+  /* NB: several predefined objects, for example `comment`
+     i.e. €_01h86SAfOfg_1q2oMegGRwW, dont have any routines; so there
+     is no reason to warn when there is no dlsymed function ... */
 }                               /* end register_predefined_object_BM */
 
 
