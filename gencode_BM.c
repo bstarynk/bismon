@@ -3958,11 +3958,11 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                              "  LOCALFRAME_BM(/*prev:*/stkf,\n"
                              "                /*descr:*/lockedfindobjofstrid_BM(\"%s\"),//\n"
                              "                value_tyBM arg1v, arg2v, arg3v;//\n"
-                             "               );//\n",
+                             "               );//\n"
                              "  _.arg1v = arg1;//\n"
                              "  _.arg2v = arg2;//\n"
                              "  _.arg3v = arg3;//\n", modulidbuf);
-  objstrbufferprintfpayl_BM (_.modgenob, "  INFOPRINTF_BM(\"§initializing simple module %s with arguments (%%s, %%s, %%s); module counter %u\",\n"     //
+  objstrbufferprintfpayl_BM (_.modgenob, "  INFOPRINTF_BM(\"§initializing simple module %s with arguments (%%s, %%s, %%s); module counter %%u\",\n"     //
                              "                debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),//\n"     //
                              "                debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),//\n"     //
                              "                debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),//\n"     //
