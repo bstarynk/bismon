@@ -374,156 +374,162 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
       //
       else
         /* object definition ending lines are like !)<oid> or »<oid> so e.g. »_7D8xcWnEiys_8oqOVSkCxkA */
-	if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_OBJECTCLOSE)
+      if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_OBJECTCLOSE)
             && linbuf[delimlen] == '_' && isdigit (linbuf[delimlen + 1]))
-	  {
-	    DBGPRINTF_BM
-	      ("first_pass %s:%d got STORE_OBJECTCLOSE linbuf='%s' delimlen=%d curloadedobj=%s",
-	       curldpath, lincnt, linbuf, delimlen,
-	       objectdbg_BM (curloadedobj));
-	    const char *endid = NULL;
-	    rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
-	    if (hashid_BM (id) && endid >= linbuf + 2 * SERIALDIGITS_BM
-		&& (*endid == (char) 0 || isspace (*endid)))
-	      {
-		if (!curloadedobj)
-		  FATAL_BM ("unexpected end-of-object line %s in file %s:%d",
-			    linbuf, curldpath, lincnt);
-		if (!equalid_BM (id, curloadedobj->ob_id))
-		  {
-		    char curldidbuf32[32] = "";
-		    idtocbuf32_BM (curloadedobj->ob_id, curldidbuf32);
-		    FATAL_BM
-		      ("mismatched end-of-object line %s in file %s:%d, expecting %s",
-		       linbuf, curldpath, lincnt, curldidbuf32);
-		  }
-	      }
-	    else
-	      FATAL_BM ("invalid end-of-object line %s in file %s:%d",
-			linbuf, curldpath, lincnt);
-	    // load a function_sig if it exists
-	    if (curloadedobj && !curloadedobj->ob_rout)
-	      {
-		char curldidbuf32[32] = "";
-		idtocbuf32_BM (curloadedobj->ob_id, curldidbuf32);
-		char symbuf[48];
-		memset (symbuf, 0, sizeof (symbuf));
-		snprintf (symbuf, sizeof (symbuf),        //
-			  ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM,
-			  curldidbuf32);
-		DBGPRINTF_BM ("dlsym-ing '%s' in whole program", symbuf);
-		void *ad = dlsym (dlprog_BM, symbuf);
-		if (ad)
-		  {
-		    curloadedobj->ob_rout = ad;
-		    curloadedobj->ob_sig = BMP_function_sig;
-		    nbrout++;
-		    printf ("forced %d-th routine %s of function_sig for %s in file %s\n",
-			    nbrout, symbuf, curldidbuf32, curldpath);
-		  }
-		else              /* no ad, since dlsym failed: */
-		  {
-		    int nbloadedmodules = module_count_BM();
-		    WARNPRINTF_BM ("load_first_pass_BM failed dlsym-ing '%s' in whole program: %s;\n"
-				   "... with already %d modules loaded\n",
-				   symbuf, dlerror (),
-				   nbloadedmodules);
-		    if (nbloadedmodules > 0) {
-		      if (backtracestate_BM != NULL && pthread_self() == mainthreadid_BM) {
-			backtrace_print_BM ((struct backtrace_state *) backtracestate_BM, 1,
-					    stderr);
-			fprintf (stderr, "*¤*load_first_pass_BM failing dlsym-ing '%s' at %s:%d with %d loaded modules**\n",
-				 symbuf, curldpath, lincnt, nbloadedmodules);
-			fflush (stderr);
-		      }
-		    }
+        {
+          DBGPRINTF_BM
+            ("first_pass %s:%d got STORE_OBJECTCLOSE linbuf='%s' delimlen=%d curloadedobj=%s",
+             curldpath, lincnt, linbuf, delimlen,
+             objectdbg_BM (curloadedobj));
+          const char *endid = NULL;
+          rawid_tyBM id = parse_rawid_BM (linbuf + 2, &endid);
+          if (hashid_BM (id) && endid >= linbuf + 2 * SERIALDIGITS_BM
+              && (*endid == (char) 0 || isspace (*endid)))
+            {
+              if (!curloadedobj)
+                FATAL_BM ("unexpected end-of-object line %s in file %s:%d",
+                          linbuf, curldpath, lincnt);
+              if (!equalid_BM (id, curloadedobj->ob_id))
+                {
+                  char curldidbuf32[32] = "";
+                  idtocbuf32_BM (curloadedobj->ob_id, curldidbuf32);
+                  FATAL_BM
+                    ("mismatched end-of-object line %s in file %s:%d, expecting %s",
+                     linbuf, curldpath, lincnt, curldidbuf32);
+                }
+            }
+          else
+            FATAL_BM ("invalid end-of-object line %s in file %s:%d",
+                      linbuf, curldpath, lincnt);
+          // load a function_sig if it exists
+          if (curloadedobj && !curloadedobj->ob_rout)
+            {
+              char curldidbuf32[32] = "";
+              idtocbuf32_BM (curloadedobj->ob_id, curldidbuf32);
+              char symbuf[48];
+              memset (symbuf, 0, sizeof (symbuf));
+              snprintf (symbuf, sizeof (symbuf),        //
+                        ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM,
+                        curldidbuf32);
+              DBGPRINTF_BM ("dlsym-ing '%s' in whole program", symbuf);
+              void *ad = dlsym (dlprog_BM, symbuf);
+              if (ad)
+                {
+                  curloadedobj->ob_rout = ad;
+                  curloadedobj->ob_sig = BMP_function_sig;
+                  nbrout++;
+                  printf
+                    ("forced %d-th routine %s of function_sig for %s in file %s\n",
+                     nbrout, symbuf, curldidbuf32, curldpath);
+                }
+              else              /* no ad, since dlsym failed: */
+                {
+                  int nbloadedmodules = module_count_BM ();
+                  WARNPRINTF_BM
+                    ("load_first_pass_BM failed dlsym-ing '%s' in whole program: %s;\n"
+                     "... with already %d modules loaded\n", symbuf,
+                     dlerror (), nbloadedmodules);
+                  if (nbloadedmodules > 0)
+                    {
+                      if (backtracestate_BM != NULL
+                          && pthread_self () == mainthreadid_BM)
+                        {
+                          backtrace_print_BM ((struct backtrace_state *)
+                                              backtracestate_BM, 1, stderr);
+                          fprintf (stderr,
+                                   "*¤*load_first_pass_BM failing dlsym-ing '%s' at %s:%d with %d loaded modules**\n",
+                                   symbuf, curldpath, lincnt,
+                                   nbloadedmodules);
+                          fflush (stderr);
+                        }
+                    }
 #warning perhaps we should dlsym in previously loaded modules?
-		  }
-	      }
-	    curloadedobj = NULL;
-	  }
+                }
+            }
+          curloadedobj = NULL;
+        }
       //
       /* function_sig signature !|<signature> or Σ<signature> where
          the <signature> is * or an objid; but we only handle the *
          case in this first pass */
-	else if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_FUNSIGNATURE))
-	  {
-	    DBGPRINTF_BM
-	      ("first_pass %s:%d got STORE_FUNSIGNATURE linbuf='%s' delimlen=%d curloadedobj=%s",
-	       curldpath, lincnt, linbuf, delimlen,
-	       objectdbg_BM (curloadedobj));
-	    char idbuf32[32] = "";
-	    if (!curloadedobj)
-	      FATAL_BM
-		("invalid function-sig line %s in file %s:%d, no current object",
-		 linbuf, curldpath, lincnt);
-	    idtocbuf32_BM (curloadedobj->ob_id, idbuf32);
-	    // if there is a routine for that object, bind it now
-	    char symbuf[48];
-	    memset (symbuf, 0, sizeof (symbuf));
-	    snprintf (symbuf, sizeof (symbuf),    //
-		      ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM, idbuf32);
-	    DBGPRINTF_BM
-	      ("load_first_pass ix#%d dlsym-ing '%s' in whole program", ix,
-	       symbuf);
-	    void *ad = dlsym (dlprog_BM, symbuf);
-	    if (ad)
-	      {
-		curloadedobj->ob_rout = ad;
-		curloadedobj->ob_sig = BMP_function_sig;
-		nbrout++;
-	      }
-	    else
-	      {
-		int pos = -1;
-		char dlerrbuf[80];
-		memset (dlerrbuf, 0, sizeof (dlerrbuf));
-		strncpy (dlerrbuf, dlerror (), sizeof (dlerrbuf));
-		/* the first store space is the predefined one, and we
-		   need it to be correct... */
-		if (ld->ld_curspaceix > 1)
-		  curloadedobj->ob_rout = warning_objrout_BM;
-		else
-		  {
-		    WARNPRINTF_BM
-		      ("loader first space in buggy store file %s:%d, dlsym %s in whole program failed %s",
-		       curldpath, lincnt, symbuf, dlerrbuf);
-		    curloadedobj->ob_rout = crashing_objrout_BM;
-		  }
-		curloadedobj->ob_sig = BMP_function_sig;
-		/// if (sscanf (linbuf + delimlen, " *%n", &pos) >= 0 && pos > 0) 
-		      }
-	  }
+      else if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_FUNSIGNATURE))
+        {
+          DBGPRINTF_BM
+            ("first_pass %s:%d got STORE_FUNSIGNATURE linbuf='%s' delimlen=%d curloadedobj=%s",
+             curldpath, lincnt, linbuf, delimlen,
+             objectdbg_BM (curloadedobj));
+          char idbuf32[32] = "";
+          if (!curloadedobj)
+            FATAL_BM
+              ("invalid function-sig line %s in file %s:%d, no current object",
+               linbuf, curldpath, lincnt);
+          idtocbuf32_BM (curloadedobj->ob_id, idbuf32);
+          // if there is a routine for that object, bind it now
+          char symbuf[48];
+          memset (symbuf, 0, sizeof (symbuf));
+          snprintf (symbuf, sizeof (symbuf),    //
+                    ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM, idbuf32);
+          DBGPRINTF_BM
+            ("load_first_pass ix#%d dlsym-ing '%s' in whole program", ix,
+             symbuf);
+          void *ad = dlsym (dlprog_BM, symbuf);
+          if (ad)
+            {
+              curloadedobj->ob_rout = ad;
+              curloadedobj->ob_sig = BMP_function_sig;
+              nbrout++;
+            }
+          else
+            {
+              int pos = -1;
+              char dlerrbuf[80];
+              memset (dlerrbuf, 0, sizeof (dlerrbuf));
+              strncpy (dlerrbuf, dlerror (), sizeof (dlerrbuf));
+              /* the first store space is the predefined one, and we
+                 need it to be correct... */
+              if (ld->ld_curspaceix > 1)
+                curloadedobj->ob_rout = warning_objrout_BM;
+              else
+                {
+                  WARNPRINTF_BM
+                    ("loader first space in buggy store file %s:%d, dlsym %s in whole program failed %s",
+                     curldpath, lincnt, symbuf, dlerrbuf);
+                  curloadedobj->ob_rout = crashing_objrout_BM;
+                }
+              curloadedobj->ob_sig = BMP_function_sig;
+              /// if (sscanf (linbuf + delimlen, " *%n", &pos) >= 0 && pos > 0) 
+            }
+        }
       //
       /* module requirement lines are µ<mod-id> or !^<mod-id> */
-	else
-	  if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_MODULE)
-	      && linbuf[delimlen] == '_' && isdigit (linbuf[delimlen + 1]))
-	    {
-	      DBGPRINTF_BM
-		("first_pass %s:%d got STORE_MODULE linbuf='%s' delimlen=%d curloadedobj=%s",
-		 curldpath, lincnt, linbuf, delimlen,
-		 objectdbg_BM (curloadedobj));
-	      const char *endid = NULL;
-	      rawid_tyBM modid = parse_rawid_BM (linbuf + delimlen, &endid);
-	      if (hashid_BM (modid) && endid >= linbuf + 2 * SERIALDIGITS_BM
-		  && (*endid == (char) 0 || isspace (*endid)))
-		{
-		  if (!open_module_for_loader_BM (modid, ld, NULL))
-		    {
-		      WARNPRINTF_BM
-			("loader failed to open module for %s in %s line %d",
-			 linbuf, curldpath, lincnt);
-		      if (backtracestate_BM)
-			backtrace_print_BM
-			  ((struct backtrace_state *) backtracestate_BM, 0,
-			   stderr);
-		    }
-		}
-	      else
-		FATAL_BM ("invalid module requirement line %s in file %s:%d",
-			  linbuf, curldpath, lincnt);
-	    }
+      else
+        if (FIRST_PASS_HAS_DELIM_bm (linbuf, delimlen, STORE_MODULE)
+            && linbuf[delimlen] == '_' && isdigit (linbuf[delimlen + 1]))
+        {
+          DBGPRINTF_BM
+            ("first_pass %s:%d got STORE_MODULE linbuf='%s' delimlen=%d curloadedobj=%s",
+             curldpath, lincnt, linbuf, delimlen,
+             objectdbg_BM (curloadedobj));
+          const char *endid = NULL;
+          rawid_tyBM modid = parse_rawid_BM (linbuf + delimlen, &endid);
+          if (hashid_BM (modid) && endid >= linbuf + 2 * SERIALDIGITS_BM
+              && (*endid == (char) 0 || isspace (*endid)))
+            {
+              if (!open_module_for_loader_BM (modid, ld, NULL))
+                {
+                  WARNPRINTF_BM
+                    ("loader failed to open module for %s in %s line %d",
+                     linbuf, curldpath, lincnt);
+                  if (backtracestate_BM)
+                    backtrace_print_BM
+                      ((struct backtrace_state *) backtracestate_BM, 0,
+                       stderr);
+                }
+            }
+          else
+            FATAL_BM ("invalid module requirement line %s in file %s:%d",
+                      linbuf, curldpath, lincnt);
+        }
     }
   while (!feof (fil));
   if (nbobjdef == 0 && ix > 0)
@@ -1421,7 +1427,8 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
 {
   ASSERT_BM (ld && ld->ld_magic == LOADERMAGIC_BM);
   ASSERT_BM (_parentframe != NULL);
-  LOCALFRAME_BM (_parentframe, NULL, value_tyBM firsttodo;);
+  LOCALFRAME_BM (_parentframe, NULL,    //
+                 value_tyBM firsttodo;);
   /// run the first pass to create every object
   for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
     if (ld->ld_storepatharr[ix])
@@ -1445,6 +1452,9 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
   /// ensure that BMP_load_module has its routine
   if (BMP_load_module->ob_rout == NULL)
     {
+      WARNPRINTF_BM
+        ("doload_BM without routine in BMP_load_module of id %s (loading directory %s with %u loaded modules)\n",
+         objectdbg_BM (BMP_load_module), ld->ld_dir, module_count_BM ());
       BMP_load_module->ob_rout = ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh);
       BMP_load_module->ob_sig = BMP_function_sig;
     }
