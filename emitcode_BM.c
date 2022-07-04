@@ -4474,11 +4474,12 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
       localtime_r (&tmpnowt, &tmpnowtm);
       strftime (tmpnowbuf, sizeof (tmpnowbuf), "%c", &tmpnowtm);
       objstrbufferprintfpayl_BM (_.modgenob,
-                                 "// generated temporary module %s at %s pid #%d on %s\n"
+                                 "// generated temporary module %s at %s pid #%d on %s (from git %s)\n"
                                  "// in file "
                                  TEMPMODULEPREFIX_BM "%s.c -- DONT EDIT\n",
                                  objectdbg_BM (_.modulob), tmpnowbuf,
-                                 (int) getpid (), myhostname_BM, modulidbuf);
+                                 (int) getpid (), myhostname_BM, modulidbuf,
+				 bismon_shortgitid);
       objstrbufferprintfpayl_BM (_.modgenob,
                                  "// generating bismon checksum %s\n",
                                  bismon_checksum);
@@ -4501,7 +4502,10 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                                MODULEPREFIX_BM "%s.c -- DONT EDIT\n",
                                objectdbg_BM (_.modulob), modulidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "// this generated code is GPLv3+ licensed.\n");
+			     "// SPDX-License-Identifier: GPL-3.0-or-later\n");
+  objstrbufferprintfpayl_BM (_.modgenob,
+                             "// this generated code (from bismon git %s) is GPLv3+ licensed.\n",
+			     bismon_shortgitid);
   _.resgen =
     send2_BM (_.modulob, k_generate_module, CURFRAME_BM,
               _.modgenob, _.resprep);
