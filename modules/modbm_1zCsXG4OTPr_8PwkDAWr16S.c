@@ -1,7 +1,7 @@
 // generated persistent module webjs_module
 // in file modbm_1zCsXG4OTPr_8PwkDAWr16S.c -- DONT EDIT
 // SPDX-License-Identifier: GPL-3.0-or-later
-// this generated code (from bismon git a9f64e8482e517f5+) is GPLv3+ licensed.
+// this generated code (from bismon git 3ce417a8e685ea9b+) is GPLv3+ licensed.
 
 
 #include "bismon.h"
@@ -9595,23 +9595,23 @@ value_tyBM moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
  void* dlh)
 {
     LOCALFRAME_BM(/*prev:*/stkf,
-                           /*descr:*/lockedfindobjofstrid_BM("  _.arg1v = arg1;//
-                                   _.arg2v = arg2;//
-                                   _.arg3v = arg3;//
-                                   "),//
-                                   value_tyBM arg1v, arg2v, arg3v;//
-                                                            );//
-                           INFOPRINTF_BM("§initializing simple module _1zCsXG4OTPr_8PwkDAWr16S with arguments (%s, %s, %s); module counter 1",
-                                         debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),//
-                                         debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),//
-                                         debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),//
-                                         module_count_BM()); //
-                           return simple_module_initialize_BM(arg1, arg2, arg3, //
-                                   "_1zCsXG4OTPr_8PwkDAWr16S",//
-                                   constob_1zCsXG4OTPr_8PwkDAWr16S_BM, //
-                                   constid_1zCsXG4OTPr_8PwkDAWr16S_BM, //
-                                   routid_1zCsXG4OTPr_8PwkDAWr16S_BM, //
-                                   dlh, CURFRAME_BM);
+                           /*descr:*/lockedfindobjofstrid_BM("_1zCsXG4OTPr_8PwkDAWr16S"),//
+                           value_tyBM arg1v, arg2v, arg3v;//
+                 );//
+    _.arg1v = arg1;//
+    _.arg2v = arg2;//
+    _.arg3v = arg3;//
+    INFOPRINTF_BM("§initializing simple module _1zCsXG4OTPr_8PwkDAWr16S with arguments (%s, %s, %s); module counter %u",
+                  debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),//
+                  debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),//
+                  debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),//
+                  module_count_BM()); //
+    return simple_module_initialize_BM(arg1, arg2, arg3, //
+                                       "_1zCsXG4OTPr_8PwkDAWr16S",//
+                                       constob_1zCsXG4OTPr_8PwkDAWr16S_BM, //
+                                       constid_1zCsXG4OTPr_8PwkDAWr16S_BM, //
+                                       routid_1zCsXG4OTPr_8PwkDAWr16S_BM, //
+                                       dlh, CURFRAME_BM);
 } // end moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
 #endif /*BISMON_MODID*/
 

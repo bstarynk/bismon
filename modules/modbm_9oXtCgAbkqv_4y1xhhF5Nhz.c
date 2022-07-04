@@ -1,7 +1,7 @@
 // generated persistent module first_test_module
 // in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c -- DONT EDIT
 // SPDX-License-Identifier: GPL-3.0-or-later
-// this generated code (from bismon git a9f64e8482e517f5+) is GPLv3+ licensed.
+// this generated code (from bismon git 3ce417a8e685ea9b+) is GPLv3+ licensed.
 
 
 #include "bismon.h"
@@ -381,23 +381,23 @@ value_tyBM moduleinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM
  void* dlh)
 {
     LOCALFRAME_BM(/*prev:*/stkf,
-                           /*descr:*/lockedfindobjofstrid_BM("  _.arg1v = arg1;//
-                                   _.arg2v = arg2;//
-                                   _.arg3v = arg3;//
-                                   "),//
-                                   value_tyBM arg1v, arg2v, arg3v;//
-                                                            );//
-                           INFOPRINTF_BM("§initializing simple module _9oXtCgAbkqv_4y1xhhF5Nhz with arguments (%s, %s, %s); module counter 1",
-                                         debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),//
-                                         debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),//
-                                         debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),//
-                                         module_count_BM()); //
-                           return simple_module_initialize_BM(arg1, arg2, arg3, //
-                                   "_9oXtCgAbkqv_4y1xhhF5Nhz",//
-                                   constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
-                                   constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
-                                   routid_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
-                                   dlh, CURFRAME_BM);
+                           /*descr:*/lockedfindobjofstrid_BM("_9oXtCgAbkqv_4y1xhhF5Nhz"),//
+                           value_tyBM arg1v, arg2v, arg3v;//
+                 );//
+    _.arg1v = arg1;//
+    _.arg2v = arg2;//
+    _.arg3v = arg3;//
+    INFOPRINTF_BM("§initializing simple module _9oXtCgAbkqv_4y1xhhF5Nhz with arguments (%s, %s, %s); module counter %u",
+                  debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),//
+                  debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),//
+                  debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),//
+                  module_count_BM()); //
+    return simple_module_initialize_BM(arg1, arg2, arg3, //
+                                       "_9oXtCgAbkqv_4y1xhhF5Nhz",//
+                                       constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
+                                       constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
+                                       routid_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
+                                       dlh, CURFRAME_BM);
 } // end moduleinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM
 #endif /*BISMON_MODID*/
 

@@ -593,6 +593,51 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
 } // end of open_module_for_loader_BM
 
 
+extern "C"
+void* try_dlsym_routine_BM (objectval_tyBM* ob)
+{
+  void* ad = NULL;
+  double mtim = clocktime_BM(CLOCK_REALTIME)+0.01;
+  ASSERT_BM(ob && isobject_BM((value_tyBM) ob));
+  char idbuf[32];
+  memset (idbuf, 0, sizeof (idbuf));
+  idtocbuf32_BM (objid_BM (ob), idbuf);
+  char routname[48];
+  memset (routname, 0, sizeof (routname));
+  objlock_BM (ob);
+  ad = ob->ob_routaddr;
+  if (ad != NULL)
+    {
+      objunlock_BM(ob);
+      return ad;
+    };
+  snprintf (routname, sizeof (routname),
+            ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM, idbuf);
+  std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
+  unsigned nbmodules = (unsigned) modulemap_BM.size();
+  for (auto modit : modulemap_BM)
+    {
+      void* curdlh = modit.second.mod_dlh;
+      void* curad = dlsym(curdlh, routname);
+      if (curad && mtim > modit.second.mod_dlopentime)
+        {
+          ad = curad;
+          mtim = modit.second.mod_dlopentime;
+        };
+    };
+  if (ad == NULL)
+    {
+      ad = dlsym(dlprog_BM, routname);
+    };
+  if (ad != NULL)
+    {
+      ob->ob_routaddr = ad;
+      ob->ob_sig = BMP_function_sig;
+    };
+  objunlock_BM(ob);
+  return ad;
+} // end try_dlsym_routine_BM(objectval_tyBM* ob)
+
 
 extern "C" void postpone_loader_module_BM (objectval_tyBM*modulob, struct stackframe_stBM * stkf);
 

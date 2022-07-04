@@ -945,9 +945,9 @@ ROUTINEOBJNAME_BM (_2Lk2DjTDzQh_3aTEVKDE2Ip)    // emit_definition°simple_routi
   LOCALRETURN_BM (_.routprepob);
 failure:
 #undef FAILHERE
-  WARNPRINTF_BM ("emit_definition°simple_routine_preparation failin %d routprep %s cause %s",   //
-                failin, objectdbg_BM (_.routprepob),    //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_definition°simple_routine_preparation failin %d routprep %s cause %s",  //
+                 failin, objectdbg_BM (_.routprepob),   //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_definition, _.routprepob, _.modgenob,
                                taggedint_BM (rank), _.causev);
@@ -1076,8 +1076,8 @@ ROUTINEOBJNAME_BM (_8UGpvfrcKbM_99IeP3BuxA5)    // emit_block°basiclo_block
      objectdbg2_BM (_.routprepob), depth);
   LOCALRETURN_BM (_.blockob);
 failure:
-  WARNPRINTF_BM ("emit_block°basiclo_block failin %d routprep %s cause %s", failin, objectdbg_BM (_.routprepob),        //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_block°basiclo_block failin %d routprep %s cause %s", failin, objectdbg_BM (_.routprepob),       //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_block, _.blockob, _.routprepob,
                                _.modgenob, _.causev);
@@ -1211,8 +1211,8 @@ ROUTINEOBJNAME_BM (_56pDwW9peiP_8flH2fMQUnD)    //emit_block°basiclo_loop
      objectdbg2_BM (_.routprepob), depth);
   LOCALRETURN_BM (_.blockob);
 failure:
-  WARNPRINTF_BM ("emit_block°basiclo_loop failin %d routprep %s cause %s", failin, objectdbg_BM (_.routprepob), //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_block°basiclo_loop failin %d routprep %s cause %s", failin, objectdbg_BM (_.routprepob),        //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_block, _.blockob, _.routprepob,
                                _.modgenob, _.causev);
@@ -1374,9 +1374,9 @@ ROUTINEOBJNAME_BM (_2gpamAdSc26_6d1JjCmKHyw)    //emit_statment°basiclo_cond
   LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
 failure:
-  WARNPRINTF_BM ("emit_statment°basiclo_cond failin %d stmtob %s routprep %s cause %s", failin, objectdbg_BM (_.stmtob),        //
-                objectdbg1_BM (_.routprepob),   //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_statment°basiclo_cond failin %d stmtob %s routprep %s cause %s", failin, objectdbg_BM (_.stmtob),       //
+                 objectdbg1_BM (_.routprepob),  //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, _.causev);
@@ -1518,9 +1518,9 @@ ROUTINEOBJNAME_BM (_6eRPTujgMx5_9mLxL25hmr9)    // emit_statement°basiclo_while
   LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
 failure:
-  WARNPRINTF_BM ("emit_statment°basiclo_while failin %d stmtob %s routprep %s cause %s", failin, objectdbg_BM (_.stmtob),       //
-                objectdbg1_BM (_.routprepob),   //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_statment°basiclo_while failin %d stmtob %s routprep %s cause %s", failin, objectdbg_BM (_.stmtob),      //
+                 objectdbg1_BM (_.routprepob),  //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, _.causev);
@@ -1655,9 +1655,9 @@ ROUTINEOBJNAME_BM (_9Wk97VJLuH1_0FwsSpfatDg)    // emit_when°basiclo_when
   LOCALRETURN_BM (_.whenob);
 #undef FAILHERE
 failure:
-  WARNPRINTF_BM ("emit_when°basiclo_when failin %d whenob %s routprep %s cause %s",     //
-                failin, objectdbg_BM (_.whenob), objectdbg2_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_when°basiclo_when failin %d whenob %s routprep %s cause %s",    //
+                 failin, objectdbg_BM (_.whenob), objectdbg2_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_when, _.whenob, _.routprepob,
                                _.modgenob, _.causev);
@@ -2287,9 +2287,9 @@ miniemit_expression_BM (struct stackframe_stBM *stkf,
   LOCALJUSTRETURN_BM ();
 failure:
 #undef FAILHERE
-  WARNPRINTF_BM ("miniemit_expression_BM failin %d expv %s routprep %s cause %s",        //
-                failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), objectdbg2_BM (_.routprepob),   //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("miniemit_expression_BM failin %d expv %s routprep %s cause %s",       //
+                 failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), objectdbg2_BM (_.routprepob),  //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_expression, expv, _.routprepob,
                                _.modgenob, _.causev);
@@ -2475,9 +2475,9 @@ miniemit_var_BM (struct stackframe_stBM *stkf,
   LOCALJUSTRETURN_BM ();
 failure:
 #undef FAILHERE
-  WARNPRINTF_BM ("miniemit_var_BM failin %d ref %s routprep %s cause %s",        //
-                failin, objectdbg_BM (_.refob), objectdbg1_BM (_.routprepob),   //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("miniemit_var_BM failin %d ref %s routprep %s cause %s",       //
+                 failin, objectdbg_BM (_.refob), objectdbg1_BM (_.routprepob),  //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode4_BM (k_emit_reference, refob, _.routprepob,
                                _.modgenob, _.causev);
@@ -2674,9 +2674,9 @@ ROUTINEOBJNAME_BM (_0BaXSIhDAHO_9x6t4zdbUhj)    // miniemit_node_conn°basiclo_p
   LOCALRETURN_BM (_.connob);
 #undef FAILHERE
 failure:
-  WARNPRINTF_BM ("miniemit_node_conn°basiclo_primitive failin %d connob %s routprep %s cause %s",       //
-                failin, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("miniemit_node_conn°basiclo_primitive failin %d connob %s routprep %s cause %s",      //
+                 failin, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_emit_expression, _.connob, _.routprepob,
                                _.modgenob, _.expv, _.causev);
@@ -2758,9 +2758,9 @@ ROUTINEOBJNAME_BM (_48l341uEMuG_3gJ2HHIwYhn)    //miniemit_node_conn°basiclo_si
   LOCALRETURN_BM (_.resultv);
 #undef FAILHERE
 failure:
-  WARNPRINTF_BM ("miniemit_node_conn°basiclo_simple_connective failin %d connob %s routprep %s cause %s",       //
-                failin, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("miniemit_node_conn°basiclo_simple_connective failin %d connob %s routprep %s cause %s",      //
+                 failin, objectdbg_BM (_.connob), objectdbg1_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_emit_expression, _.connob, _.routprepob,
                                _.modgenob, _.expv, _.causev);
@@ -2824,9 +2824,9 @@ ROUTINEOBJNAME_BM (_22wwtRd69oP_3IH6VRfTzu6)    //
 #undef FAILHERE
 failure:
   __attribute ((unused));
-  WARNPRINTF_BM ("emit_statement°basiclo_assign failin %d stmtob %s routprep %s cause %s",      //
-                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_statement°basiclo_assign failin %d stmtob %s routprep %s cause %s",     //
+                 failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, taggedint_BM (depth), _.causev);
@@ -3062,9 +3062,9 @@ ROUTINEOBJNAME_BM (_0AUL5kbXVmq_06A8ZbHZi1Y)    //emit_statement°basiclo_run
   LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
 failure:
-  WARNPRINTF_BM ("emit_statement°basiclo_run failin %d stmtob %s routprep %s cause %s", //
-                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_statement°basiclo_run failin %d stmtob %s routprep %s cause %s",        //
+                 failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, taggedint_BM (depth), _.causev);
@@ -3275,9 +3275,9 @@ ROUTINEOBJNAME_BM (_7CWfvQEHVOQ_1iBMi9mvgOY)    // emit_statement°basiclo_cexpa
   LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
 failure:
-  WARNPRINTF_BM ("emit_statement°basiclo_cexpansion failin %d stmtob %s routprep %s cause %s",  //
-                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_statement°basiclo_cexpansion failin %d stmtob %s routprep %s cause %s", //
+                 failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode6_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, taggedint_BM (depth), _.expandob,
@@ -3334,9 +3334,9 @@ ROUTINEOBJNAME_BM (_4hS1jncZQAY_9pGS66eIlw9)    //emit_statement°basiclo_exit
   LOCALRETURN_BM (_.exitob);
 #undef FAILHERE
 failure:
-  WARNPRINTF_BM ("emit_statement°basiclo_exit failin %d stmtob %s routprep %s cause %s",        //
-                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_statement°basiclo_exit failin %d stmtob %s routprep %s cause %s",       //
+                 failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, taggedint_BM (depth), _.causev);
@@ -3449,9 +3449,9 @@ ROUTINEOBJNAME_BM (_1EFhqSytjSK_9Uchza7qmUD)    //emit_statement°basiclo_wrong
   LOCALRETURN_BM (_.stmtob);
 #undef FAILHERE
 failure:
-  WARNPRINTF_BM ("emit_statement°basiclo_wrong failin %d stmtob %s routprep %s cause %s",       //
-                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_statement°basiclo_wrong failin %d stmtob %s routprep %s cause %s",      //
+                 failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, taggedint_BM (depth), _.causev);
@@ -3722,9 +3722,9 @@ ROUTINEOBJNAME_BM (_273rNzykHOg_9NXqNHvVIHG)    //emit_statement°basiclo_intswi
   LOCALRETURN_BM (_.propob);
 #undef FAILHERE
 failure:
-  WARNPRINTF_BM ("emit_statement°basiclo_intswitch failin %d stmtob %s routprep %s cause %s",   //
-                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_statement°basiclo_intswitch failin %d stmtob %s routprep %s cause %s",  //
+                 failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, taggedint_BM (depth), _.causev);
@@ -4100,9 +4100,9 @@ ROUTINEOBJNAME_BM (_9d7mulcEVXf_7ZymszyOWDY)    //emit_statement°basiclo_objswi
   LOCALRETURN_BM (_.stmtob);
 failure:
 #undef FAILHERE
-  WARNPRINTF_BM ("emit_statement°basiclo_objswitch failin %d stmtob %s routprep %s cause %s",   //
-                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_statement°basiclo_objswitch failin %d stmtob %s routprep %s cause %s",  //
+                 failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, taggedint_BM (depth), _.causev);
@@ -4305,9 +4305,9 @@ ROUTINEOBJNAME_BM (_5XbwuHte8rl_1KjFdwMeolr)    //emit_block°basiclo_lockobj
   LOCALRETURN_BM (_.stmtob);
 failure:
 #undef FAILHERE
-  WARNPRINTF_BM ("emit_block°basiclo_lockobj failin %d stmtob %s routprep %s cause %s", //
-                failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob),  //
-                debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
+  WARNPRINTF_BM ("emit_block°basiclo_lockobj failin %d stmtob %s routprep %s cause %s",        //
+                 failin, objectdbg_BM (_.stmtob), objectdbg1_BM (_.routprepob), //
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode5_BM (k_emit_statement, _.stmtob, _.routprepob,
                                _.modgenob, taggedint_BM (depth), _.causev);
@@ -4479,7 +4479,7 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                                  TEMPMODULEPREFIX_BM "%s.c -- DONT EDIT\n",
                                  objectdbg_BM (_.modulob), tmpnowbuf,
                                  (int) getpid (), myhostname_BM, modulidbuf,
-				 bismon_shortgitid);
+                                 bismon_shortgitid);
       objstrbufferprintfpayl_BM (_.modgenob,
                                  "// generating bismon checksum %s\n",
                                  bismon_checksum);
@@ -4502,10 +4502,10 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
                                MODULEPREFIX_BM "%s.c -- DONT EDIT\n",
                                objectdbg_BM (_.modulob), modulidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
-			     "// SPDX-License-Identifier: GPL-3.0-or-later\n");
+                             "// SPDX-License-Identifier: GPL-3.0-or-later\n");
   objstrbufferprintfpayl_BM (_.modgenob,
                              "// this generated code (from bismon git %s) is GPLv3+ licensed.\n",
-			     bismon_shortgitid);
+                             bismon_shortgitid);
   _.resgen =
     send2_BM (_.modulob, k_generate_module, CURFRAME_BM,
               _.modgenob, _.resprep);
@@ -4937,11 +4937,9 @@ ROUTINEOBJNAME_BM (_0DW82XG9HTW_0SblkfpwJi3)    //miniemit_node_conn#make_sequen
   LOCALRETURN_BM (_.modgenob);
 failure:
 #undef FAILHERE
-  WARNPRINTF_BM
-    ("miniemit_node_conn#make_sequence failure failin %d exp %s routprepob %s cause %s",
-     failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0), //
-     objectdbg_BM (_.routprepob),
-     debug_outstr_value_BM (_.causev,              CURFRAME_BM, 0));
+  WARNPRINTF_BM ("miniemit_node_conn#make_sequence failure failin %d exp %s routprepob %s cause %s", failin, debug_outstr_value_BM (_.expv, CURFRAME_BM, 0),    //
+                 objectdbg_BM (_.routprepob),
+                 debug_outstr_value_BM (_.causev, CURFRAME_BM, 0));
   _.errorv =
     (value_tyBM) makenode3_BM (_.connob ? _.connob :
                                BMK_0DW82XG9HTW_0SblkfpwJi3, _.expv,

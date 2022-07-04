@@ -1357,6 +1357,11 @@ extern value_tyBM warning_objrout_BM(struct stackframe_stBM *stkf,
   extern void forget_the_system_with_bismon_BM (struct stackframe_stBM *stkf);
 
 
+/* If an object has no routine pointer, load it from existing modules
+   or main program; return the dlsym-ed pointer; would be sometimes
+   called by apply routines... */
+  extern void* try_dlsym_routine_BM (objectval_tyBM* ob);
+
 ////////////////
   extern void load_initial_BM (const char *dirname);
   extern void load_addtodo_BM (const closure_tyBM * clos);
