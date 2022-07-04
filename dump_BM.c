@@ -648,7 +648,7 @@ dump_emit_space_BM (struct dumper_stBM *du, unsigned spix,
     {
       _.curobj = objarr[obix];
       ASSERT_BM (_.curobj != NULL);
-      if (obix < nbnamed)
+      if ((int) obix < nbnamed)
         ASSERT_BM (findobjectname_BM (_.curobj) != NULL);
       else
         ASSERT_BM (findobjectname_BM (_.curobj) == NULL);
