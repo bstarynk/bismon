@@ -2097,7 +2097,7 @@ parsereol_BM (const struct parser_stBM *pars)
 bool
 parserendoffile_BM (const struct parser_stBM *pars)
 {
-  if (!isparser_BM ((const extendedval_tyBM) pars))
+  if (!isparser_BM ((extendedval_tyBM) pars))
     return false;
   if (pars->pars_curbyte == NULL || !pars->pars_file)
     return true;
@@ -2107,7 +2107,7 @@ parserendoffile_BM (const struct parser_stBM *pars)
 bool
 parseradvanceutf8_BM (struct parser_stBM *pars, unsigned nbc)
 {
-  if (!isparser_BM ((const extendedval_tyBM) pars))
+  if (!isparser_BM ((extendedval_tyBM) pars))
     return false;
   if (!pars->pars_linebuf)
     return false;
