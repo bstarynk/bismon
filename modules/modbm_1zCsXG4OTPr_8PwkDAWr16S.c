@@ -9583,6 +9583,7 @@ const char* const routid_1zCsXG4OTPr_8PwkDAWr16S_BM[32+1] =
 
 
 
+
 // basiclo*module initialization
 #ifdef BISMON_MODID
 value_tyBM moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
@@ -9592,6 +9593,8 @@ value_tyBM moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
  const value_tyBM arg3, //
  void* dlh)
 {
+    INFOPRINTF_BM("§initializing simple module _1zCsXG4OTPr_8PwkDAWr16S of rank %u",
+                  module_count_BM());
     return simple_module_initialize_BM(arg1, arg2, arg3, //
                                        "_1zCsXG4OTPr_8PwkDAWr16S",//
                                        constob_1zCsXG4OTPr_8PwkDAWr16S_BM, //
@@ -9600,6 +9603,7 @@ value_tyBM moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
                                        dlh, stkf);
 } // end moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
 #endif /*BISMON_MODID*/
+
 
 
 

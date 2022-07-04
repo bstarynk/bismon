@@ -369,6 +369,7 @@ const char* const routid_9oXtCgAbkqv_4y1xhhF5Nhz_BM[3+1] =
 
 
 
+
 // basiclo*module initialization
 #ifdef BISMON_MODID
 value_tyBM moduleinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM
@@ -378,6 +379,8 @@ value_tyBM moduleinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM
  const value_tyBM arg3, //
  void* dlh)
 {
+    INFOPRINTF_BM("§initializing simple module _9oXtCgAbkqv_4y1xhhF5Nhz of rank %u",
+                  module_count_BM());
     return simple_module_initialize_BM(arg1, arg2, arg3, //
                                        "_9oXtCgAbkqv_4y1xhhF5Nhz",//
                                        constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
@@ -386,6 +389,7 @@ value_tyBM moduleinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM
                                        dlh, stkf);
 } // end moduleinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM
 #endif /*BISMON_MODID*/
+
 
 
 
