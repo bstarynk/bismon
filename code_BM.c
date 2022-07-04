@@ -3753,7 +3753,8 @@ ROUTINEOBJNAME_BM (_6gwxdBT3Mhv_8Gtgu8feoy3)    // when#read_macro
     LOCALRETURN_BM (NULL);
   DBGPRINTF_BM ("start when readmacro cexpansion €_42gEKfF4"
                 " lineno=%d colpos=%d nodwidth=%u rnodv=%s",
-                lineno, colpos, nodwidth, OUTSTRVALUE_BM (_.rnodv));
+                lineno, colpos, nodwidth, //
+                OUTSTRVALUE_BM ((value_tyBM*) _.rnodv));
   const objectval_tyBM *k_test = BMK_2j84OTHlFdJ_1pMyQfgsmAz;
   WEAKASSERT_BM (k_test != NULL);
   const objectval_tyBM *k_basiclo_when = BMK_3fvdRZNCmJS_5bTAPr83mXg;
