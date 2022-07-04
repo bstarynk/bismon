@@ -538,21 +538,34 @@ apply4_BM (const value_tyBM funv, struct stackframe_stBM *stkf,
            const value_tyBM arg1, const value_tyBM arg2,
            const value_tyBM arg3, const value_tyBM arg4)
 {
-#warning apply4_BM should be improved to add warning when no routine
+  objectval_tyBM *ob = NULL;
   ASSERT_BM (stkf && ((typedhead_tyBM *) stkf)->htyp == typayl_StackFrame_BM);
   objrout_sigBM *rout = NULL;
   if (isclosure_BM (funv))
     {
-      const objectval_tyBM *connob = ((closure_tyBM *) funv)->nodt_conn;
-      ASSERT_BM (isobject_BM ((const value_tyBM) connob));
-      rout = (objrout_sigBM *) objroutaddr_BM (connob, BMP_function_sig);
+      ob = ((closure_tyBM *) funv)->nodt_conn;
+      ASSERT_BM (isobject_BM ((const value_tyBM) ob));
+      rout = (objrout_sigBM *) objroutaddr_BM (ob, BMP_function_sig);
     }
   else if (isobject_BM (funv))
-    rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+    {
+      ob = (objectval_tyBM *) funv;
+      rout = (objrout_sigBM *) objroutaddr_BM (funv, BMP_function_sig);
+    }
   else
     return NULL;
-  if (!rout)
+  if (!rout || rout == crashing_objrout_BM || rout == warning_objrout_BM) {
+    if (ob)
+      WARNPRINTF_BM
+	("apply4 funv: %s arg1 %s arg2 %s arg3 %s arg4 %s object %s with bad routine",
+	 debug_outstr_value_BM (funv, stkf, 0),
+	 debug_outstr_value_BM (arg1, stkf, 0),
+	 debug_outstr_value_BM (arg2, stkf, 0),
+	 debug_outstr_value_BM (arg3, stkf, 0),
+	 debug_outstr_value_BM (arg4, stkf, 0),
+	 objectdbg_BM (ob));
     return NULL;
+  }
   stkf->stkfram_callfun = funv;
   return (*rout) (stkf, arg1, arg2, arg3, arg4, NULL);
 }                               /* end apply4_BM */
