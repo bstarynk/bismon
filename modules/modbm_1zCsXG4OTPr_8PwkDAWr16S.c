@@ -1,6 +1,7 @@
 // generated persistent module webjs_module
 // in file modbm_1zCsXG4OTPr_8PwkDAWr16S.c -- DONT EDIT
-// this generated code is GPLv3+ licensed.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// this generated code (from bismon git a9f64e8482e517f5+) is GPLv3+ licensed.
 
 
 #include "bismon.h"

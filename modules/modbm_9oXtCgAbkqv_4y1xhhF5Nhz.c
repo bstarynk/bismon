@@ -1,6 +1,7 @@
 // generated persistent module first_test_module
 // in file modbm_9oXtCgAbkqv_4y1xhhF5Nhz.c -- DONT EDIT
-// this generated code is GPLv3+ licensed.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// this generated code (from bismon git a9f64e8482e517f5+) is GPLv3+ licensed.
 
 
 #include "bismon.h"
