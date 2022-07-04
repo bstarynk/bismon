@@ -4632,7 +4632,13 @@ ROUTINEOBJNAME_BM (_1gME6zn82Kf_8hzWibLFRfz)    // emit_module°plain_module
     free (srcpathstr), srcpathstr = NULL;
   if (prevsrcpathstr)
     free (prevsrcpathstr), prevsrcpathstr = NULL;
-  LOCALRETURN_BM (_.modgenob);
+  /// Always return a non-null object; the caller needs that.
+  if (_.resgen)
+    LOCALRETURN_BM (_.resgen);
+  else if (_.modgenob)
+    LOCALRETURN_BM (_.modgenob);
+  else
+    LOCALRETURN_BM (_.modulob);
 failure:
   if (srcdirstr)
     free (srcdirstr), srcdirstr = NULL;
