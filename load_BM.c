@@ -429,6 +429,13 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
 				   symbuf, dlerror (),
 				   nbloadedmodules);
 		    if (nbloadedmodules > 0) {
+		      if (backtracestate_BM != NULL && pthread_self() == mainthreadid_BM) {
+			backtrace_print_BM ((struct backtrace_state *) backtracestate_BM, 1,
+					    stderr);
+			fprintf (stderr, "*¤*load_first_pass_BM failing dlsym-ing '%s' at %s:%d with %d loaded modules**\n",
+				 symbuf, curldpath, lincnt, nbloadedmodules);
+			fflush (stderr);
+		      }
 		    }
 #warning perhaps we should dlsym in previously loaded modules?
 		  }
