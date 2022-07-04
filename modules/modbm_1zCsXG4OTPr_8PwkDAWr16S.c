@@ -9593,14 +9593,24 @@ value_tyBM moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
  const value_tyBM arg3, //
  void* dlh)
 {
-    INFOPRINTF_BM("§initializing simple module _1zCsXG4OTPr_8PwkDAWr16S of rank %u",
-                  module_count_BM());
-    return simple_module_initialize_BM(arg1, arg2, arg3, //
-                                       "_1zCsXG4OTPr_8PwkDAWr16S",//
-                                       constob_1zCsXG4OTPr_8PwkDAWr16S_BM, //
-                                       constid_1zCsXG4OTPr_8PwkDAWr16S_BM, //
-                                       routid_1zCsXG4OTPr_8PwkDAWr16S_BM, //
-                                       dlh, stkf);
+    LOCALFRAME_BM(/*prev:*/stkf,
+                           /*descr:*/lockedfindobjofstrid_BM("  _.arg1v = arg1;//
+                                   _.arg2v = arg2;//
+                                   _.arg3v = arg3;//
+                                   "),//
+                                   value_tyBM arg1v, arg2v, arg3v;//
+                                                            );//
+                           INFOPRINTF_BM("§initializing simple module _1zCsXG4OTPr_8PwkDAWr16S with arguments (%s, %s, %s); module counter 1",
+                                         debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),//
+                                         debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),//
+                                         debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),//
+                                         module_count_BM()); //
+                           return simple_module_initialize_BM(arg1, arg2, arg3, //
+                                   "_1zCsXG4OTPr_8PwkDAWr16S",//
+                                   constob_1zCsXG4OTPr_8PwkDAWr16S_BM, //
+                                   constid_1zCsXG4OTPr_8PwkDAWr16S_BM, //
+                                   routid_1zCsXG4OTPr_8PwkDAWr16S_BM, //
+                                   dlh, CURFRAME_BM);
 } // end moduleinit_1zCsXG4OTPr_8PwkDAWr16S_BM
 #endif /*BISMON_MODID*/
 

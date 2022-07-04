@@ -379,14 +379,24 @@ value_tyBM moduleinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM
  const value_tyBM arg3, //
  void* dlh)
 {
-    INFOPRINTF_BM("§initializing simple module _9oXtCgAbkqv_4y1xhhF5Nhz of rank %u",
-                  module_count_BM());
-    return simple_module_initialize_BM(arg1, arg2, arg3, //
-                                       "_9oXtCgAbkqv_4y1xhhF5Nhz",//
-                                       constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
-                                       constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
-                                       routid_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
-                                       dlh, stkf);
+    LOCALFRAME_BM(/*prev:*/stkf,
+                           /*descr:*/lockedfindobjofstrid_BM("  _.arg1v = arg1;//
+                                   _.arg2v = arg2;//
+                                   _.arg3v = arg3;//
+                                   "),//
+                                   value_tyBM arg1v, arg2v, arg3v;//
+                                                            );//
+                           INFOPRINTF_BM("§initializing simple module _9oXtCgAbkqv_4y1xhhF5Nhz with arguments (%s, %s, %s); module counter 1",
+                                         debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),//
+                                         debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),//
+                                         debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),//
+                                         module_count_BM()); //
+                           return simple_module_initialize_BM(arg1, arg2, arg3, //
+                                   "_9oXtCgAbkqv_4y1xhhF5Nhz",//
+                                   constob_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
+                                   constid_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
+                                   routid_9oXtCgAbkqv_4y1xhhF5Nhz_BM, //
+                                   dlh, CURFRAME_BM);
 } // end moduleinit_9oXtCgAbkqv_4y1xhhF5Nhz_BM
 #endif /*BISMON_MODID*/
 
