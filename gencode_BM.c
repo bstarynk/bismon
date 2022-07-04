@@ -3963,7 +3963,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
 			     "  _.arg2v = arg2;//\n"
 			     "  _.arg3v = arg3;//\n", modulidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
-			     "  INFOPRINTF_BM(\"§initializing simple module %s with arguments (%s, %s, %s); module counter %u\",\n" //
+			     "  INFOPRINTF_BM(\"§initializing simple module %s with arguments (%%s, %%s, %%s); module counter %u\",\n" //
 			     "                debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),//\n" //
 			     "                debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),//\n" //
 			     "                debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),//\n" //
