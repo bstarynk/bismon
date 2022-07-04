@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 /***
     BISMON 
-    Copyright © 2018 - 2021 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
+    Copyright © 2018 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
     contributed by Basile Starynkevitch (working at CEA, LIST, France)
     <basile@starynkevitch.net> or <basile.starynkevitch@cea.fr>
 
@@ -3944,7 +3944,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
         objstrbufferprintfpayl_BM (_.modgenob, "  \"%s\",\n", funidbuf);
     }
   objstrbufferprintfpayl_BM (_.modgenob,
-                             "\n NULL}; // end %d routine ids\n\n", nbrout);
+                             "\n NULL}; // end %d routine ids\n\n\n", nbrout);
   /// emit the module initialization
   objstrbufferprintfpayl_BM (_.modgenob, "\n\n// basiclo*module initialization\n"       //
                              "#ifdef BISMON_MODID\n" "value_tyBM "
@@ -3954,6 +3954,10 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                              "   const value_tyBM arg2, //\n"
                              "   const value_tyBM arg3, //\n"
                              "   void* dlh) {\n", modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+			     "  INFOPRINTF_BM(\"§initializing simple module %s of rank %%u\",\n" //
+			     "                module_count_BM());\n",
+			     modulidbuf);
   objstrbufferprintfpayl_BM (_.modgenob, "  return simple_module_initialize_BM(arg1, arg2, arg3, //\n"  //
                              "        \"%s\",//\n", modulidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
@@ -3969,7 +3973,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   objstrbufferprintfpayl_BM (_.modgenob,
                              "} // end " MODULEINITPREFIX_BM "%s"
                              MODULEINITSUFFIX_BM "\n"
-                             "#endif /*BISMON_MODID*/\n\n", modulidbuf);
+                             "#endif /*BISMON_MODID*/\n\n\n", modulidbuf);
   DBGPRINTF_BM
     ("@@generate_module°basiclo*module end modulob %s modgenob %s",
      objectdbg_BM (_.modulob), objectdbg1_BM (_.modgenob));
