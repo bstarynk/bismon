@@ -3955,8 +3955,19 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
                              "   const value_tyBM arg3, //\n"
                              "   void* dlh) {\n", modulidbuf);
   objstrbufferprintfpayl_BM (_.modgenob,
-			     "  INFOPRINTF_BM(\"§initializing simple module %s of rank %%u\",\n" //
-			     "                module_count_BM());\n",
+			     "  LOCALFRAME_BM(/*prev:*/stkf,\n"
+			     "                /*descr:*/lockedfindobjofstrid_BM(\"%s\"),//\n"
+			     "                value_tyBM arg1v, arg2v, arg3v;//\n"
+			     "               );//\n",
+			     "  _.arg1v = arg1;//\n"
+			     "  _.arg2v = arg2;//\n"
+			     "  _.arg3v = arg3;//\n", modulidbuf);
+  objstrbufferprintfpayl_BM (_.modgenob,
+			     "  INFOPRINTF_BM(\"§initializing simple module %s with arguments (%s, %s, %s); module counter %u\",\n" //
+			     "                debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),//\n" //
+			     "                debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),//\n" //
+			     "                debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),//\n" //
+			     "                module_count_BM()); //\n", //
 			     modulidbuf);
   objstrbufferprintfpayl_BM (_.modgenob, "  return simple_module_initialize_BM(arg1, arg2, arg3, //\n"  //
                              "        \"%s\",//\n", modulidbuf);
@@ -3969,7 +3980,7 @@ ROUTINEOBJNAME_BM (_50d65bJypCN_6IJeVtssx9I)    // generate_module°basiclo*modu
   objstrbufferprintfpayl_BM (_.modgenob,
                              "       " ROUTIDARRPREFIX_BM "%s"
                              ROUTINESUFFIX_BM ", //\n", modulidbuf);
-  objstrbufferprintfpayl_BM (_.modgenob, "       dlh, stkf);\n");
+  objstrbufferprintfpayl_BM (_.modgenob, "       dlh, CURFRAME_BM);\n");
   objstrbufferprintfpayl_BM (_.modgenob,
                              "} // end " MODULEINITPREFIX_BM "%s"
                              MODULEINITSUFFIX_BM "\n"
