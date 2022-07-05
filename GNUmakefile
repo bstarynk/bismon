@@ -90,7 +90,7 @@ BISMON_SHGIT2:= $(shell if git status | grep -q 'nothing to commit'; then echo; 
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config lib count executable clean distclean runconfig objects indent redump
+.PHONY: all config lib count executable clean distclean runconfig objects indent redump altdump
 
 .DEFAULTS: all
 
@@ -118,6 +118,10 @@ endif
 
 ifndef BISMON_CXXFLAGS
 BISMON_CXXFLAGS= -O -g -Wall -Wextra -std=gnu++14
+endif
+
+ifndef BISMON_ALTDUMP_DIR
+BISMON_ALTDUMP_DIR=/tmp/bismon-altdump
 endif
 
 clean:
@@ -238,6 +242,10 @@ _bismon-makedep.mk: GNUmakefile emit-make-dependencies.bash
 redump: bismon $(wildcard store*.bmon)
 	./bismon --version
 	./bismon --batch --dump-after-load=.
+
+altdump: bismon $(wildcard store*.bmon)
+	./bismon --version
+	./bismon --batch --dump-after-load=$(BISMON_ALTDUMP_DIR)
 
 modubin/modbm_%.so: modules/modbm_%.c | bismon _bismon-config.mk _bm_config.h
 	$(LINK.c) -DBISMON_MODULE_$(notdir $(basename $@)) $(BISMON_CFLAGS) -shared -DBISMON_MODID=\"$(BISMON_MODULE_ID)\" -DBISMON_MODMD5=\"$(BISMON_MODULE_MD5SUM)\" -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -fPIC -I. $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -rdynamic -Wall  $< -o $@
