@@ -328,11 +328,11 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
     FATAL_BM ("failed to fclose Bismon dump lock file %s - %m", lockfilebuf);
   if (remove (lockfilebuf))
     FATAL_BM ("failed to remove Bismon dump lock file %s - %m", lockfilebuf);
-  INFOPRINTF_BM ("¤End dumping (git %s) %ld objects into %s " //
-		 "in %.2f cpu, %.2f real seconds\n\n",//
-		 bismon_shortgitid, di.dumpinfo_emittedobjectcount,//
-		 dirname, //
-		 di.dumpinfo_cputime, di.dumpinfo_elapsedtime);
+  INFOPRINTF_BM ("¤End dumping (git %s) %ld objects into %s "  //
+                 "in %.2f cpu, %.2f real seconds\n\n",  //
+                 bismon_shortgitid, di.dumpinfo_emittedobjectcount,     //
+                 dirname,       //
+                 di.dumpinfo_cputime, di.dumpinfo_elapsedtime);
   fflush (NULL);
   DBGPRINTF_BM ("dump_BM dirname %s end tid#%ld\n",
                 dirname, (long) gettid_BM ());
