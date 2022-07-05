@@ -179,6 +179,15 @@ load_initial_BM (const char *ldirpath)
   ld->ld_storepatharr = calloc (maxnum + 2, sizeof (void *));
   if (!ld->ld_storepatharr)
     FATAL_BM ("cannot calloc for %d store files (%m)", maxnum);
+  // should initialize the objroutarr vector
+  {
+    unsigned inirsiz = prime_above_BM (2 * BM_NB_PREDEFINED + 3);
+    ld->ld_objroutarr = calloc(inirsiz, sizeof(objectval_tyBM*));
+    if (!ld->ld_objroutarr)
+      FATAL_BM("failed to allocate for %u object routines", inirsiz);
+    ld->ld_size_objroutarr = inirsiz;
+    ld->ld_count_objrout = 0;
+  };
   if (foundprojectfile)
     {
       if (asprintf
@@ -443,7 +452,18 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
                           fflush (stderr);
                         }
                     }
-#warning perhaps we should dlsym in previously loaded modules?
+		  if (ld->ld_count_objrout + 2 > ld->ld_size_objroutarr) {
+		    unsigned newsiz = prime_above_BM(4*ld->ld_count_objrout/3 + 10);
+		    ASSERT_BM(newsiz > ld->ld_size_objroutarr);
+		    objectval_tyBM** newarr = calloc(newsiz, sizeof(objectval_tyBM*));
+		    if (!newarr)
+		      FATAL_BM("failed to allocate for %u object routines", newsiz);
+		    memcpy(newarr, ld->ld_objroutarr, ld->ld_count_objrout*sizeof(objectval_tyBM*));
+		    free (ld->ld_objroutarr);
+		    ld->ld_objroutarr = newarr;
+		    ld->ld_size_objroutarr = newsiz;
+		  };
+		  ld->ld_objroutarr[ld->ld_count_objrout++] = curloadedobj;
                 }
             }
           curloadedobj = NULL;
@@ -1458,6 +1478,12 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       BMP_load_module->ob_rout = ROUTINEOBJNAME_BM (_3j4mbvFJZzA_9ucKetDMbdh);
       BMP_load_module->ob_sig = BMP_function_sig;
     }
+  if (ld->ld_count_objrout > 0) {
+    unsigned nbmodu = module_count_BM();
+    WARNPRINTF_BM("¤doload_BM with %u unsatisfied object routines and %u modules", ld->ld_count_objrout,
+		  ld->ld_count_objrout, nbmodu);
+#warning FIXME: to dlsym again
+  }
   /// run the second pass to fill objects
   for (int ix = 1; ix <= (int) ld->ld_maxnum; ix++)
     if (ld->ld_storepatharr[ix])

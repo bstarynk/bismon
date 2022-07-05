@@ -506,6 +506,9 @@ struct loader_stBM              // malloc-ed then free-d at load time
   char*ld_projectstatepath; /* malloc-ed string containing the project state */
   struct parser_stBM **ld_parsarr;      /* calloc-ed array of parsers */
   value_tyBM ld_data;           /* common data */
+  objectval_tyBM**ld_objroutarr; /* calloced array of object whose routine was not dlsym-ed */
+  unsigned ld_size_objroutarr;	 /* its allocated size */
+  unsigned ld_count_objrout;	 /* its used count */
   char *ld_dir;                 /* malloc-ed directory path */
 };                              /* end struct loader_stBM */
 
