@@ -251,6 +251,16 @@ load_initial_BM (const char *ldirpath)
   free (ld->ld_dir), ld->ld_dir = NULL;
   ld->ld_data = NULL;
   ld->ld_maxnum = 0;
+  if (ld->ld_objroutarr) {
+#warning probably missing code to resolve object routines
+    if (ld->ld_count_objrout >0)
+      WARNPRINTF_BM("load_initial_BM: unresolved %u object routines with %d modules",
+		    ld->ld_count_objrout, module_count_BM());
+    free (ld->ld_objroutarr);
+    ld->ld_objroutarr = NULL;
+    ld->ld_count_objrout = 0;
+    ld->ld_size_objroutarr = 0;
+  };
   // keep the header of ld; it will become GC-ed later
   load_bismon_completed_BM = true;
 }                               /* end load_initial_BM */
