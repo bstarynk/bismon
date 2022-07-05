@@ -2465,9 +2465,19 @@ crashing_objrout_BM (struct stackframe_stBM *stkf,
                      const value_tyBM arg3,
                      const value_tyBM arg4, const quasinode_tyBM * restargs)
 {
-  FATAL_BM ("crashing_objrout_BM stkf@%p arg1=%p arg2=%p arg3=%p arg4=%p restargs=%p", (void *) stkf,   //
-            (void *) arg1, (void *) arg2,       //
-            (void *) arg3, (void *) arg4,       //
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 value_tyBM arg1v, arg2v, arg3v, arg4v;);
+  _.arg1v = arg1;
+  _.arg2v = arg2;
+  _.arg3v = arg3;
+  _.arg4v = arg4;
+  FATAL_BM ("crashing_objrout_BM stkf@%p, CURFRAM@%p; arg1: %s, arg2: %s,\n"    //
+            "... arg3: %s, arg4: %s, restargs=%p",      //
+            (void *) stkf, (void *) &_, //
+            debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),    //
+            debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),    //
+            debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),    //
+            debug_outstr_value_BM (_.arg4v, CURFRAME_BM, 0),    //
             (void *) restargs);
   return NULL;
 }                               /* end of crashing_objrout_BM */
@@ -2486,9 +2496,18 @@ warning_objrout_BM (struct stackframe_stBM *stkf,
                     const value_tyBM arg3,
                     const value_tyBM arg4, const quasinode_tyBM * restargs)
 {
-  WARNPRINTF_BM ("warning_objrout_BM stkf@%p arg1=%p arg2=%p arg3=%p arg4=%p restargs=%p", (void *) stkf,       //
-                 (void *) arg1, (void *) arg2,  //
-                 (void *) arg3, (void *) arg4,  //
+  LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
+                 value_tyBM arg1v, arg2v, arg3v, arg4v;);
+  _.arg1v = arg1;
+  _.arg2v = arg2;
+  _.arg3v = arg3;
+  _.arg4v = arg4;
+  WARNPRINTF_BM ("warning_objrout_BM stkf@%p, CURFRAM@%p; arg1: %s, arg2: %s,\n" "... arg3: %s, arg4: %s,  restargs=%p", (void *) stkf, //
+                 (void *) &_,   //
+                 debug_outstr_value_BM (_.arg1v, CURFRAME_BM, 0),       //
+                 debug_outstr_value_BM (_.arg2v, CURFRAME_BM, 0),       //
+                 debug_outstr_value_BM (_.arg3v, CURFRAME_BM, 0),       //
+                 debug_outstr_value_BM (_.arg4v, CURFRAME_BM, 0),       //
                  (void *) restargs);
   fflush (NULL);
   if (backtracestate_BM && pthread_self () == mainthreadid_BM)
@@ -2552,7 +2571,7 @@ write_pid_into_file_and_kill_old_BM (const char *pidfilepath)
               INFOPRINTF_BM
                 ("quitting old Bismon process of pid %d running this executable %s",
                  oldpid, thisexepath);
-              killedold = 0 == kill (oldpid, SIGQUIT);
+              killedold = (0 == kill (oldpid, SIGQUIT));
               if (killedold)
                 {
                   INFOPRINTF_BM
