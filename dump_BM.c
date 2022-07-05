@@ -242,19 +242,36 @@ struct dumpinfo_stBM
 dump_BM (const char *dirname, struct stackframe_stBM *stkf)
 {
   LOCALFRAME_BM ( /*prev: */ stkf, /*descr: */ NULL,
-                 objectval_tyBM * duobj; const stringval_tyBM * dudirv;);
+                 objectval_tyBM * duobj;        // the temporary dumper object
+                 const stringval_tyBM * dudirv; // the directory string value
+                 const stringval_tyBM * duloctimstrv;   // the local time string
+    );
+  double startelapsedtime = elapsedtime_BM ();
+  double startcputume = cputime_BM ();
   if (!dirname || dirname[0] == (char) 0)
     dirname = ".";
+  _.duloctimstrv = flocaltimestring_BM ("%Y, %b, %d %H:%M:%S.__",
+                                        startelapsedtime);
   DBGPRINTF_BM ("dump_BM dirname %s start tid#%ld",
                 dirname, (long) gettid_BM ());
   forget_the_system_with_bismon_BM (CURFRAME_BM);
   struct dumper_stBM *duptr = NULL;
-  INFOPRINTF_BM ("start dumping into %s\n", dirname);
   if (project_name_BM)
     {
+      INFOPRINTF_BM ("¤Start dumping (git %s) into %s for project %s at %s on %s pid %d\n",    //
+                     bismon_shortgitid, dirname, project_name_BM,       //
+                     bytstring_BM (_.duloctimstrv), myhostname_BM,
+                     (int) getpid ());
 #warning dump_BM should dump project data
       WARNPRINTF_BM ("dump_BM should dump for project %s", project_name_BM);
     }
+  else
+    {                           /*no project name */
+      INFOPRINTF_BM ("¤Start dumping (git %s) into %s at %s on %s pid %d\n",   //
+                     bismon_shortgitid, dirname,        //
+                     bytstring_BM (_.duloctimstrv), myhostname_BM,
+                     (int) getpid ());
+    };
   if (g_mkdir_with_parents (dirname, 0750))
     FATAL_BM ("failed to mkdir with parents %s", dirname);
   char lockfilebuf[384];
@@ -283,8 +300,8 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   duptr->dump_randomid = randomid_BM ();
   duptr->dump_scanlist = makelist_BM ();
   duptr->dump_todolist = makelist_BM ();
-  duptr->dump_startelapsedtime = elapsedtime_BM ();
-  duptr->dump_startcputime = cputime_BM ();
+  duptr->dump_startelapsedtime = startelapsedtime;
+  duptr->dump_startcputime = startcputume;
   duptr->dump_object = _.duobj;
   objputpayload_BM (_.duobj, duptr);
   objputclass_BM (_.duobj, BMP_dumper_object);
@@ -297,6 +314,7 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
   garbage_collect_if_wanted_BM (CURFRAME_BM);
   struct dumpinfo_stBM di;
   memset (&di, 0, sizeof (di));
+  sync ();
   di.dumpinfo_scanedobjectcount = duptr->dump_scanedobjectcount;
   di.dumpinfo_emittedobjectcount = duptr->dump_emittedobjectcount;
   di.dumpinfo_todocount = duptr->dump_todocount;
@@ -310,6 +328,11 @@ dump_BM (const char *dirname, struct stackframe_stBM *stkf)
     FATAL_BM ("failed to fclose Bismon dump lock file %s - %m", lockfilebuf);
   if (remove (lockfilebuf))
     FATAL_BM ("failed to remove Bismon dump lock file %s - %m", lockfilebuf);
+  INFOPRINTF_BM
+    ("¤End dumping (git %s) %ld objects into %s in %.2f cpu, %.2f real seconds\n\n",
+     bismon_shortgitid, di.dumpinfo_cputime, dirname, di.dumpinfo_elapsedtime,
+     di.dumpinfo_cputime);
+  fflush (NULL);
   DBGPRINTF_BM ("dump_BM dirname %s end tid#%ld\n",
                 dirname, (long) gettid_BM ());
   return di;
