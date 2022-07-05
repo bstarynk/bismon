@@ -362,12 +362,14 @@ void fatal_stop_at_BM (const char *, int) __attribute__((noreturn));
   WARNPRINTFAT_BM(__FILE__,__LINE__,		\
 		  Fmt,##__VA_ARGS__)
 
-////////////////
-#define INFOPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {	\
-    fprintf(stderr, "%s:%d: !! " Fmt "\n",		\
-	   basename_BM((Fil)), (Lin),			\
-	 ##__VA_ARGS__);				\
-} while(0)
+//////////////// informational message
+#define INFOPRINTFATBIS_BM(Fil,Lin,Fmt,...) do {         \
+      fprintf (stderr, "%s:%d: !!",                      \
+	       basename_BM((Fil)), (Lin));               \
+      fprintf (stderr, Fmt "\n",                         \
+	       ##__VA_ARGS__);                           \
+      fflush (stderr);                                   \
+  } while(0)
 
 #define INFOPRINTFAT_BM(Fil,Lin,Fmt,...) \
   INFOPRINTFATBIS_BM(Fil,Lin,Fmt,##__VA_ARGS__)
@@ -505,4 +507,10 @@ void weakassertfailureat_BM (const char *condmsg, const char *fil, int lin);
 #define MINDELAY_DECAYED_MILLISECOND_BM 125
 /// the command run to show network information
 #define SHOW_NET_COMMAND_BM "echo Bismon SHOW_NET_COMMAND pid $$ && ip addr"
+/****************
+ **                           for Emacs...
+ ** Local Variables: ;;
+ ** compile-command: "./Build" ;;
+ ** End: ;;
+ ****************/
 #endif /*CMACROS_BM_INCLUDED */
