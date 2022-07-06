@@ -108,8 +108,8 @@
    .arg = G_OPTION_ARG_FILENAME,
    .arg_data = &plugin_before_load_BM,
    .description =
-   "If given some PLUGIN, will dlopen PLUGIN.so before loading\n",
-#warning more details needed for --plugin-before-load <PLUGIN> program option
+   "If given some PLUGIN, will dlopen PLUGIN.so before loading\n"
+      " ... (trying $PLUGIN, $PLUGIN.so, and $BISMON_DIRECTORY/Plugins/$PLUGIN.so)\n",
    .arg_description = "PLUGIN"},
   //
   {.long_name = BISMONPROG_LONG_OPTION("sigusr1-dump-prefix"),  //
