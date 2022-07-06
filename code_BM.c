@@ -4399,15 +4399,16 @@ ROUTINEOBJNAME_BM (_43m9jyNirvE_0wkbsL0Nvkp)    //
  const quasinode_tyBM * restargs_ __attribute__((unused)))
 {
   LOCALFRAME_BM (stkf, /*descr: */ BMK_43m9jyNirvE_0wkbsL0Nvkp,
-		 value_tyBM arg1v;
+                 value_tyBM arg1v;
                  objectval_tyBM * ob;
     );
   _.arg1v = arg1;
   _.ob = objectcast_BM (arg1);
   if (!_.ob)
     {
-      WARNPRINTF_BM("sysdata command_handler _43m9jyNirvE_0wkbsL0Nvkp wants an object, got %s",
-		    OUTSTRVALUE_BM(_.arg1v));
+      WARNPRINTF_BM
+        ("sysdata command_handler _43m9jyNirvE_0wkbsL0Nvkp wants an object, got %s",
+         OUTSTRVALUE_BM (_.arg1v));
       LOCALRETURN_BM (NULL);
     }
   bool isnewob = false;
@@ -4425,11 +4426,12 @@ ROUTINEOBJNAME_BM (_43m9jyNirvE_0wkbsL0Nvkp)    //
     {
       if (isnewob)
         {
-	  INFOPRINTF_BM(",sysdata added new object %s", objectdbg_BM(_.ob));
+          INFOPRINTF_BM (",sysdata added new object %s", objectdbg_BM (_.ob));
         }
       else
         {
-	  WARNPRINTF_BM(",sysdata did not add existing object %s", objectdbg_BM(_.ob));
+          WARNPRINTF_BM (",sysdata did not add existing object %s",
+                         objectdbg_BM (_.ob));
         }
     }
   if (isnewob)
