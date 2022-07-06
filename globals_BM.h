@@ -59,6 +59,7 @@ extern const char *sigusr1_dump_prefix_BM; // at most MAXLEN_SIGUSR1_DUMP_PREFIX
 extern const char *myprogname_BM;
 
 extern const char *project_name_BM;
+extern const char *plugin_before_load_BM;
 
 extern volatile bool showdebugmsg_BM;
 extern bool parsedebugmsg_BM;

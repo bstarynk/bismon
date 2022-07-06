@@ -49,6 +49,7 @@ char *contact_name_BM;
 char *contact_email_BM;
 double sleepdelay_bm;
 const char *project_name_BM;
+const char *plugin_before_load_BM;
 const char *sigusr1_dump_prefix_BM;
 const volatile char *unix_json_socket_BM;
 bool dont_indent_generated_code_BM;

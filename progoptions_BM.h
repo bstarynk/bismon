@@ -102,6 +102,16 @@
    "\t will create files in it, otherwise create some under /var/tmp\n",
    .arg_description = "TEMPORARY_DIR"},
   //
+  {.long_name = BISMONPROG_LONG_OPTION("plugin-before-load"),        //
+   .short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_FILENAME,
+   .arg_data = &plugin_before_load_BM,
+   .description =
+   "If given some PLUGIN, will dlopen PLUGIN.so before loading\n",
+#warning more details needed for --plugin-before-load <PLUGIN> program option
+   .arg_description = "PLUGIN"},
+  //
   {.long_name = BISMONPROG_LONG_OPTION("sigusr1-dump-prefix"),  //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,
