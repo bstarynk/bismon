@@ -90,7 +90,7 @@ BISMON_SHGIT2:= $(shell if git status | grep -q 'nothing to commit'; then echo; 
 ## or 3ae25e8127fc354d+ (for some edited source tree)
 BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
-.PHONY: all config lib count executable clean distclean runconfig objects indent redump altdump
+.PHONY: all config lib count executable clean distclean runconfig objects indent redump altdump plugins
 
 .DEFAULTS: all
 
@@ -250,6 +250,9 @@ altdump: bismon $(wildcard store*.bmon)
 modubin/modbm_%.so: modules/modbm_%.c | bismon _bismon-config.mk _bm_config.h
 	$(LINK.c) -DBISMON_MODULE_$(notdir $(basename $@)) $(BISMON_CFLAGS) -shared -DBISMON_MODID=\"$(BISMON_MODULE_ID)\" -DBISMON_MODMD5=\"$(BISMON_MODULE_MD5SUM)\" -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -fPIC -I. $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -rdynamic -Wall  $< -o $@
 ## _bm_predef.h is obsolete since renamed _genbm_predef.h
+
+plugins: bismon compile-plugin.bash $(wildcard Plugins/*.c)
+	for pc in $(sort $(wildcard Plugins/*.c)) do ; ./compile-plugin.bash $pc ; done
 
 indent:
 	/bin/bash -cx 'for csrcfile in  $(BM_C_SOURCES) ; do /bin/ls -l $$csrcfile ; $(INDENT) $(INDENTFLAGS) $$csrcfile ; done'
