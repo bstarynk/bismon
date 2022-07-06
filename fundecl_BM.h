@@ -1723,12 +1723,12 @@ extern value_tyBM warning_objrout_BM(struct stackframe_stBM *stkf,
                                 const closure_tyBM * endclosv,
                                 struct stackframe_stBM *stkf);
 
-  extern void log_begin_message_BM (void);
-  extern void log_object_message_BM (const objectval_tyBM * obj);
-  extern void log_puts_message_BM (const char *msg);
+  extern void log_begin_message_BM (void) __attribute__((deprecated));
+  extern void log_object_message_BM (const objectval_tyBM * obj) __attribute__((deprecated));
+  extern void log_puts_message_BM (const char *msg) __attribute__((deprecated));
   extern void log_printf_message_BM (const char *fmt, ...)
-    __attribute__((format (printf, 1, 2)));
-  extern void log_end_message_BM (void);
+    __attribute__((deprecated, format (printf, 1, 2)));
+  extern void log_end_message_BM (void) __attribute__((deprecated));
 
 
 
