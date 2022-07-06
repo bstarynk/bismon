@@ -916,8 +916,26 @@ main (int argc, char **argv)
     }
   if (plugin_before_load_BM)
     {
-      dlh_before_load_bm = dlopen (plugin_before_load_BM,
-                                   RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND);
+      char plugbuf[256];
+      memset (plugbuf, 0, sizeof (plugbuf));
+      if (!access (plugin_before_load_BM, X_OK))
+        dlh_before_load_bm = dlopen (plugin_before_load_BM,
+                                     RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND);
+      else
+        if (snprintf
+            (plugbuf, sizeof (plugbuf), "%s.so", plugin_before_load_BM) > 0
+            && !access (plugbuf, X_OK))
+        dlh_before_load_bm =
+          dlopen (plugbuf, RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND);
+      else
+        if (snprintf
+            (plugbuf, sizeof (plugbuf), "%s/Plugins/%s.so", bismon_directory,
+             plugin_before_load_BM) > 0 && !access (plugbuf, X_OK))
+        dlh_before_load_bm =
+          dlopen (plugbuf, RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND);
+      else
+        FATAL_BM ("fail to find --plugin-before-load %s",
+                  plugin_before_load_BM);
       if (!dlh_before_load_bm)
         FATAL_BM ("failed to dlopen plugin before load %s : %s (%m)",
                   plugin_before_load_BM, dlerror ());
