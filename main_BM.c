@@ -845,8 +845,7 @@ cleanup_temporary_dir_after_exit_BM (void)
 
 ////////////////////////////////////////////////////////////////
 //// see also https://github.com/dtrebbien/GNOME.supp and
-//// https://stackoverflow.com/q/16659781/841108 to use valgrind with
-//// GTK appplications
+//// https://stackoverflow.com/q/16659781/841108 to use valgrind...
 int
 main (int argc, char **argv)
 {
@@ -1940,12 +1939,15 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
     {
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = NULL;
-      WARNPRINTF_BM ("deffered_apply3_gtk failure, failcod#%d failreason: %s\n", failcod,       //
-                     debug_outstr_value_BM (_.failres,  //
-                                            CURFRAME_BM, 0));
+      WARNPRINTF_BM ("do_internal_deferred_apply3_BM  failure, failcod#%d failreason: %s\n"     //
+                     " arg1: %s, arg2: %s, arg3: %s", failcod,  //
+                     OUTSTRVALUE_BM (_.failres),        //
+                     OUTSTRVALUE_BM (_.arg1v),  //
+                     OUTSTRVALUE_BM (_.arg2v),  //
+                     OUTSTRVALUE_BM (_.arg3v));
       return;
     }
-  DBGBACKTRACEPRINTF_BM ("internaldeferapply funv %s arg1 %s arg2 %s arg3 %s",  //
+  DBGBACKTRACEPRINTF_BM ("do_internal_deferred_apply3_BM funv %s arg1: %s, arg2: %s, arg3: %s", //
                          OUTSTRVALUE_BM (_.funv),       //
                          OUTSTRVALUE_BM (_.arg1v),      //
                          OUTSTRVALUE_BM (_.arg2v),      //
@@ -1961,7 +1963,7 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
   else
     {
       _.funob = NULL;
-      WARNPRINTF_BM ("internaldeferapply bad funv %s arg1 %s arg2 %s arg3 %s",  //
+      WARNPRINTF_BM ("do_internal_deferred_apply3_BM bad funv %s arg1 %s arg2 %s arg3 %s",      //
                      OUTSTRVALUE_BM (_.funv),   //
                      OUTSTRVALUE_BM (_.arg1v),  //
                      OUTSTRVALUE_BM (_.arg2v),  //
@@ -1969,7 +1971,7 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
     }
   _.resappv = NULL;
   if (!isobject_BM (_.funob) || !_.funob->ob_rout)
-    WARNPRINTF_BM ("internaldeferapply no routine for funv %s arg1 %s arg2 %s arg3 %s", //
+    WARNPRINTF_BM ("do_internal_deferred_apply3_BM no routine for funv %s arg1 %s arg2 %s arg3 %s",     //
                    OUTSTRVALUE_BM (_.funv),     //
                    OUTSTRVALUE_BM (_.arg1v),    //
                    OUTSTRVALUE_BM (_.arg2v),    //
@@ -1980,7 +1982,7 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
       _.resappv = apply3_BM (_.funv, CURFRAME_BM, _.arg1v, _.arg2v, _.arg3v);
       objunlock_BM (_.funob);
     }
-  DBGPRINTF_BM ("internaldeferapply applied funv %s arg1 %s arg2 %s arg3 %s => resapp %s",      //
+  DBGPRINTF_BM ("do_internal_deferred_apply3_BM applied funv %s arg1 %s arg2 %s arg3 %s => resapp %s",  //
                 OUTSTRVALUE_BM (_.funv),        //
                 OUTSTRVALUE_BM (_.arg1v),       //
                 OUTSTRVALUE_BM (_.arg2v),       //
@@ -1988,7 +1990,7 @@ do_internal_deferred_apply3_BM (value_tyBM fun,
                 OUTSTRVALUE_BM (_.resappv));
   if (!_.resappv)
     {
-      WARNPRINTF_BM ("internaldeferapply NULL result of application of funv %s arg1 %s arg2 %s arg3 %s",        //
+      WARNPRINTF_BM ("do_internal_deferred_apply3_BM NULL result of application of funv %s arg1 %s arg2 %s arg3 %s",    //
                      OUTSTRVALUE_BM (_.funv),   //
                      OUTSTRVALUE_BM (_.arg1v),  //
                      OUTSTRVALUE_BM (_.arg2v),  //
@@ -2028,13 +2030,13 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
     {
       destroy_failurelockset_BM (&flockset);
       curfailurehandle_BM = NULL;
-      WARNPRINTF_BM ("deffered_send3_gtk failure, failcod#%d\n" "failreason: %s\n" "failplace: %s\n",   //
+      WARNPRINTF_BM ("do_internal_deferred_send3_BM failure, failcod#%d\n" "failreason: %s\n" "failplace: %s\n",        //
                      failcod,
                      OUTSTRVALUE_BM (_.failres),
                      OUTSTRVALUE_BM (_.failplace));
       return;
     }
-  DBGPRINTF_BM ("internaldefersend recv %s obsel %s arg1 %s arg2 %s arg3 %s",   //
+  DBGPRINTF_BM ("do_internal_deferred_send3_BM recv %s obsel %s arg1 %s arg2 %s arg3 %s",       //
                 debug_outstr_value_BM (_.recva, //
                                        CURFRAME_BM, 0), //
                 objectdbg_BM (_.obsel), //
@@ -2045,7 +2047,7 @@ do_internal_deferred_send3_BM (value_tyBM recv, objectval_tyBM * obsel,
                 debug_outstr_value_BM (_.arg3v, //
                                        CURFRAME_BM, 0));
   (void) send3_BM (recv, obsel, CURFRAME_BM, arg1, arg2, arg3);
-  DBGPRINTF_BM ("internaldefersend did send recv %s obsel %s",  //
+  DBGPRINTF_BM ("do_internal_deferred_send3_BM  did send recv %s obsel %s",     //
                 debug_outstr_value_BM (_.recva, //
                                        CURFRAME_BM, 0), //
                 objectdbg_BM (_.obsel));
@@ -2366,17 +2368,7 @@ backtrace_print_BM (struct backtrace_state *state, int skip, FILE * f)
 void
 log_begin_message_BM (void)
 {
-#ifdef BISMONGTK
-  extern void gtk_log_begin_message_BM (void);
-#endif
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    {
-      gtk_log_begin_message_BM ();
-      return;
-    };
-#endif /*BISMONGTK*/
-    FATAL_BM ("log_begin_message_BM without web or GUI");
+  FATAL_BM ("log_begin_message_BM obsolete");
 }                               /* end log_begin_message_BM */
 
 
@@ -2384,17 +2376,7 @@ log_begin_message_BM (void)
 void
 log_end_message_BM (void)
 {
-#ifdef BISMONGTK
-  extern void gtk_log_end_message_BM (void);
-#endif
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    {
-      gtk_log_end_message_BM ();
-      return;
-    };
-#endif /*BISMONGTK*/
-    FATAL_BM ("log_end_message_BM without web or GUI");
+  FATAL_BM ("log_end_message_BM obsolete");
 }                               /* end log_end_message_BM */
 
 
@@ -2402,34 +2384,13 @@ log_end_message_BM (void)
 void
 log_puts_message_BM (const char *str)
 {
-#ifdef BISMONGTK
-  extern void gtk_log_puts_message_BM (const char *);
-#endif
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    {
-      gtk_log_puts_message_BM (str);
-      return;
-    };
-#endif /*BISMONGTK*/
-    FATAL_BM ("log_puts_message_BM without web or GUI for: %s", str);
+  FATAL_BM ("log_puts_message_BM obsolete for: %s", str);
 }                               /* end log_puts_message_BM */
 
 void
 log_object_message_BM (const objectval_tyBM * obj)
 {
-#ifdef BISMONGTK
-  extern void gtk_log_object_message_BM (const objectval_tyBM *);
-#endif
-#ifdef BISMONGTK
-  if (gui_is_running_BM)
-    {
-      gtk_log_object_message_BM (obj);
-      return;
-    };
-#endif /*BISMONGTK*/
-    FATAL_BM ("log_object_message_BM without web or GUI for %s",
-              objectdbg_BM (obj));
+  FATAL_BM ("log_object_message_BM obsolete for %s", objectdbg_BM (obj));
 }                               /* end log_object_message_BM */
 
 void
@@ -2451,7 +2412,7 @@ log_printf_message_BM (const char *fmt, ...)
       vsnprintf (buf, ln + 1, fmt, args);
       va_end (args);
     }
-  log_puts_message_BM (buf);
+  FATAL_BM ("log_printf_message_BM obsolete: %s", buf);
   if (buf != smallbuf)
     free (buf);
 }                               /* end log_printf_message_BM */
