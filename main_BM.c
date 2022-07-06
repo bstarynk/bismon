@@ -54,6 +54,7 @@ const char *sigusr1_dump_prefix_BM;
 const volatile char *unix_json_socket_BM;
 bool dont_indent_generated_code_BM;
 
+void *dlh_before_load_bm;
 int sigfd_BM = -1;              /* for signalfd(2) */
 atomic_int oniontimerfd_BM = -1;        /* for timerfd_create(2) */
 char real_executable_BM[128];
@@ -914,6 +915,14 @@ main (int argc, char **argv)
       else
         INFOPRINTF_BM ("odd pid %d for BISMON", (int) getpid ());
     }
+  if (plugin_before_load_BM)
+    {
+      dlh_before_load_bm = dlopen (plugin_before_load_BM,
+                                   RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND);
+      if (!dlh_before_load_bm)
+        FATAL_BM ("failed to dlopen plugin before load %s : %s (%m)",
+                  plugin_before_load_BM, dlerror ());
+    };
   if (!temporary_dir_BM[0])
     {
       time_t nowt = 0;
@@ -1122,6 +1131,15 @@ main (int argc, char **argv)
       usleep (200);
       full_garbage_collection_BM (NULL);
 
+    }
+  if (dlh_before_load_bm)
+    {
+      if (dlclose (dlh_before_load_bm))
+        FATAL_BM ("dlclose of plugin before load %s failed : %s",
+                  plugin_before_load_BM, dlerror ());
+      INFOPRINTF_BM ("dclosed our plugin before load %s",
+                     plugin_before_load_BM);
+      dlh_before_load_bm = NULL;
     }
   DBGPRINTF_BM ("ending BISMON batch_bm %s", batch_bm ? "true" : "false");
   free ((void *) contributors_filepath_BM), contributors_filepath_BM = NULL;
