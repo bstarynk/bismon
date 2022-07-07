@@ -59,6 +59,8 @@ int sigfd_BM = -1;              /* for signalfd(2) */
 atomic_int oniontimerfd_BM = -1;        /* for timerfd_create(2) */
 char real_executable_BM[128];
 
+typedef void action_after_load_sigt (const char *);
+
 static gchar **do_after_load_bm;
 
 
@@ -2668,14 +2670,45 @@ test_make_empty_sigusr1_dump_dir_BM (void)
 void
 do_actions_after_load_bm (gchar ** actarr)
 {
-#warning do_actions_after_load_bm unimplemented
+  int nbact = 0;
+  char actname[128];
   ASSERT_BM (actarr != NULL);
   for (int aix = 0; actarr[aix] != NULL; aix++)
     {
-      WARNPRINTF_BM ("do_actions_after_load_bm should do action#%d %s", aix,
-                     actarr[aix]);
+      void *actptr = NULL;
+      memset (actname, 0, sizeof (actname));
+      const char *curact = actarr[aix];
+      snprintf (actname, sizeof (actname), "bismonaction_%s", curact);
+      char *colon = strchr (actname, ':');
+      const char *curarg = NULL;
+      if (colon)
+        {
+          curarg = colon + 1;
+          *colon = (char) 0;
+        };
+      if (curarg)
+        INFOPRINTF_BM
+          ("do_actions_after_load_bm should do action#%d %s on %s", aix,
+           curact, curarg);
+      else
+        INFOPRINTF_BM ("do_actions_after_load_bm should do action#%d %s", aix,
+                       curact);
+      actptr = dlsym_in_modules_and_program_BM (actname);
+      if (!actptr && dlh_before_load_bm)
+        actptr = dlsym (dlh_before_load_bm, curact);
+      if (!actptr)
+        FATAL_BM ("cannot find action routine %s : %s", curact, dlerror ());
+      action_after_load_sigt *actrout = (action_after_load_sigt *) actptr;
+      (*actrout) (curarg);
+      if (curarg)
+        INFOPRINTF_BM ("do_actions_after_load_bm did action#%d %s on %s", aix,
+                       curact, curarg);
+      else
+        INFOPRINTF_BM ("do_actions_after_load_bm did action#%d %s", aix,
+                       curact);
+      nbact++;
     }
-  FATAL_BM ("do_actions_after_load_bm unimplemented");
+  INFOPRINTF_BM ("do_actions_after_load_bm did %d actions\n", nbact);
 }                               /* end do_actions_after_load_bm */
 
 /****************
