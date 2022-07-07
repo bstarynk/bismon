@@ -112,6 +112,16 @@
       " ... (trying $PLUGIN, $PLUGIN.so, and $BISMON_DIRECTORY/Plugins/$PLUGIN.so)\n",
    .arg_description = "PLUGIN"},
   //
+  {.long_name = BISMONPROG_LONG_OPTION("do-after-load"),        //
+   .short_name = (char) 0,
+   .flags = G_OPTION_FLAG_NONE,
+   .arg = G_OPTION_ARG_STRING_ARRAY,
+   .arg_data = &do_after_load_bm,
+   .description =
+   "Can be given several times. with ACTION[:ARGUMENT]\n"
+      " ... \n",
+   .arg_description = "ACTION[:ARGUMENT]"},
+  //
   {.long_name = BISMONPROG_LONG_OPTION("sigusr1-dump-prefix"),  //
    .short_name = (char) 0,
    .flags = G_OPTION_FLAG_NONE,

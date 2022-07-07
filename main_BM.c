@@ -59,6 +59,7 @@ int sigfd_BM = -1;              /* for signalfd(2) */
 atomic_int oniontimerfd_BM = -1;        /* for timerfd_create(2) */
 char real_executable_BM[128];
 
+static gchar **do_after_load_bm;
 
 
 ////////////////////////////////////////////////////////////////
@@ -730,6 +731,7 @@ static void emit_has_predef_BM (void);
 static void do_dump_after_load_BM (void);
 static bool is_nice_locale_BM (const char *);
 static void check_locale_BM (void);
+static void do_actions_after_load_bm (gchar **);
 
 
 
@@ -879,6 +881,9 @@ main (int argc, char **argv)
               myprogname_BM, (int) getpid (), bismon_shortgitid);
   if (access ("/usr/bin/indent", X_OK))
     FATAL_BM ("BISMON (%s pid %d git %s) requires a /usr/bin/indent (%m)",
+              myprogname_BM, (int) getpid (), bismon_shortgitid);
+  if (access ("/usr/bin/astyle", X_OK))
+    FATAL_BM ("BISMON (%s pid %d git %s) requires a /usr/bin/astyle (%m)",
               myprogname_BM, (int) getpid (), bismon_shortgitid);
   bool skiplocalcheck = false;
   {
@@ -1119,6 +1124,11 @@ main (int argc, char **argv)
     do_emit_module_from_main_BM ();
   if (count_init_afterload_bm > 0)
     init_afterload_bm ();
+  if (do_after_load_bm)
+    {
+      usleep (1000);
+      do_actions_after_load_bm (do_after_load_bm);
+    };
   if (dump_after_load_dir_bm)
     {
       if (debug_after_load_BM)
@@ -1158,6 +1168,8 @@ main (int argc, char **argv)
                      plugin_before_load_BM);
       dlh_before_load_bm = NULL;
     }
+  if (do_after_load_bm)
+    g_strfreev (do_after_load_bm), do_after_load_bm = NULL;
   DBGPRINTF_BM ("ending BISMON batch_bm %s", batch_bm ? "true" : "false");
   free ((void *) contributors_filepath_BM), contributors_filepath_BM = NULL;
   free ((void *) passwords_filepath_BM), passwords_filepath_BM = NULL;
@@ -2652,6 +2664,19 @@ test_make_empty_sigusr1_dump_dir_BM (void)
   INFOPRINTF_BM ("Successfully made empty SIGUSR1 dump directory %s",
                  dirbufname);
 }                               /* end test_make_empty_sigusr1_dump_dir_BM */
+
+void
+do_actions_after_load_bm (gchar ** actarr)
+{
+#warning do_actions_after_load_bm unimplemented
+  ASSERT_BM (actarr != NULL);
+  for (int aix = 0; actarr[aix] != NULL; aix++)
+    {
+      WARNPRINTF_BM ("do_actions_after_load_bm should do action#%d %s", aix,
+                     actarr[aix]);
+    }
+  FATAL_BM ("do_actions_after_load_bm unimplemented");
+}                               /* end do_actions_after_load_bm */
 
 /****************
  **                           for Emacs...
