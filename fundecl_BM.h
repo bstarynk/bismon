@@ -1361,6 +1361,9 @@ extern value_tyBM warning_objrout_BM(struct stackframe_stBM *stkf,
    or main program; return the dlsym-ed pointer; would be sometimes
    called by apply routines... */
   extern void* try_dlsym_routine_BM (objectval_tyBM* ob);
+  /* find a routine using dlsym in loaded modules and in main program:*/
+extern void*dlsym_in_modules_and_program_BM(const char*routname);
+
 
 ////////////////
   extern void load_initial_BM (const char *dirname);
