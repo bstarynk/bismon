@@ -613,8 +613,23 @@ void* try_dlsym_routine_BM (objectval_tyBM* ob)
     };
   snprintf (routname, sizeof (routname),
             ROUTINEOBJPREFIX_BM "%s" ROUTINESUFFIX_BM, idbuf);
+  ad = dlsym_in_modules_and_program_BM(routname);
+  if (ad != NULL)
+    {
+      ob->ob_routaddr = ad;
+      ob->ob_sig = BMP_function_sig;
+    };
+  objunlock_BM(ob);
+  return ad;
+} // end try_dlsym_routine_BM(objectval_tyBM* ob)
+
+void*
+dlsym_in_modules_and_program_BM(const char*routname)
+{
+  void* ad = NULL;
+  ASSERT_BM(routname != NULL && isascii(routname[0]));
+  double mtim = clocktime_BM(CLOCK_REALTIME)+0.01;
   std::lock_guard<std::recursive_mutex> _g(modulemtx_BM);
-  unsigned nbmodules = (unsigned) modulemap_BM.size();
   for (auto modit : modulemap_BM)
     {
       void* curdlh = modit.second.mod_dlh;
@@ -629,14 +644,8 @@ void* try_dlsym_routine_BM (objectval_tyBM* ob)
     {
       ad = dlsym(dlprog_BM, routname);
     };
-  if (ad != NULL)
-    {
-      ob->ob_routaddr = ad;
-      ob->ob_sig = BMP_function_sig;
-    };
-  objunlock_BM(ob);
   return ad;
-} // end try_dlsym_routine_BM(objectval_tyBM* ob)
+} // end dlsym_in_modules_and_program_BM
 
 
 extern "C" void postpone_loader_module_BM (objectval_tyBM*modulob, struct stackframe_stBM * stkf);
