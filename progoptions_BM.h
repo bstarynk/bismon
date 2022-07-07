@@ -118,9 +118,9 @@
    .arg = G_OPTION_ARG_STRING_ARRAY,
    .arg_data = &do_after_load_bm,
    .description =
-   "Can be given several times. with ACTION[:ARGUMENT]\n"
-      " ... \n",
-   .arg_description = "ACTION[:ARGUMENT]"},
+   "Can be given several times. with ACTION[:STRARGUMENT]\n"
+      " ... will run routine named bismonaction_ACTION on string ARGUMENT\n",
+   .arg_description = "ACTION[:STRARGUMENT]"},
   //
   {.long_name = BISMONPROG_LONG_OPTION("sigusr1-dump-prefix"),  //
    .short_name = (char) 0,
