@@ -460,7 +460,7 @@ open_module_for_loader_BM (const rawid_tyBM modid, struct loader_stBM*ld, struct
   char modidbuf[32];
   memset (modidbuf, 0, sizeof(modidbuf));
   idtocbuf32_BM(modid, modidbuf);
-
+  /// module source and binary paths
   std::string srcmodpath = //
     std::string{bismon_directory} + "/" + MODULESRCDIR_BM + "/" + MODULEPREFIX_BM + modidbuf + ".c";
   std::string binmodpath =  //
