@@ -56,6 +56,7 @@ BM_C_SOURCES= $(wildcard [a-z]*_BM.c)
 ## CONVENTION: handwritten C++ files are...
 BM_CXX_SOURCES= $(wildcard [a-z]*_BM.cc)
 
+BM_PLUGIN_SOURCES= $(sort $(wildcard Plugins/[a-z]*.c))
 
 
 ## obsolete GTK, going to another process & program
@@ -252,7 +253,7 @@ modubin/modbm_%.so: modules/modbm_%.c | bismon _bismon-config.mk _bm_config.h
 ## _bm_predef.h is obsolete since renamed _genbm_predef.h
 
 plugins: bismon compile-plugin.bash $(wildcard Plugins/*.c)
-	for pc in $(sort $(wildcard Plugins/*.c)) do ; ./compile-plugin.bash $pc ; done
+	/bin/bash -cx 'for plugincode in $(BM_PLUGIN_SOURCES) ; do  ./compile-plugin.bash $$plugincode ; done'
 
 indent:
 	/bin/bash -cx 'for csrcfile in  $(BM_C_SOURCES) ; do /bin/ls -l $$csrcfile ; $(INDENT) $(INDENTFLAGS) $$csrcfile ; done'
