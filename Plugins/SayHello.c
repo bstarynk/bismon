@@ -24,3 +24,13 @@
     basile@starynkevitch.net and/or basile.starynkevitch@cea.fr
 ***/
 #include "bismon.h"
+
+#warning in file Plugins/SayHello.c
+
+void
+bismonaction_hello(const char*arg)
+{
+  INFOPRINTF_BM("hello to %s", arg);
+} /* end plugin-function bismonaction_hello */
+
+/* end of file Plugins/SayHello.c */
