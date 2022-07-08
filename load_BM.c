@@ -519,7 +519,6 @@ load_first_pass_BM (struct loader_stBM *ld, int ix)
             }
           else
             {
-              int pos = -1;
               char dlerrbuf[80];
               memset (dlerrbuf, 0, sizeof (dlerrbuf));
               strncpy (dlerrbuf, dlerror (), sizeof (dlerrbuf));
@@ -1501,7 +1500,7 @@ doload_BM (struct stackframe_stBM *_parentframe, struct loader_stBM *ld)
       unsigned nbmodu = module_count_BM ();
       WARNPRINTF_BM
         ("¤doload_BM with %u unsatisfied object routines and %u modules",
-         ld->ld_count_objrout, ld->ld_count_objrout, nbmodu);
+         ld->ld_count_objrout, nbmodu);
 #warning FIXME: to dlsym again
     }
   /// run the second pass to fill objects
