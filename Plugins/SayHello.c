@@ -25,11 +25,13 @@
 ***/
 #include "bismon.h"
 
-#warning in file Plugins/SayHello.c
+extern void bismonaction_hello(const char*);
+
 
 void
 bismonaction_hello(const char*arg)
 {
+#pragma message "bismonaction_hello in " __FILE__
   INFOPRINTF_BM("hello to %s", arg);
 } /* end plugin-function bismonaction_hello */
 
