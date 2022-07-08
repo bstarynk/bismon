@@ -941,8 +941,8 @@ main (int argc, char **argv)
         dlh_before_load_bm =
           dlopen (plugbuf, RTLD_NOW | RTLD_GLOBAL | RTLD_DEEPBIND);
       else
-        FATAL_BM ("fail to find --plugin-before-load %s",
-                  plugin_before_load_BM);
+        FATAL_BM ("fail to find --plugin-before-load %s in bismon directory %s",
+                  plugin_before_load_BM, bismon_directory);
       if (!dlh_before_load_bm)
         FATAL_BM ("failed to dlopen plugin before load %s : %s (%m)",
                   plugin_before_load_BM, dlerror ());
