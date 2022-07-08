@@ -1,1 +1,9 @@
 this Plugins directory contain C source code of various hand-written plugins
+
+# Example: the hello world plugin
+
+## Bismon invocation example
+
+Run `./bismon --plugin-before-load HelloPlugin --batch --do-after-load SayHello:John`
+
+
