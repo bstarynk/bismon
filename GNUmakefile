@@ -69,6 +69,19 @@ BM_PLUGIN_SOURCES= $(sort $(wildcard Plugins/[a-zA-Z]*.c))
 #BISMON_PACKAGES=  glib-2.0 gtk4 gtk4-x11 gtksourceview-3.0
 BISMON_PACKAGES= glib-2.0
 
+## internal make variables...
+BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
+BISMON_SHGIT2:= $(shell if git status | grep -q 'nothing to commit'; then echo; else echo +; fi)
+
+## The short git id, such as 34ae25e8127fc354 (for a clean source)
+## or 3ae25e8127fc354d+ (for some edited source tree)
+BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
+
+export BISMONMK_HOST_CC
+export BISMON_CFLAGS
+export BISMON_SHORT_GIT
+export BISMON_PACKAGES
+
 ## CONVENTION: potential options for BISMON-config configurator. Could
 ## be overwritten by command line...
 BISMON_CONFIG_OPTIONS=
@@ -82,14 +95,6 @@ BM_OBJECTS= $(patsubst %.c,%.o,$(BM_C_SOURCES))  $(patsubst %.cc,%.o,$(BM_CXX_SO
 BM_PREPROCESSED_FILES=  $(patsubst %.c,%.i,$(BM_C_SOURCES))  $(patsubst %.cc,%.ii,$(BM_CXX_SOURCES))
 
 .SECONDARY: $(BM_PREPROCESSED_FILES)
-
-## internal make variables...
-BISMON_SHGIT1:= $(shell  git log --format=oneline -q -1 | cut '-d '  -f1 | tr -d '\n' | head -c16)
-BISMON_SHGIT2:= $(shell if git status | grep -q 'nothing to commit'; then echo; else echo +; fi)
-
-## The short git id, such as 34ae25e8127fc354 (for a clean source)
-## or 3ae25e8127fc354d+ (for some edited source tree)
-BISMON_SHORT_GIT:= $(BISMON_SHGIT1)$(BISMON_SHGIT2)
 
 .PHONY: all config lib count executable clean distclean runconfig objects indent redump altdump plugins
 
@@ -125,8 +130,6 @@ ifndef BISMON_ALTDUMP_DIR
 BISMON_ALTDUMP_DIR=/tmp/bismon-altdump
 endif
 
-export BISMONMK_HOST_CC
-export BISMON_CFLAGS
 
 clean:
 	$(RM) *.o BISMON-config bismon   modubin/*.so modubin/*.o *~ *% *.cc.orig *.i *.ii
