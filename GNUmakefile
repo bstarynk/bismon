@@ -56,7 +56,7 @@ BM_C_SOURCES= $(wildcard [a-z]*_BM.c)
 ## CONVENTION: handwritten C++ files are...
 BM_CXX_SOURCES= $(wildcard [a-z]*_BM.cc)
 
-BM_PLUGIN_SOURCES= $(sort $(wildcard Plugins/[a-z]*.c))
+BM_PLUGIN_SOURCES= $(sort $(wildcard Plugins/[a-zA-Z]*.c))
 
 
 ## obsolete GTK, going to another process & program
@@ -124,6 +124,9 @@ endif
 ifndef BISMON_ALTDUMP_DIR
 BISMON_ALTDUMP_DIR=/tmp/bismon-altdump
 endif
+
+export BISMONMK_HOST_CC
+export BISMON_CFLAGS
 
 clean:
 	$(RM) *.o BISMON-config bismon   modubin/*.so modubin/*.o *~ *% *.cc.orig *.i *.ii
@@ -252,7 +255,8 @@ modubin/modbm_%.so: modules/modbm_%.c | bismon _bismon-config.mk _bm_config.h
 	$(LINK.c) -DBISMON_MODULE_$(notdir $(basename $@)) $(BISMON_CFLAGS) -shared -DBISMON_MODID=\"$(BISMON_MODULE_ID)\" -DBISMON_MODMD5=\"$(BISMON_MODULE_MD5SUM)\" -DBISMON_SHORTGIT=\"$(BISMON_SHORT_GIT)\" -fPIC -I. $(shell pkg-config --cflags $(BISMONMK_PACKAGES)) -rdynamic -Wall  $< -o $@
 ## _bm_predef.h is obsolete since renamed _genbm_predef.h
 
-plugins: bismon compile-plugin.bash $(wildcard Plugins/*.c)
+plugins: bismon compile-plugin.bash $(BM_PLUGIN_SOURCES)
+	@echo Bismon plugin sources are $(BM_PLUGIN_SOURCES)
 	/bin/bash -cx 'for plugincode in $(BM_PLUGIN_SOURCES) ; do  ./compile-plugin.bash $$plugincode ; done'
 
 indent:
