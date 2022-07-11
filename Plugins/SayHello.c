@@ -25,6 +25,9 @@
 ***/
 #include "bismon.h"
 
+
+/// testing command:
+///   ./bismon --plugin-before-load SayHello --batch --do-after-load hello:John
 extern void bismonaction_hello(const char*);
 
 
