@@ -607,7 +607,12 @@ valcmpdepth_BM (const value_tyBM v1, const value_tyBM v2, int depth)
         else
           return +1;
       }
-#warning incomplete valcmpdepth_BM
+    case tyUnspecified_BM:
+      ASSERT_BM ((void *) v1 == (void *) v2);
+      return 0;
+    case typayl_FIRST_BM ... typayl_LAST_BM:
+      FATAL_BM ("should not compare payloads  @%p & @%p of type #%d",
+                (void *) v1, (void *) v2, ty1);
     }
   FATAL_BM ("uncomparable values @%p & @%p of type #%d",
             (void *) v1, (void *) v2, ty1);
