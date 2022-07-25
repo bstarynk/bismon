@@ -2074,8 +2074,10 @@ ROUTINEOBJNAME_BM (_5DyG7xVcxRI_1Ckpbj7b3QK)    //
   int failcod = 0;
   _.failreason = NULL;
   _.failplace = NULL;
-  INFOPRINTF_BM("dump_data°plain_dumpable_module start dumping module %s, with dumpob %s and bufob %s\n",
-		objectdbg_BM(_.obmod), objectdbg1_BM(_.dumpob), objectdbg2_BM(_.bufob));
+  INFOPRINTF_BM
+    ("dump_data°plain_dumpable_module start dumping module %s, with dumpob %s and bufob %s\n",
+     objectdbg_BM (_.obmod), objectdbg1_BM (_.dumpob),
+     objectdbg2_BM (_.bufob));
   struct failurelockset_stBM flockset = {
   };
   initialize_failurelockset_BM (&flockset, sizeof (flockset));

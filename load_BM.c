@@ -225,16 +225,15 @@ load_initial_BM (const char *ldirpath)
     double deltaelapsed = elapsedtime_BM () - ld->ld_startelapsedtime;
     double deltacpu = cputime_BM () - ld->ld_startcputime;
     char *realp = realpath (ld->ld_dir, NULL);
-    INFOPRINTF_BM ("*¤°°°¤* %s loaded %d files from %s (%s) with %ld objects,\n"
-                   "... %d modules, %d routines in %.4f cpu %.3f real seconds\n"
-                   "... (%.1f cpu, %.1f real µs/obj); on host %s pid %d\n",
-		   myprogname_BM,
-                   nbfiles, ld->ld_dir, realp, ld->ld_nbobjects,
-                   ld->ld_nbmodules, ld->ld_nbroutines,
-                   deltacpu, deltaelapsed,
-                   (deltacpu * 1.0e6) / ld->ld_nbobjects,
-                   (deltaelapsed * 1.0e6) / ld->ld_nbobjects,
-                   myhostname_BM, (int) getpid ());
+    INFOPRINTF_BM
+      ("*¤°°°¤* %s loaded %d files from %s (%s) with %ld objects,\n"
+       "... %d modules, %d routines in %.4f cpu %.3f real seconds\n"
+       "... (%.1f cpu, %.1f real µs/obj); on host %s pid %d\n",
+       myprogname_BM, nbfiles, ld->ld_dir, realp, ld->ld_nbobjects,
+       ld->ld_nbmodules, ld->ld_nbroutines, deltacpu, deltaelapsed,
+       (deltacpu * 1.0e6) / ld->ld_nbobjects,
+       (deltaelapsed * 1.0e6) / ld->ld_nbobjects, myhostname_BM,
+       (int) getpid ());
     free (realp), realp = NULL;
   }
   firstloader_BM = NULL;

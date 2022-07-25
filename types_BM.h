@@ -52,6 +52,7 @@ enum gctyenum_BM
   ty_SpareG_BM = 14,
   ty_SpareH_BM = 15,
   typayl_vectval_BM,
+#define typayl_FIRST_BM typayl_vectval_BM
   typayl_assoctable_BM,
   typayl_assocpairs_BM,
   typayl_hashsetobj_BM,
