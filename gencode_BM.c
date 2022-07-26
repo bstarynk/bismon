@@ -4043,21 +4043,18 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
   WEAKASSERT_BM (_.modgenob);
   WEAKASSERT_BM (isstring_BM (_.srcdirstrv));
   WEAKASSERT_BM (pthread_self () == mainthreadid_BM);
-  log_begin_message_BM ();
-  log_printf_message_BM ("should compile %s module ",
-                         modulistemporary ? "temporary" : "persistent");
-  log_object_message_BM (_.modulob);
-  log_puts_message_BM (" for generation ");
-  log_object_message_BM (_.modgenob);
-  log_printf_message_BM (" in source directory: %s.",
-                         bytstring_BM (_.srcdirstrv));
-  log_end_message_BM ();
   char cwdpath[128];
   memset (cwdpath, 0, sizeof (cwdpath));
   if (!getcwd (cwdpath, sizeof (cwdpath)))
     FATAL_BM
       ("failed to getcwd in defer-compilation-of-modgenob for source dir %s",
        bytstring_BM (_.srcdirstrv));
+  INFOPRINTF_BM ("should compile %s module from object %s for generation thru generator %s in source directory %s cwd %s",
+		 modulistemporary ? "temporary" : "persistent",
+		 objectdbg1_BM(_.modulob),
+		 objectdbg2_BM(_.modgenob),
+		 bytstring_BM (_.srcdirstrv),
+		 cwdpath);
   DBGPRINTF_BM
     ("defer-compilation-of-modgenob modulob %s srcdir %s cwdpath %s",
      objectdbg_BM (_.modulob), bytstring_BM (_.srcdirstrv), cwdpath);
