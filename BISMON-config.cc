@@ -341,11 +341,11 @@ bmc_show_usage(const char*progname)
   std::cerr << " --skip=IGNORED         # ignored argument, would appear on failure message" << std::endl;
   std::cerr << " --label=IGNORED        # ignored argument, would appear on failure message" << std::endl;
   std::cerr << "           	        # for example: --skip=that_thing or --label=first_run" << std::endl;
-  std::cerr << "# the target cross-compilers below should be some GCC 11 or 12 with plugins enabled. See  gcc.gnu.org for more." << std::endl;
+  std::cerr << "# the target cross-compilers below should be some GCC 12 with plugins enabled. See  gcc.gnu.org for more." << std::endl;
   std::cerr << " --target-gcc=PATH      # set to PATH the target GCC cross-compiler executable for C code" << std::endl;
-  std::cerr << "           	        # for example: --target-gcc=/usr/local/bin/arm-lnux-gnueabi-gcc-11" << std::endl;
+  std::cerr << "           	        # for example: --target-gcc=/usr/local/bin/arm-lnux-gnueabi-gcc-12" << std::endl;
   std::cerr << " --target-gxx=PATH      # set to PATH the target GCC cross-compiler for C++ code" << std::endl;
-  std::cerr << "           	        # for example: --target-gxx=/usr/local/bin/mipsel-linux-gnu-g++-11" << std::endl;
+  std::cerr << "           	        # for example: --target-gxx=/usr/local/bin/mipsel-linux-gnu-g++-12" << std::endl;
   std::cerr << "# the host compilers below would be used to compile BISMON and generated GCC plugin code (C++)." << std::endl;
   std::cerr << " --host-cc=PATH         # set to PATH the host C compiler executable for C code" << std::endl;
   std::cerr << "           	        # for example: --host-cc=/usr/bin/gcc" << std::endl;
@@ -432,7 +432,7 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
   if (bmc_dryrun_flag)
   {
     std::cout << progname << " should check the target GCC compiler " << compiler << std::endl;
-    std::cout << "See also http://gcc.gnu.org/ and notice that a GCC 11 or 12 compiler" << std::endl;
+    std::cout << "See also http://gcc.gnu.org/ and notice that a GCC 12 compiler" << std::endl;
     std::cout << "... is required for BISMON, with plugins enabled." << std::endl;
     std::cout << "Try to run your GCC [cross-]compiler with just the -v program option." << std::endl;
   }
@@ -470,9 +470,9 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
               << cmdstr << std::endl
               << "####---------------------------------------- " << compcmd <<std::endl);
     BMC_DEBUG("bmc_check_target_compiler gccversion_major=" << gccversion_major << ", gccversion_minor=" << gccversion_minor);
-    if (gccversion_major != 11 && gccversion_major != 12)
+    if (gccversion_major != 12 || gccversion_major != 13)
     {
-      std::cerr << progname << ": BISMON requires a GCC 11 or 12 compiler." << std::endl ;
+      std::cerr << progname << ": BISMON requires a GCC 12 or 13 compiler." << std::endl ;
       if (gccversion_major > 0)
         std::cerr << "But " << compiler << " is a GCC " << gccversion_major << "." << gccversion_minor
                   << " compiler." << std::endl;
@@ -1284,11 +1284,11 @@ bmc_ask_missing_configuration(const char*progname)
     const char*host_c_comp = nullptr;
     std::cout << std::endl
 	      << "Host Bismon C compiler for hand-written or generated C code."<< std::endl
-	      << " (Preferably some GCC 11 or newer, recent Clang. See gcc.gnu.org or clang.llvm.org)" << std::endl;
-      if (!access("/usr/bin/gcc-11", X_OK) && isatty(STDOUT_FILENO)) {
-	std::cout << "... Found some /usr/bin/gcc-11 " << std::endl;
-	BMC_DEBUG("defaulting Bismon host C compiler to /usr/bin/gcc-11");
-	bmc_set_readline_buffer("/usr/bin/gcc-11");
+	      << " (Preferably some GCC 12 or newer, recent Clang. See gcc.gnu.org or clang.llvm.org)" << std::endl;
+      if (!access("/usr/bin/gcc-12", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/gcc-12 " << std::endl;
+	BMC_DEBUG("defaulting Bismon host C compiler to /usr/bin/gcc-12");
+	bmc_set_readline_buffer("/usr/bin/gcc-12");
       }
       else if (!access("/usr/bin/gcc-12", X_OK) && isatty(STDOUT_FILENO)) {
 	std::cout << "... Found some /usr/bin/gcc-12 " << std::endl;
@@ -1334,15 +1334,10 @@ bmc_ask_missing_configuration(const char*progname)
     const char*host_cxx_comp = nullptr;
     std::cout << std::endl
 	      << "Host Bismon C++ compiler for hand-written or generated C++ code."<< std::endl
-	      << " (Preferably some GCC 11 or newer or recent Clang. See gcc.gnu.org or clang.llvm.org)" << std::endl;
-      if (!access("/usr/bin/g++-11", X_OK) && isatty(STDOUT_FILENO)) {
-	std::cout << "... Found some /usr/bin/g++-11 " << std::endl;
-	BMC_DEBUG("defaulting Bismon host C++ compiler to /usr/bin/g++-11");
-	bmc_set_readline_buffer("/usr/bin/g++-11");
-      }
-      else if (!access("/usr/bin/g++-12", X_OK) && isatty(STDOUT_FILENO)) {
+	      << " (Preferably some GCC 12 or newer or recent Clang. See gcc.gnu.org or clang.llvm.org)" << std::endl;
+      if (!access("/usr/bin/g++-12", X_OK) && isatty(STDOUT_FILENO)) {
 	std::cout << "... Found some /usr/bin/g++-12 " << std::endl;
-	BMC_DEBUG("defaulting host C++ compiler to /usr/bin/g++-12");
+	BMC_DEBUG("defaulting Bismon host C++ compiler to /usr/bin/g++-12");
 	bmc_set_readline_buffer("/usr/bin/g++-12");
       }
       else if (!access("/usr/bin/clang++", X_OK) && isatty(STDOUT_FILENO)) {
@@ -1383,14 +1378,14 @@ bmc_ask_missing_configuration(const char*progname)
     {
       BMC_NLDEBUG("bmc_target_gcc is '" << bmc_target_gcc << "'");
       std::cout << std::endl
-		<< "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 11 or preferably GCC 12."
+		<< "Target Bismon GCC [cross-]compiler for C code. Should be at least a GCC 12."
 		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
-      std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-11 ..." << std::endl;
+      std::cout << "(it is preferable to enter some absolute path, such as /usr/local/bin/gcc-12 ..." << std::endl;
       std::cout << "... but that cross-C-compiler could be some script." << std::endl;
-      if (!access("/usr/bin/gcc-1Œ", X_OK) && isatty(STDOUT_FILENO)) {
-	std::cout << "... Found some /usr/bin/gcc-11)" << std::endl;
-	BMC_DEBUG("defaulting target GCC to /usr/bin/gcc-11");
-	bmc_set_readline_buffer("/usr/bin/gcc-11");
+      if (!access("/usr/bin/gcc-12", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/gcc-12)" << std::endl;
+	BMC_DEBUG("defaulting target GCC to /usr/bin/gcc-12");
+	bmc_set_readline_buffer("/usr/bin/gcc-12");
       }
       else
 	std::cout << ")" << std::endl;
@@ -1416,14 +1411,14 @@ bmc_ask_missing_configuration(const char*progname)
     {
       BMC_NLDEBUG("bmc_target_gxx is '" << bmc_target_gxx << "'");
       std::cout << std::endl
-		<< "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 11."
+		<< "Target Bismon GCC [cross-]compiler for C++ code. Should be at least a GCC 12."
 		<< std::endl << "... See gcc.gnu.org for more about GCC...." << std::endl;
-      std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-11 ..." << std::endl;
+      std::cout << "(it is recommended to enter some absolute path, such as /usr/local/bin/g++-12 ..." << std::endl;
       std::cerr << "... but that cross C++ compiler could be some script." << std::endl;
-      if (!access("/usr/bin/g++-11", X_OK) && isatty(STDOUT_FILENO)) {
-	std::cout << "... Found some /usr/bin/g++-11)" << std::endl;
-	BMC_DEBUG("defaulting target GXX to /usr/bin/g++-11");
-	bmc_set_readline_buffer("/usr/bin/g++-11");
+      if (!access("/usr/bin/g++-12", X_OK) && isatty(STDOUT_FILENO)) {
+	std::cout << "... Found some /usr/bin/g++-12)" << std::endl;
+	BMC_DEBUG("defaulting target GXX to /usr/bin/g++-12");
+	bmc_set_readline_buffer("/usr/bin/g++-12");
       }
       else
 	std::cout << ")" << std::endl;
