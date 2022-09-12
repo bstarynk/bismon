@@ -48,9 +48,21 @@ else
 fi
 
 if [ -n "$hello_analysis_need_bismon_build" ]; then
+    declare -i build_bismon_code
+    [ -f bismon ] && /bin/mv -vf bismon bismon~
     ### our Build script is using shell variables like BISMON_MAKE
     ### (e.g. the GNU make) BISMON_MAKE_FLAGS
+    printf "%s: needs to build bismon  in directory %s\n" $0 $(pwd) > /dev/stderr
     ./Build
+    build_bismon_code=$?
+    if [ $build_bismon_code -gt 0 ]; then
+	printf "%s: failed to build bismon using ./Build (exited %d) in directory %s\n" $0 \
+	       $build_bismon_code $(pwd) > /dev/stderr
+	exit $build_bismon_code
+    else
+	printf "%s: succeeded in building bismon using ./Build  in directory %s\n" $0  > /dev/stderr
+	/bin/ls -l ./bismon > /dev/stderr
+    fi
 fi
 
 declare -a bismon_hello_args
