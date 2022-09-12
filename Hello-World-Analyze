@@ -83,7 +83,7 @@ echo "$0:" bismon arguments $bismon_hello_args in $(pwd) > /dev/stderr
 #fi
 
 if [ -z "$BISMON_GCC" ]; then
-    export BISMON_GCC=/usr/bin/gcc-11
+    export BISMON_GCC=/usr/bin/gcc-12
 fi
 
 if [ -z "$BISMON_PIDFILE" ]; then
