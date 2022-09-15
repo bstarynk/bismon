@@ -255,9 +255,90 @@ load_initial_BM (const char *ldirpath)
     {
 #warning probably missing code to resolve object routines
       if (ld->ld_count_objrout > 0)
-        WARNPRINTF_BM
-          ("load_initial_BM: unresolved %u object routines with %d modules",
-           ld->ld_count_objrout, module_count_BM ());
+        {
+          char unresbuf[512];
+          memset (unresbuf, 0, sizeof (unresbuf));
+          unsigned unreslen = 0;
+          if (ld->ld_objroutarr[0] != NULL)
+            {
+              strncat (unresbuf, objectdbg1_BM (ld->ld_objroutarr[0]),
+                       sizeof (unresbuf));
+              unreslen = strlen (unresbuf);
+            };
+          if (ld->ld_objroutarr[1] != NULL)
+            {
+              if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
+                strncat (unresbuf + unreslen, " & ", 3);
+              unreslen += 3;
+              if (unreslen < sizeof (unresbuf) - 16)
+                strncat (unresbuf + unreslen,
+                         objectdbg1_BM (ld->ld_objroutarr[1]),
+                         sizeof (unresbuf) - unreslen);
+              else
+                strncat (unresbuf + unreslen, "...",
+                         sizeof (unresbuf) - unreslen);
+            };
+          if (ld->ld_objroutarr[2] != NULL)
+            {
+              if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
+                strncat (unresbuf + unreslen, " & ", 3);
+              unreslen += 3;
+              if (unreslen < sizeof (unresbuf) - 16)
+                strncat (unresbuf + unreslen,
+                         objectdbg2_BM (ld->ld_objroutarr[2]),
+                         sizeof (unresbuf) - unreslen);
+              else
+                strncat (unresbuf + unreslen, "...",
+                         sizeof (unresbuf) - unreslen);
+            };
+          if (ld->ld_objroutarr[3] != NULL)
+            {
+              if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
+                strncat (unresbuf + unreslen, " & ", 3);
+              unreslen += 3;
+              if (unreslen < sizeof (unresbuf) - 16)
+                strncat (unresbuf + unreslen,
+                         objectdbg3_BM (ld->ld_objroutarr[3]),
+                         sizeof (unresbuf) - unreslen);
+              else
+                strncat (unresbuf + unreslen, "...",
+                         sizeof (unresbuf) - unreslen);
+            };
+          if (ld->ld_objroutarr[4] != NULL)
+            {
+              if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
+                strncat (unresbuf + unreslen, " & ", 3);
+              unreslen += 3;
+              if (unreslen < sizeof (unresbuf) - 16)
+                strncat (unresbuf + unreslen,
+                         objectdbg4_BM (ld->ld_objroutarr[4]),
+                         sizeof (unresbuf) - unreslen);
+              else
+                strncat (unresbuf + unreslen, "...",
+                         sizeof (unresbuf) - unreslen);
+            };
+          if (ld->ld_objroutarr[5] != NULL)
+            {
+              if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
+                strncat (unresbuf + unreslen, " & ", 3);
+              unreslen += 3;
+              if (unreslen < sizeof (unresbuf) - 16)
+                strncat (unresbuf + unreslen,
+                         objectdbg5_BM (ld->ld_objroutarr[5]),
+                         sizeof (unresbuf) - unreslen);
+              else
+                strncat (unresbuf + unreslen, "...",
+                         sizeof (unresbuf) - unreslen);
+            };
+          if (ld->ld_objroutarr[6] != NULL)
+            {
+              if (unreslen + 8 < sizeof (unresbuf))
+                strcat (unresbuf + unreslen, "..etc..");
+            };
+          WARNPRINTF_BM
+            ("load_initial_BM: unresolved %u object routines (%s) with %d modules",
+             ld->ld_count_objrout, unresbuf, module_count_BM ());
+        }
       free (ld->ld_objroutarr);
       ld->ld_objroutarr = NULL;
       ld->ld_count_objrout = 0;
