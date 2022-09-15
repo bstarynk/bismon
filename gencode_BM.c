@@ -4049,12 +4049,10 @@ ROUTINEOBJNAME_BM (_9EqBenFWb40_86MuuXslynk)    // defer-compilation-of-module
     FATAL_BM
       ("failed to getcwd in defer-compilation-of-modgenob for source dir %s",
        bytstring_BM (_.srcdirstrv));
-  INFOPRINTF_BM ("should compile %s module from object %s for generation thru generator %s in source directory %s cwd %s",
-		 modulistemporary ? "temporary" : "persistent",
-		 objectdbg1_BM(_.modulob),
-		 objectdbg2_BM(_.modgenob),
-		 bytstring_BM (_.srcdirstrv),
-		 cwdpath);
+  INFOPRINTF_BM
+    ("should compile %s module from object %s for generation thru generator %s in source directory %s cwd %s",
+     modulistemporary ? "temporary" : "persistent", objectdbg1_BM (_.modulob),
+     objectdbg2_BM (_.modgenob), bytstring_BM (_.srcdirstrv), cwdpath);
   DBGPRINTF_BM
     ("defer-compilation-of-modgenob modulob %s srcdir %s cwdpath %s",
      objectdbg_BM (_.modulob), bytstring_BM (_.srcdirstrv), cwdpath);
