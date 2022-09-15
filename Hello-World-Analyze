@@ -112,18 +112,18 @@ if [ ! -d gccplugins/ ]; then
     exit 1
 fi
 
-if [ ! -f gccplugins/gcc11_metaplugin_BMGCC.cc ]; then
-    echo  "$0:" missing gccplugins/gcc11_metaplugin_BMGCC.cc in $(pwd) > /dev/stderr
+if [ ! -f gccplugins/gcc12_metaplugin_BMGCC.cc ]; then
+    echo  "$0:" missing gccplugins/gcc12_metaplugin_BMGCC.cc in $(pwd) > /dev/stderr
     exit 1
 fi
 
-if [ ! -f gccplugins/gcc11_metaplugin_BMGCC.hh ]; then
-    echo  "$0:" missing gccplugins/gcc11_metaplugin_BMGCC.hh in $(pwd) > /dev/stderr
+if [ ! -f gccplugins/gcc12_metaplugin_BMGCC.hh ]; then
+    echo  "$0:" missing gccplugins/gcc12_metaplugin_BMGCC.hh in $(pwd) > /dev/stderr
     exit 1
 fi
 
-if [ ! -x gccplugins/build-gcc11-metaplugin.sh ]; then
-    echo  "$0:" missing or bad gccplugins/build-gcc11-metaplugin.sh script in $(pwd) > /dev/stderr
+if [ ! -x gccplugins/build-gcc12-metaplugin.sh ]; then
+    echo  "$0:" missing or bad gccplugins/build-gcc12-metaplugin.sh script in $(pwd) > /dev/stderr
     exit 1
 fi
 
@@ -166,41 +166,41 @@ fi
 
 ### on some Debian, there is a bug: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=980609
 pushd gccplugins
-if [ -f gcc11_metaplugin_BMGCC.so ]; then
+if [ -f gcc12_metaplugin_BMGCC.so ]; then
     ## force recompilation of plugin if older than plugin source code
-    if [ gcc11_metaplugin_BMGCC.so -ot gcc11_metaplugin_BMGCC.cc ]; then
-	/bin/rm gcc11_metaplugin_BMGCC.so
-    elif [ gcc11_metaplugin_BMGCC.so -ot gcc11_metaplugin_BMGCC.hh ]; then
-	/bin/rm gcc11_metaplugin_BMGCC.so
+    if [ gcc12_metaplugin_BMGCC.so -ot gcc12_metaplugin_BMGCC.cc ]; then
+	/bin/rm gcc12_metaplugin_BMGCC.so
+    elif [ gcc12_metaplugin_BMGCC.so -ot gcc12_metaplugin_BMGCC.hh ]; then
+	/bin/rm gcc12_metaplugin_BMGCC.so
     fi
 fi
-### Notice: the build-gcc11-metaplugin.sh script cares about a BISMON_PLUGIN_ASMOUT shell variable...
-./build-gcc11-metaplugin.sh
+### Notice: the build-gcc12-metaplugin.sh script cares about a BISMON_PLUGIN_ASMOUT shell variable...
+./build-gcc12-metaplugin.sh
 popd
 
 printf "\n%s: Bismon compiling TestHelloWorld/testhw-main.c (pid %d)\n" $0 $$
 $BISMON_GCC -O -Wall -g -c -v \
-		-fplugin=gccplugins/gcc11_metaplugin_BMGCC.so \
-		-fplugin-arg-gcc11_metaplugin_BMGCC-bismon-url=localhost:8086 \
-		-fplugin-arg-gcc11_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
-		-fplugin-arg-gcc11_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
+		-fplugin=gccplugins/gcc12_metaplugin_BMGCC.so \
+		-fplugin-arg-gcc12_metaplugin_BMGCC-bismon-url=localhost:8086 \
+		-fplugin-arg-gcc12_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
+		-fplugin-arg-gcc12_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
 		TestHelloWorld/testhw-main.c -o /tmp/testhw-main.o || exit 1
 
 printf "\%s: Bismon compiling TestHelloWorld/testhw-sayhello.c (pid %d)\n" $0 $$
 $BISMON_GCC -O -Wall -g -c -v \
-		-fplugin=gccplugins/gcc11_metaplugin_BMGCC.so \
-		-fplugin-arg-gcc11_metaplugin_BMGCC-bismon-url=localhost:8086 \
-		-fplugin-arg-gcc11_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
-		-fplugin-arg-gcc11_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
+		-fplugin=gccplugins/gcc12_metaplugin_BMGCC.so \
+		-fplugin-arg-gcc12_metaplugin_BMGCC-bismon-url=localhost:8086 \
+		-fplugin-arg-gcc12_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
+		-fplugin-arg-gcc12_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
 		TestHelloWorld/testhw-sayhello.c -o /tmp/testhw-sayhello.o || exit 1
 
 
 printf "\%s: Bismon linking TestHelloWorld (pid %d)\n" $0 $$
 $BISMON_GCC -O -Wall -g -v \
-		-fplugin=gccplugins/gcc11_metaplugin_BMGCC.so \
-		-fplugin-arg-gcc11_metaplugin_BMGCC-bismon-url=localhost:8086 \
-		-fplugin-arg-gcc11_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
-		-fplugin-arg-gcc11_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
+		-fplugin=gccplugins/gcc12_metaplugin_BMGCC.so \
+		-fplugin-arg-gcc12_metaplugin_BMGCC-bismon-url=localhost:8086 \
+		-fplugin-arg-gcc12_metaplugin_BMGCC-bismon-project=HelloWorld_Project \
+		-fplugin-arg-gcc12_metaplugin_BMGCC-bismon-pid=$BISMON_PID \
 		  /tmp/testhw-main.o /tmp/testhw-sayhello.o -o /tmp/testhelloworld
 
 

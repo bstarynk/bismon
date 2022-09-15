@@ -2,8 +2,8 @@
 ##// SPDX-License-Identifier: GPL-3.0-or-later
 ##### this shell script could be invoked from Msh-Analyze
 ##
-## BISMON related GCC11 metaplugin builder
-## file gccplugins/build-gcc11_metaplugin.sh
+## BISMON related GCC12 metaplugin builder
+## file gccplugins/build-gcc12_metaplugin.sh
 ## See https://github.com/bstarynk/bismon/
 ## Copyright © 2020 - 2022 CEA (Commissariat à l'énergie atomique et aux énergies alternatives)
 ################################################################
@@ -26,12 +26,12 @@
 
 ## C++ compiler used to compile the GCC meta plugin
 if [ -z "$BISMON_PLUGIN_GXX" ]; then
-    export BISMON_PLUGIN_GXX=/usr/bin/g++-11
+    export BISMON_PLUGIN_GXX=/usr/bin/g++-12
 fi
 
 ## target compiler which dlopen-s the GCC meta plugin
 if [ -z "$BISMON_TARGET_GCC" ]; then
-    export BISMON_TARGET_GCC=/usr/bin/g++-11
+    export BISMON_TARGET_GCC=/usr/bin/g++-12
 fi
 
 TARGETPLUGINDIR=$($BISMON_TARGET_GCC -print-file-name=plugin)
@@ -46,8 +46,8 @@ fi
 
 TARGETGENGTYPE=$TARGETPLUGINDIR/gengtype
 $TARGETGENGTYPE --read-state $TARGETPLUGINDIR/gtype.state \
-		--plugin _gcc11_metaplugin_BMGCC-gty.h \
-		gcc11_metaplugin_BMGCC.cc gcc11_metaplugin_BMGCC.hh
+		--plugin _gcc12_metaplugin_BMGCC-gty.h \
+		gcc12_metaplugin_BMGCC.cc gcc12_metaplugin_BMGCC.hh
 
 SHORTGITID=$(git log --format=oneline -q -1 | head -16c)
 
@@ -77,7 +77,7 @@ if [ -n "$BISMON_PLUGIN_ASMOUT" ]; then
 	       -I $TARGETPLUGINDIR/include/ \
 	       -shared -fno-rtti -fPIC -rdynamic \
 	       -DPLUGINGITID=\"$SHORTGITID\" \
-	       gcc11_metaplugin_BMGCC.cc \
+	       gcc12_metaplugin_BMGCC.cc \
                $(pkg-config --cflags --libs jsoncpp curlpp) \
 	       -S -fverbose-asm -o "$BISMON_PLUGIN_ASMOUT"
 fi
@@ -87,9 +87,9 @@ exec $BISMON_PLUGIN_GXX -Wall -Wextra -O1 -g3 \
 	   -I $TARGETPLUGINDIR/include/ \
 	   -shared -fno-rtti -fPIC -rdynamic \
 	   -DPLUGINGITID=\"$SHORTGITID\" \
-	   gcc11_metaplugin_BMGCC.cc \
+	   gcc12_metaplugin_BMGCC.cc \
            $(pkg-config --cflags --libs jsoncpp curlpp) \
-	   -o gcc11_metaplugin_BMGCC.so
+	   -o gcc12_metaplugin_BMGCC.so
 
 ##FIXME: GCC documentation suggests linking with -shared
 ## -Wl,export-all-symbols which seems to not work above...
