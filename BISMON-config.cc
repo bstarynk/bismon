@@ -470,7 +470,7 @@ bmc_check_target_compiler(const char*progname, bool forcplusplus)
               << cmdstr << std::endl
               << "####---------------------------------------- " << compcmd <<std::endl);
     BMC_DEBUG("bmc_check_target_compiler gccversion_major=" << gccversion_major << ", gccversion_minor=" << gccversion_minor);
-    if (gccversion_major != 12 || gccversion_major != 13)
+    if (gccversion_major != 12 && gccversion_major != 13)
     {
       std::cerr << progname << ": BISMON requires a GCC 12 or 13 compiler." << std::endl ;
       if (gccversion_major > 0)
