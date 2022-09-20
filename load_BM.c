@@ -261,23 +261,46 @@ load_initial_BM (const char *ldirpath)
           unsigned unreslen = 0;
           if (ld->ld_objroutarr[0] != NULL)
             {
-              strncat (unresbuf, objectdbg1_BM (ld->ld_objroutarr[0]),
-                       sizeof (unresbuf));
+              char *obdb0 = objectdbg_BM (ld->ld_objroutarr[0]);
+              strncat (unresbuf, obdb0, sizeof (unresbuf));
               unreslen = strlen (unresbuf);
+              if (isalpha (obdb0[0]))
+                {
+                  char oidbuf0[32];
+                  memset (oidbuf0, 0, sizeof (oidbuf0));
+                  snprintf (oidbuf0, sizeof (oidbuf0), "=€%.20s",
+                            iddbg_BM (objid_BM (ld->ld_objroutarr[0])));
+                  strncat (unresbuf, oidbuf0, sizeof (unresbuf) - unreslen);
+                  unreslen = strlen (unresbuf);
+                }
             };
           if (ld->ld_objroutarr[1] != NULL)
             {
+              char *obdb1 = objectdbg1_BM (ld->ld_objroutarr[1]);
               if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
                 strncat (unresbuf + unreslen, " & ", 3);
               unreslen += 3;
-              if (unreslen < sizeof (unresbuf) - 16)
-                strncat (unresbuf + unreslen,
-                         objectdbg1_BM (ld->ld_objroutarr[1]),
-                         sizeof (unresbuf) - unreslen);
+              if (unreslen < sizeof (unresbuf) - 24)
+                {
+                  strncat (unresbuf + unreslen,
+                           objectdbg1_BM (ld->ld_objroutarr[1]),
+                           sizeof (unresbuf) - unreslen);
+                  if (isalpha (obdb1[0]))
+                    {
+                      char oidbuf1[32];
+                      memset (oidbuf1, 0, sizeof (oidbuf1));
+                      snprintf (oidbuf1, sizeof (oidbuf1), "=€%.20s",
+                                iddbg_BM (objid_BM (ld->ld_objroutarr[1])));
+                      strncat (unresbuf, oidbuf1,
+                               sizeof (unresbuf) - unreslen);
+                      unreslen = strlen (unresbuf);
+                    }
+                }
               else
                 strncat (unresbuf + unreslen, "...",
                          sizeof (unresbuf) - unreslen);
             };
+#warning maybe rewrite code in load_initial_BM  to resolve object routines....
           if (ld->ld_objroutarr[2] != NULL)
             {
               if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
