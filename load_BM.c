@@ -69,6 +69,26 @@ loadergckeep_BM (struct garbcoll_stBM *gc, struct loader_stBM *ld)
 static void doload_BM (struct stackframe_stBM *fr, struct loader_stBM *ld);
 
 
+#warning signature of resolve_load_object_routine_at_index_BM might change
+/* Because we might use asprintf on a buffer allocated by the calling
+   routine load_initial_BM, and that buffer should be passed... */
+static void resolve_load_object_routine_at_index_BM (struct loader_stBM *ld,
+                                                     int ix);
+
+void
+resolve_load_object_routine_at_index_BM (struct loader_stBM *ld, int ix)
+{
+  ASSERT_BM (ld != NULL);
+  ASSERT_BM (ld->ld_magic == LOADERMAGIC_BM);
+  ASSERT_BM (ld->ld_objroutarr != NULL);
+  ASSERT_BM (ld->ld_count_objrout > 0);
+  ASSERT_BM (ix >= 0 && ix < ld->ld_count_objrout);
+  char *obdb = objectdbg_BM (ld->ld_objroutarr[ix]);
+#warning resolve_load_object_routine_at_index_BM is very incomplete
+  /* we probably want to use asprintf */
+}                               /* end resolve_load_object_routine_at_index_BM */
+
+
 void
 load_initial_BM (const char *ldirpath)
 {
