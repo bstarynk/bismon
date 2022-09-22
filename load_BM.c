@@ -72,20 +72,54 @@ static void doload_BM (struct stackframe_stBM *fr, struct loader_stBM *ld);
 #warning signature of resolve_load_object_routine_at_index_BM might change
 /* Because we might use asprintf on a buffer allocated by the calling
    routine load_initial_BM, and that buffer should be passed... */
-static void resolve_load_object_routine_at_index_BM (struct loader_stBM *ld,
+static void resolve_load_object_routine_at_index_BM (char **bufp,
+                                                     struct loader_stBM *ld,
                                                      int ix);
 
 void
-resolve_load_object_routine_at_index_BM (struct loader_stBM *ld, int ix)
+resolve_load_object_routine_at_index_BM (char **bufp, struct loader_stBM *ld,
+                                         int ix)
 {
+  char obidbuf[32];
+  memset (obidbuf, 0, sizeof (obidbuf));
   ASSERT_BM (ld != NULL);
   ASSERT_BM (ld->ld_magic == LOADERMAGIC_BM);
+  ASSERT_BM (bufp != NULL);
+  if (*bufp == NULL)
+    {
+      int isiz = 64;
+      *bufp = malloc (isiz);
+      if (*bufp)
+        memset (*bufp, 0, isiz);
+      else
+        FATAL_BM ("failed to malloc %d bytes", isiz);
+    };
   ASSERT_BM (ld->ld_objroutarr != NULL);
   ASSERT_BM (ld->ld_count_objrout > 0);
   ASSERT_BM (ix >= 0 && ix < ld->ld_count_objrout);
-  char *obdb = objectdbg_BM (ld->ld_objroutarr[ix]);
-#warning resolve_load_object_routine_at_index_BM is very incomplete
-  /* we probably want to use asprintf */
+  objectval_tyBM *curob = ld->ld_objroutarr[ix];
+  ASSERT_BM (curob && isobject_BM ((value_tyBM) curob));
+  rawid_tyBM curoid = objid_BM (curob);
+  idtocbuf32_BM (curoid, obidbuf);
+  ASSERT_BM (obidbuf[0] != (char) 0);
+  char *obdb = objectdbg_BM (curob);
+  ASSERT_BM (obdb != NULL);
+  int ok = 0;
+  if (ix > 0)
+    {
+      ok = asprintf (bufp, "%s & ", *bufp);
+      if (ok < 0)
+        FATAL_BM ("asprintf failed ('&')...");
+    };
+  ok = asprintf (bufp, "%s%s", *bufp, obdb);
+  if (ok < 0)
+    FATAL_BM ("asprintf failed (%s)...", obdb);
+  if (isalpha (obdb[0]))
+    {
+      ok = asprintf (bufp, "%s=€%s", *bufp, obidbuf);
+      if (ok < 0)
+        FATAL_BM ("asprintf failed (€%s)...", obidbuf);
+    }
 }                               /* end resolve_load_object_routine_at_index_BM */
 
 
@@ -273,114 +307,53 @@ load_initial_BM (const char *ldirpath)
   ld->ld_maxnum = 0;
   if (ld->ld_objroutarr)
     {
+      if (showdebugmsg_BM)
+        {
+          char pmapcmd[64];
+          memset (pmapcmd, 0, sizeof (pmapcmd));
+          snprintf (pmapcmd, sizeof (pmapcmd), "/usr/bin/pmap %d",
+                    (int) getpid ());
+          DBGPRINTF_BM ("running %s", pmapcmd);
+          fflush (NULL);
+          system (pmapcmd);
+        };
 #warning probably missing code to resolve object routines
       if (ld->ld_count_objrout > 0)
         {
-          char unresbuf[512];
-          memset (unresbuf, 0, sizeof (unresbuf));
-          unsigned unreslen = 0;
+          char *buf = NULL;
           if (ld->ld_objroutarr[0] != NULL)
             {
-              char *obdb0 = objectdbg_BM (ld->ld_objroutarr[0]);
-              strncat (unresbuf, obdb0, sizeof (unresbuf));
-              unreslen = strlen (unresbuf);
-              if (isalpha (obdb0[0]))
-                {
-                  char oidbuf0[32];
-                  memset (oidbuf0, 0, sizeof (oidbuf0));
-                  snprintf (oidbuf0, sizeof (oidbuf0), "=€%.20s",
-                            iddbg_BM (objid_BM (ld->ld_objroutarr[0])));
-                  strncat (unresbuf, oidbuf0, sizeof (unresbuf) - unreslen);
-                  unreslen = strlen (unresbuf);
-                }
+              resolve_load_object_routine_at_index_BM (&buf, ld, 0);
             };
           if (ld->ld_objroutarr[1] != NULL)
             {
-              char *obdb1 = objectdbg1_BM (ld->ld_objroutarr[1]);
-              if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
-                strncat (unresbuf + unreslen, " & ", 3);
-              unreslen += 3;
-              if (unreslen < sizeof (unresbuf) - 24)
-                {
-                  strncat (unresbuf + unreslen,
-                           objectdbg1_BM (ld->ld_objroutarr[1]),
-                           sizeof (unresbuf) - unreslen);
-                  if (isalpha (obdb1[0]))
-                    {
-                      char oidbuf1[32];
-                      memset (oidbuf1, 0, sizeof (oidbuf1));
-                      snprintf (oidbuf1, sizeof (oidbuf1), "=€%.20s",
-                                iddbg_BM (objid_BM (ld->ld_objroutarr[1])));
-                      strncat (unresbuf, oidbuf1,
-                               sizeof (unresbuf) - unreslen);
-                      unreslen = strlen (unresbuf);
-                    }
-                }
-              else
-                strncat (unresbuf + unreslen, "...",
-                         sizeof (unresbuf) - unreslen);
+              resolve_load_object_routine_at_index_BM (&buf, ld, 1);
             };
-#warning maybe rewrite code in load_initial_BM  to resolve object routines....
           if (ld->ld_objroutarr[2] != NULL)
             {
-              if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
-                strncat (unresbuf + unreslen, " & ", 3);
-              unreslen += 3;
-              if (unreslen < sizeof (unresbuf) - 16)
-                strncat (unresbuf + unreslen,
-                         objectdbg2_BM (ld->ld_objroutarr[2]),
-                         sizeof (unresbuf) - unreslen);
-              else
-                strncat (unresbuf + unreslen, "...",
-                         sizeof (unresbuf) - unreslen);
+              resolve_load_object_routine_at_index_BM (&buf, ld, 2);
             };
           if (ld->ld_objroutarr[3] != NULL)
             {
-              if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
-                strncat (unresbuf + unreslen, " & ", 3);
-              unreslen += 3;
-              if (unreslen < sizeof (unresbuf) - 16)
-                strncat (unresbuf + unreslen,
-                         objectdbg3_BM (ld->ld_objroutarr[3]),
-                         sizeof (unresbuf) - unreslen);
-              else
-                strncat (unresbuf + unreslen, "...",
-                         sizeof (unresbuf) - unreslen);
+              resolve_load_object_routine_at_index_BM (&buf, ld, 3);
             };
           if (ld->ld_objroutarr[4] != NULL)
             {
-              if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
-                strncat (unresbuf + unreslen, " & ", 3);
-              unreslen += 3;
-              if (unreslen < sizeof (unresbuf) - 16)
-                strncat (unresbuf + unreslen,
-                         objectdbg4_BM (ld->ld_objroutarr[4]),
-                         sizeof (unresbuf) - unreslen);
-              else
-                strncat (unresbuf + unreslen, "...",
-                         sizeof (unresbuf) - unreslen);
+              resolve_load_object_routine_at_index_BM (&buf, ld, 4);
             };
           if (ld->ld_objroutarr[5] != NULL)
             {
-              if (unreslen > 0 && unreslen + 8 < sizeof (unresbuf))
-                strncat (unresbuf + unreslen, " & ", 3);
-              unreslen += 3;
-              if (unreslen < sizeof (unresbuf) - 16)
-                strncat (unresbuf + unreslen,
-                         objectdbg5_BM (ld->ld_objroutarr[5]),
-                         sizeof (unresbuf) - unreslen);
-              else
-                strncat (unresbuf + unreslen, "...",
-                         sizeof (unresbuf) - unreslen);
+              resolve_load_object_routine_at_index_BM (&buf, ld, 5);
             };
           if (ld->ld_objroutarr[6] != NULL)
             {
-              if (unreslen + 8 < sizeof (unresbuf))
-                strcat (unresbuf + unreslen, "..etc..");
+              int ok = asprintf (&buf, "%s ...etc...", buf);
+              if (ok < 0)
+                FATAL_BM ("asprintf ...etc... fail");
             };
           WARNPRINTF_BM
             ("load_initial_BM: unresolved %u object routines (%s) with %d modules",
-             ld->ld_count_objrout, unresbuf, module_count_BM ());
+             ld->ld_count_objrout, buf, module_count_BM ());
         }
       free (ld->ld_objroutarr);
       ld->ld_objroutarr = NULL;
