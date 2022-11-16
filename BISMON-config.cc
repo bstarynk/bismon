@@ -341,7 +341,7 @@ bmc_show_usage(const char*progname)
   std::cerr << " --skip=IGNORED         # ignored argument, would appear on failure message" << std::endl;
   std::cerr << " --label=IGNORED        # ignored argument, would appear on failure message" << std::endl;
   std::cerr << "           	        # for example: --skip=that_thing or --label=first_run" << std::endl;
-  std::cerr << "# the target cross-compilers below should be some GCC 12 with plugins enabled. See  gcc.gnu.org for more." << std::endl;
+  std::cerr << "# the target cross-compilers below should be some GCC 10 to 12 with plugins enabled. See  gcc.gnu.org for more." << std::endl;
   std::cerr << " --target-gcc=PATH      # set to PATH the target GCC cross-compiler executable for C code" << std::endl;
   std::cerr << "           	        # for example: --target-gcc=/usr/local/bin/arm-lnux-gnueabi-gcc-12" << std::endl;
   std::cerr << " --target-gxx=PATH      # set to PATH the target GCC cross-compiler for C++ code" << std::endl;
