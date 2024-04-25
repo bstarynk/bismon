@@ -542,6 +542,7 @@ Alternatively (if you don't want to add a `github` issue), send an
 email (UTF-8 encoded, HTML5 is preferable) in English, or in French,
 (or perhaps in Russian, only if you cannot send an email in English or
 French) to
+[`basile@starynkevitch.net`](mailto:basile@starynkevitch.net) or
 [basile.starynkevitch@cea.fr](mailto:basile.starynkevitch@cea.fr).  I
 will try to answer in English or in French (since my written Russian
 is so bad).
